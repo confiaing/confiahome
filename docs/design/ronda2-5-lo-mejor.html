@@ -1,0 +1,1205 @@
+<!doctype html>
+<html lang="es" data-type="service">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ronda 2 · Propuesta 5 — Lo mejor de los cuatro · Confia.ing</title>
+<meta name="description" content="Confia.ing: transformación de IA para empresas pequeñas y medianas. Un recorrido en cinco etapas, del diagnóstico a soluciones que tu equipo opera.">
+<meta name="page-type" content="service">
+<meta name="site-kind" content="other">
+<meta name="theme-color" content="#12100D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 32'%3E%3Cg fill='none' stroke-width='5' stroke-linecap='round'%3E%3Cpath stroke='%23F5EFE4' d='M24.07 7.57A11 11 0 1 0 24.07 24.43'/%3E%3Cpath stroke='%23FF5A1F' d='M23.93 24.43A11 11 0 1 0 23.93 7.57'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+/* Modo de la pagina, antes del primer pintado: completa (WebGL) o ligera (SVG estatico). */
+(function () {
+  var d = document.documentElement, reasons = [], explicit = null;
+  d.classList.add('js');
+  try { var q = new URLSearchParams(location.search).get('modo'); if (q === 'ligera' || q === 'completa') explicit = q; else explicit = localStorage.getItem('confia-modo'); } catch (e) {}
+  var gl = false, glFast = false;
+  try { var c = document.createElement('canvas'); gl = !!(c.getContext('webgl2') || c.getContext('webgl')); var c2 = document.createElement('canvas'); glFast = !!(c2.getContext('webgl2', { failIfMajorPerformanceCaveat: true }) || c2.getContext('webgl', { failIfMajorPerformanceCaveat: true })); } catch (e) {}
+  var n = navigator, cn = n.connection || n.mozConnection || n.webkitConnection;
+  if (!gl) reasons.push('este navegador no tiene WebGL');
+  else if (!glFast) reasons.push('gráficos sin aceleración');
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) reasons.push('prefieres movimiento reducido');
+  if (cn && cn.saveData) reasons.push('ahorro de datos activo');
+  if (cn && /(^|-)(2g|3g)$/.test(cn.effectiveType || '')) reasons.push('conexión lenta');
+  if ((n.deviceMemory && n.deviceMemory <= 2) || (n.hardwareConcurrency && n.hardwareConcurrency <= 2)) reasons.push('dispositivo de gama baja');
+  var mode = explicit === 'completa' && gl ? 'full' : explicit === 'ligera' ? 'lite' : reasons.length ? 'lite' : 'full';
+  d.setAttribute('data-mode', mode);
+  window.__confia = { gl: gl, reasons: reasons, explicit: explicit };
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Schibsted+Grotesk:wght@400..700&display=swap">
+<style>
+/* Hallmark · shape: Travesía (un hilo que atraviesa la página: disperso en el hero, tejido en el recorrido, entregado en el cierre) · genre: atmospheric · theme: custom · job: book · idea: "El desorden de una empresa se ordena, juntos, en cinco etapas, hasta quedar en manos de su equipo." · vibe: "tinta cálida, brasa, cercano y preciso"
+ * paper: oklch(17% 0.008 70) · accent: oklch(69% 0.21 41) · display: Bricolage Grotesque · body: Schibsted Grotesk · hero: titular a la izquierda sobre la nube de puntos dispersos que cruza un hilo naranja · nav: marca, dos enlaces, idioma y una acción · footer: marca sobre enlaces y conmutador de versión · imagery: none (una escena de puntos generada; el cliente no tiene fotos) · signature: los puntos dispersos del hero se ordenan en cada etapa del recorrido hasta formar una esfera completa
+ * axes: dark/grotesk-sans/warm · posture: stage · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: E, las etapas llevan más de 80 palabras porque el contenido aprobado debe aparecer completo; se reparte en tres columnas cortas */
+/* waive 19: el guion del title lo fija el encargo · waive 38iii: el subrayado de «resultados» es la firma del hero, una vez · waive 58: el copy aprobado de cada etapa no se recorta · waive 54: el antetítulo del hero es contenido aprobado, compuesto como frase y no como etiqueta · waive 80: la escena generada es el pedido del encargo (un momento 3D con sentido) */
+
+/* ---------- Tokens ---------- */
+:root {
+  /* primitivas */
+  --tinta-900: #12100D; --tinta-800: #1C1915; --tinta-600: #3A342D;
+  --ceniza-700: #4F473E; --ceniza-500: #857C70; --ceniza-400: #B0A79A;
+  --cal-50: #F5EFE4; --cal-200: #E9E1D2; --cal-300: #D8CEBC; --cal-400: #8A8073;
+  --brasa-800: #8E2A06; --brasa-700: #B5380C; --brasa-500: #FF5A1F; --brasa-300: #FF9466;
+  --brote-700: #1F6B40; --brote-400: #7FD9A0;
+  --alerta-700: #B0203A; --alerta-400: #FF8C9A;
+  --mask-solid: #000;
+  /* roles (tema base: tinta) */
+  --color-background: var(--tinta-900);
+  --color-surface: var(--tinta-800);
+  --color-text: var(--cal-50);
+  --color-text-muted: var(--ceniza-400);
+  --color-primary: var(--brasa-500);
+  --color-primary-hover: var(--brasa-300);
+  --color-on-primary: var(--tinta-900);
+  --color-link: var(--brasa-300);
+  --color-focus: var(--cal-50);
+  --color-border: var(--tinta-600);
+  --color-border-strong: var(--ceniza-500);
+  --color-error: var(--alerta-400);
+  --color-success: var(--brote-400);
+  /* tipografía */
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text-s: 0.9375rem; --text-m: 1.0625rem; --text-l: clamp(1.15rem, 0.6vw + 1rem, 1.375rem);
+  --text-h3: clamp(1.35rem, 1.1vw + 1rem, 1.9rem);
+  --text-h2: clamp(2.1rem, 4vw + 0.6rem, 4.1rem);
+  --text-h1: clamp(2.3rem, 4.1vw + 0.9rem, 4.6rem);
+  /* espacio y forma */
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --wrap: 1240px;
+  --section: clamp(4.5rem, 9vw, 8.5rem);
+  --radius-s: 10px; --radius-m: 18px; --radius-l: 32px; --radius-pill: 999px;
+  --header-h: 68px;
+  /* movimiento */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-press: 140ms;
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+  --dur-move: 420ms;
+  --dur-enter: 700ms;
+  --scene-follow: 3.2; /* rapidez con que la escena alcanza la etapa elegida (1/s) */
+}
+.t-cal {
+  --color-background: var(--cal-50);
+  --color-surface: var(--cal-200);
+  --color-text: var(--tinta-900);
+  --color-text-muted: var(--ceniza-700);
+  --color-primary: var(--brasa-700);
+  --color-primary-hover: var(--brasa-800);
+  --color-on-primary: var(--cal-50);
+  --color-link: var(--brasa-700);
+  --color-focus: var(--tinta-900);
+  --color-border: var(--cal-300);
+  --color-border-strong: var(--cal-400);
+  --color-error: var(--alerta-700);
+  --color-success: var(--brote-700);
+}
+.t-brasa {
+  --color-background: var(--brasa-500);
+  --color-surface: var(--brasa-300);
+  --color-text: var(--tinta-900);
+  --color-text-muted: var(--tinta-900);
+  --color-primary: var(--tinta-900);
+  --color-primary-hover: var(--tinta-800);
+  --color-on-primary: var(--cal-50);
+  --color-link: var(--tinta-900);
+  --color-focus: var(--tinta-900);
+  --color-border: var(--tinta-900);
+  --color-border-strong: var(--tinta-900);
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: clip; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); }
+body { margin: 0; overflow-x: clip; background: var(--color-background); color: var(--color-text); font-family: var(--font-body); font-size: var(--text-m); line-height: 1.55; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+.t-cal, .t-brasa { background: var(--color-background); color: var(--color-text); }
+h1, h2, h3, p, ul, ol, dl, dd, figure, fieldset { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+fieldset { border: 0; min-width: 0; }
+h1, h2, h3, .display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.035em; line-height: 0.98; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+h1 { font-size: var(--text-h1); line-height: 1; }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); letter-spacing: -0.02em; line-height: 1.1; }
+p { text-wrap: pretty; }
+a { color: var(--color-link); text-underline-offset: 0.2em; text-decoration-thickness: 1.5px; }
+button { font: inherit; color: inherit; }
+svg { display: block; }
+:focus-visible { outline: 2.5px solid var(--color-focus); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: min(100% - 2 * var(--gutter), var(--wrap)); margin-inline: auto; }
+.section { padding-block: var(--section); position: relative; }
+.lead { font-size: var(--text-l); line-height: 1.45; max-width: 34em; color: var(--color-text-muted); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: absolute; left: var(--gutter); top: 10px; z-index: 100; padding: 0.7rem 1rem; background: var(--color-text); color: var(--color-background); border-radius: var(--radius-s); font-weight: 600; transform: translateY(-200%); }
+.skip:focus { transform: none; }
+[hidden] { display: none !important; }
+
+/* ---------- Botones y enlaces ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; text-align: center; min-height: 54px; padding: 0.8rem 1.6rem; border-radius: var(--radius-pill); border: 1.5px solid transparent; font-family: var(--font-body); font-weight: 600; font-size: 1rem; line-height: 1.2; text-decoration: none; text-wrap: balance; cursor: pointer; transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease; }
+.btn:active, .btn.is-active { transform: scale(0.97); }
+.btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+.btn-secondary { background: transparent; color: var(--color-text); border-color: var(--color-text); }
+.btn-small { min-height: 44px; padding: 0.5rem 1.15rem; font-size: var(--text-s); }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; }
+.btn.is-hover.btn-primary { background: var(--color-primary-hover); }
+.btn.is-hover.btn-secondary { background: var(--color-text); color: var(--color-background); }
+.is-focus { outline: 2.5px solid var(--color-focus); outline-offset: 3px; }
+.link-quiet { color: var(--color-text); text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; padding-bottom: 4px; transition: background-size var(--dur-base) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-secondary:hover { background: var(--color-text); color: var(--color-background); }
+  .link-quiet:hover { background-size: 100% 1.5px; }
+  a:hover { text-decoration-thickness: 2.5px; }
+}
+
+/* ---------- Marca ---------- */
+.brand { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--color-text); text-decoration: none; min-height: 44px; }
+.brand svg { width: 2.1rem; height: 1.4rem; }
+.wm { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; letter-spacing: -0.04em; line-height: 1; }
+.wm i { font-style: normal; color: var(--color-primary); }
+.wm b { font-weight: 400; }
+.sym-a { stroke: var(--color-text); } .sym-b { stroke: var(--color-primary); }
+
+/* ---------- Cabecera ---------- */
+.header { position: sticky; top: 0; z-index: 50; height: var(--header-h); background: var(--color-background); border-bottom: 1px solid var(--color-border); }
+.header .wrap { height: 100%; display: flex; align-items: center; gap: 1rem; }
+.nav { display: none; margin-left: auto; align-items: center; gap: 1.75rem; }
+.nav a { font-size: var(--text-s); font-weight: 500; }
+.header-tools { display: flex; align-items: center; gap: 0.75rem; margin-left: auto; }
+.nav + .header-tools { margin-left: 1.25rem; }
+.lang { display: inline-flex; align-items: center; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); padding: 4px; position: relative; }
+.lang a, .lang button { min-width: 40px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 0; background: none; border-radius: var(--radius-pill); font-size: 0.875rem; font-weight: 600; color: var(--color-text-muted); text-decoration: none; cursor: pointer; }
+.lang [aria-current="true"] { background: var(--color-text); color: var(--color-background); }
+.lang-note { position: absolute; top: calc(100% + 8px); right: 0; width: max-content; max-width: min(78vw, 300px); padding: 0.55rem 0.8rem; background: var(--color-text); color: var(--color-background); border-radius: var(--radius-s); font-size: 0.875rem; line-height: 1.3; z-index: 5; }
+.lang-note:empty { display: none; }
+.footer .lang-note { top: auto; bottom: calc(100% + 8px); right: auto; left: 0; }
+.header .btn { display: none; }
+.menu-btn { display: none; min-height: 44px; padding: 0 1rem; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); background: none; font-size: var(--text-s); font-weight: 600; cursor: pointer; }
+.js .menu-btn { display: inline-flex; align-items: center; }
+.menu { border-bottom: 1px solid var(--color-border); background: var(--color-background); }
+.menu ul { display: grid; padding-block: 0.5rem 1.25rem; }
+.menu li a:not(.btn) { display: flex; align-items: center; min-height: 56px; font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; letter-spacing: -0.03em; color: var(--color-text); text-decoration: none; border-bottom: 1px solid var(--color-border); }
+.menu .btn { width: 100%; margin-top: 1.25rem; }
+.js .menu { position: fixed; inset: var(--header-h) 0 0 0; z-index: 49; overflow-y: auto; border: 0; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast); }
+.js .menu.is-open { opacity: 1; visibility: visible; transform: none; transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), visibility 0s; }
+@media (min-width: 900px) {
+  .nav { display: flex; }
+  .header .btn { display: inline-flex; }
+  .js .menu-btn, .menu, .js .menu { display: none; }
+}
+
+/* ---------- Escena (ranuras, SVG estático, lienzo WebGL) ---------- */
+.slot { position: relative; }
+.scene-svg { width: 100%; height: 100%; }
+.sv-ash { stroke: var(--color-text-muted); opacity: 0.6; }
+.sv-lit { stroke: var(--color-text); }
+.sv-ember { stroke: var(--color-primary); }
+.scene-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.slot.is-live .scene-svg { opacity: 0; }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; min-height: min(calc(100svh - var(--header-h)), 900px); display: grid; align-items: center; padding-block: clamp(2rem, 5vh, 4rem) 0; overflow: clip; }
+.hero-slot { position: absolute; inset: 0 0 auto 0; height: 56%; opacity: 0.72; -webkit-mask-image: linear-gradient(180deg, var(--mask-solid) 50%, transparent); mask-image: linear-gradient(180deg, var(--mask-solid) 50%, transparent); }
+.hero .wrap { position: relative; display: grid; gap: clamp(1.5rem, 4vh, 3rem); min-height: 100%; align-content: space-between; }
+.hero-copy { max-width: 47rem; display: grid; gap: clamp(1rem, 2.4vh, 1.6rem); justify-items: start; }
+.hero-pre { font-size: var(--text-m); font-weight: 500; color: var(--color-link); max-width: 26em; }
+.hero h1 .hilo { position: relative; display: inline-block; }
+.hero h1 .hilo::after { content: ""; position: absolute; left: 0; right: 0; bottom: -0.04em; height: 0.09em; border-radius: 1em; background: var(--color-primary); transform-origin: 0 50%; }
+.hero-text { font-size: var(--text-l); line-height: 1.45; max-width: 33em; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hero-note { font-size: var(--text-s); color: var(--color-text-muted); }
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--color-border); }
+.pillars li { padding-block: 1rem 1.25rem; font-family: var(--font-display); font-weight: 600; font-size: clamp(0.95rem, 2.2vw, 1.75rem); letter-spacing: -0.03em; }
+.pillars li + li { border-left: 1px solid var(--color-border); padding-left: clamp(0.6rem, 2vw, 1.5rem); }
+@media (max-width: 719px) {
+  .hero .actions { display: grid; width: 100%; }
+}
+@media (min-width: 720px) and (max-width: 999px) {
+  .hero-slot { inset: 36% 0 3.5rem 0; height: auto; opacity: 1; -webkit-mask-image: linear-gradient(0deg, var(--mask-solid) 62%, transparent); mask-image: linear-gradient(0deg, var(--mask-solid) 62%, transparent); }
+}
+@media (min-width: 1000px) {
+  .hero-slot { inset: 0 0 0 auto; width: 68%; height: auto; opacity: 1; -webkit-mask-image: linear-gradient(90deg, transparent 18%, var(--mask-solid) 52%); mask-image: linear-gradient(90deg, transparent 18%, var(--mask-solid) 52%); }
+  .hero-copy { max-width: min(47rem, 62%); }
+}
+/* entrada del hero: una sola vez, sólo en versión completa */
+@media (prefers-reduced-motion: no-preference) {
+  [data-mode="full"] .enter { animation: rise var(--dur-enter) var(--ease-out) backwards; animation-delay: var(--d, 0ms); }
+  [data-mode="full"] .enter-fade { animation: fade var(--dur-enter) ease backwards; animation-delay: var(--d, 0ms); }
+  [data-mode="full"] .hero h1 .hilo::after { animation: draw 800ms var(--ease-in-out) 520ms backwards; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(var(--y, 14px)); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes draw { from { transform: scaleX(0); } }
+
+/* ---------- Dónde empezamos ---------- */
+.start-head { display: grid; gap: 1.5rem; margin-bottom: clamp(2.5rem, 6vw, 5rem); }
+.frictions { display: grid; gap: 0; border-top: 1px solid var(--color-text); }
+.frictions li { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(1rem, 3vw, 2rem); row-gap: 0.5rem; padding-block: clamp(1.5rem, 3vw, 2.25rem); border-bottom: 1px solid var(--color-border); align-items: start; }
+.frictions .n { grid-row: span 2; font-family: var(--font-display); font-weight: 700; font-size: clamp(2.5rem, 5vw, 4.25rem); line-height: 0.85; letter-spacing: -0.05em; color: var(--color-primary); min-width: 1.1em; }
+.frictions p { color: var(--color-text-muted); max-width: 30em; }
+.questions { margin-top: clamp(3.5rem, 8vw, 7rem); display: grid; gap: clamp(1.25rem, 3vw, 2.5rem); }
+.questions h3 { color: var(--color-text-muted); font-family: var(--font-body); font-weight: 500; font-size: var(--text-l); letter-spacing: 0; }
+.questions li { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 3.3vw, 3rem); line-height: 1.06; letter-spacing: -0.035em; padding-block: clamp(0.9rem, 1.8vw, 1.4rem); border-top: 1px solid var(--color-border); text-wrap: balance; }
+.questions li:last-child { border-bottom: 1px solid var(--color-border); }
+@media (min-width: 1000px) {
+  .start-head { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: 3rem; }
+  .frictions { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; }
+  .frictions li:nth-child(-n+2) { border-top: 0; }
+  .questions { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 3rem; }
+}
+
+/* ---------- Recorrido ---------- */
+.journey { overflow: clip; padding-top: clamp(4rem, 6vw, 5.5rem); }
+.journey-head { display: grid; gap: 1.25rem; margin-bottom: clamp(1.75rem, 3vw, 2.5rem); }
+.legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; font-size: var(--text-s); color: var(--color-text-muted); }
+.legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+.legend i { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--color-text); }
+.legend .k-us i { background: var(--color-primary); }
+.tabs { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.tab { position: relative; display: grid; gap: 0.35rem; justify-items: start; align-content: start; text-align: left; padding: 0.5rem 0.5rem 1.4rem 0; min-height: 56px; background: none; border: 0; cursor: pointer; color: var(--color-text-muted); transition: color var(--dur-fast) ease; }
+.tab-n { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1; letter-spacing: -0.04em; }
+.tab-name { font-size: var(--text-s); font-weight: 600; line-height: 1.25; display: none; }
+.tab::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-background); border: 2px solid var(--color-border-strong); transition: transform var(--dur-base) var(--ease-out), background-color var(--dur-fast) ease, border-color var(--dur-fast) ease; z-index: 1; }
+.tab:focus-visible { outline-offset: -2px; }
+.tab[aria-selected="true"] { color: var(--color-text); }
+.tab[aria-selected="true"]::after { background: var(--color-primary); border-color: var(--color-primary); transform: scale(1.35); }
+.tab.is-done::after { background: var(--color-text); border-color: var(--color-text); }
+.track { position: relative; height: 2px; background: var(--color-border); }
+.track i { position: absolute; inset: 0; background: var(--color-primary); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); transition: transform var(--dur-move) var(--ease-in-out); }
+.stages { margin-top: clamp(1.75rem, 3vw, 2.5rem); }
+.stage { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); padding-block: 0 2.5rem; }
+.js .stage { padding-block: 0; }
+.stage-fig { aspect-ratio: 36 / 23; border-radius: var(--radius-m); background: var(--color-surface); overflow: hidden; }
+.ing { position: absolute; left: clamp(0.9rem, 2vw, 1.4rem); bottom: clamp(0.7rem, 1.6vw, 1.1rem); font-family: var(--font-display); font-weight: 700; font-size: clamp(1.15rem, 2.2vw, 1.9rem); letter-spacing: -0.04em; line-height: 1; }
+.ing b { font-weight: 400; } .ing i { font-style: normal; color: var(--color-primary); }
+.stage-body { display: grid; gap: 1.25rem; align-content: start; }
+.stage-count { font-size: var(--text-s); color: var(--color-text-muted); }
+.stage h3 { font-size: clamp(1.9rem, 3.4vw, 3.1rem); letter-spacing: -0.035em; line-height: 1; }
+.stage h3 span { display: block; margin-top: 0.4rem; font-family: var(--font-body); font-size: var(--text-m); font-weight: 500; letter-spacing: 0; color: var(--color-link); }
+.stage dl { display: grid; gap: 0; }
+.stage dl > div { padding-block: 1rem; border-top: 1px solid var(--color-border); display: grid; gap: 0.25rem; }
+.stage dt { font-size: var(--text-s); color: var(--color-text-muted); }
+.stage dd { font-size: var(--text-m); }
+.stage .decide dd { font-family: var(--font-display); font-weight: 600; font-size: var(--text-h3); letter-spacing: -0.025em; line-height: 1.1; color: var(--color-link); }
+.stage-nav { display: none; gap: 0.75rem; flex-wrap: wrap; }
+.js .stage-nav { display: flex; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .stage.is-in .stage-body { animation: fade var(--dur-base) ease; }
+}
+@media (min-width: 720px) {
+  .tab-name { display: block; }
+  .tab { padding-right: 1rem; }
+}
+@media (min-width: 1000px) {
+  .journey-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 3rem; }
+  .stage { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; }
+  .stage dl > div { grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; align-items: baseline; }
+}
+
+/* ---------- Lo que ofrecemos ---------- */
+.offer h2 { margin-bottom: clamp(2rem, 4vw, 3rem); }
+.main-offer { border-radius: var(--radius-l); padding: clamp(1.5rem, 4.5vw, 4rem); display: grid; gap: clamp(1.5rem, 4vw, 3rem); }
+.main-offer h3 { font-size: clamp(2.5rem, 7.4vw, 6.9rem); font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; overflow-wrap: normal; }
+.main-offer p { font-size: var(--text-l); line-height: 1.4; max-width: 30em; font-weight: 500; }
+.sum { display: grid; border-top: 2px solid var(--color-border); }
+.sum li { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 3.4vw, 3rem); letter-spacing: -0.04em; line-height: 1; padding-block: 0.9rem; border-bottom: 2px solid var(--color-border); }
+.others { display: grid; margin-top: clamp(2rem, 4vw, 3.5rem); border-top: 1px solid var(--color-border); }
+.others li { padding-block: 1.5rem; border-bottom: 1px solid var(--color-border); display: grid; gap: 0.6rem; align-content: start; }
+.others p { color: var(--color-text-muted); }
+@media (min-width: 720px) {
+  .sum { grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 2px solid var(--color-border); }
+  .sum li { border-bottom: 0; padding: 1.1rem 0 1.2rem; }
+  .sum li + li { border-left: 2px solid var(--color-border); padding-left: clamp(1rem, 2vw, 1.75rem); }
+  .others { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; }
+}
+@media (min-width: 1100px) {
+  .others { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 2.5rem; border-top: 0; }
+  .others li { border-top: 1px solid var(--color-border); border-bottom: 0; }
+}
+
+/* ---------- Por qué confiar ---------- */
+.trust-grid { display: grid; gap: clamp(2.5rem, 6vw, 5rem); margin-top: clamp(2rem, 5vw, 4rem); }
+.proof h3, .principles h3 { color: var(--color-text-muted); font-family: var(--font-body); font-weight: 500; font-size: var(--text-l); letter-spacing: 0; margin-bottom: 1rem; }
+.proof li { padding-block: 1.1rem; border-top: 1px solid var(--color-border); font-size: var(--text-l); line-height: 1.35; }
+.proof li:first-child { border-top-color: var(--color-text); }
+.proof li strong { font-weight: 700; }
+.proof .note { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); font-size: var(--text-s); color: var(--color-text-muted); }
+.principles ul { display: grid; }
+.principles li { font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 9vw, 6.5rem); letter-spacing: -0.055em; line-height: 0.9; }
+.principles li:nth-child(2) { color: var(--color-primary); }
+.principles p { margin-top: 1.5rem; max-width: 30em; }
+@media (min-width: 1000px) {
+  .trust-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 4rem; }
+}
+
+/* ---------- Cierre ---------- */
+.close { overflow: clip; }
+.close-top { position: relative; display: grid; gap: 2rem; padding-bottom: clamp(3rem, 7vw, 6rem); }
+.close-slot { position: absolute; inset: -12% 0 0 0; opacity: 0.4; }
+.close-top > :not(.close-slot) { position: relative; }
+.close h2 { max-width: 13em; }
+.contact { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+.panel { background: var(--color-surface); border-radius: var(--radius-m); padding: clamp(1.25rem, 3vw, 2.5rem); }
+.panel > h3 { margin-bottom: 1.5rem; }
+.form { display: grid; gap: 1.1rem; }
+.field { display: grid; gap: 0.4rem; }
+.field label, .pair legend { font-size: var(--text-s); font-weight: 600; }
+.field label small, .pair legend small { font-weight: 400; color: var(--color-text-muted); font-size: inherit; }
+.input { width: 100%; min-height: 52px; padding: 0.75rem 0.9rem; background: var(--color-background); color: var(--color-text); border: 1.5px solid var(--color-border-strong); border-radius: var(--radius-s); font: inherit; transition: border-color var(--dur-fast) ease; }
+textarea.input { min-height: 120px; resize: vertical; }
+.input::placeholder { color: var(--color-text-muted); }
+.input:focus-visible, .input.is-focus { outline: 2.5px solid var(--color-focus); outline-offset: 2px; border-color: var(--color-text); }
+.input[aria-invalid="true"], .input.is-error { border-color: var(--color-error); }
+.input.is-ok { border-color: var(--color-success); }
+.pair { display: grid; gap: 0.9rem; }
+.pair legend { margin-bottom: 0.6rem; }
+.pair-grid { display: grid; gap: 0.9rem; }
+.err { font-size: var(--text-s); color: var(--color-error); font-weight: 500; }
+.ok-msg { font-size: var(--text-s); color: var(--color-success); font-weight: 500; }
+.err:empty { display: none; }
+.check { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.75rem; align-items: start; font-size: var(--text-s); }
+.check input { width: 24px; height: 24px; margin: 0; accent-color: var(--color-primary); }
+.form .btn { justify-self: start; }
+.done { display: grid; gap: 0.75rem; padding-block: 1rem; }
+.done strong { font-family: var(--font-display); font-size: var(--text-h3); letter-spacing: -0.025em; line-height: 1.1; color: var(--color-success); }
+.cal { display: grid; align-content: start; }
+.cal-box { min-height: 320px; height: 100%; border: 1.5px dashed var(--color-border-strong); border-radius: var(--radius-s); display: grid; place-content: center; justify-items: center; gap: 0.75rem; padding: 1.5rem; text-align: center; color: var(--color-text-muted); }
+.cal-box svg { width: 4.2rem; height: 2.8rem; }
+@media (min-width: 720px) { .pair-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) {
+  .contact { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+  .cal { grid-template-rows: auto 1fr; }
+  .close-slot { inset: -22% -3% -6% 54%; opacity: 0.85; }
+  .close h2 { max-width: 11.5em; }
+}
+
+/* ---------- Pie ---------- */
+.footer { border-top: 1px solid var(--color-border); padding-block: clamp(2.5rem, 5vw, 4rem) 2rem; }
+.footer .wrap { display: grid; gap: 2rem; }
+.footer .wm { font-size: clamp(2.6rem, 9vw, 7rem); }
+.footer .brand svg { width: clamp(3.4rem, 11vw, 8.5rem); height: auto; aspect-ratio: 3 / 2; }
+.foot-row { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; align-items: center; }
+.foot-row a { display: inline-flex; align-items: center; min-height: 44px; }
+.foot-meta { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; padding-top: 1.5rem; border-top: 1px solid var(--color-border); font-size: var(--text-s); color: var(--color-text-muted); }
+.mode { display: grid; gap: 0.5rem; }
+.js .mode { display: grid; } .mode { display: none; }
+.seg { display: inline-flex; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); padding: 4px; width: max-content; max-width: 100%; }
+.seg button { min-height: 40px; padding: 0 1rem; border: 0; background: none; border-radius: var(--radius-pill); font-size: 0.875rem; font-weight: 600; color: var(--color-text-muted); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--color-text); color: var(--color-background); }
+
+/* ---------- Sistema de marca ---------- */
+.sys { padding-block: var(--section); border-top: 1px solid var(--color-border); }
+.sys > .wrap { display: grid; gap: clamp(2.5rem, 5vw, 4rem); }
+.sys h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+.sys h3 { font-family: var(--font-body); font-weight: 600; font-size: var(--text-m); letter-spacing: 0; margin-bottom: 1rem; color: var(--color-text-muted); }
+.sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+.sw li { display: grid; gap: 0.5rem; font-size: 0.875rem; line-height: 1.35; }
+.sw i { display: block; height: 72px; border-radius: var(--radius-s); border: 1px solid var(--color-border); background: var(--c); }
+.sw code, .tok code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8125rem; }
+.sw span { color: var(--color-text-muted); }
+.types { display: grid; gap: 2rem; }
+.types .a { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.5rem, 7vw, 5.5rem); letter-spacing: -0.045em; line-height: 0.95; }
+.types .b { font-size: var(--text-l); max-width: 32em; }
+.types small { display: block; margin-top: 0.5rem; font-size: 0.875rem; color: var(--color-text-muted); }
+.logos { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.logo-tile { border-radius: var(--radius-m); padding: 2rem 1.5rem; min-height: 150px; display: grid; place-items: center; border: 1px solid var(--color-border); }
+.logo-tile .wm { font-size: 2rem; } .logo-tile .brand svg { width: 3rem; height: 2rem; }
+.logo-tile.only svg { width: 6rem; height: 4rem; }
+.states { display: grid; gap: 1.5rem; }
+.states-row { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: center; }
+.states-row > div { display: grid; gap: 0.4rem; justify-items: start; font-size: 0.8125rem; color: var(--color-text-muted); }
+.states-row .input { width: 220px; }
+.tok { width: 100%; border-collapse: collapse; font-size: var(--text-s); }
+.tok th, .tok td { text-align: left; padding: 0.7rem 1rem 0.7rem 0; border-top: 1px solid var(--color-border); vertical-align: top; font-weight: 400; }
+.tok th { color: var(--color-text-muted); }
+.tok-scroll { overflow-x: auto; }
+@media (min-width: 1000px) { .types { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; } .sys-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; } }
+@media (max-width: 999px) { .sys-two { display: grid; gap: 2.5rem; } }
+
+/* ---------- Movimiento reducido y versión ligera ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }
+}
+[data-mode="lite"] { scroll-behavior: auto; }
+[data-mode="lite"] .track i, [data-mode="lite"] .tab::after { transition: none; }
+</style>
+<noscript><style>.tabs, .track { display: none; } .stage { border-top: 1px solid var(--color-border); padding-top: 2.5rem; }</style></noscript>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="simbolo" viewBox="0 0 48 32"><g fill="none" stroke-width="4.5" stroke-linecap="round"><path class="sym-a" d="M24.07 7.57A11 11 0 1 0 24.07 24.43"/><path class="sym-b" d="M23.93 24.43A11 11 0 1 0 23.93 7.57"/></g></symbol>
+</svg>
+
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="confia.ing, inicio">
+      <svg aria-hidden="true"><use href="#simbolo"/></svg>
+      <span class="wm" aria-hidden="true">confia<i>.</i><b>ing</b></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a class="link-quiet" href="#donde-empezamos">Dónde empezamos</a>
+      <a class="link-quiet" href="#recorrido">Cómo lo hacemos realidad</a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang" role="group" aria-label="Idioma">
+        <a href="#inicio" lang="es" aria-current="true" aria-label="Español, idioma actual">ES</a>
+        <button type="button" lang="en" data-lang-en aria-label="English">EN</button>
+        <span class="lang-note" role="status" aria-live="polite"></span>
+      </div>
+      <a class="btn btn-primary btn-small" href="#agenda">Agenda 30 minutos</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menú</button>
+    </div>
+  </div>
+</header>
+<nav class="menu" id="menu" aria-label="Menú">
+  <div class="wrap">
+    <ul>
+      <li><a href="#donde-empezamos">Dónde empezamos</a></li>
+      <li><a href="#recorrido">Cómo lo hacemos realidad</a></li>
+      <li><a class="btn btn-primary" href="#agenda">Agenda 30 minutos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="contenido">
+
+<!-- ============ Hero ============ -->
+<section class="hero" id="inicio">
+  <div class="hero-slot slot" data-scene="0" data-zoom="1.45"><svg class="scene-svg" viewBox="-180 -115 360 230" role="img" aria-label="Puntos dispersos atravesados por un hilo naranja: el trabajo manual de una empresa antes de ordenarlo." focusable="false" fill="none" stroke-linecap="round"><path class="sv-ash" stroke-width="2.1" d="M25 15h0M36 -9h0M89 0h0M-64 34h0M161 -25h0M-156 34h0M-69 -30h0M118 63h0M-88 -38h0M-32 3h0M58 -34h0M56 -40h0M30 61h0M-21 38h0M77 46h0M-56 -47h0M56 -39h0M-106 -77h0M40 19h0M58 -42h0M56 -41h0M24 -75h0M-165 84h0M54 -39h0M-61 -39h0M-1 14h0M88 -48h0M-68 24h0M-39 0h0M-66 24h0M-2 -33h0M36 38h0M-2 36h0M-82 48h0M-67 -38h0M-54 -28h0M-67 -37h0M-56 -50h0M-11 48h0M-3 1h0M2 53h0M85 85h0M57 28h0M96 -12h0M43 -2h0M21 33h0M11 31h0M-122 74h0M-71 29h0M-16 45h0M-28 4h0M-80 22h0M-85 -53h0M-6 3h0M-103 17h0M-84 90h0M17 -14h0M-10 28h0M52 -40h0M100 -64h0M-35 -7h0M-70 -64h0M88 -8h0M-78 -85h0M-166 25h0M86 -4h0M-9 -66h0M-2 -22h0M56 -41h0M14 7h0M-105 -44h0M-104 36h0M117 -86h0M-38 15h0M-22 50h0M-126 28h0M93 -52h0M-110 39h0M-20 47h0M-1 -61h0M88 11h0M-11 -64h0M96 65h0M93 44h0M-141 -83h0M-24 47h0M49 -33h0M-12 35h0M-173 -68h0M164 90h0M-52 -25h0M115 -5h0M106 45h0M-11 47h0M-52 -39h0M-17 33h0M89 -13h0M-9 -64h0M-24 -7h0M-42 39h0M71 62h0M154 -9h0M-55 35h0M108 -77h0M-156 9h0M-110 82h0M-30 -6h0M-65 -53h0M-24 42h0M-12 -60h0M22 -25h0M79 -7h0M-83 60h0M-51 37h0M-90 -46h0M77 4h0M-86 41h0M-10 -15h0M26 -15h0M-36 10h0M88 69h0M-71 17h0M108 58h0M-61 31h0M-82 -34h0M89 56h0M103 78h0M10 -24h0M74 59h0M-22 45h0M102 53h0M85 -12h0M-32 42h0M42 58h0M80 64h0M-9 -26h0M102 -9h0M18 -76h0M12 -13h0M112 59h0M-57 57h0M-51 14h0M86 -4h0M-111 63h0M-31 43h0M20 2h0M89 92h0M-76 -35h0M-87 73h0M-29 57h0M93 -6h0M-49 26h0M-168 21h0M-102 55h0M-12 46h0M-163 10h0M-66 -42h0M50 21h0M78 57h0M98 -8h0M94 50h0M54 -45h0M-20 -60h0M-128 51h0M-28 9h0M-113 58h0M-149 45h0M-131 60h0M8 13h0M-4 -16h0M8 -31h0M-127 11h0M119 -55h0M17 29h0M56 -43h0M1 -97h0M-18 49h0M87 -28h0M7 -14h0M118 87h0M-46 -60h0M-13 54h0M12 -18h0M-12 -67h0M-53 -46h0M112 -67h0M-143 -78h0M96 -6h0M-119 -2h0M71 40h0M31 21h0M-3 -22h0M42 -44h0M7 29h0M77 -84h0M-12 -63h0M-79 36h0M-79 21h0M88 54h0M-68 -50h0M143 91h0M-14 -14h0M-10 -67h0M103 56h0M-1 20h0M8 26h0M-125 57h0M54 -40h0M77 -24h0M92 58h0M-11 -67h0M158 56h0M-78 -15h0M52 -40h0M-102 75h0M-38 2h0M-126 62h0M-59 40h0M-82 60h0M146 -51h0M108 59h0M-73 14h0M101 46h0M77 -8h0M-25 15h0M5 37h0M-20 6h0M54 -41h0M-93 58h0M19 33h0M-100 44h0M-49 -42h0M-71 -56h0M83 -9h0M18 19h0M-39 5h0M29 22h0M21 -48h0M-24 12h0M-104 -86h0M6 -4h0M-49 18h0M-14 27h0M98 54h0M57 48h0M-10 -13h0M-29 -3h0M66 46h0M6 12h0M87 -6h0M-104 63h0M-63 53h0M60 -42h0M89 -11h0M-75 40h0M86 -14h0M-57 28h0M-47 -42h0M-66 -46h0M-156 74h0M25 -19h0M-85 -51h0M90 -9h0M-49 -44h0M-41 -66h0M-56 47h0M-137 53h0M-64 -57h0M27 25h0M-1 -10h0M-152 -23h0M61 31h0M-90 72h0M-68 -38h0M-76 -45h0M-33 64h0M-48 -51h0M-108 -57h0M56 -37h0M-108 74h0M56 -38h0M-11 -63h0M79 -15h0M-121 85h0M-55 -61h0M-6 -65h0M156 -39h0M26 19h0M64 21h0M-37 55h0M-62 -40h0M156 23h0M96 63h0M5 55h0M-104 35h0M89 -12h0M93 56h0M16 16h0M-75 25h0M97 64h0M133 92h0M1 54h0M120 -73h0M-95 60h0M4 0h0M60 -40h0M-40 3h0M162 84h0M-39 -48h0M-12 14h0M-6 89h0M81 -11h0M-156 44h0M78 -6h0M-6 45h0M-136 30h0M-19 40h0M-46 -40h0M-5 41h0M-18 63h0M-176 85h0M-15 48h0M-64 -37h0M-135 79h0M-23 -22h0M-64 -29h0M-66 -47h0M-68 -40h0M73 52h0M-68 -38h0M-10 42h0M-20 91h0M-19 -12h0M86 -11h0M58 -39h0M-28 68h0M-86 36h0M79 88h0M68 55h0M19 -12h0M52 -39h0M30 44h0M128 -57h0M90 51h0M-95 58h0M-56 -25h0M126 24h0M119 -31h0M-67 -53h0M53 -44h0M-45 11h0M59 -41h0M-61 34h0M53 -38h0M-103 54h0M1 50h0M-109 51h0M-72 -38h0M84 -9h0M6 48h0M52 -40h0M-22 -9h0M-99 47h0M-30 -13h0M-93 45h0M63 -14h0M19 4h0M-11 -58h0M-24 25h0M38 -2h0M50 -43h0M91 -6h0M30 -58h0M-9 42h0M109 -75h0M-45 -49h0M-63 21h0M20 22h0M-6 36h0M-140 -88h0M79 68h0M-12 0h0M-11 53h0M90 -9h0M30 8h0M43 -79h0M81 54h0M-106 48h0M39 -76h0M68 -43h0M10 14h0M90 -11h0M-59 43h0M18 -9h0M-22 37h0M108 27h0M18 -25h0M-17 3h0M96 53h0M-62 21h0M-27 6h0M-26 42h0M101 -26h0M3 -16h0M-14 -65h0M77 -8h0M-15 -65h0M-10 -40h0M-80 29h0M-170 11h0M-94 39h0M83 56h0M47 39h0M95 -13h0M-75 -43h0M-96 -7h0M-13 -65h0M-31 -65h0M4 9h0M28 24h0M-14 -61h0M91 -2h0M-115 36h0M-45 -82h0M-112 51h0M24 21h0M12 6h0M84 -4h0M-7 2h0M-167 37h0M-12 -64h0M-81 36h0M47 -41h0M-5 47h0M-48 11h0M125 -42h0M52 -35h0M89 -9h0M-17 8h0M-92 48h0M85 -6h0M-16 -64h0M110 -66h0M9 -9h0M-51 -37h0M-11 -65h0M111 62h0M-5 -61h0M-102 46h0M-2 -62h0M35 91h0M-75 33h0M-18 14h0M61 -32h0M-4 -62h0M59 32h0M90 52h0M-15 -60h0M54 -38h0M85 -6h0M-111 62h0M-11 -84h0M-72 38h0M20 -22h0M52 -42h0M-131 63h0M21 21h0M59 -42h0M-91 55h0M-5 -59h0M-114 81h0M15 -18h0M92 -9h0M-87 30h0M-67 26h0M-57 -47h0M-94 74h0M-106 61h0M-68 17h0M29 12h0M-12 -64h0M-22 4h0M83 -4h0M57 -35h0M65 46h0M-24 -42h0M85 -7h0M86 53h0M-90 -25h0M-9 -61h0M77 70h0M92 56h0M-29 47h0M63 22h0M-24 45h0M9 22h0M123 97h0M103 42h0M0 34h0M87 -15h0M-53 29h0M57 -17h0M-123 59h0M-22 -2h0M117 39h0M79 -8h0M-3 -51h0M34 6h0M-4 27h0M-51 24h0M58 -38h0M93 59h0M-110 -40h0M-60 28h0M12 -25h0M-50 31h0M-166 -37h0M20 24h0M53 -3h0M-18 16h0M90 58h0M-100 -90h0M-68 -41h0M-72 -38h0M132 -85h0M6 -62h0M-24 34h0M-112 33h0M-7 -68h0M28 80h0M81 27h0M-111 62h0M77 60h0M-74 25h0M-4 -57h0M103 48h0M54 -40h0M-117 42h0M-120 7h0M91 -14h0M12 17h0M-80 -43h0M-1 -22h0M-109 85h0M-28 -6h0M64 -35h0M-79 -44h0M-54 27h0M-12 -12h0M40 6h0M-89 -37h0M2 -28h0M47 -74h0M-101 29h0M32 -38h0M89 41h0M-66 29h0M-31 8h0M33 17h0M152 18h0M-150 10h0M-84 -44h0M-23 -62h0M-8 -49h0M50 -42h0M-115 -79h0M-16 54h0M-33 56h0M91 -9h0M82 56h0"/><path class="sv-ember" stroke-width="3" d="M-173 -26h0M-171 -24h0M-168 -28h0M-167 -27h0M-165 -27h0M-163 -31h0M-161 -29h0M-158 -31h0M-157 -33h0M-155 -30h0M-152 -34h0M-151 -34h0M-149 -32h0M-147 -37h0M-145 -33h0M-142 -35h0M-141 -38h0M-139 -34h0M-137 -38h0M-135 -37h0M-133 -35h0M-131 -40h0M-130 -35h0M-127 -37h0M-126 -39h0M-124 -34h0M-121 -39h0M-121 -36h0M-118 -34h0M-116 -39h0M-115 -33h0M-112 -35h0M-111 -37h0M-109 -31h0M-107 -36h0M-106 -33h0M-103 -30h0M-102 -35h0M-101 -28h0M-98 -30h0M-97 -32h0M-95 -25h0M-93 -30h0M-92 -26h0M-89 -23h0M-88 -28h0M-87 -20h0M-84 -23h0M-83 -23h0M-81 -16h0M-79 -22h0M-78 -17h0M-75 -14h0M-74 -19h0M-73 -10h0M-70 -13h0M-70 -13h0M-68 -5h0M-65 -11h0M-65 -6h0M-62 -3h0M-61 -8h0M-60 1h0M-57 -1h0M-57 -2h0M-54 6h0M-52 0h0M-52 6h0M-49 9h0M-48 4h0M-47 13h0M-44 11h0M-44 10h0M-41 19h0M-39 12h0M-39 18h0M-36 21h0M-35 16h0M-34 25h0M-31 22h0M-31 22h0M-28 30h0M-26 23h0M-26 29h0M-23 32h0M-22 26h0M-21 36h0M-18 32h0M-18 32h0M-15 40h0M-13 33h0M-13 39h0M-10 41h0M-9 35h0M-8 44h0M-5 40h0M-5 40h0M-2 47h0M0 40h0M0 46h0M3 48h0M4 42h0M5 50h0M9 46h0M8 45h0M11 52h0M13 45h0M13 50h0M17 51h0M17 45h0M18 53h0M22 48h0M21 48h0M24 54h0M26 46h0M26 51h0M30 52h0M30 46h0M32 53h0M35 48h0M35 47h0M38 53h0M40 45h0M40 49h0M44 49h0M44 43h0M46 50h0M49 44h0M49 44h0M52 48h0M54 40h0M54 45h0M58 44h0M58 38h0M60 44h0M63 38h0M63 38h0M66 41h0M68 34h0M68 38h0M72 36h0M72 31h0M74 36h0M78 30h0M77 30h0M80 32h0M82 25h0M83 29h0M87 27h0M87 22h0M89 27h0M92 21h0M92 20h0M95 22h0M97 16h0M97 19h0M101 17h0M102 12h0M104 16h0M107 11h0M107 10h0M110 12h0M112 6h0M113 9h0M116 7h0M117 3h0M119 6h0M122 1h0M122 1h0M125 2h0M127 -3h0M128 -1h0M132 -3h0M132 -6h0M134 -3h0M137 -7h0M138 -8h0M141 -6h0M142 -11h0M143 -9h0M147 -10h0M148 -13h0M150 -10h0M152 -14h0M153 -14h0M156 -13h0M158 -17h0M159 -14h0M162 -16h0M163 -18h0"/></svg></div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="hero-pre enter-fade">Transformación de IA para empresas que ya usan tecnología</p>
+      <h1 class="enter" style="--y:22px">Encuentra dónde la IA puede generar <span class="hilo">resultados</span> en tu empresa.</h1>
+      <p class="hero-text enter" style="--d:110ms;--y:12px">Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo desde el diagnóstico hasta soluciones que pueda operar y escalar.</p>
+      <div class="actions enter" style="--d:190ms;--y:8px">
+        <a class="btn btn-primary" href="#agenda">Agenda una conversación de 30 minutos</a>
+        <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+      </div>
+      <p class="hero-note enter-fade" style="--d:260ms">Una conversación exploratoria, sin costo ni compromiso.</p>
+    </div>
+    <ul class="pillars enter-fade" style="--d:320ms" aria-label="Tres pilares">
+      <li>Estrategia</li>
+      <li>Capacitación</li>
+      <li>Automatización</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ Dónde empezamos ============ -->
+<section class="section t-cal" id="donde-empezamos" aria-labelledby="h-donde">
+  <div class="wrap">
+    <div class="start-head">
+      <h2 id="h-donde">Empezamos por el trabajo, no por la tecnología.</h2>
+      <p class="lead">Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p>
+    </div>
+    <ol class="frictions" aria-label="Cuatro fricciones reconocibles">
+      <li><span class="n" aria-hidden="true">1</span><h3>Tareas repetitivas que cuestan horas.</h3><p>Trabajo operativo y verificable que tu equipo hace a mano cada semana: revisar, copiar, clasificar, responder.</p></li>
+      <li><span class="n" aria-hidden="true">2</span><h3>Sistemas y datos que no se hablan.</h3><p>Información repartida entre herramientas, con personas haciendo de puente.</p></li>
+      <li><span class="n" aria-hidden="true">3</span><h3>IA sin estrategia.</h3><p>Licencias compradas y equipos improvisando, sin saber si eso mejora la productividad.</p></li>
+      <li><span class="n" aria-hidden="true">4</span><h3>Equipos de software que no saben por dónde empezar.</h3><p>Quieren integrar IA en su ciclo de desarrollo, pero no tienen un método para hacerlo en cada fase.</p></li>
+    </ol>
+    <div class="questions">
+      <h3 id="h-preguntas">Preguntas que respondemos contigo</h3>
+      <ul aria-labelledby="h-preguntas">
+        <li>¿En qué proceso tiene sentido usar IA?</li>
+        <li>¿Qué datos, herramientas y personas necesito?</li>
+        <li>¿Cómo justifico el costo y mido el impacto?</li>
+        <li>¿Cómo evito fugas de información y soluciones difíciles de mantener?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Recorrido ============ -->
+<section class="section journey" id="recorrido" aria-labelledby="h-recorrido">
+  <div class="wrap">
+    <div class="journey-head">
+      <h2 id="h-recorrido">Un recorrido que hacemos juntos.</h2>
+      <div style="display:grid;gap:1rem">
+        <p class="lead">Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.</p>
+        <p class="legend"><span><i></i>Tu empresa</span><span class="k-us"><i></i>Confia.ing</span></p>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Las cinco etapas del recorrido">
+      <button class="tab" role="tab" id="tab-1" aria-controls="etapa-1" aria-selected="true"><span class="tab-n" aria-hidden="true">1</span><span class="tab-name">Conversación inicial</span><span class="vh tab-vh">Etapa 1: Conversación inicial</span></button>
+      <button class="tab" role="tab" id="tab-2" aria-controls="etapa-2" aria-selected="false" tabindex="-1"><span class="tab-n" aria-hidden="true">2</span><span class="tab-name">Diagnóstico</span><span class="vh tab-vh">Etapa 2: Diagnóstico</span></button>
+      <button class="tab" role="tab" id="tab-3" aria-controls="etapa-3" aria-selected="false" tabindex="-1"><span class="tab-n" aria-hidden="true">3</span><span class="tab-name">Roadmap</span><span class="vh tab-vh">Etapa 3: Roadmap</span></button>
+      <button class="tab" role="tab" id="tab-4" aria-controls="etapa-4" aria-selected="false" tabindex="-1"><span class="tab-n" aria-hidden="true">4</span><span class="tab-name">Piloto</span><span class="vh tab-vh">Etapa 4: Piloto</span></button>
+      <button class="tab" role="tab" id="tab-5" aria-controls="etapa-5" aria-selected="false" tabindex="-1"><span class="tab-n" aria-hidden="true">5</span><span class="tab-name">Escala y transferencia</span><span class="vh tab-vh">Etapa 5: Escala y transferencia</span></button>
+    </div>
+    <div class="track" aria-hidden="true"><i></i></div>
+
+    <div class="stages">
+      <div class="stage" role="tabpanel" id="etapa-1" aria-labelledby="tab-1" tabindex="0">
+        <figure class="stage-fig slot" data-scene="1"><svg class="scene-svg" viewBox="-180 -115 360 230" role="img" aria-label="Dos arcos que se enlazan, uno claro y uno naranja: la primera conversación." focusable="false" fill="none" stroke-linecap="round"><path class="sv-ash" stroke-width="2.1" d="M-35 63h0M-93 -3h0M-43 61h0M-48 -64h0M-53 59h0M-94 3h0M-83 -38h0M-57 60h0M-2 -60h0M-93 -3h0M-140 -28h0M42 -23h0M-23 -55h0M-72 27h0M-26 -101h0M-1 -10h0M149 -7h0M-28 -71h0M-16 60h0M-88 27h0M-88 -25h0M-43 -65h0M-55 60h0M-92 19h0M-9 57h0M-66 -54h0M106 -64h0M92 -29h0M63 -5h0M16 44h0M63 -2h0M-64 54h0M-7 -61h0M-88 -27h0M-88 27h0M-12 58h0M-91 24h0M-85 34h0M-90 22h0M-91 26h0M62 46h0M161 45h0M103 -57h0M94 -32h0M60 -6h0M62 -11h0M9 39h0M-22 61h0M-38 63h0M-90 21h0M-88 -30h0M-94 -10h0M-10 -64h0M0 -59h0M6 -55h0M118 -3h0M-7 6h0M108 19h0M65 52h0M50 -4h0M6 8h0M-77 11h0M98 -30h0M-66 53h0M-95 -7h0M-42 63h0M-89 28h0M-13 -64h0M10 -50h0M-73 48h0M-3 52h0M-62 -58h0M109 -65h0M-134 -38h0M176 99h0M-139 -57h0M-96 -53h0M43 1h0M85 -35h0M56 59h0M-35 -67h0M-82 -41h0M-59 -59h0M-93 -18h0M-30 -67h0M-47 61h0M-77 44h0M-86 31h0M-66 53h0M55 -5h0M-29 -76h0M70 49h0M-98 -52h0M108 -51h0M23 41h0M-56 -62h0M-86 30h0M-67 53h0M2 50h0M-91 -19h0M-91 -18h0M9 -52h0M-81 -41h0M-99 -51h0M112 -50h0M97 -32h0M37 35h0M64 47h0M88 -27h0M-93 -5h0M-4 54h0M-92 10h0M-7 -62h0M-58 58h0M-92 11h0M-17 -65h0M-94 1h0M-80 40h0M-124 -43h0M0 -77h0M150 -36h0M-31 102h0M54 26h0M54 55h0M-91 24h0M-66 54h0M-64 -57h0M-70 -52h0M-72 49h0M-85 -35h0M17 40h0M-126 -31h0M56 60h0M68 64h0M107 -53h0M49 67h0M7 5h0M-119 53h0M-23 -75h0M-92 -20h0M-87 30h0M-27 -67h0M-50 -65h0M-84 36h0M-83 37h0M-89 28h0M91 23h0M-131 -46h0M50 5h0M-33 -63h0M-23 -103h0M13 2h0M-53 -63h0M-58 -61h0M-52 -64h0M2 49h0M-95 -1h0M-21 -67h0M-82 40h0M-25 -66h0M57 -5h0M-179 91h0M95 -30h0M-166 -96h0M20 55h0M107 -56h0M105 -60h0M-75 -3h0M-76 46h0M-39 -66h0M-90 -25h0M-85 33h0M4 -55h0M-35 63h0M-66 53h0M-16 -77h0M38 55h0M-95 -45h0M60 -9h0M50 53h0M-60 20h0M109 49h0M96 -27h0M12 36h0M-60 57h0M-89 -24h0M-47 -66h0M-83 -39h0M-92 -18h0M4 -56h0M-36 63h0M-65 -56h0M-56 59h0M-13 -66h0M-19 -38h0M57 68h0M-130 -45h0M53 -5h0M94 -27h0M-121 -42h0M11 4h0M-13 -65h0M-79 -42h0M-76 44h0M-52 61h0M-38 63h0M-8 -62h0M-18 -66h0M-56 -61h0M-63 56h0M-35 -72h0M-102 -46h0M-105 -49h0M-35 70h0M-51 -56h0M-117 -62h0M56 -1h0M-117 81h0M-41 63h0M-73 49h0M-82 39h0M-5 54h0M-42 63h0M-93 12h0M-54 59h0M-62 -57h0M-76 44h0M-94 -13h0M168 25h0M4 61h0M-18 -85h0M58 48h0M-58 12h0M90 -29h0M-81 27h0M-52 22h0M-32 63h0M-10 57h0M-8 56h0M-74 48h0M-45 -64h0M-94 -3h0M-52 60h0M-76 45h0M47 50h0M44 55h0M113 -55h0M-92 -47h0M115 -59h0M-93 -10h0M-18 59h0M-11 57h0M-91 20h0M-44 62h0M-4 53h0M-16 -65h0M-79 -43h0M-51 61h0M-35 63h0M-136 -35h0M55 50h0M-30 75h0M0 -85h0M86 97h0M-85 10h0M-117 -34h0M0 -57h0M-2 51h0M-91 -18h0M-87 32h0M-13 59h0M-49 61h0M-94 11h0M-56 59h0M-86 -32h0M60 -7h0M52 -2h0M-14 -71h0M-21 -71h0M-104 -46h0M-56 -61h0M-93 -3h0M-54 59h0M-43 -66h0M-22 60h0M-81 -38h0M-75 -48h0M-94 -9h0M-12 -63h0M-94 -2h0M-16 -65h0M63 57h0M33 -64h0M111 -58h0M116 -81h0M-92 -50h0M28 38h0M92 -27h0M82 -21h0M-152 -96h0M-48 62h0M-94 -6h0M1 50h0M-39 -66h0M-65 55h0M-88 -29h0M-51 61h0M-58 58h0M-6 54h0M61 49h0M31 64h0M20 -11h0M-24 41h0M117 28h0M-117 -42h0M17 -8h0M-58 7h0M30 39h0M-36 -67h0M-95 -3h0M-18 61h0M-90 -23h0M-71 49h0M-87 -34h0M-15 -64h0M-5 -60h0M7 -53h0M-72 12h0M-105 -48h0M-42 -70h0M-34 -71h0M86 -32h0M95 -26h0M-72 50h0M-79 -40h0M-4 53h0M-28 -66h0M-87 32h0M-17 59h0M-90 25h0M-93 2h0M-53 62h0M-90 -22h0M-58 59h0M7 55h0M42 -6h0M115 -53h0M-13 -1h0M135 -46h0M49 4h0M59 52h0M17 -4h0M-7 -72h0M-46 62h0M-94 -3h0M-10 57h0M-4 -60h0M-75 47h0M-83 37h0M-11 -64h0M-80 -43h0M-14 58h0M14 52h0M16 2h0M62 8h0M-27 -65h0M64 34h0M-61 7h0M-45 -62h0M53 -1h0M53 59h0M8 -52h0M-89 -26h0M-72 -51h0M-21 61h0"/><path class="sv-lit" stroke-width="2.6" d="M4 -56h0M-104 -20h0M-47 62h0M6 -53h0M-55 -62h0M-46 -59h0M63 -53h0M61 -10h0M129 -93h0M-33 62h0M-90 -18h0M10 -74h0M9 40h0M6 -55h0M-18 -65h0M-95 1h0M-31 -69h0M-88 25h0M-80 40h0M55 -7h0M-7 56h0M-64 -57h0M-87 -35h0M102 -46h0M-45 -66h0M-18 60h0M-55 -60h0M57 -13h0M-22 -75h0M-41 -65h0M-28 62h0M-73 -51h0M-124 -29h0M86 -35h0M62 50h0M-90 -21h0M-14 -65h0M-94 -9h0M-80 -41h0M-56 -62h0M-28 62h0M-49 -66h0M-94 6h0M-4 54h0M31 32h0M-166 57h0M13 -12h0M-73 48h0M5 -54h0M-65 -56h0M-22 -79h0M-38 62h0M-2 53h0M-74 48h0M1 -58h0M6 -53h0M-48 -71h0M-120 -41h0M-47 -64h0M-52 61h0M-137 -45h0M-92 21h0M103 70h0M-92 14h0M-77 -44h0M3 49h0M-169 49h0M-148 33h0M102 -60h0M103 -38h0M-81 -41h0M-23 100h0M58 -2h0M-34 64h0M-71 51h0M31 53h0M1 55h0M52 52h0M6 53h0M-31 -68h0M-10 -62h0M-50 60h0M-78 43h0M51 43h0M68 46h0M-104 -8h0M-61 58h0M-13 57h0M-88 28h0"/><path class="sv-ember" stroke-width="3" d="M-3 46h0M-1 45h0M0 47h0M3 49h0M4 50h0M5 51h0M7 51h0M9 53h0M10 53h0M12 55h0M14 55h0M14 57h0M16 56h0M18 57h0M20 59h0M22 58h0M24 60h0M26 60h0M29 61h0M30 60h0M31 61h0M33 61h0M35 60h0M36 61h0M39 60h0M41 61h0M42 60h0M45 60h0M45 60h0M47 60h0M49 60h0M50 59h0M52 60h0M54 59h0M56 58h0M58 58h0M58 58h0M60 56h0M62 57h0M63 54h0M64 54h0M66 55h0M67 53h0M69 52h0M71 52h0M72 50h0M73 50h0M75 50h0M75 48h0M76 47h0M77 45h0M79 44h0M79 42h0M80 41h0M82 41h0M82 37h0M83 38h0M84 36h0M84 34h0M86 33h0M86 32h0M87 30h0M87 28h0M87 27h0M88 25h0M88 24h0M88 22h0M88 19h0M89 19h0M90 18h0M91 15h0M90 14h0M89 13h0M89 12h0M90 9h0M88 8h0M89 6h0M89 5h0M89 3h0M88 0h0M88 -1h0M88 -2h0M86 -4h0M87 -6h0M86 -8h0M86 -9h0M84 -10h0M84 -13h0M84 -14h0M82 -15h0M82 -18h0M81 -18h0M81 -20h0M80 -22h0M78 -23h0M77 -25h0M76 -25h0M76 -28h0M74 -28h0M73 -31h0M71 -32h0M70 -34h0M70 -34h0M68 -35h0M67 -36h0M64 -38h0M63 -39h0M62 -39h0M62 -40h0M60 -43h0M59 -43h0M57 -44h0M55 -45h0M53 -47h0M52 -47h0M51 -48h0M49 -49h0M48 -49h0M46 -51h0M44 -50h0M42 -51h0M41 -51h0M39 -53h0M37 -53h0M36 -54h0M34 -54h0M33 -53h0M30 -53h0M28 -54h0M28 -55h0M25 -55h0M24 -55h0M22 -54h0M21 -54h0M19 -55h0M17 -55h0M16 -55h0M14 -54h0M12 -54h0M11 -54h0M9 -53h0M8 -53h0M6 -53h0M4 -52h0M4 -51h0M2 -51h0M0 -50h0M-1 -49h0M-2 -49h0M-4 -48h0M-4 -47h0M-7 -47h0M-8 -45h0M-10 -44h0M-11 -45h0"/></svg><span class="ing" aria-hidden="true">conversa<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 1 de 5</p>
+          <h3>Conversación inicial <span>30 minutos</span></h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Exploramos tus procesos y dónde podría aplicarse IA. Es una conversación, no un diagnóstico ni un compromiso.</dd></div>
+            <div><dt>Qué recibes</dt><dd>Una primera lectura de oportunidades y una idea clara de si podemos ayudarte.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Decides si avanzamos a un diagnóstico.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-primary btn-small" type="button" data-go="2">Ver etapa 2: Diagnóstico</button></div>
+        </div>
+      </div>
+      <div class="stage" role="tabpanel" id="etapa-2" aria-labelledby="tab-2" tabindex="0">
+        <figure class="stage-fig slot" data-scene="2"><svg class="scene-svg" viewBox="-180 -115 360 230" role="img" aria-label="Los puntos ordenados en una retícula y un marco naranja sobre una zona: las oportunidades priorizadas." focusable="false" fill="none" stroke-linecap="round"><path class="sv-ash" stroke-width="2.1" d="M-126 68h0M-106 68h0M-97 69h0M-80 70h0M-71 71h0M-43 71h0M-33 71h0M-22 71h0M-2 71h0M24 72h0M31 73h0M39 73h0M47 74h0M64 74h0M94 74h0M105 74h0M122 74h0M130 75h0M-136 57h0M-97 58h0M-88 59h0M-71 60h0M-62 61h0M-53 61h0M-22 61h0M-12 61h0M-2 60h0M7 61h0M16 61h0M55 64h0M64 64h0M84 64h0M94 64h0M104 64h0M-146 47h0M-136 46h0M-125 46h0M-115 46h0M-106 47h0M-97 47h0M-71 50h0M-43 51h0M-22 50h0M7 50h0M16 51h0M24 51h0M31 52h0M46 54h0M55 54h0M74 54h0M84 54h0M113 54h0M129 55h0M136 55h0M-136 36h0M-125 36h0M-115 36h0M-106 36h0M-88 38h0M-71 39h0M-62 40h0M-53 40h0M-43 40h0M-22 40h0M-12 40h0M-2 40h0M7 40h0M31 42h0M55 44h0M64 44h0M84 44h0M104 43h0M113 44h0M-146 25h0M-125 25h0M-115 25h0M-105 25h0M-79 28h0M-62 30h0M-53 30h0M-33 30h0M-22 29h0M7 30h0M31 32h0M39 33h0M55 34h0M84 34h0M94 34h0M113 34h0M121 34h0M129 35h0M-135 14h0M-125 14h0M-96 16h0M-71 19h0M-62 19h0M-43 20h0M-33 19h0M-22 19h0M-12 19h0M-2 19h0M7 19h0M24 21h0M31 22h0M54 24h0M73 24h0M83 24h0M94 24h0M113 23h0M121 24h0M129 25h0M135 26h0M-105 4h0M-96 5h0M-79 7h0M-70 8h0M-62 9h0M-52 9h0M-43 9h0M-12 9h0M7 9h0M16 10h0M24 11h0M31 12h0M38 13h0M54 14h0M73 14h0M94 14h0M104 13h0M121 14h0M-124 -7h0M-96 -5h0M-79 -3h0M-70 -2h0M-62 -1h0M-52 -1h0M-43 -1h0M-32 -1h0M-22 -1h0M-12 -2h0M-2 -2h0M7 -1h0M16 -1h0M24 0h0M38 3h0M46 4h0M54 4h0M63 4h0M73 4h0M83 4h0M93 4h0M113 4h0M121 4h0M128 5h0M135 6h0M-124 -18h0M-114 -18h0M-105 -17h0M-87 -15h0M-79 -13h0M-61 -11h0M-43 -11h0M-22 -12h0M-12 -12h0M7 -12h0M16 -11h0M24 -10h0M46 -6h0M63 -6h0M73 -6h0M83 -6h0M93 -6h0M103 -6h0M112 -6h0M128 -5h0M135 -4h0M-145 -28h0M-124 -28h0M-114 -28h0M-79 -24h0M-70 -22h0M-61 -22h0M-52 -21h0M-42 -21h0M-12 -22h0M7 -22h0M16 -21h0M23 -20h0M31 -19h0M46 -16h0M63 -15h0M83 -16h0M120 -16h0M-134 -39h0M-124 -39h0M-114 -39h0M-95 -37h0M-87 -35h0M-70 -33h0M-61 -32h0M-52 -31h0M-32 -32h0M-22 -32h0M-2 -32h0M7 -32h0M16 -31h0M31 -28h0M38 -27h0M46 -26h0M54 -25h0M63 -25h0M83 -26h0M93 -26h0M103 -26h0M112 -26h0M128 -25h0M134 -23h0M-134 -49h0M-123 -49h0M-70 -43h0M-61 -42h0M-52 -41h0M-42 -41h0M-32 -42h0M-12 -42h0M-2 -42h0M7 -42h0M16 -41h0M23 -40h0M31 -38h0M46 -36h0M93 -36h0M103 -36h0M134 -33h0M-144 -59h0M-133 -59h0M-123 -60h0M-113 -59h0M-104 -59h0M-95 -57h0M-87 -56h0M-78 -54h0M-70 -53h0M-61 -52h0M-42 -51h0M-32 -52h0M-22 -52h0M-12 -52h0M-2 -53h0M7 -52h0M16 -51h0M23 -50h0M31 -48h0M54 -45h0M82 -45h0M93 -46h0M103 -46h0M127 -44h0M-144 -69h0M-133 -70h0M-123 -70h0M-113 -70h0M-104 -69h0M-95 -68h0M-86 -66h0M-78 -64h0M-52 -61h0M-42 -61h0M-22 -62h0M7 -62h0M23 -60h0M31 -58h0M38 -57h0M54 -55h0M63 -54h0M82 -55h0M93 -55h0M102 -56h0M120 -55h0M134 -52h0M-133 -80h0M-123 -80h0M-113 -80h0M-95 -78h0M-86 -76h0M-78 -75h0M-70 -73h0M-52 -71h0M-42 -71h0M-32 -72h0M-12 -73h0M-2 -73h0M7 -72h0"/><path class="sv-lit" stroke-width="2.6" d="M-147 68h0M-136 68h0M-116 68h0M-88 70h0M-62 71h0M-53 71h0M-12 71h0M7 71h0M16 72h0M55 74h0M74 74h0M84 74h0M114 74h0M136 75h0M-147 57h0M-126 57h0M-116 57h0M-106 58h0M-80 60h0M-43 61h0M-33 61h0M24 62h0M31 62h0M39 63h0M46 64h0M74 64h0M114 64h0M122 64h0M129 65h0M136 65h0M-88 48h0M-80 49h0M-62 50h0M-53 51h0M-33 50h0M-12 50h0M-2 50h0M39 53h0M64 54h0M94 54h0M104 54h0M122 54h0M-146 36h0M-97 37h0M-79 39h0M-33 40h0M16 40h0M24 41h0M39 43h0M46 44h0M73 44h0M94 44h0M122 44h0M129 45h0M136 45h0M-135 25h0M-96 26h0M-88 27h0M-71 29h0M-43 30h0M-12 29h0M-2 29h0M16 30h0M24 31h0M46 33h0M64 34h0M73 34h0M104 33h0M135 35h0M-146 15h0M-115 14h0M-105 15h0M-88 17h0M-79 18h0M-53 20h0M16 20h0M38 23h0M46 23h0M63 24h0M104 23h0M-145 4h0M-135 4h0M-125 3h0M-115 4h0M-87 6h0M-32 9h0M-22 9h0M-2 9h0M46 13h0M63 14h0M83 14h0M113 14h0M128 15h0M135 16h0M-145 -7h0M-135 -7h0M-114 -7h0M-105 -6h0M-87 -4h0M31 2h0M103 3h0M-145 -17h0M-134 -18h0M-96 -16h0M-70 -12h0M-52 -11h0M-32 -11h0M-2 -12h0M31 -9h0M38 -7h0M54 -6h0M121 -6h0M-134 -28h0M-105 -27h0M-96 -26h0M-87 -25h0M-32 -21h0M-22 -22h0M-2 -22h0M38 -17h0M54 -16h0M73 -16h0M93 -16h0M103 -16h0M112 -16h0M128 -15h0M134 -14h0M-144 -38h0M-104 -38h0M-78 -34h0M-42 -31h0M-12 -32h0M23 -30h0M73 -25h0M120 -26h0M-144 -49h0M-114 -49h0M-104 -48h0M-95 -47h0M-87 -46h0M-78 -44h0M-22 -42h0M38 -37h0M54 -35h0M63 -35h0M73 -35h0M83 -35h0M112 -36h0M120 -35h0M127 -34h0M-52 -51h0M38 -47h0M46 -46h0M63 -45h0M72 -45h0M112 -46h0M120 -45h0M134 -43h0M-70 -63h0M-61 -62h0M-32 -62h0M-12 -63h0M-2 -63h0M16 -61h0M46 -56h0M72 -55h0M112 -55h0M127 -54h0M-143 -80h0M-104 -79h0M-61 -72h0M-22 -72h0"/><path class="sv-ember" stroke-width="3" d="M14 -50h0M16 -50h0M19 -50h0M21 -50h0M23 -50h0M25 -50h0M27 -50h0M29 -49h0M31 -49h0M33 -49h0M35 -49h0M38 -49h0M40 -49h0M42 -49h0M44 -48h0M46 -48h0M48 -48h0M50 -48h0M52 -48h0M54 -48h0M56 -48h0M59 -48h0M61 -47h0M63 -47h0M65 -47h0M67 -47h0M69 -47h0M71 -47h0M73 -47h0M75 -47h0M77 -46h0M79 -46h0M81 -46h0M83 -46h0M85 -46h0M87 -46h0M89 -46h0M92 -46h0M94 -45h0M95 -45h0M95 -43h0M95 -41h0M95 -40h0M95 -38h0M95 -37h0M95 -35h0M95 -33h0M95 -32h0M95 -30h0M95 -29h0M95 -27h0M95 -26h0M95 -24h0M95 -22h0M95 -21h0M95 -19h0M95 -17h0M95 -16h0M95 -14h0M95 -13h0M95 -11h0M95 -9h0M95 -8h0M95 -6h0M95 -5h0M95 -3h0M95 -1h0M95 0h0M95 2h0M95 3h0M95 5h0M95 7h0M95 8h0M95 10h0M95 11h0M95 13h0M95 15h0M96 16h0M93 16h0M91 16h0M89 16h0M87 16h0M85 16h0M83 16h0M81 16h0M79 16h0M77 16h0M75 15h0M73 15h0M71 15h0M69 15h0M66 15h0M64 15h0M62 15h0M60 15h0M58 15h0M56 15h0M54 15h0M52 15h0M50 14h0M48 14h0M45 14h0M43 14h0M41 14h0M39 14h0M37 14h0M35 14h0M33 14h0M31 14h0M28 14h0M26 13h0M24 13h0M22 13h0M20 13h0M18 13h0M15 13h0M14 12h0M14 10h0M14 9h0M14 7h0M14 5h0M14 4h0M14 2h0M14 1h0M14 -1h0M14 -3h0M14 -4h0M14 -6h0M14 -8h0M14 -9h0M14 -11h0M14 -13h0M14 -14h0M14 -16h0M14 -18h0M14 -19h0M14 -21h0M14 -23h0M14 -24h0M14 -26h0M14 -27h0M14 -29h0M14 -31h0M14 -32h0M14 -34h0M14 -36h0M14 -37h0M14 -39h0M14 -41h0M14 -42h0M14 -44h0M14 -45h0M14 -47h0M14 -49h0M14 -50h0"/></svg><span class="ing" aria-hidden="true">diagnostica<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 2 de 5</p>
+          <h3>Diagnóstico</h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Evaluamos oportunidades, fricciones y qué tan preparada está tu empresa: datos, herramientas y personas.</dd></div>
+            <div><dt>Qué recibes</dt><dd>Oportunidades priorizadas y lo que hay que preparar. El alcance se acuerda contigo.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Elegimos juntos por dónde empezar.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-secondary btn-small" type="button" data-go="1">Volver a la etapa 1</button><button class="btn btn-primary btn-small" type="button" data-go="3">Ver etapa 3: Roadmap</button></div>
+        </div>
+      </div>
+      <div class="stage" role="tabpanel" id="etapa-3" aria-labelledby="tab-3" tabindex="0">
+        <figure class="stage-fig slot" data-scene="3"><svg class="scene-svg" viewBox="-180 -115 360 230" role="img" aria-label="Una ruta ascendente con cinco hitos: el roadmap." focusable="false" fill="none" stroke-linecap="round"><path class="sv-ash" stroke-width="2.1" d="M-8 16h0M58 -21h0M109 -45h0M77 -33h0M-56 8h0M-60 -5h0M48 3h0M-150 55h0M-140 46h0M-61 25h0M-75 14h0M-84 20h0M137 -31h0M70 -56h0M-139 57h0M-138 49h0M-150 52h0M-72 3h0M-105 30h0M25 -14h0M13 27h0M62 -20h0M-57 3h0M-147 57h0M113 -51h0M-150 53h0M-30 11h0M-12 31h0M-58 13h0M116 -52h0M9 11h0M65 -46h0M-53 27h0M64 -18h0M72 -21h0M-134 31h0M75 -31h0M-148 56h0M108 -58h0M14 34h0M-31 11h0M129 -24h0M56 -22h0M1 30h0M109 -35h0M128 -26h0M14 34h0M-149 50h0M52 -1h0M-117 16h0M80 -53h0M-57 6h0M98 -60h0M73 -50h0M41 -30h0M-9 22h0M55 -43h0M134 -30h0M-146 46h0M-71 15h0M-80 -7h0M-68 18h0M70 -56h0M75 -29h0M3 33h0M74 -26h0M108 -52h0M-32 26h0M-75 6h0M-143 44h0M-67 17h0M-1 38h0M-64 18h0M3 11h0M69 -44h0M76 -37h0M116 -53h0M96 -61h0M136 -48h0M-143 45h0M-59 16h0M-1 9h0M52 -38h0M-13 7h0M63 -20h0M53 -27h0M45 -36h0M114 -30h0M-150 50h0M70 -48h0M35 -15h0M102 -38h0M67 -25h0M2 3h0M2 3h0M13 27h0M128 -55h0M20 30h0M-149 53h0M6 31h0M-68 18h0M99 -38h0M-42 1h0M35 18h0M75 -31h0M15 18h0M53 -23h0M93 -31h0M111 -47h0M-112 12h0M137 -43h0M118 -54h0M-136 53h0M-61 18h0M-114 5h0M12 27h0M110 -51h0M-144 45h0M-7 16h0M64 -45h0M66 -46h0M-73 18h0M-137 50h0M-139 46h0M-65 18h0M16 32h0M-70 17h0M118 -49h0M0 31h0M116 -54h0M50 -34h0M-87 20h0M53 -40h0M119 -26h0M51 0h0M116 -54h0M-143 45h0M9 31h0M-60 15h0M97 -54h0M58 -20h0M-65 0h0M-65 18h0M74 -58h0M2 31h0M74 -39h0M138 -35h0M-12 38h0M138 -40h0M-150 53h0M-111 34h0M-136 53h0M-9 31h0M-49 28h0M-131 61h0M56 -20h0M138 -44h0M44 -24h0M68 -26h0M-137 51h0M112 -49h0M-150 51h0M102 -38h0M-141 45h0M-56 10h0M48 3h0M-75 11h0M11 27h0M63 -13h0M-7 21h0M35 8h0M73 -25h0M122 -54h0M-109 2h0M137 -37h0M-138 49h0M-61 17h0M70 -19h0M94 -38h0M55 -25h0M7 32h0M-20 7h0M-148 47h0M-98 34h0M120 -26h0M-66 0h0M-47 22h0M-3 9h0M-124 45h0M40 -29h0M-138 47h0M-7 16h0M-3 5h0M-34 32h0M54 -42h0"/><path class="sv-lit" stroke-width="2.6" d="M-74 4h0M-71 2h0M12 29h0M-23 36h0M108 -52h0M-8 23h0M63 -45h0M2 11h0M66 -25h0M-67 0h0M66 -54h0M138 -41h0M-138 55h0M-65 -1h0M-103 7h0M69 -19h0M5 9h0M-92 2h0M-46 22h0M137 -46h0M12 29h0M55 -24h0M68 -55h0M-7 16h0M72 -40h0M53 -2h0M138 -36h0M14 34h0M-22 13h0M138 -36h0M-10 14h0M11 27h0M-69 0h0M3 10h0M-55 19h0M10 30h0M5 1h0M60 -10h0M76 -38h0M55 -44h0M132 -51h0M101 -32h0M9 29h0M-142 58h0M-7 31h0M43 -33h0M-149 55h0M-63 1h0M12 28h0M93 -61h0M-71 25h0M-128 25h0M128 -55h0M-68 18h0M113 -29h0M-105 30h0M-87 -7h0M-5 26h0M-146 45h0M-59 14h0M73 -26h0M-60 3h0M-9 20h0M-17 37h0M13 25h0M0 12h0M14 26h0M54 -42h0M62 -20h0M-57 -4h0M113 -28h0M-137 50h0M96 -61h0M112 -35h0M-76 9h0M125 -54h0M-63 17h0M0 9h0M-2 31h0M-61 1h0M13 23h0M62 -45h0M-59 19h0M-70 -7h0M75 -35h0M125 -24h0M35 18h0M-2 30h0M134 -47h0M-150 49h0M-59 26h0M-104 7h0M51 -36h0M-142 45h0M-65 19h0M-54 20h0M-137 55h0M-73 6h0M-8 15h0M-79 18h0M130 -52h0M68 -20h0M108 -58h0M77 -24h0M5 32h0M-6 39h0M37 -17h0M138 -45h0M110 -48h0M-145 44h0M109 -52h0M113 -36h0M-147 45h0M119 -34h0M-137 48h0M8 12h0M110 -31h0M113 -49h0M13 12h0M-61 25h0M-44 7h0M119 -54h0M111 -40h0M-150 53h0M55 -14h0M94 -61h0M120 -27h0M32 -21h0M-8 20h0M14 24h0M105 -32h0M-99 5h0M0 32h0M-2 31h0M64 -18h0M96 -38h0M95 -38h0M-142 46h0M-149 56h0M109 -58h0M52 -1h0M76 -27h0M-65 18h0M-115 47h0M-20 13h0M117 -25h0M13 16h0M-58 3h0M-36 25h0M-65 0h0M-108 31h0M135 -49h0M31 21h0M115 -29h0M-72 25h0M-6 13h0M-143 58h0M-59 4h0M116 -29h0M-67 18h0M13 22h0M-57 9h0M15 22h0M67 -44h0M105 -32h0M59 -21h0M34 -13h0M130 -27h0M-140 45h0M-99 5h0M16 24h0M-141 45h0M126 -55h0M-74 5h0M12 27h0M-10 6h0M-124 22h0M-8 19h0M51 -40h0M-79 19h0M136 -47h0M-140 45h0M-93 23h0M78 -59h0M-40 30h0M137 -41h0M-70 2h0M-1 38h0M-101 6h0M65 -23h0M124 -55h0M134 -26h0M51 -41h0M-5 12h0M133 -51h0M85 -61h0M-67 25h0M109 -45h0M66 -45h0M-68 17h0M8 11h0M9 29h0M93 -61h0M56 -43h0M74 -58h0M-143 45h0M67 -17h0M-40 8h0M-139 45h0M55 -14h0M-1 9h0M-59 5h0M-8 23h0M75 -39h0M-37 3h0M67 -16h0M-115 15h0M-57 6h0M56 -37h0M2 9h0M-70 17h0M-146 33h0M-69 1h0M-73 2h0M-3 12h0M72 -57h0M-74 5h0M-8 14h0M54 -42h0M-98 5h0M119 -54h0M-141 27h0M61 -21h0M-48 -1h0M74 -41h0M35 -15h0M5 10h0M56 -23h0M-78 0h0M75 -38h0M114 -27h0M-34 26h0M-144 30h0M-56 11h0M-149 54h0M101 -32h0M88 -54h0M-147 57h0M-67 1h0M14 23h0M91 -55h0M137 -43h0M15 19h0M-8 31h0M10 -2h0M49 -32h0M128 -25h0M-133 63h0M121 -26h0M136 -31h0M-111 12h0M-145 58h0M38 -18h0M-73 3h0M2 8h0M68 -20h0M75 -29h0M122 -25h0M7 37h0M-55 3h0"/><path class="sv-ember" stroke-width="3" d="M-143 51h0M-141 49h0M-139 47h0M-137 45h0M-135 43h0M-133 42h0M-131 40h0M-129 38h0M-127 36h0M-125 34h0M-123 32h0M-121 30h0M-119 29h0M-117 27h0M-115 25h0M-112 24h0M-110 22h0M-108 21h0M-106 20h0M-104 18h0M-102 17h0M-100 16h0M-98 15h0M-96 14h0M-94 13h0M-92 13h0M-90 12h0M-88 11h0M-86 11h0M-84 10h0M-83 10h0M-81 9h0M-79 9h0M-77 9h0M-75 9h0M-73 9h0M-71 9h0M-69 9h0M-67 9h0M-65 9h0M-63 10h0M-61 10h0M-59 10h0M-57 11h0M-56 11h0M-54 12h0M-52 12h0M-50 13h0M-48 13h0M-46 14h0M-44 15h0M-43 15h0M-41 16h0M-39 16h0M-37 17h0M-35 18h0M-33 18h0M-32 19h0M-30 19h0M-28 20h0M-26 20h0M-24 21h0M-23 21h0M-21 22h0M-19 22h0M-17 22h0M-16 22h0M-14 22h0M-12 23h0M-11 23h0M-9 23h0M-7 22h0M-5 22h0M-4 22h0M-2 22h0M0 21h0M1 21h0M3 20h0M5 20h0M6 19h0M8 18h0M10 17h0M11 17h0M13 16h0M14 15h0M16 14h0M18 12h0M19 11h0M21 10h0M22 9h0M24 7h0M26 6h0M27 4h0M29 3h0M30 1h0M32 0h0M33 -2h0M35 -3h0M37 -5h0M38 -7h0M40 -8h0M41 -10h0M43 -12h0M44 -14h0M46 -15h0M47 -17h0M49 -19h0M50 -20h0M52 -22h0M53 -23h0M55 -25h0M56 -26h0M58 -28h0M59 -29h0M61 -31h0M62 -32h0M64 -33h0M65 -35h0M67 -36h0M68 -37h0M70 -38h0M71 -39h0M73 -40h0M75 -41h0M76 -42h0M78 -43h0M79 -43h0M81 -44h0M82 -44h0M84 -45h0M85 -45h0M87 -46h0M88 -46h0M90 -46h0M91 -46h0M93 -46h0M95 -46h0M96 -46h0M98 -46h0M99 -46h0M101 -46h0M103 -46h0M104 -46h0M106 -45h0M107 -45h0M109 -44h0M111 -44h0M112 -44h0M114 -43h0M116 -43h0M117 -42h0M119 -42h0M121 -41h0M122 -40h0M124 -40h0"/></svg><span class="ing" aria-hidden="true">traza<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 3 de 5</p>
+          <h3>Roadmap</h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Trazamos un plan de alto nivel: etapas, personas involucradas, costos y resultados esperados.</dd></div>
+            <div><dt>Qué recibes</dt><dd>El estado actual frente al estado deseado para los próximos meses.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Acordamos el primer piloto.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-secondary btn-small" type="button" data-go="2">Volver a la etapa 2</button><button class="btn btn-primary btn-small" type="button" data-go="4">Ver etapa 4: Piloto</button></div>
+        </div>
+      </div>
+      <div class="stage" role="tabpanel" id="etapa-4" aria-labelledby="tab-4" tabindex="0">
+        <figure class="stage-fig slot" data-scene="4"><svg class="scene-svg" viewBox="-180 -115 360 230" role="img" aria-label="Un circuito con tres arcos que giran dentro: los ciclos del piloto." focusable="false" fill="none" stroke-linecap="round"><path class="sv-ash" stroke-width="2.1" d="M36 -62h0M-36 -60h0M-26 70h0M-51 -49h0M47 -49h0M27 65h0M70 8h0M15 72h0M-74 9h0M-59 -47h0M-28 67h0M-63 31h0M67 -7h0M56 49h0M45 64h0M67 21h0M52 -42h0M49 57h0M-35 -65h0M-7 -69h0M-73 -7h0M-26 -70h0M61 -38h0M5 74h0M50 -50h0M35 64h0M7 -71h0M54 44h0M-39 59h0M9 75h0M62 46h0M-41 60h0M-43 59h0M59 -40h0M-66 36h0M19 74h0M-18 -74h0M39 58h0M35 59h0M59 40h0M-7 -77h0M10 74h0M-43 53h0M-38 62h0M-18 70h0M-60 39h0M-68 -31h0M21 -71h0M27 69h0M60 -30h0M47 -48h0M65 -12h0M47 -49h0M-51 56h0M-39 -61h0M-47 -57h0M7 -72h0M-28 -68h0M-58 45h0M34 61h0M67 -14h0M51 58h0M36 -63h0M-63 41h0M52 50h0M-29 -68h0M-30 65h0M4 -74h0M43 64h0M-61 -46h0M69 6h0M-54 -49h0M-74 1h0M46 56h0M65 -27h0M52 58h0M-49 -54h0M-44 -58h0M-74 0h0M-38 62h0M70 2h0M-11 73h0M-62 34h0M-34 -66h0M25 69h0M49 51h0M14 -67h0M-49 -61h0M48 -48h0M51 56h0M-70 7h0M-54 -48h0M69 9h0M-35 65h0M-41 -61h0M62 -41h0M-49 -59h0M-41 61h0M-37 -61h0"/><path class="sv-lit" stroke-width="2.6" d="M-65 26h0M-61 45h0M-50 -53h0M-60 43h0M-2 74h0M-42 -64h0M-65 19h0M-29 66h0M32 -61h0M66 10h0M46 65h0M40 -56h0M67 10h0M64 -8h0M70 8h0M-72 -6h0M-75 -18h0M-33 -66h0M-6 72h0M-71 -22h0M70 -1h0M-65 -28h0M-23 -70h0M64 40h0M62 -30h0M-61 -42h0M66 27h0M62 -23h0M-2 74h0M-26 -66h0M30 -62h0M-54 -43h0M-67 -30h0M-13 71h0M71 24h0M-41 -61h0M2 -75h0M-67 -38h0M72 -3h0M22 -62h0M-75 -3h0M61 -27h0M26 -65h0M60 -35h0M70 18h0M-70 -24h0M-22 72h0M-13 72h0M20 -73h0M-64 -34h0M38 63h0M62 37h0M-15 -69h0M59 46h0M-20 68h0M-47 -55h0M6 -74h0M-28 69h0M69 -11h0M69 10h0M-53 -51h0M38 65h0M-23 65h0M40 -56h0M41 62h0M-33 -66h0M29 71h0M20 73h0M47 -52h0M-3 79h0M-63 -33h0M-13 72h0M13 -71h0M-11 70h0M-50 -56h0M-63 35h0M68 -8h0M68 -15h0M67 -3h0M56 -35h0M59 -27h0M-59 42h0M-70 -38h0M-29 -69h0M67 -18h0M-67 9h0M67 17h0M44 -55h0M-10 -71h0M7 77h0M56 49h0M40 63h0M17 -69h0M-69 -15h0M47 -53h0M-55 -50h0M-32 -66h0M-20 -69h0M12 -73h0M-53 45h0M13 70h0M-16 -68h0M-76 8h0M35 65h0M-63 -42h0M-40 56h0M-79 1h0M68 2h0M-71 4h0M-43 -57h0M-63 -45h0M53 49h0M-12 -67h0M58 38h0M-5 74h0M23 70h0M65 -16h0M-19 -67h0M68 -14h0M-25 -67h0M39 -58h0M48 -44h0M-32 67h0M-64 31h0M-46 -52h0M-71 -20h0M60 -26h0M-67 -28h0M29 -66h0M-6 73h0M-69 15h0M26 67h0M31 62h0M-67 29h0M21 73h0M-30 -64h0M46 -50h0M-20 -67h0M64 -21h0M47 -52h0M44 -49h0M59 36h0M-75 -9h0M40 -56h0M-76 -7h0M73 6h0M49 57h0M12 -72h0M-60 39h0M61 -32h0M-61 -37h0M-16 72h0M23 -66h0M-6 75h0M-58 -46h0M-11 74h0M-63 -38h0M-19 -74h0M-36 -65h0M-59 33h0M7 -72h0M48 57h0M48 57h0M-60 41h0M-15 -72h0M27 -65h0M45 -54h0M52 53h0M-55 38h0M70 -16h0M57 -34h0M-39 -68h0M37 -55h0M-72 -27h0M68 29h0M-72 2h0M-56 43h0M-1 76h0M-74 4h0M-71 -15h0M40 64h0M69 -16h0M-72 -6h0M43 -55h0M67 -17h0M42 55h0M-46 -65h0M1 74h0M-25 -71h0M66 -21h0M7 71h0M-9 -74h0M1 77h0M-40 -62h0M46 -54h0M19 69h0M-61 44h0M58 -30h0M17 66h0M-74 11h0M-10 69h0M71 15h0M-70 -37h0M20 73h0M67 -5h0M-46 55h0M-74 -20h0M-60 42h0M68 -23h0M24 69h0M72 8h0M-49 -57h0M43 52h0M-38 64h0M28 68h0M-29 -65h0M-75 2h0M-63 36h0M-49 -51h0M3 -72h0M49 -49h0M-39 -62h0M-63 29h0M55 -32h0M-55 41h0M14 -66h0M-15 71h0M56 -37h0M10 -69h0M-31 68h0M-72 14h0M-62 -38h0M-2 -72h0M-60 -45h0M-65 -37h0M64 38h0M35 -61h0M-67 26h0M-70 9h0M-62 -26h0M59 44h0M-67 13h0M-43 -61h0M-20 72h0M-72 -15h0M-72 18h0M25 68h0M42 -53h0M66 28h0M-40 -65h0M-29 67h0M7 71h0M54 -39h0M45 -53h0M-45 61h0M10 -70h0M57 -41h0M40 -57h0M57 -39h0M64 -23h0M21 -65h0M66 18h0M-62 -38h0M-45 57h0M-73 6h0M63 -31h0M-13 69h0M-47 58h0M-28 -69h0M58 -40h0M-18 -73h0M22 -62h0M-69 13h0M7 74h0M-9 73h0M-18 73h0M64 30h0M64 40h0M-62 42h0M-60 38h0M67 -4h0M0 -70h0M-13 74h0M6 78h0M-55 41h0M-68 -38h0M65 -23h0M-35 60h0M32 65h0M32 66h0M72 14h0M-73 15h0M60 -36h0M-37 -64h0M44 56h0M59 39h0M-72 -2h0M48 -49h0M-11 -74h0M19 -70h0M-1 72h0M-52 -51h0M47 53h0M36 -61h0M68 4h0M64 31h0M69 -20h0M69 13h0M-70 2h0M60 -43h0M60 39h0M-44 53h0M-37 60h0M62 -36h0M10 -71h0M-36 62h0M68 -15h0M-7 77h0M14 -71h0M-8 -71h0M-59 39h0M66 31h0M-31 65h0M29 66h0M-38 -60h0M-66 -40h0M-31 65h0M-61 -42h0M-59 39h0M-49 54h0M33 67h0M-67 -14h0M70 37h0M45 59h0M63 35h0M56 -41h0M66 16h0M-73 -3h0M70 12h0M-54 48h0M-11 -72h0M50 53h0M73 6h0M1 74h0M23 -63h0M-21 -70h0M29 71h0M-27 -67h0M7 73h0M51 -52h0M68 -7h0M-69 11h0M-11 68h0M71 -4h0M-75 -2h0M68 30h0M-35 66h0M45 62h0M67 1h0M-68 12h0M-50 -51h0M61 26h0M25 -61h0M56 46h0M16 75h0M-69 29h0"/><path class="sv-ember" stroke-width="3" d="M45 1h0M45 0h0M45 -2h0M45 -3h0M45 -5h0M45 -6h0M44 -8h0M44 -9h0M44 -10h0M43 -12h0M43 -13h0M42 -15h0M42 -16h0M41 -17h0M41 -19h0M40 -20h0M39 -21h0M39 -23h0M38 -24h0M37 -25h0M36 -26h0M35 -28h0M34 -29h0M33 -30h0M32 -31h0M31 -32h0M30 -33h0M29 -34h0M28 -35h0M27 -36h0M26 -37h0M25 -38h0M23 -39h0M22 -39h0M21 -40h0M20 -41h0M18 -42h0M17 -42h0M16 -43h0M14 -43h0M13 -44h0M12 -44h0M10 -45h0M9 -45h0M7 -45h0M6 -46h0M4 -46h0M3 -46h0M2 -46h0M0 -46h0M-1 -46h0M-3 -46h0M-22 -41h0M-23 -40h0M-24 -39h0M-25 -39h0M-26 -38h0M-28 -37h0M-29 -36h0M-30 -35h0M-31 -34h0M-32 -33h0M-33 -32h0M-34 -31h0M-35 -30h0M-35 -28h0M-36 -27h0M-37 -26h0M-38 -25h0M-39 -23h0M-39 -22h0M-40 -21h0M-40 -19h0M-41 -18h0M-41 -17h0M-42 -15h0M-42 -14h0M-43 -12h0M-43 -11h0M-43 -9h0M-43 -8h0M-43 -6h0M-44 -5h0M-44 -3h0M-44 -2h0M-44 0h0M-43 1h0M-43 3h0M-43 4h0M-43 6h0M-43 7h0M-42 9h0M-42 10h0M-41 11h0M-41 13h0M-40 14h0M-40 16h0M-39 17h0M-39 19h0M-38 20h0M-37 21h0M-36 23h0M-36 24h0M-21 38h0M-19 39h0M-18 40h0M-17 41h0M-15 41h0M-14 42h0M-13 42h0M-11 43h0M-10 43h0M-8 44h0M-7 44h0M-5 44h0M-4 45h0M-3 45h0M-1 45h0M0 45h0M2 45h0M3 45h0M5 45h0M6 45h0M8 45h0M9 45h0M10 45h0M12 44h0M13 44h0M15 44h0M16 43h0M17 43h0M19 42h0M20 42h0M21 41h0M23 40h0M24 40h0M25 39h0M26 38h0M28 37h0M29 36h0M30 35h0M31 35h0M32 34h0M33 33h0M34 32h0M35 30h0M36 29h0M37 28h0M37 27h0M38 26h0M39 25h0M40 23h0M40 22h0M41 21h0M42 19h0"/></svg><span class="ing" aria-hidden="true">pilotea<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 4 de 5</p>
+          <h3>Piloto</h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Implementamos con demos, revisiones y ciclos de feedback.</dd></div>
+            <div><dt>Qué recibes</dt><dd>Una solución funcionando, con métricas y OKR del proyecto y del impacto en el negocio.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Si demuestra valor, lo escalamos.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-secondary btn-small" type="button" data-go="3">Volver a la etapa 3</button><button class="btn btn-primary btn-small" type="button" data-go="5">Ver etapa 5: Escala y transferencia</button></div>
+        </div>
+      </div>
+      <div class="stage" role="tabpanel" id="etapa-5" aria-labelledby="tab-5" tabindex="0">
+        <figure class="stage-fig slot" data-scene="5"><svg class="scene-svg" viewBox="-180 -115 360 230" role="img" aria-label="Una esfera completa de puntos claros con una órbita naranja alrededor: la solución en manos de tu equipo." focusable="false" fill="none" stroke-linecap="round"><path class="sv-lit" stroke-width="2.6" d="M-50 26h0M23 -3h0M-37 -59h0M-33 4h0M-68 20h0M51 35h0M-32 60h0M-55 21h0M-60 18h0M-27 3h0M-18 -59h0M-11 -2h0M-22 -47h0M-50 -26h0M-16 36h0M-33 26h0M27 37h0M-20 69h0M-21 -69h0M32 -64h0M41 10h0M15 28h0M38 58h0M-5 -32h0M-5 -31h0M46 -27h0M-52 27h0M-34 59h0M68 20h0M36 39h0M54 28h0M-63 -20h0M47 8h0M2 -17h0M13 -57h0M6 -17h0M58 -36h0M-26 -48h0M2 53h0M28 52h0M39 38h0M49 -46h0M8 -31h0M-2 -71h0M19 2h0M-44 48h0M-7 49h0M-8 -17h0M-21 69h0M-34 11h0M30 -56h0M10 2h0M4 60h0M51 50h0M-33 54h0M43 42h0M4 19h0M47 -55h0M17 -46h0M-5 14h0M-60 -6h0M58 42h0M43 -42h0M-18 -59h0M6 -17h0M-69 -15h0M66 16h0M-51 49h0M-37 -56h0M47 -50h0M-21 36h0M-35 -53h0M-19 -69h0M70 11h0M-66 15h0M0 19h0M-36 62h0M55 21h0M-64 -32h0M-30 51h0M-65 -3h0M18 -70h0M-69 22h0M-46 -24h0M46 -8h0M10 -17h0M-41 6h0M27 37h0M-34 -4h0M-18 62h0M-62 -15h0M2 -59h0M54 6h0M4 -67h0M-54 28h0M-18 68h0M42 -59h0M23 67h0M1 60h0M44 9h0M39 -6h0M5 -32h0M20 13h0M33 -44h0M-27 21h0M7 63h0M-2 14h0M41 -12h0M50 -26h0M-59 -13h0M22 -18h0M-61 31h0M20 51h0M28 -34h0M50 -26h0M-26 -56h0M55 44h0M15 -45h0M-31 -4h0M-60 -35h0M52 -9h0M-54 -11h0M-12 -2h0M-24 41h0M66 -19h0M50 -9h0M-21 -33h0M-18 -68h0M-53 -10h0M-49 45h0M-38 -43h0M53 -9h0M63 14h0M-54 9h0M21 -61h0M67 -26h0M33 11h0M-57 -44h0M68 24h0M-14 -66h0M-51 51h0M-44 24h0M-66 -3h0M-11 42h0M36 -55h0M-5 53h0M-22 -65h0M57 -31h0M-54 -46h0M27 40h0M-15 -15h0M-6 2h0M-39 -6h0M-28 52h0M13 -66h0M-4 53h0M-10 -32h0M-15 -15h0M-6 14h0M34 26h0M-47 7h0M7 -17h0M-16 -66h0M14 28h0M60 -37h0M4 -16h0M49 -46h0M-51 49h0M-44 -52h0M22 -64h0M-27 66h0M-41 10h0M40 38h0M-5 2h0M-61 35h0M63 -33h0M14 -32h0M-29 66h0M-31 -14h0M39 -38h0M38 60h0M-63 29h0M34 39h0M49 36h0M39 -12h0M-67 -24h0M0 72h0M13 13h0M-14 61h0M39 58h0M-54 9h0M-50 -50h0M-45 48h0M11 62h0M68 20h0M11 -2h0M38 10h0M56 29h0M55 10h0M-70 -14h0M-41 -39h0M-7 49h0M11 -31h0M-39 -6h0M-16 62h0M-41 38h0M-23 -18h0M-6 -32h0M-65 28h0M43 -52h0M29 66h0M-4 -72h0M37 -54h0M24 67h0M64 16h0M-22 51h0M-2 -72h0M38 60h0M-21 -66h0M-27 -49h0M-39 -60h0M-62 -15h0M22 -63h0M-23 67h0M65 -31h0M8 69h0M60 -6h0M-11 19h0M72 6h0M25 -57h0M-14 53h0M15 -70h0M-26 -64h0M38 60h0M-10 62h0M0 -16h0M-44 -52h0M-6 2h0M-58 -42h0M70 -5h0M-22 -46h0M-9 14h0M-65 -19h0M53 9h0M37 57h0M22 -46h0M-22 -64h0M28 52h0M36 -54h0M67 -2h0M-17 -46h0M-51 -9h0M-4 19h0M58 31h0M-35 55h0M35 63h0M10 2h0M-10 69h0M-12 61h0M49 -46h0M64 -17h0M67 -28h0M-25 -68h0M-47 -44h0M-58 42h0M-51 -26h0M35 -62h0M-35 -29h0M28 -66h0M41 10h0M-38 -13h0M-49 8h0M26 40h0M-7 -71h0M-60 32h0M-42 -39h0M-41 49h0M-37 5h0M59 32h0M31 12h0M-55 -46h0M-14 36h0M50 -39h0M-67 -26h0M-18 20h0M46 55h0M21 -61h0M-51 51h0M3 -47h0M-25 -3h0M-59 4h0M41 -39h0M49 47h0M13 41h0M-38 25h0M8 61h0M-51 -49h0M58 42h0M22 -62h0M-61 39h0M39 23h0M-7 69h0M-37 62h0M14 -32h0M58 -36h0M67 18h0M10 61h0M14 50h0M-22 -64h0M-10 -71h0M-15 -17h0M-10 19h0M46 -11h0M60 -35h0M30 -44h0M-21 52h0M59 -13h0M37 -56h0M-5 -71h0M38 58h0M53 9h0M-56 -8h0M58 42h0M-32 4h0M31 53h0M-6 2h0M41 23h0M53 45h0M-30 -66h0M-65 -31h0M2 63h0M40 -60h0M-5 60h0M30 -56h0M-58 42h0M-8 -32h0M71 9h0M-21 -67h0M19 20h0M38 60h0M-62 36h0M-51 35h0M-62 30h0M13 -66h0M-14 -70h0M-53 28h0M-15 62h0M47 44h0M35 39h0M25 -68h0M33 -44h0M-10 -71h0M52 35h0M7 -32h0M-16 -46h0M47 25h0M-65 -3h0M64 -20h0M7 19h0M-17 -2h0M72 4h0M-3 -44h0M6 19h0M-21 -61h0M-72 5h0M-10 -17h0M60 40h0M5 60h0M-22 -18h0M59 -22h0M-26 -34h0M71 -6h0M22 -62h0M21 61h0M-48 -10h0M-13 28h0M13 -70h0M4 -67h0M43 24h0M-40 38h0M-10 62h0M38 10h0M29 -30h0M-7 -56h0M48 23h0M-35 39h0M-64 14h0M55 -46h0M-24 -31h0M49 -51h0M15 -32h0M-37 50h0M-50 26h0M-62 36h0M-12 19h0M-37 62h0M63 17h0M15 -32h0M67 -22h0M-46 -42h0M6 -31h0M-60 31h0M-28 -56h0M-19 -59h0M-24 51h0M-12 19h0M13 50h0M-40 -59h0M37 -58h0M15 -66h0M10 -32h0M-59 42h0M-2 -31h0M-17 20h0M3 -16h0M-70 -5h0M-58 42h0M51 50h0M-7 14h0M68 -3h0M34 64h0M9 62h0M31 53h0M-6 49h0M65 -30h0M38 -54h0M65 -30h0M24 61h0M31 -35h0M59 31h0M-47 -24h0M5 14h0M57 20h0M-66 27h0M-29 -63h0M-5 35h0M57 5h0M7 35h0M-29 26h0M17 53h0M-17 -46h0M-36 22h0M-43 6h0M-61 -5h0M-1 19h0M37 -58h0M13 28h0M33 22h0M-36 -54h0M-40 40h0M-53 -47h0M-66 -28h0M-70 -15h0M62 2h0M-53 -38h0M37 58h0M16 -32h0M-59 41h0M5 19h0M55 -24h0M-3 -55h0M38 58h0M43 24h0M53 -25h0M5 -58h0"/><path class="sv-ember" stroke-width="3" d="M85 -20h0M87 -22h0M88 -24h0M89 -27h0M90 -29h0M91 -32h0M92 -34h0M93 -36h0M93 -38h0M93 -41h0M94 -43h0M94 -45h0M94 -47h0M93 -49h0M93 -51h0M92 -53h0M92 -54h0M91 -56h0M90 -58h0M88 -59h0M87 -61h0M85 -62h0M84 -63h0M82 -64h0M80 -65h0M78 -66h0M75 -67h0M73 -68h0M70 -68h0M67 -69h0M65 -69h0M62 -70h0M58 -70h0M55 -70h0M52 -70h0M48 -69h0M45 -69h0M41 -68h0M37 -68h0M33 -67h0M29 -66h0M25 -65h0M21 -64h0M17 -63h0M13 -61h0M8 -60h0M4 -58h0M0 -57h0M-4 -55h0M-9 -53h0M-13 -51h0M-17 -49h0M-21 -47h0M-26 -44h0M-30 -42h0M-34 -39h0M-38 -37h0M-42 -34h0M-46 -32h0M-50 -29h0M-53 -26h0M-57 -23h0M-60 -21h0M-64 -18h0M-67 -15h0M-70 -12h0M-73 -9h0M-76 -6h0M-78 -3h0M-81 0h0M-83 2h0M-85 5h0M-87 8h0M-89 11h0M-91 14h0M-92 16h0M-94 19h0M-95 22h0M-96 24h0M-96 27h0M-97 29h0M-98 32h0M-98 34h0M-98 36h0M-98 38h0M-98 40h0M-97 42h0M-97 44h0M-96 46h0M-95 48h0M-94 49h0M-93 51h0M-92 52h0M-90 54h0M-89 55h0M-87 56h0M-85 57h0M-83 58h0M-81 59h0M-79 60h0M-77 60h0M-74 61h0M-72 61h0M-69 62h0M-66 62h0M-63 62h0M-61 62h0M-58 62h0M-55 62h0M-51 61h0M-48 61h0M-45 61h0M-42 60h0M-38 59h0M-35 59h0M-32 58h0M-28 57h0M-25 56h0M-21 55h0M-18 54h0M-14 53h0M-11 51h0M-7 50h0M-3 49h0M0 47h0M4 45h0M7 44h0M11 42h0M14 40h0M18 38h0M21 37h0M25 35h0M28 33h0M31 31h0M35 28h0M38 26h0M41 24h0M44 22h0M47 20h0M50 17h0M53 15h0M56 13h0M59 10h0M62 8h0M64 5h0M67 3h0M69 0h0M72 -2h0M74 -5h0M76 -7h0M78 -10h0M80 -12h0M82 -15h0M84 -17h0M85 -20h0"/></svg><span class="ing" aria-hidden="true">transfiere<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 5 de 5</p>
+          <h3>Escala y transferencia</h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Diseñamos la solución para crecer, con monitoreo continuo.</dd></div>
+            <div><dt>Qué recibes</dt><dd>Capacitación y documentación para que tu equipo la opere. El soporte continuo es opcional.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Tu equipo queda a cargo.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-secondary btn-small" type="button" data-go="4">Volver a la etapa 4</button><button class="btn btn-secondary btn-small" type="button" data-go="1">Recorrer de nuevo</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Lo que ofrecemos ============ -->
+<section class="section offer" id="servicios" aria-labelledby="h-ofrecemos" style="padding-top:0">
+  <div class="wrap">
+    <h2 id="h-ofrecemos">Lo que ofrecemos</h2>
+    <div class="main-offer t-brasa">
+      <h3>Transformación de IA</h3>
+      <p>Estrategia, capacitación y automatización integradas para llevar la IA de la idea al resultado.</p>
+      <ul class="sum" aria-label="Lo que integra">
+        <li>Estrategia</li>
+        <li>Capacitación</li>
+        <li>Automatización</li>
+      </ul>
+    </div>
+    <ul class="others" aria-label="Otros servicios">
+      <li><h3>Capacitación en IA</h3><p>Para líderes y perfiles no técnicos: usar IA con criterio en flujos de trabajo reales.</p></li>
+      <li><h3>AI-SDLC</h3><p>Acompañamos a equipos de software a integrar IA en cada fase del ciclo de desarrollo.</p></li>
+      <li><h3>Software a la medida</h3><p>Cuando la solución necesita construirse.</p></li>
+      <li><h3>Soluciones generativas y agentivas</h3><p>Asesoría y construcción de agentes y sistemas basados en IA generativa.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ Por qué confiar ============ -->
+<section class="section t-cal" id="confiar" aria-labelledby="h-confiar">
+  <div class="wrap">
+    <h2 id="h-confiar">Por qué confiar</h2>
+    <div class="trust-grid">
+      <div class="proof">
+        <h3>Experiencia del equipo</h3>
+        <ul>
+          <li><strong>Más de cinco años</strong> en empresas SaaS de EE. UU. con clientes en todo el mundo.</li>
+          <li><strong>Sector salud:</strong> un sistema RAG agentivo para gestión documental de tratamientos médicos, con modelos locales y en la nube.</li>
+          <li><strong>Eficiencia en el uso de LLM:</strong> costos, modelos locales y enrutamiento de modelos.</li>
+          <li><strong>AI-SDLC:</strong> asesoría en todas las fases del ciclo de desarrollo.</li>
+        </ul>
+        <p class="note">Experiencia previa de quienes integran el equipo.</p>
+      </div>
+      <div class="principles">
+        <h3>Tres principios</h3>
+        <ul>
+          <li>Mantenible</li>
+          <li>Seguro</li>
+          <li>Medible</li>
+        </ul>
+        <p><strong>Seguridad:</strong> consideramos riesgos como fuga de información y prompt injection, y los requisitos de datos personales y normativos que apliquen a tu contexto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Cierre ============ -->
+<section class="section close" id="cierre" aria-labelledby="h-cierre">
+  <div class="wrap">
+    <div class="close-top">
+      <div class="close-slot slot" data-scene="5" data-zoom="1.25"><svg class="scene-svg" viewBox="-180 -115 360 230" role="img" aria-label="Una esfera completa de puntos claros con una órbita naranja alrededor: la solución en manos de tu equipo." focusable="false" fill="none" stroke-linecap="round"><path class="sv-lit" stroke-width="2.6" d="M-50 26h0M23 -3h0M-37 -59h0M-33 4h0M-68 20h0M51 35h0M-32 60h0M-55 21h0M-60 18h0M-27 3h0M-18 -59h0M-11 -2h0M-22 -47h0M-50 -26h0M-16 36h0M-33 26h0M27 37h0M-20 69h0M-21 -69h0M32 -64h0M41 10h0M15 28h0M38 58h0M-5 -32h0M-5 -31h0M46 -27h0M-52 27h0M-34 59h0M68 20h0M36 39h0M54 28h0M-63 -20h0M47 8h0M2 -17h0M13 -57h0M6 -17h0M58 -36h0M-26 -48h0M2 53h0M28 52h0M39 38h0M49 -46h0M8 -31h0M-2 -71h0M19 2h0M-44 48h0M-7 49h0M-8 -17h0M-21 69h0M-34 11h0M30 -56h0M10 2h0M4 60h0M51 50h0M-33 54h0M43 42h0M4 19h0M47 -55h0M17 -46h0M-5 14h0M-60 -6h0M58 42h0M43 -42h0M-18 -59h0M6 -17h0M-69 -15h0M66 16h0M-51 49h0M-37 -56h0M47 -50h0M-21 36h0M-35 -53h0M-19 -69h0M70 11h0M-66 15h0M0 19h0M-36 62h0M55 21h0M-64 -32h0M-30 51h0M-65 -3h0M18 -70h0M-69 22h0M-46 -24h0M46 -8h0M10 -17h0M-41 6h0M27 37h0M-34 -4h0M-18 62h0M-62 -15h0M2 -59h0M54 6h0M4 -67h0M-54 28h0M-18 68h0M42 -59h0M23 67h0M1 60h0M44 9h0M39 -6h0M5 -32h0M20 13h0M33 -44h0M-27 21h0M7 63h0M-2 14h0M41 -12h0M50 -26h0M-59 -13h0M22 -18h0M-61 31h0M20 51h0M28 -34h0M50 -26h0M-26 -56h0M55 44h0M15 -45h0M-31 -4h0M-60 -35h0M52 -9h0M-54 -11h0M-12 -2h0M-24 41h0M66 -19h0M50 -9h0M-21 -33h0M-18 -68h0M-53 -10h0M-49 45h0M-38 -43h0M53 -9h0M63 14h0M-54 9h0M21 -61h0M67 -26h0M33 11h0M-57 -44h0M68 24h0M-14 -66h0M-51 51h0M-44 24h0M-66 -3h0M-11 42h0M36 -55h0M-5 53h0M-22 -65h0M57 -31h0M-54 -46h0M27 40h0M-15 -15h0M-6 2h0M-39 -6h0M-28 52h0M13 -66h0M-4 53h0M-10 -32h0M-15 -15h0M-6 14h0M34 26h0M-47 7h0M7 -17h0M-16 -66h0M14 28h0M60 -37h0M4 -16h0M49 -46h0M-51 49h0M-44 -52h0M22 -64h0M-27 66h0M-41 10h0M40 38h0M-5 2h0M-61 35h0M63 -33h0M14 -32h0M-29 66h0M-31 -14h0M39 -38h0M38 60h0M-63 29h0M34 39h0M49 36h0M39 -12h0M-67 -24h0M0 72h0M13 13h0M-14 61h0M39 58h0M-54 9h0M-50 -50h0M-45 48h0M11 62h0M68 20h0M11 -2h0M38 10h0M56 29h0M55 10h0M-70 -14h0M-41 -39h0M-7 49h0M11 -31h0M-39 -6h0M-16 62h0M-41 38h0M-23 -18h0M-6 -32h0M-65 28h0M43 -52h0M29 66h0M-4 -72h0M37 -54h0M24 67h0M64 16h0M-22 51h0M-2 -72h0M38 60h0M-21 -66h0M-27 -49h0M-39 -60h0M-62 -15h0M22 -63h0M-23 67h0M65 -31h0M8 69h0M60 -6h0M-11 19h0M72 6h0M25 -57h0M-14 53h0M15 -70h0M-26 -64h0M38 60h0M-10 62h0M0 -16h0M-44 -52h0M-6 2h0M-58 -42h0M70 -5h0M-22 -46h0M-9 14h0M-65 -19h0M53 9h0M37 57h0M22 -46h0M-22 -64h0M28 52h0M36 -54h0M67 -2h0M-17 -46h0M-51 -9h0M-4 19h0M58 31h0M-35 55h0M35 63h0M10 2h0M-10 69h0M-12 61h0M49 -46h0M64 -17h0M67 -28h0M-25 -68h0M-47 -44h0M-58 42h0M-51 -26h0M35 -62h0M-35 -29h0M28 -66h0M41 10h0M-38 -13h0M-49 8h0M26 40h0M-7 -71h0M-60 32h0M-42 -39h0M-41 49h0M-37 5h0M59 32h0M31 12h0M-55 -46h0M-14 36h0M50 -39h0M-67 -26h0M-18 20h0M46 55h0M21 -61h0M-51 51h0M3 -47h0M-25 -3h0M-59 4h0M41 -39h0M49 47h0M13 41h0M-38 25h0M8 61h0M-51 -49h0M58 42h0M22 -62h0M-61 39h0M39 23h0M-7 69h0M-37 62h0M14 -32h0M58 -36h0M67 18h0M10 61h0M14 50h0M-22 -64h0M-10 -71h0M-15 -17h0M-10 19h0M46 -11h0M60 -35h0M30 -44h0M-21 52h0M59 -13h0M37 -56h0M-5 -71h0M38 58h0M53 9h0M-56 -8h0M58 42h0M-32 4h0M31 53h0M-6 2h0M41 23h0M53 45h0M-30 -66h0M-65 -31h0M2 63h0M40 -60h0M-5 60h0M30 -56h0M-58 42h0M-8 -32h0M71 9h0M-21 -67h0M19 20h0M38 60h0M-62 36h0M-51 35h0M-62 30h0M13 -66h0M-14 -70h0M-53 28h0M-15 62h0M47 44h0M35 39h0M25 -68h0M33 -44h0M-10 -71h0M52 35h0M7 -32h0M-16 -46h0M47 25h0M-65 -3h0M64 -20h0M7 19h0M-17 -2h0M72 4h0M-3 -44h0M6 19h0M-21 -61h0M-72 5h0M-10 -17h0M60 40h0M5 60h0M-22 -18h0M59 -22h0M-26 -34h0M71 -6h0M22 -62h0M21 61h0M-48 -10h0M-13 28h0M13 -70h0M4 -67h0M43 24h0M-40 38h0M-10 62h0M38 10h0M29 -30h0M-7 -56h0M48 23h0M-35 39h0M-64 14h0M55 -46h0M-24 -31h0M49 -51h0M15 -32h0M-37 50h0M-50 26h0M-62 36h0M-12 19h0M-37 62h0M63 17h0M15 -32h0M67 -22h0M-46 -42h0M6 -31h0M-60 31h0M-28 -56h0M-19 -59h0M-24 51h0M-12 19h0M13 50h0M-40 -59h0M37 -58h0M15 -66h0M10 -32h0M-59 42h0M-2 -31h0M-17 20h0M3 -16h0M-70 -5h0M-58 42h0M51 50h0M-7 14h0M68 -3h0M34 64h0M9 62h0M31 53h0M-6 49h0M65 -30h0M38 -54h0M65 -30h0M24 61h0M31 -35h0M59 31h0M-47 -24h0M5 14h0M57 20h0M-66 27h0M-29 -63h0M-5 35h0M57 5h0M7 35h0M-29 26h0M17 53h0M-17 -46h0M-36 22h0M-43 6h0M-61 -5h0M-1 19h0M37 -58h0M13 28h0M33 22h0M-36 -54h0M-40 40h0M-53 -47h0M-66 -28h0M-70 -15h0M62 2h0M-53 -38h0M37 58h0M16 -32h0M-59 41h0M5 19h0M55 -24h0M-3 -55h0M38 58h0M43 24h0M53 -25h0M5 -58h0"/><path class="sv-ember" stroke-width="3" d="M85 -20h0M87 -22h0M88 -24h0M89 -27h0M90 -29h0M91 -32h0M92 -34h0M93 -36h0M93 -38h0M93 -41h0M94 -43h0M94 -45h0M94 -47h0M93 -49h0M93 -51h0M92 -53h0M92 -54h0M91 -56h0M90 -58h0M88 -59h0M87 -61h0M85 -62h0M84 -63h0M82 -64h0M80 -65h0M78 -66h0M75 -67h0M73 -68h0M70 -68h0M67 -69h0M65 -69h0M62 -70h0M58 -70h0M55 -70h0M52 -70h0M48 -69h0M45 -69h0M41 -68h0M37 -68h0M33 -67h0M29 -66h0M25 -65h0M21 -64h0M17 -63h0M13 -61h0M8 -60h0M4 -58h0M0 -57h0M-4 -55h0M-9 -53h0M-13 -51h0M-17 -49h0M-21 -47h0M-26 -44h0M-30 -42h0M-34 -39h0M-38 -37h0M-42 -34h0M-46 -32h0M-50 -29h0M-53 -26h0M-57 -23h0M-60 -21h0M-64 -18h0M-67 -15h0M-70 -12h0M-73 -9h0M-76 -6h0M-78 -3h0M-81 0h0M-83 2h0M-85 5h0M-87 8h0M-89 11h0M-91 14h0M-92 16h0M-94 19h0M-95 22h0M-96 24h0M-96 27h0M-97 29h0M-98 32h0M-98 34h0M-98 36h0M-98 38h0M-98 40h0M-97 42h0M-97 44h0M-96 46h0M-95 48h0M-94 49h0M-93 51h0M-92 52h0M-90 54h0M-89 55h0M-87 56h0M-85 57h0M-83 58h0M-81 59h0M-79 60h0M-77 60h0M-74 61h0M-72 61h0M-69 62h0M-66 62h0M-63 62h0M-61 62h0M-58 62h0M-55 62h0M-51 61h0M-48 61h0M-45 61h0M-42 60h0M-38 59h0M-35 59h0M-32 58h0M-28 57h0M-25 56h0M-21 55h0M-18 54h0M-14 53h0M-11 51h0M-7 50h0M-3 49h0M0 47h0M4 45h0M7 44h0M11 42h0M14 40h0M18 38h0M21 37h0M25 35h0M28 33h0M31 31h0M35 28h0M38 26h0M41 24h0M44 22h0M47 20h0M50 17h0M53 15h0M56 13h0M59 10h0M62 8h0M64 5h0M67 3h0M69 0h0M72 -2h0M74 -5h0M76 -7h0M78 -10h0M80 -12h0M82 -15h0M84 -17h0M85 -20h0"/></svg></div>
+      <h2 id="h-cierre">Tu equipo ya trabaja duro. Hagamos que la IA trabaje con él.</h2>
+      <div class="actions">
+        <a class="btn btn-primary" href="#agenda">Agenda una conversación de 30 minutos</a>
+        <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+      </div>
+    </div>
+    <div class="contact">
+      <div class="panel cal" id="agenda" tabindex="-1">
+        <h3>Agenda 30 minutos</h3>
+        <div class="cal-box">
+          <svg aria-hidden="true"><use href="#simbolo"/></svg>
+          <p>Aquí se cargará el calendario de Calendly para elegir día y hora.</p>
+        </div>
+      </div>
+      <div class="panel" id="consulta" tabindex="-1">
+        <h3>¿Dónde quieres aplicar IA?</h3>
+        <form class="form" id="form" method="post" action="#consulta">
+          <div class="field">
+            <label for="f-nombre">Nombre</label>
+            <input class="input" id="f-nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="e-nombre">
+            <p class="err" id="e-nombre"></p>
+          </div>
+          <div class="field">
+            <label for="f-empresa">Empresa <small>(opcional)</small></label>
+            <input class="input" id="f-empresa" name="empresa" type="text" autocomplete="organization">
+          </div>
+          <fieldset class="pair">
+            <legend>Correo o teléfono <small>(al menos uno)</small></legend>
+            <div class="pair-grid">
+              <div class="field">
+                <label for="f-correo">Correo</label>
+                <input class="input" id="f-correo" name="correo" type="email" autocomplete="email" inputmode="email" aria-describedby="e-correo e-contacto">
+                <p class="err" id="e-correo"></p>
+              </div>
+              <div class="field">
+                <label for="f-tel">Teléfono</label>
+                <input class="input" id="f-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="e-tel e-contacto">
+                <p class="err" id="e-tel"></p>
+              </div>
+            </div>
+            <p class="err" id="e-contacto"></p>
+          </fieldset>
+          <div class="field">
+            <label for="f-donde">¿Dónde quieres aplicar IA? <small>(opcional)</small></label>
+            <textarea class="input" id="f-donde" name="donde" rows="4"></textarea>
+          </div>
+          <div class="field">
+            <label class="check" for="f-acepto">
+              <input id="f-acepto" name="acepto" type="checkbox" required aria-describedby="e-acepto">
+              <span>Acepto el tratamiento de mis datos para responder mi solicitud, según la <a href="#privacidad">Política de privacidad</a>.</span>
+            </label>
+            <p class="err" id="e-acepto"></p>
+          </div>
+          <button class="btn btn-primary" type="submit">Enviar consulta</button>
+        </form>
+        <div class="done" id="done" role="status" tabindex="-1" hidden>
+          <svg aria-hidden="true" style="width:4.2rem;height:2.8rem"><use href="#simbolo"/></svg>
+          <strong>Recibimos tu consulta.</strong>
+          <p>Te contactaremos pronto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ Pie ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="confia.ing, inicio">
+      <svg aria-hidden="true"><use href="#simbolo"/></svg>
+      <span class="wm" aria-hidden="true">confia<i>.</i><b>ing</b></span>
+    </a>
+    <div class="foot-row">
+      <a href="mailto:hola@confia.ing">hola@confia.ing</a>
+      <a class="link-quiet" href="#privacidad" id="privacidad">Privacidad</a>
+      <a class="link-quiet" href="#terminos" id="terminos">Términos</a>
+      <div class="lang" role="group" aria-label="Idioma">
+        <a href="#inicio" lang="es" aria-current="true" aria-label="Español, idioma actual">ES</a>
+        <button type="button" lang="en" data-lang-en aria-label="English">EN</button>
+        <span class="lang-note" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <p>© 2026 Confia.ing</p>
+      <div class="mode">
+        <div class="seg" role="group" aria-label="Versión de la página">
+          <button type="button" data-mode-set="lite" aria-pressed="false">Versión ligera</button>
+          <button type="button" data-mode-set="full" aria-pressed="false">Versión completa</button>
+        </div>
+        <p id="mode-note" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ Sistema de marca ============ -->
+<aside class="sys" aria-labelledby="h-sistema">
+  <div class="wrap">
+    <div style="display:grid;gap:1rem">
+      <h2 id="h-sistema">Sistema de marca</h2>
+      <p class="lead">Tinta cálida, cal y una brasa. Dos arcos que se enlazan: tú y nosotros. El punto de <span lang="en">.ing</span> es lo que sigue en marcha.</p>
+    </div>
+
+    <div>
+      <h3>Paleta: primitivas</h3>
+      <ul class="sw">
+        <li><i style="--c:var(--tinta-900)"></i><strong>Tinta 900</strong><code>#12100D</code></li>
+        <li><i style="--c:var(--tinta-800)"></i><strong>Tinta 800</strong><code>#1C1915</code></li>
+        <li><i style="--c:var(--tinta-600)"></i><strong>Tinta 600</strong><code>#3A342D</code></li>
+        <li><i style="--c:var(--ceniza-700)"></i><strong>Ceniza 700</strong><code>#4F473E</code></li>
+        <li><i style="--c:var(--ceniza-500)"></i><strong>Ceniza 500</strong><code>#857C70</code></li>
+        <li><i style="--c:var(--ceniza-400)"></i><strong>Ceniza 400</strong><code>#B0A79A</code></li>
+        <li><i style="--c:var(--cal-50)"></i><strong>Cal 50</strong><code>#F5EFE4</code></li>
+        <li><i style="--c:var(--cal-200)"></i><strong>Cal 200</strong><code>#E9E1D2</code></li>
+        <li><i style="--c:var(--cal-300)"></i><strong>Cal 300</strong><code>#D8CEBC</code></li>
+        <li><i style="--c:var(--cal-400)"></i><strong>Cal 400</strong><code>#8A8073</code></li>
+        <li><i style="--c:var(--brasa-300)"></i><strong>Brasa 300</strong><code>#FF9466</code></li>
+        <li><i style="--c:var(--brasa-500)"></i><strong>Brasa 500</strong><code>#FF5A1F</code></li>
+        <li><i style="--c:var(--brasa-700)"></i><strong>Brasa 700</strong><code>#B5380C</code></li>
+        <li><i style="--c:var(--brasa-800)"></i><strong>Brasa 800</strong><code>#8E2A06</code></li>
+        <li><i style="--c:var(--brote-400)"></i><strong>Brote 400</strong><code>#7FD9A0</code></li>
+        <li><i style="--c:var(--brote-700)"></i><strong>Brote 700</strong><code>#1F6B40</code></li>
+        <li><i style="--c:var(--alerta-400)"></i><strong>Alerta 400</strong><code>#FF8C9A</code></li>
+        <li><i style="--c:var(--alerta-700)"></i><strong>Alerta 700</strong><code>#B0203A</code></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Paleta: roles</h3>
+      <div class="tok-scroll">
+        <table class="tok">
+          <thead><tr><th scope="col">Rol</th><th scope="col">Sobre tinta</th><th scope="col">Sobre cal</th><th scope="col">Uso</th></tr></thead>
+          <tbody>
+            <tr><td><code>--color-background</code></td><td>Tinta 900 <code>#12100D</code></td><td>Cal 50 <code>#F5EFE4</code></td><td>Fondo de página y de banda</td></tr>
+            <tr><td><code>--color-surface</code></td><td>Tinta 800 <code>#1C1915</code></td><td>Cal 200 <code>#E9E1D2</code></td><td>Paneles, figura de cada etapa</td></tr>
+            <tr><td><code>--color-text</code></td><td>Cal 50 <code>#F5EFE4</code></td><td>Tinta 900 <code>#12100D</code></td><td>Texto; puntos de «tu empresa» en la escena</td></tr>
+            <tr><td><code>--color-text-muted</code></td><td>Ceniza 400 <code>#B0A79A</code></td><td>Ceniza 700 <code>#4F473E</code></td><td>Texto secundario; puntos aún dispersos</td></tr>
+            <tr><td><code>--color-primary</code></td><td>Brasa 500 <code>#FF5A1F</code></td><td>Brasa 700 <code>#B5380C</code></td><td>Acción principal; el hilo de Confia.ing</td></tr>
+            <tr><td><code>--color-link</code></td><td>Brasa 300 <code>#FF9466</code></td><td>Brasa 700 <code>#B5380C</code></td><td>Enlaces y decisiones de cada etapa</td></tr>
+            <tr><td><code>--color-focus</code></td><td>Cal 50 <code>#F5EFE4</code></td><td>Tinta 900 <code>#12100D</code></td><td>Anillo de foco, 2,5 px con 3 px de separación</td></tr>
+            <tr><td><code>--color-border</code></td><td>Tinta 600 <code>#3A342D</code></td><td>Cal 300 <code>#D8CEBC</code></td><td>Líneas divisorias; campos con Ceniza 500 o Cal 400</td></tr>
+            <tr><td><code>--color-error</code></td><td>Alerta 400 <code>#FF8C9A</code></td><td>Alerta 700 <code>#B0203A</code></td><td>Mensajes de error del formulario</td></tr>
+            <tr><td><code>--color-success</code></td><td>Brote 400 <code>#7FD9A0</code></td><td>Brote 700 <code>#1F6B40</code></td><td>Confirmación</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <h3>Tipografías</h3>
+      <div class="types">
+        <div><p class="a">Hagamos que la IA trabaje con él.</p><small>Bricolage Grotesque 400 a 800. Titulares, cifras de etapa y marca.</small></div>
+        <div><p class="b">Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p><small>Schibsted Grotesk 400 a 700. Texto, etiquetas y controles.</small></div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Logotipo y símbolo</h3>
+      <div class="logos">
+        <div class="logo-tile"><span class="brand"><svg aria-hidden="true"><use href="#simbolo"/></svg><span class="wm">confia<i>.</i><b>ing</b></span></span></div>
+        <div class="logo-tile t-cal"><span class="brand"><svg aria-hidden="true"><use href="#simbolo"/></svg><span class="wm">confia<i>.</i><b>ing</b></span></span></div>
+        <div class="logo-tile t-brasa"><span class="brand"><svg aria-hidden="true"><use href="#simbolo"/></svg><span class="wm">confia<i>.</i><b>ing</b></span></span></div>
+        <div class="logo-tile only"><svg role="img" aria-label="Símbolo: dos arcos enlazados"><use href="#simbolo"/></svg></div>
+      </div>
+    </div>
+
+    <div class="sys-two">
+      <div>
+        <h3>Botones y enlaces</h3>
+        <div class="states">
+          <div class="states-row">
+            <div><span class="btn btn-primary btn-small">Agenda</span>Normal</div>
+            <div><span class="btn btn-primary btn-small is-hover">Agenda</span>Hover</div>
+            <div><span class="btn btn-primary btn-small is-active">Agenda</span>Pulsado</div>
+            <div><span class="btn btn-primary btn-small is-focus">Agenda</span>Foco</div>
+            <div><button class="btn btn-primary btn-small" type="button" disabled>Agenda</button>Inactivo</div>
+          </div>
+          <div class="states-row">
+            <div><span class="btn btn-secondary btn-small">Cuéntanos</span>Normal</div>
+            <div><span class="btn btn-secondary btn-small is-hover">Cuéntanos</span>Hover</div>
+            <div><span class="btn btn-secondary btn-small is-active">Cuéntanos</span>Pulsado</div>
+            <div><span class="btn btn-secondary btn-small is-focus">Cuéntanos</span>Foco</div>
+            <div><button class="btn btn-secondary btn-small" type="button" disabled>Cuéntanos</button>Inactivo</div>
+          </div>
+          <div class="states-row">
+            <div><a href="#h-sistema">Enlace en texto</a>Subrayado, engrosa al pasar</div>
+            <div><a class="link-quiet" href="#h-sistema">Enlace de navegación</a>La línea se dibuja al pasar</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Campos</h3>
+        <div class="states">
+          <div class="states-row">
+            <div><input class="input" type="text" value="Normal" aria-label="Campo, estado normal" readonly></div>
+            <div><input class="input is-focus" type="text" value="Foco" aria-label="Campo, estado de foco" readonly></div>
+          </div>
+          <div class="states-row">
+            <div><input class="input is-error" type="text" value="nombre@" aria-label="Campo, estado de error" readonly><span class="err">Revisa el correo.</span></div>
+            <div><input class="input is-ok" type="text" value="nombre@empresa.com" aria-label="Campo, estado válido" readonly><span class="ok-msg">Correcto.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Movimiento</h3>
+      <div class="tok-scroll">
+        <table class="tok">
+          <thead><tr><th scope="col">Token</th><th scope="col">Valor</th><th scope="col">Dónde</th></tr></thead>
+          <tbody>
+            <tr><td><code>--ease-out</code></td><td><code>cubic-bezier(0.23, 1, 0.32, 1)</code></td><td>Todo lo que entra o responde</td></tr>
+            <tr><td><code>--ease-in-out</code></td><td><code>cubic-bezier(0.77, 0, 0.175, 1)</code></td><td>Lo que se desplaza en pantalla: la línea del recorrido</td></tr>
+            <tr><td><code>--dur-press</code></td><td>140 ms</td><td>Botón pulsado, escala 0,97</td></tr>
+            <tr><td><code>--dur-fast</code></td><td>180 ms</td><td>Color al pasar el cursor; cierre del menú</td></tr>
+            <tr><td><code>--dur-base</code></td><td>240 ms</td><td>Apertura del menú, subrayados, cambio de etapa</td></tr>
+            <tr><td><code>--dur-move</code></td><td>420 ms</td><td>Avance de la línea del recorrido</td></tr>
+            <tr><td><code>--dur-enter</code></td><td>700 ms</td><td>Entrada del hero, una vez, escalonada 0, 110, 190, 260 y 320 ms</td></tr>
+            <tr><td><code>--scene-follow</code></td><td>3,2 por segundo</td><td>La escena persigue la etapa elegida; se puede interrumpir en cualquier punto</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+/* confia.ing · estados de la escena "el hilo".
+   Fuente unica: este archivo se incrusta en la pagina (WebGL) y lo usa build.mjs
+   para generar las versiones SVG estaticas de la version ligera. */
+function confiaStates(N, seed) {
+  var s = seed >>> 0;
+  function rnd() { s += 0x6D2B79F5; var t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+  function gauss() { return (rnd() + rnd() + rnd() + rnd() - 2) / 1.15; }
+  var TAU = Math.PI * 2, i, k;
+  var pos = []; for (k = 0; k < 6; k++) pos.push(new Float32Array(N * 3));
+  var role = new Float32Array(N), r1 = new Float32Array(N), r2 = new Float32Array(N);
+  var nE = 0, nA = 0;
+  for (i = 0; i < N; i++) { role[i] = i % 4 === 0 ? 1 : 0; if (role[i]) nE++; else nA++; r1[i] = rnd(); r2[i] = rnd(); }
+  var clumps = []; for (k = 0; k < 11; k++) clumps.push([(rnd() * 2 - 1) * 1.45, (rnd() * 2 - 1) * 0.8, (rnd() * 2 - 1) * 0.4, 0.07 + rnd() * 0.2]);
+  var cols = Math.ceil(Math.sqrt(nA * 2.1)), rows = Math.ceil(nA / cols);
+  var lats = 12, latCount = [], latTotal = 0;
+  for (k = 0; k < lats; k++) { var la = -1.25 + 2.5 * k / (lats - 1); latCount.push(Math.cos(la)); latTotal += Math.cos(la); }
+  function set(st, idx, x, y, z) { pos[st][idx * 3] = x; pos[st][idx * 3 + 1] = y; pos[st][idx * 3 + 2] = z; }
+  function route(t) { return [-1.42 + 2.84 * t, -0.56 + 1.08 * t + 0.2 * Math.sin(t * TAU * 1.5), 0.18 * Math.sin(t * 5)]; }
+  var e = 0, a = 0;
+  for (i = 0; i < N; i++) {
+    var x, y, z, ang, c, t, p;
+    if (role[i]) {
+      t = e / Math.max(1, nE - 1); e++;
+      /* 0 · un hilo que cruza el desorden */
+      var br = t * TAU * 8 + (e % 3) * 2.094, bw = 0.045 * (0.35 + 0.65 * Math.sin(t * Math.PI));
+      set(0, i, -1.75 + 3.5 * t, -0.1 + 0.36 * Math.sin(t * TAU * 1.1 + 0.6) + bw * Math.sin(br), 0.3 * Math.cos(t * 5) + bw * Math.cos(br));
+      /* 1 · conversacion: nuestro arco */
+      ang = (230 + 260 * t) * Math.PI / 180;
+      set(1, i, 0.33 + 0.62 * Math.cos(ang) + gauss() * 0.012, 0.62 * Math.sin(ang) + gauss() * 0.012, -0.2 * Math.sin(ang));
+      /* 2 · diagnostico: el marco de lo priorizado */
+      p = t * 4; var x0 = 0.12, x1 = 0.98, y0 = -0.14, y1 = 0.5;
+      if (p < 1) { x = x0 + (x1 - x0) * p; y = y1; } else if (p < 2) { x = x1; y = y1 - (y1 - y0) * (p - 1); } else if (p < 3) { x = x1 - (x1 - x0) * (p - 2); y = y0; } else { x = x0; y = y0 + (y1 - y0) * (p - 3); }
+      set(2, i, x, y, 0.1);
+      /* 3 · roadmap: la ruta */
+      p = route(t); set(3, i, p[0], p[1], p[2]);
+      /* 4 · piloto: tres ciclos de feedback */
+      k = Math.min(2, Math.floor(t * 3)); ang = (k * 120 + (t * 3 - k) * 96) * Math.PI / 180;
+      set(4, i, 0.46 * Math.cos(ang), 0.46 * Math.sin(ang), 0.05);
+      /* 5 · transferencia: nuestra orbita, afuera */
+      ang = t * TAU; x = 1.06 * Math.cos(ang); y = 1.06 * Math.sin(ang) * 0.34; z = 1.06 * Math.sin(ang) * 0.94;
+      set(5, i, x * 0.94 - y * 0.34, x * 0.34 + y * 0.94, z);
+    } else {
+      t = a / Math.max(1, nA - 1);
+      /* 0 · trabajo manual disperso */
+      if (rnd() < 0.28) { x = (rnd() * 2 - 1) * 1.7; y = (rnd() * 2 - 1) * 0.95; z = (rnd() * 2 - 1) * 0.5; }
+      else { c = clumps[Math.floor(rnd() * clumps.length)]; x = c[0] + gauss() * c[3]; y = c[1] + gauss() * c[3] * 0.8; z = c[2] + gauss() * c[3]; }
+      set(0, i, x, y, z);
+      /* 1 · tu arco; el resto sigue disperso */
+      if (a % 20 < 11) { ang = (50 + 260 * rnd()) * Math.PI / 180; set(1, i, -0.33 + 0.62 * Math.cos(ang) + gauss() * 0.014, 0.62 * Math.sin(ang) + gauss() * 0.014, 0.2 * Math.sin(ang)); }
+      else set(1, i, x * 1.08, y * 1.1, z);
+      /* 2 · todo sobre la mesa: una reticula */
+      var gc = a % cols, gr = Math.floor(a / cols);
+      set(2, i, -1.45 + 2.9 * gc / (cols - 1), -0.72 + 1.44 * gr / Math.max(1, rows - 1), 0.1 * Math.sin(gc * 0.5));
+      /* 3 · hitos sobre la ruta y sus carriles */
+      if (a % 5 < 3) { k = a % 5 === 0 ? Math.floor(rnd() * 5) : (a + Math.floor(a / 5)) % 5; p = route(k / 4); var rr = 0.07 + 0.028 * k; ang = rnd() * TAU; var rad = rr * (0.82 + 0.18 * rnd()); set(3, i, p[0] + rad * Math.cos(ang), p[1] + rad * Math.sin(ang), p[2] + gauss() * 0.02); }
+      else { var tt = rnd(); p = route(tt); var off = (a % 2 ? 1 : -1) * (0.085 + 0.07 * ((a >> 1) % 2)); set(3, i, p[0] + off * 0.35, p[1] - off, p[2]); }
+      /* 4 · el circuito del piloto */
+      ang = rnd() * TAU; rad = 0.74 + gauss() * 0.045; set(4, i, rad * Math.cos(ang), rad * Math.sin(ang), gauss() * 0.05);
+      /* 5 · una estructura completa: paralelos de una esfera */
+      var u = rnd() * latTotal, li = 0; while (li < lats - 1 && u > latCount[li]) { u -= latCount[li]; li++; }
+      la = -1.25 + 2.5 * li / (lats - 1); ang = rnd() * TAU;
+      set(5, i, 0.72 * Math.cos(la) * Math.cos(ang), 0.72 * Math.sin(la), 0.72 * Math.cos(la) * Math.sin(ang));
+      a++;
+    }
+  }
+  return { pos: pos, role: role, r1: r1, r2: r2 };
+}
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var doc = document, root = doc.documentElement, $ = function (s, c) { return (c || doc).querySelector(s); }, $$ = function (s, c) { return Array.prototype.slice.call((c || doc).querySelectorAll(s)); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ----- Menú móvil ----- */
+  var menuBtn = $('.menu-btn'), menu = $('#menu');
+  function setMenu(open) {
+    menu.classList.toggle('is-open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.textContent = open ? 'Cerrar' : 'Menú';
+    if (open) menu.removeAttribute('inert'); else menu.setAttribute('inert', '');
+  }
+  setMenu(false);
+  menuBtn.addEventListener('click', function () { setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') { setMenu(false); menuBtn.focus(); } });
+  window.matchMedia('(min-width: 900px)').addEventListener('change', function (e) { if (e.matches) setMenu(false); });
+
+  /* ----- Idioma (la versión EN se redacta en la siguiente fase) ----- */
+  $$('[data-lang-en]').forEach(function (b) {
+    var note = b.parentNode.querySelector('.lang-note'), t;
+    b.addEventListener('click', function () { note.textContent = 'La versión en inglés llega en la siguiente fase.'; clearTimeout(t); t = setTimeout(function () { note.textContent = ''; }, 4000); });
+  });
+
+  /* ----- Anclas: llevar también el foco al destino ----- */
+  $$('a[href="#agenda"], a[href="#consulta"]').forEach(function (a) {
+    a.addEventListener('click', function () { var t = $(a.getAttribute('href')); if (t) setTimeout(function () { t.focus({ preventScroll: true }); }, 0); });
+  });
+
+  /* ----- Recorrido: pestañas ----- */
+  var tabs = $$('[role="tab"]'), panels = $$('[role="tabpanel"]'), track = $('.track i'), current = 0;
+  function selectTab(i, focus) {
+    i = (i + tabs.length) % tabs.length;
+    tabs.forEach(function (t, k) { var on = k === i; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; t.classList.toggle('is-done', k < i); });
+    panels.forEach(function (p, k) { p.hidden = k !== i; p.classList.toggle('is-in', k === i); });
+    track.style.setProperty('--p', (i / tabs.length).toFixed(3));
+    current = i;
+    if (focus) tabs[i].focus();
+    if (window.__scene) window.__scene.pick();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { selectTab(i, false); });
+    t.addEventListener('keydown', function (e) {
+      var k = e.key, n = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') n = current + 1;
+      else if (k === 'ArrowLeft' || k === 'ArrowUp') n = current - 1;
+      else if (k === 'Home') n = 0;
+      else if (k === 'End') n = tabs.length - 1;
+      if (n !== null) { e.preventDefault(); selectTab(n, true); }
+    });
+  });
+  $$('[data-go]').forEach(function (b) { b.addEventListener('click', function () { selectTab(+b.getAttribute('data-go') - 1, true); }); });
+  selectTab(0, false);
+  panels[0].classList.remove('is-in');
+
+  /* ----- Formulario (maqueta: valida en el navegador, no envía nada) ----- */
+  var form = $('#form'), done = $('#done');
+  form.setAttribute('novalidate', '');
+  function setErr(input, id, msg) { $('#' + id).textContent = msg || ''; if (input) { if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid'); } }
+  function validate() {
+    var nombre = $('#f-nombre'), correo = $('#f-correo'), tel = $('#f-tel'), acepto = $('#f-acepto'), first = null;
+    var c = correo.value.trim(), t = tel.value.trim();
+    var eNombre = nombre.value.trim() ? '' : 'Escribe tu nombre.';
+    var eCorreo = c && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c) ? 'Revisa el correo: debería verse como nombre@empresa.com.' : '';
+    var eTel = t && (t.replace(/\D/g, '').length < 7 || /[^\d\s()+.-]/.test(t)) ? 'Revisa el teléfono: sólo números, al menos 7 dígitos.' : '';
+    var eContacto = !c && !t ? 'Déjanos un correo o un teléfono para poder responderte.' : '';
+    var eAcepto = acepto.checked ? '' : 'Marca la casilla para que podamos responderte.';
+    setErr(nombre, 'e-nombre', eNombre); setErr(correo, 'e-correo', eCorreo); setErr(tel, 'e-tel', eTel);
+    $('#e-contacto').textContent = eContacto;
+    if (eContacto) { correo.setAttribute('aria-invalid', 'true'); tel.setAttribute('aria-invalid', 'true'); }
+    setErr(acepto, 'e-acepto', eAcepto);
+    first = eNombre ? nombre : (eContacto || eCorreo) ? correo : eTel ? tel : eAcepto ? acepto : null;
+    return first;
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var first = validate();
+    if (first) { first.focus(); return; }
+    form.hidden = true; done.hidden = false; done.focus();
+  });
+  form.addEventListener('input', function (e) { if (form.querySelector('[aria-invalid="true"]') || $('#e-acepto').textContent) validate(); });
+
+  /* ----- Escena WebGL: un solo lienzo que se muda a la ranura visible ----- */
+  var slots = $$('.slot'), visible = new Map(), scene = null, loading = false;
+  function bestSlot() {
+    var best = null, area = 0;
+    slots.forEach(function (s) { var a = visible.get(s) || 0; if (s.closest('[hidden]')) a = 0; if (a > area) { area = a; best = s; } });
+    return best;
+  }
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { visible.set(e.target, e.isIntersecting ? e.intersectionRect.width * e.intersectionRect.height : 0); });
+    if (scene) scene.pick();
+  }, { threshold: [0, 0.15, 0.4, 0.7, 1] }) : null;
+  if (io) slots.forEach(function (s) { io.observe(s); });
+
+  function hex(v) { v = v.trim().replace('#', ''); if (v.length === 3) v = v.replace(/./g, '$&$&'); var n = parseInt(v, 16); return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255]; }
+
+  function createScene(THREE) {
+    var canvas = doc.createElement('canvas'); canvas.className = 'scene-gl'; canvas.setAttribute('aria-hidden', 'true');
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false, powerPreference: 'default' });
+    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    renderer.setClearColor(0x000000, 0);
+    var small = Math.min(window.innerWidth, window.innerHeight) < 700;
+    var dpr = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 1.75);
+    renderer.setPixelRatio(dpr);
+    var N = small ? 1800 : 4400, st = confiaStates(N, 20261114);
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(st.pos[0], 3));
+    for (var k = 1; k < 6; k++) geo.setAttribute('p' + k, new THREE.BufferAttribute(st.pos[k], 3));
+    geo.setAttribute('aRole', new THREE.BufferAttribute(st.role, 1));
+    geo.setAttribute('aR1', new THREE.BufferAttribute(st.r1, 1));
+    geo.setAttribute('aR2', new THREE.BufferAttribute(st.r2, 1));
+    var U = { uS: { value: 0 }, uT: { value: 0 }, uScale: { value: 10 }, uEmber: { value: new THREE.Vector3() }, uLitC: { value: new THREE.Vector3() }, uAsh: { value: new THREE.Vector3() } };
+    var mat = new THREE.ShaderMaterial({
+      uniforms: U, transparent: true, depthTest: false, depthWrite: false,
+      vertexShader: [
+        'attribute vec3 p1; attribute vec3 p2; attribute vec3 p3; attribute vec3 p4; attribute vec3 p5;',
+        'attribute float aRole; attribute float aR1; attribute float aR2;',
+        'uniform float uS; uniform float uT; uniform float uScale;',
+        'varying float vRole; varying float vLit;',
+        'float seg(float k){ float t = clamp((uS - k) * 1.35 - aR1 * 0.35, 0.0, 1.0); return t * t * (3.0 - 2.0 * t); }',
+        'void main(){',
+        '  vec3 q4 = p4; float a = uT * 0.12 * (aRole > 0.5 ? -2.4 : 1.0); float ca = cos(a); float sa = sin(a); q4.xy = mat2(ca, sa, -sa, ca) * q4.xy;',
+        '  vec3 q5 = p5; float b = uT * 0.09; float cb = cos(b); float sb = sin(b); q5.xz = mat2(cb, sb, -sb, cb) * q5.xz;',
+        '  vec3 p = mix(position, p1, seg(0.0)); p = mix(p, p2, seg(1.0)); p = mix(p, p3, seg(2.0)); p = mix(p, q4, seg(3.0)); p = mix(p, q5, seg(4.0));',
+        '  float loose = mix(0.045, 0.007, clamp(uS, 0.0, 1.0));',
+        '  p += loose * vec3(sin(uT * 0.6 + aR1 * 40.0), cos(uT * 0.5 + aR2 * 31.0), sin(uT * 0.4 + aR1 * 17.0));',
+        '  vec4 mv = modelViewMatrix * vec4(p, 1.0);',
+        '  gl_Position = projectionMatrix * mv;',
+        '  float lf = uS * 0.21;',
+        '  vLit = 1.0 - smoothstep(lf - 0.04, lf + 0.04, aR2 + 0.04);',
+        '  vRole = aRole;',
+        '  gl_PointSize = uScale * (aRole > 0.5 ? 1.3 : 1.0) * (0.75 + 0.5 * aR1) / -mv.z;',
+        '}'].join('\n'),
+      fragmentShader: [
+        'uniform vec3 uEmber; uniform vec3 uLitC; uniform vec3 uAsh;',
+        'varying float vRole; varying float vLit;',
+        'void main(){',
+        '  float d = length(gl_PointCoord - 0.5);',
+        '  float m = smoothstep(0.5, 0.36, d);',
+        '  vec3 col = vRole > 0.5 ? uEmber : mix(uAsh, uLitC, vLit);',
+        '  float al = vRole > 0.5 ? 1.0 : mix(0.6, 0.96, vLit);',
+        '  gl_FragColor = vec4(col, m * al);',
+        '}'].join('\n')
+    });
+    var points = new THREE.Points(geo, mat); points.frustumCulled = false;
+    var group = new THREE.Group(); group.add(points); group.rotation.x = -0.16;
+    var world = new THREE.Scene(); world.add(group);
+    var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 30); camera.position.z = 4.66;
+
+    var slot = null, raf = 0, last = 0, s = 0, target = 0, time = 0, px = 0, py = 0, tx = 0, ty = 0, alive = true;
+    var follow = parseFloat(getComputedStyle(root).getPropertyValue('--scene-follow')) || 3.2;
+    var ro = 'ResizeObserver' in window ? new ResizeObserver(function () { size(); draw(); }) : null;
+
+    function colors() {
+      var cs = getComputedStyle(slot);
+      U.uEmber.value.fromArray(hex(cs.getPropertyValue('--color-primary')));
+      U.uLitC.value.fromArray(hex(cs.getPropertyValue('--color-text')));
+      U.uAsh.value.fromArray(hex(cs.getPropertyValue('--color-text-muted')));
+    }
+    function size() {
+      if (!slot) return;
+      var w = slot.clientWidth, h = slot.clientHeight; if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      var halfH = 1.25, halfW = halfH * camera.aspect;
+      var fit = Math.min(halfW / 1.8, halfH / 1.15) * (parseFloat(slot.getAttribute('data-zoom')) || 1);
+      group.scale.setScalar(fit);
+      U.uScale.value = Math.max(h * dpr * 0.0175 * Math.max(0.75, fit), 4.66 * 2.5 * dpr);
+    }
+    function draw() { U.uS.value = s; U.uT.value = time; renderer.render(world, camera); }
+    function frame(now) {
+      raf = 0;
+      if (!alive || !slot || doc.hidden) return;
+      var dt = Math.min(0.05, (now - last) / 1000 || 0.016); last = now;
+      var still = reduce.matches;
+      if (still) s = target; else { s += (target - s) * (1 - Math.exp(-dt * follow)); time += dt; }
+      px += (tx - px) * (1 - Math.exp(-dt * 4)); py += (ty - py) * (1 - Math.exp(-dt * 4));
+      group.rotation.y = 0.28 + (still ? 0 : Math.sin(time * 0.22) * 0.14) + px * 0.3;
+      group.rotation.x = -0.16 + py * 0.16;
+      draw();
+      if (!slot.classList.contains('is-live')) slot.classList.add('is-live');
+      if (!still || Math.abs(target - s) > 0.001) raf = requestAnimationFrame(frame);
+    }
+    function wake() { if (!raf && alive && slot && !doc.hidden) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+    function attach(next) {
+      if (next === slot) return;
+      if (slot) { slot.classList.remove('is-live'); if (ro) ro.unobserve(slot); }
+      slot = next;
+      if (!slot) { if (canvas.parentNode) canvas.parentNode.removeChild(canvas); cancelAnimationFrame(raf); raf = 0; return; }
+      slot.appendChild(canvas);
+      target = parseFloat(slot.getAttribute('data-scene')) || 0;
+      colors(); size(); if (ro) ro.observe(slot);
+      wake();
+    }
+    function pick() { if (alive) attach(bestSlot()); }
+    function onMove(e) { if (!slot || !slot.classList.contains('hero-slot')) { tx = ty = 0; return; } tx = e.clientX / window.innerWidth - 0.5; ty = e.clientY / window.innerHeight - 0.5; }
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) window.addEventListener('pointermove', onMove, { passive: true });
+    doc.addEventListener('visibilitychange', function () { if (!doc.hidden) wake(); });
+    canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); stop(); setMode('lite', 'se perdió el contexto gráfico'); });
+    function stop() { alive = false; cancelAnimationFrame(raf); raf = 0; if (slot) { slot.classList.remove('is-live'); if (ro) ro.unobserve(slot); } if (canvas.parentNode) canvas.parentNode.removeChild(canvas); slot = null; }
+    function start() { alive = true; pick(); }
+    return { pick: pick, stop: stop, start: start };
+  }
+
+  function loadScene() {
+    if (scene) { scene.start(); return; }
+    if (loading || !window.__confia.gl) return;
+    loading = true;
+    import('https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js').then(function (THREE) {
+      loading = false;
+      if (root.getAttribute('data-mode') !== 'full') return;
+      scene = window.__scene = createScene(THREE);
+      scene.pick();
+    }).catch(function () { loading = false; setMode('lite', 'no se pudo cargar la escena 3D'); });
+  }
+
+  /* ----- Versión ligera / completa ----- */
+  var modeBtns = $$('[data-mode-set]'), modeNote = $('#mode-note');
+  function setMode(mode, why) {
+    if (mode === 'full' && !window.__confia.gl) { mode = 'lite'; why = 'este navegador no tiene WebGL'; }
+    root.setAttribute('data-mode', mode);
+    modeBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode-set') === mode)); });
+    modeNote.textContent = mode === 'lite' ? (why ? 'Versión ligera activada: ' + why + '.' : 'Versión ligera: imágenes estáticas, sin 3D.') : 'Versión completa: escena 3D en vivo.';
+    if (mode === 'full') loadScene(); else if (scene) scene.stop();
+  }
+  modeBtns.forEach(function (b) { b.addEventListener('click', function () { var m = b.getAttribute('data-mode-set'); try { localStorage.setItem('confia-modo', m === 'full' ? 'completa' : 'ligera'); } catch (e) {} setMode(m, ''); }); });
+  var initial = root.getAttribute('data-mode') === 'full' ? 'full' : 'lite';
+  var auto = initial === 'lite' && window.__confia.explicit !== 'ligera' ? window.__confia.reasons.join(', ') : '';
+  function boot() { setMode(initial, auto); }
+  if (initial === 'full') {
+    /* la escena se carga después del primer pintado, cuando el navegador queda libre */
+    var later = function () { if ('requestIdleCallback' in window) requestIdleCallback(boot, { timeout: 1500 }); else setTimeout(boot, 300); };
+    if (doc.readyState === 'complete') later(); else window.addEventListener('load', later, { once: true });
+    modeBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode-set') === 'full')); });
+  } else boot();
+})();
+</script>
+</body>
+</html>

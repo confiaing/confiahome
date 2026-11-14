@@ -1,0 +1,1138 @@
+<!doctype html>
+<html lang="es" data-type="service">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ronda 2 · Propuesta 5 — Lo mejor de los cuatro · Confia.ing</title>
+<meta name="description" content="Confia.ing: transformación de IA para empresas pequeñas y medianas. Un recorrido en cinco etapas, del diagnóstico a soluciones que tu equipo opera.">
+<meta name="page-type" content="service">
+<meta name="site-kind" content="other">
+<meta name="theme-color" content="#12100D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 32'%3E%3Cg fill='none' stroke-width='5' stroke-linecap='round'%3E%3Cpath stroke='%23F5EFE4' d='M24.07 7.57A11 11 0 1 0 24.07 24.43'/%3E%3Cpath stroke='%23FF5A1F' d='M23.93 24.43A11 11 0 1 0 23.93 7.57'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+/* Modo de la pagina, antes del primer pintado: completa (WebGL) o ligera (SVG estatico). */
+(function () {
+  var d = document.documentElement, reasons = [], explicit = null;
+  d.classList.add('js');
+  try { var q = new URLSearchParams(location.search).get('modo'); if (q === 'ligera' || q === 'completa') explicit = q; else explicit = localStorage.getItem('confia-modo'); } catch (e) {}
+  var gl = false, glFast = false;
+  try { var c = document.createElement('canvas'); gl = !!(c.getContext('webgl2') || c.getContext('webgl')); var c2 = document.createElement('canvas'); glFast = !!(c2.getContext('webgl2', { failIfMajorPerformanceCaveat: true }) || c2.getContext('webgl', { failIfMajorPerformanceCaveat: true })); } catch (e) {}
+  var n = navigator, cn = n.connection || n.mozConnection || n.webkitConnection;
+  if (!gl) reasons.push('este navegador no tiene WebGL');
+  else if (!glFast) reasons.push('gráficos sin aceleración');
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) reasons.push('prefieres movimiento reducido');
+  if (cn && cn.saveData) reasons.push('ahorro de datos activo');
+  if (cn && /(^|-)(2g|3g)$/.test(cn.effectiveType || '')) reasons.push('conexión lenta');
+  if ((n.deviceMemory && n.deviceMemory <= 2) || (n.hardwareConcurrency && n.hardwareConcurrency <= 2)) reasons.push('dispositivo de gama baja');
+  var mode = explicit === 'completa' && gl ? 'full' : explicit === 'ligera' ? 'lite' : reasons.length ? 'lite' : 'full';
+  d.setAttribute('data-mode', mode);
+  window.__confia = { gl: gl, reasons: reasons, explicit: explicit };
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Schibsted+Grotesk:wght@400..700&display=swap">
+<style>
+/* Hallmark · shape: Travesía (un hilo que atraviesa la página: disperso en el hero, tejido en el recorrido, entregado en el cierre) · genre: atmospheric · theme: custom · job: book · idea: "El desorden de una empresa se ordena, juntos, en cinco etapas, hasta quedar en manos de su equipo." · vibe: "tinta cálida, brasa, cercano y preciso"
+ * paper: oklch(17% 0.008 70) · accent: oklch(69% 0.21 41) · display: Bricolage Grotesque · body: Schibsted Grotesk · hero: titular a la izquierda sobre la nube de puntos dispersos que cruza un hilo naranja · nav: marca, dos enlaces, idioma y una acción · footer: marca sobre enlaces y conmutador de versión · imagery: none (una escena de puntos generada; el cliente no tiene fotos) · signature: los puntos dispersos del hero se ordenan en cada etapa del recorrido hasta formar una esfera completa
+ * axes: dark/grotesk-sans/warm · posture: stage · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: E, las etapas llevan más de 80 palabras porque el contenido aprobado debe aparecer completo; se reparte en tres columnas cortas */
+/* waive 19: el guion del title lo fija el encargo · waive 38iii: el subrayado de «resultados» es la firma del hero, una vez · waive 58: el copy aprobado de cada etapa no se recorta · waive 54: el antetítulo del hero es contenido aprobado, compuesto como frase y no como etiqueta · waive 80: la escena generada es el pedido del encargo (un momento 3D con sentido) */
+
+/* ---------- Tokens ---------- */
+:root {
+  /* primitivas */
+  --tinta-900: #12100D; --tinta-800: #1C1915; --tinta-600: #3A342D;
+  --ceniza-700: #4F473E; --ceniza-500: #857C70; --ceniza-400: #B0A79A;
+  --cal-50: #F5EFE4; --cal-200: #E9E1D2; --cal-300: #D8CEBC; --cal-400: #8A8073;
+  --brasa-800: #8E2A06; --brasa-700: #B5380C; --brasa-500: #FF5A1F; --brasa-300: #FF9466;
+  --brote-700: #1F6B40; --brote-400: #7FD9A0;
+  --alerta-700: #B0203A; --alerta-400: #FF8C9A;
+  --mask-solid: #000;
+  /* roles (tema base: tinta) */
+  --color-background: var(--tinta-900);
+  --color-surface: var(--tinta-800);
+  --color-text: var(--cal-50);
+  --color-text-muted: var(--ceniza-400);
+  --color-primary: var(--brasa-500);
+  --color-primary-hover: var(--brasa-300);
+  --color-on-primary: var(--tinta-900);
+  --color-link: var(--brasa-300);
+  --color-focus: var(--cal-50);
+  --color-border: var(--tinta-600);
+  --color-border-strong: var(--ceniza-500);
+  --color-error: var(--alerta-400);
+  --color-success: var(--brote-400);
+  /* tipografía */
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text-s: 0.9375rem; --text-m: 1.0625rem; --text-l: clamp(1.15rem, 0.6vw + 1rem, 1.375rem);
+  --text-h3: clamp(1.35rem, 1.1vw + 1rem, 1.9rem);
+  --text-h2: clamp(2.1rem, 4vw + 0.6rem, 4.1rem);
+  --text-h1: clamp(2.3rem, 4.1vw + 0.9rem, 4.6rem);
+  /* espacio y forma */
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --wrap: 1240px;
+  --section: clamp(4.5rem, 9vw, 8.5rem);
+  --radius-s: 10px; --radius-m: 18px; --radius-l: 32px; --radius-pill: 999px;
+  --header-h: 68px;
+  /* movimiento */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-press: 140ms;
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+  --dur-move: 420ms;
+  --dur-enter: 700ms;
+  --scene-follow: 3.2; /* rapidez con que la escena alcanza la etapa elegida (1/s) */
+}
+.t-cal {
+  --color-background: var(--cal-50);
+  --color-surface: var(--cal-200);
+  --color-text: var(--tinta-900);
+  --color-text-muted: var(--ceniza-700);
+  --color-primary: var(--brasa-700);
+  --color-primary-hover: var(--brasa-800);
+  --color-on-primary: var(--cal-50);
+  --color-link: var(--brasa-700);
+  --color-focus: var(--tinta-900);
+  --color-border: var(--cal-300);
+  --color-border-strong: var(--cal-400);
+  --color-error: var(--alerta-700);
+  --color-success: var(--brote-700);
+}
+.t-brasa {
+  --color-background: var(--brasa-500);
+  --color-surface: var(--brasa-300);
+  --color-text: var(--tinta-900);
+  --color-text-muted: var(--tinta-900);
+  --color-primary: var(--tinta-900);
+  --color-primary-hover: var(--tinta-800);
+  --color-on-primary: var(--cal-50);
+  --color-link: var(--tinta-900);
+  --color-focus: var(--tinta-900);
+  --color-border: var(--tinta-900);
+  --color-border-strong: var(--tinta-900);
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: clip; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); }
+body { margin: 0; overflow-x: clip; background: var(--color-background); color: var(--color-text); font-family: var(--font-body); font-size: var(--text-m); line-height: 1.55; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+.t-cal, .t-brasa { background: var(--color-background); color: var(--color-text); }
+h1, h2, h3, p, ul, ol, dl, dd, figure, fieldset { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+fieldset { border: 0; min-width: 0; }
+h1, h2, h3, .display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.035em; line-height: 0.98; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+h1 { font-size: var(--text-h1); line-height: 1; }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); letter-spacing: -0.02em; line-height: 1.1; }
+p { text-wrap: pretty; }
+a { color: var(--color-link); text-underline-offset: 0.2em; text-decoration-thickness: 1.5px; }
+button { font: inherit; color: inherit; }
+svg { display: block; }
+:focus-visible { outline: 2.5px solid var(--color-focus); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: min(100% - 2 * var(--gutter), var(--wrap)); margin-inline: auto; }
+.section { padding-block: var(--section); position: relative; }
+.lead { font-size: var(--text-l); line-height: 1.45; max-width: 34em; color: var(--color-text-muted); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: absolute; left: var(--gutter); top: 10px; z-index: 100; padding: 0.7rem 1rem; background: var(--color-text); color: var(--color-background); border-radius: var(--radius-s); font-weight: 600; transform: translateY(-200%); }
+.skip:focus { transform: none; }
+[hidden] { display: none !important; }
+
+/* ---------- Botones y enlaces ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; text-align: center; min-height: 54px; padding: 0.8rem 1.6rem; border-radius: var(--radius-pill); border: 1.5px solid transparent; font-family: var(--font-body); font-weight: 600; font-size: 1rem; line-height: 1.2; text-decoration: none; text-wrap: balance; cursor: pointer; transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease; }
+.btn:active, .btn.is-active { transform: scale(0.97); }
+.btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+.btn-secondary { background: transparent; color: var(--color-text); border-color: var(--color-text); }
+.btn-small { min-height: 44px; padding: 0.5rem 1.15rem; font-size: var(--text-s); }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; }
+.btn.is-hover.btn-primary { background: var(--color-primary-hover); }
+.btn.is-hover.btn-secondary { background: var(--color-text); color: var(--color-background); }
+.is-focus { outline: 2.5px solid var(--color-focus); outline-offset: 3px; }
+.link-quiet { color: var(--color-text); text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; padding-bottom: 4px; transition: background-size var(--dur-base) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-secondary:hover { background: var(--color-text); color: var(--color-background); }
+  .link-quiet:hover { background-size: 100% 1.5px; }
+  a:hover { text-decoration-thickness: 2.5px; }
+}
+
+/* ---------- Marca ---------- */
+.brand { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--color-text); text-decoration: none; min-height: 44px; }
+.brand svg { width: 2.1rem; height: 1.4rem; }
+.wm { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; letter-spacing: -0.04em; line-height: 1; }
+.wm i { font-style: normal; color: var(--color-primary); }
+.wm b { font-weight: 400; }
+.sym-a { stroke: var(--color-text); } .sym-b { stroke: var(--color-primary); }
+
+/* ---------- Cabecera ---------- */
+.header { position: sticky; top: 0; z-index: 50; height: var(--header-h); background: var(--color-background); border-bottom: 1px solid var(--color-border); }
+.header .wrap { height: 100%; display: flex; align-items: center; gap: 1rem; }
+.nav { display: none; margin-left: auto; align-items: center; gap: 1.75rem; }
+.nav a { font-size: var(--text-s); font-weight: 500; }
+.header-tools { display: flex; align-items: center; gap: 0.75rem; margin-left: auto; }
+.nav + .header-tools { margin-left: 1.25rem; }
+.lang { display: inline-flex; align-items: center; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); padding: 4px; position: relative; }
+.lang a, .lang button { min-width: 40px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 0; background: none; border-radius: var(--radius-pill); font-size: 0.875rem; font-weight: 600; color: var(--color-text-muted); text-decoration: none; cursor: pointer; }
+.lang [aria-current="true"] { background: var(--color-text); color: var(--color-background); }
+.lang-note { position: absolute; top: calc(100% + 8px); right: 0; width: max-content; max-width: min(78vw, 300px); padding: 0.55rem 0.8rem; background: var(--color-text); color: var(--color-background); border-radius: var(--radius-s); font-size: 0.875rem; line-height: 1.3; z-index: 5; }
+.lang-note:empty { display: none; }
+.footer .lang-note { top: auto; bottom: calc(100% + 8px); right: auto; left: 0; }
+.header .btn { display: none; }
+.menu-btn { display: none; min-height: 44px; padding: 0 1rem; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); background: none; font-size: var(--text-s); font-weight: 600; cursor: pointer; }
+.js .menu-btn { display: inline-flex; align-items: center; }
+.menu { border-bottom: 1px solid var(--color-border); background: var(--color-background); }
+.menu ul { display: grid; padding-block: 0.5rem 1.25rem; }
+.menu li a:not(.btn) { display: flex; align-items: center; min-height: 56px; font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; letter-spacing: -0.03em; color: var(--color-text); text-decoration: none; border-bottom: 1px solid var(--color-border); }
+.menu .btn { width: 100%; margin-top: 1.25rem; }
+.js .menu { position: fixed; inset: var(--header-h) 0 0 0; z-index: 49; overflow-y: auto; border: 0; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast); }
+.js .menu.is-open { opacity: 1; visibility: visible; transform: none; transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), visibility 0s; }
+@media (min-width: 900px) {
+  .nav { display: flex; }
+  .header .btn { display: inline-flex; }
+  .js .menu-btn, .menu, .js .menu { display: none; }
+}
+
+/* ---------- Escena (ranuras, SVG estático, lienzo WebGL) ---------- */
+.slot { position: relative; }
+.scene-svg { width: 100%; height: 100%; }
+.sv-ash { stroke: var(--color-text-muted); opacity: 0.6; }
+.sv-lit { stroke: var(--color-text); }
+.sv-ember { stroke: var(--color-primary); }
+.scene-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.slot.is-live .scene-svg { opacity: 0; }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; min-height: min(calc(100svh - var(--header-h)), 900px); display: grid; align-items: center; padding-block: clamp(2rem, 5vh, 4rem) 0; overflow: clip; }
+.hero-slot { position: absolute; inset: 0 0 auto 0; height: 56%; opacity: 0.72; -webkit-mask-image: linear-gradient(180deg, var(--mask-solid) 50%, transparent); mask-image: linear-gradient(180deg, var(--mask-solid) 50%, transparent); }
+.hero .wrap { position: relative; display: grid; gap: clamp(1.5rem, 4vh, 3rem); min-height: 100%; align-content: space-between; }
+.hero-copy { max-width: 47rem; display: grid; gap: clamp(1rem, 2.4vh, 1.6rem); justify-items: start; }
+.hero-pre { font-size: var(--text-m); font-weight: 500; color: var(--color-link); max-width: 26em; }
+.hero h1 .hilo { position: relative; display: inline-block; }
+.hero h1 .hilo::after { content: ""; position: absolute; left: 0; right: 0; bottom: -0.04em; height: 0.09em; border-radius: 1em; background: var(--color-primary); transform-origin: 0 50%; }
+.hero-text { font-size: var(--text-l); line-height: 1.45; max-width: 33em; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hero-note { font-size: var(--text-s); color: var(--color-text-muted); }
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--color-border); }
+.pillars li { padding-block: 1rem 1.25rem; font-family: var(--font-display); font-weight: 600; font-size: clamp(0.95rem, 2.2vw, 1.75rem); letter-spacing: -0.03em; }
+.pillars li + li { border-left: 1px solid var(--color-border); padding-left: clamp(0.6rem, 2vw, 1.5rem); }
+@media (max-width: 719px) {
+  .hero .actions { display: grid; width: 100%; }
+}
+@media (min-width: 720px) and (max-width: 999px) {
+  .hero-slot { inset: 36% 0 3.5rem 0; height: auto; opacity: 1; -webkit-mask-image: linear-gradient(0deg, var(--mask-solid) 62%, transparent); mask-image: linear-gradient(0deg, var(--mask-solid) 62%, transparent); }
+}
+@media (min-width: 1000px) {
+  .hero-slot { inset: 0 0 0 auto; width: 68%; height: auto; opacity: 1; -webkit-mask-image: linear-gradient(90deg, transparent 18%, var(--mask-solid) 52%); mask-image: linear-gradient(90deg, transparent 18%, var(--mask-solid) 52%); }
+  .hero-copy { max-width: min(47rem, 62%); }
+}
+/* entrada del hero: una sola vez, sólo en versión completa */
+@media (prefers-reduced-motion: no-preference) {
+  [data-mode="full"] .enter { animation: rise var(--dur-enter) var(--ease-out) backwards; animation-delay: var(--d, 0ms); }
+  [data-mode="full"] .enter-fade { animation: fade var(--dur-enter) ease backwards; animation-delay: var(--d, 0ms); }
+  [data-mode="full"] .hero h1 .hilo::after { animation: draw 800ms var(--ease-in-out) 520ms backwards; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(var(--y, 14px)); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes draw { from { transform: scaleX(0); } }
+
+/* ---------- Dónde empezamos ---------- */
+.start-head { display: grid; gap: 1.5rem; margin-bottom: clamp(2.5rem, 6vw, 5rem); }
+.frictions { display: grid; gap: 0; border-top: 1px solid var(--color-text); }
+.frictions li { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(1rem, 3vw, 2rem); row-gap: 0.5rem; padding-block: clamp(1.5rem, 3vw, 2.25rem); border-bottom: 1px solid var(--color-border); align-items: start; }
+.frictions .n { grid-row: span 2; font-family: var(--font-display); font-weight: 700; font-size: clamp(2.5rem, 5vw, 4.25rem); line-height: 0.85; letter-spacing: -0.05em; color: var(--color-primary); min-width: 1.1em; }
+.frictions p { color: var(--color-text-muted); max-width: 30em; }
+.questions { margin-top: clamp(3.5rem, 8vw, 7rem); display: grid; gap: clamp(1.25rem, 3vw, 2.5rem); }
+.questions h3 { color: var(--color-text-muted); font-family: var(--font-body); font-weight: 500; font-size: var(--text-l); letter-spacing: 0; }
+.questions li { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 3.3vw, 3rem); line-height: 1.06; letter-spacing: -0.035em; padding-block: clamp(0.9rem, 1.8vw, 1.4rem); border-top: 1px solid var(--color-border); text-wrap: balance; }
+.questions li:last-child { border-bottom: 1px solid var(--color-border); }
+@media (min-width: 1000px) {
+  .start-head { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: 3rem; }
+  .frictions { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; }
+  .frictions li:nth-child(-n+2) { border-top: 0; }
+  .questions { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 3rem; }
+}
+
+/* ---------- Recorrido ---------- */
+.journey { overflow: clip; padding-top: clamp(4rem, 6vw, 5.5rem); }
+.journey-head { display: grid; gap: 1.25rem; margin-bottom: clamp(1.75rem, 3vw, 2.5rem); }
+.legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; font-size: var(--text-s); color: var(--color-text-muted); }
+.legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+.legend i { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--color-text); }
+.legend .k-us i { background: var(--color-primary); }
+.tabs { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.tab { position: relative; display: grid; gap: 0.35rem; justify-items: start; align-content: start; text-align: left; padding: 0.5rem 0.5rem 1.4rem 0; min-height: 56px; background: none; border: 0; cursor: pointer; color: var(--color-text-muted); transition: color var(--dur-fast) ease; }
+.tab-n { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1; letter-spacing: -0.04em; }
+.tab-name { font-size: var(--text-s); font-weight: 600; line-height: 1.25; display: none; }
+.tab::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-background); border: 2px solid var(--color-border-strong); transition: transform var(--dur-base) var(--ease-out), background-color var(--dur-fast) ease, border-color var(--dur-fast) ease; z-index: 1; }
+.tab:focus-visible { outline-offset: -2px; }
+.tab[aria-selected="true"] { color: var(--color-text); }
+.tab[aria-selected="true"]::after { background: var(--color-primary); border-color: var(--color-primary); transform: scale(1.35); }
+.tab.is-done::after { background: var(--color-text); border-color: var(--color-text); }
+.track { position: relative; height: 2px; background: var(--color-border); }
+.track i { position: absolute; inset: 0; background: var(--color-primary); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); transition: transform var(--dur-move) var(--ease-in-out); }
+.stages { margin-top: clamp(1.75rem, 3vw, 2.5rem); }
+.stage { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); padding-block: 0 2.5rem; }
+.js .stage { padding-block: 0; }
+.stage-fig { aspect-ratio: 36 / 23; border-radius: var(--radius-m); background: var(--color-surface); overflow: hidden; }
+.ing { position: absolute; left: clamp(0.9rem, 2vw, 1.4rem); bottom: clamp(0.7rem, 1.6vw, 1.1rem); font-family: var(--font-display); font-weight: 700; font-size: clamp(1.15rem, 2.2vw, 1.9rem); letter-spacing: -0.04em; line-height: 1; }
+.ing b { font-weight: 400; } .ing i { font-style: normal; color: var(--color-primary); }
+.stage-body { display: grid; gap: 1.25rem; align-content: start; }
+.stage-count { font-size: var(--text-s); color: var(--color-text-muted); }
+.stage h3 { font-size: clamp(1.9rem, 3.4vw, 3.1rem); letter-spacing: -0.035em; line-height: 1; }
+.stage h3 span { display: block; margin-top: 0.4rem; font-family: var(--font-body); font-size: var(--text-m); font-weight: 500; letter-spacing: 0; color: var(--color-link); }
+.stage dl { display: grid; gap: 0; }
+.stage dl > div { padding-block: 1rem; border-top: 1px solid var(--color-border); display: grid; gap: 0.25rem; }
+.stage dt { font-size: var(--text-s); color: var(--color-text-muted); }
+.stage dd { font-size: var(--text-m); }
+.stage .decide dd { font-family: var(--font-display); font-weight: 600; font-size: var(--text-h3); letter-spacing: -0.025em; line-height: 1.1; color: var(--color-link); }
+.stage-nav { display: none; gap: 0.75rem; flex-wrap: wrap; }
+.js .stage-nav { display: flex; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .stage.is-in .stage-body { animation: fade var(--dur-base) ease; }
+}
+@media (min-width: 720px) {
+  .tab-name { display: block; }
+  .tab { padding-right: 1rem; }
+}
+@media (min-width: 1000px) {
+  .journey-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 3rem; }
+  .stage { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; }
+  .stage dl > div { grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; align-items: baseline; }
+}
+
+/* ---------- Lo que ofrecemos ---------- */
+.offer h2 { margin-bottom: clamp(2rem, 4vw, 3rem); }
+.main-offer { border-radius: var(--radius-l); padding: clamp(1.5rem, 4.5vw, 4rem); display: grid; gap: clamp(1.5rem, 4vw, 3rem); }
+.main-offer h3 { font-size: clamp(2.5rem, 7.4vw, 6.9rem); font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; overflow-wrap: normal; }
+.main-offer p { font-size: var(--text-l); line-height: 1.4; max-width: 30em; font-weight: 500; }
+.sum { display: grid; border-top: 2px solid var(--color-border); }
+.sum li { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 3.4vw, 3rem); letter-spacing: -0.04em; line-height: 1; padding-block: 0.9rem; border-bottom: 2px solid var(--color-border); }
+.others { display: grid; margin-top: clamp(2rem, 4vw, 3.5rem); border-top: 1px solid var(--color-border); }
+.others li { padding-block: 1.5rem; border-bottom: 1px solid var(--color-border); display: grid; gap: 0.6rem; align-content: start; }
+.others p { color: var(--color-text-muted); }
+@media (min-width: 720px) {
+  .sum { grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 2px solid var(--color-border); }
+  .sum li { border-bottom: 0; padding: 1.1rem 0 1.2rem; }
+  .sum li + li { border-left: 2px solid var(--color-border); padding-left: clamp(1rem, 2vw, 1.75rem); }
+  .others { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; }
+}
+@media (min-width: 1100px) {
+  .others { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 2.5rem; border-top: 0; }
+  .others li { border-top: 1px solid var(--color-border); border-bottom: 0; }
+}
+
+/* ---------- Por qué confiar ---------- */
+.trust-grid { display: grid; gap: clamp(2.5rem, 6vw, 5rem); margin-top: clamp(2rem, 5vw, 4rem); }
+.proof h3, .principles h3 { color: var(--color-text-muted); font-family: var(--font-body); font-weight: 500; font-size: var(--text-l); letter-spacing: 0; margin-bottom: 1rem; }
+.proof li { padding-block: 1.1rem; border-top: 1px solid var(--color-border); font-size: var(--text-l); line-height: 1.35; }
+.proof li:first-child { border-top-color: var(--color-text); }
+.proof li strong { font-weight: 700; }
+.proof .note { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); font-size: var(--text-s); color: var(--color-text-muted); }
+.principles ul { display: grid; }
+.principles li { font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 9vw, 6.5rem); letter-spacing: -0.055em; line-height: 0.9; }
+.principles li:nth-child(2) { color: var(--color-primary); }
+.principles p { margin-top: 1.5rem; max-width: 30em; }
+@media (min-width: 1000px) {
+  .trust-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 4rem; }
+}
+
+/* ---------- Cierre ---------- */
+.close { overflow: clip; }
+.close-top { position: relative; display: grid; gap: 2rem; padding-bottom: clamp(3rem, 7vw, 6rem); }
+.close-slot { position: absolute; inset: -12% 0 0 0; opacity: 0.4; }
+.close-top > :not(.close-slot) { position: relative; }
+.close h2 { max-width: 13em; }
+.contact { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+.panel { background: var(--color-surface); border-radius: var(--radius-m); padding: clamp(1.25rem, 3vw, 2.5rem); }
+.panel > h3 { margin-bottom: 1.5rem; }
+.form { display: grid; gap: 1.1rem; }
+.field { display: grid; gap: 0.4rem; }
+.field label, .pair legend { font-size: var(--text-s); font-weight: 600; }
+.field label small, .pair legend small { font-weight: 400; color: var(--color-text-muted); font-size: inherit; }
+.input { width: 100%; min-height: 52px; padding: 0.75rem 0.9rem; background: var(--color-background); color: var(--color-text); border: 1.5px solid var(--color-border-strong); border-radius: var(--radius-s); font: inherit; transition: border-color var(--dur-fast) ease; }
+textarea.input { min-height: 120px; resize: vertical; }
+.input::placeholder { color: var(--color-text-muted); }
+.input:focus-visible, .input.is-focus { outline: 2.5px solid var(--color-focus); outline-offset: 2px; border-color: var(--color-text); }
+.input[aria-invalid="true"], .input.is-error { border-color: var(--color-error); }
+.input.is-ok { border-color: var(--color-success); }
+.pair { display: grid; gap: 0.9rem; }
+.pair legend { margin-bottom: 0.6rem; }
+.pair-grid { display: grid; gap: 0.9rem; }
+.err { font-size: var(--text-s); color: var(--color-error); font-weight: 500; }
+.ok-msg { font-size: var(--text-s); color: var(--color-success); font-weight: 500; }
+.err:empty { display: none; }
+.check { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.75rem; align-items: start; font-size: var(--text-s); }
+.check input { width: 24px; height: 24px; margin: 0; accent-color: var(--color-primary); }
+.form .btn { justify-self: start; }
+.done { display: grid; gap: 0.75rem; padding-block: 1rem; }
+.done strong { font-family: var(--font-display); font-size: var(--text-h3); letter-spacing: -0.025em; line-height: 1.1; color: var(--color-success); }
+.cal { display: grid; align-content: start; }
+.cal-box { min-height: 320px; height: 100%; border: 1.5px dashed var(--color-border-strong); border-radius: var(--radius-s); display: grid; place-content: center; justify-items: center; gap: 0.75rem; padding: 1.5rem; text-align: center; color: var(--color-text-muted); }
+.cal-box svg { width: 4.2rem; height: 2.8rem; }
+@media (min-width: 720px) { .pair-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) {
+  .contact { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+  .cal { grid-template-rows: auto 1fr; }
+  .close-slot { inset: -22% -3% -6% 54%; opacity: 0.85; }
+  .close h2 { max-width: 11.5em; }
+}
+
+/* ---------- Pie ---------- */
+.footer { border-top: 1px solid var(--color-border); padding-block: clamp(2.5rem, 5vw, 4rem) 2rem; }
+.footer .wrap { display: grid; gap: 2rem; }
+.footer .wm { font-size: clamp(2.6rem, 9vw, 7rem); }
+.footer .brand svg { width: clamp(3.4rem, 11vw, 8.5rem); height: auto; aspect-ratio: 3 / 2; }
+.foot-row { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; align-items: center; }
+.foot-row a { display: inline-flex; align-items: center; min-height: 44px; }
+.foot-meta { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; padding-top: 1.5rem; border-top: 1px solid var(--color-border); font-size: var(--text-s); color: var(--color-text-muted); }
+.mode { display: grid; gap: 0.5rem; }
+.js .mode { display: grid; } .mode { display: none; }
+.seg { display: inline-flex; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); padding: 4px; width: max-content; max-width: 100%; }
+.seg button { min-height: 40px; padding: 0 1rem; border: 0; background: none; border-radius: var(--radius-pill); font-size: 0.875rem; font-weight: 600; color: var(--color-text-muted); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--color-text); color: var(--color-background); }
+
+/* ---------- Sistema de marca ---------- */
+.sys { padding-block: var(--section); border-top: 1px solid var(--color-border); }
+.sys > .wrap { display: grid; gap: clamp(2.5rem, 5vw, 4rem); }
+.sys h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+.sys h3 { font-family: var(--font-body); font-weight: 600; font-size: var(--text-m); letter-spacing: 0; margin-bottom: 1rem; color: var(--color-text-muted); }
+.sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+.sw li { display: grid; gap: 0.5rem; font-size: 0.875rem; line-height: 1.35; }
+.sw i { display: block; height: 72px; border-radius: var(--radius-s); border: 1px solid var(--color-border); background: var(--c); }
+.sw code, .tok code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8125rem; }
+.sw span { color: var(--color-text-muted); }
+.types { display: grid; gap: 2rem; }
+.types .a { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.5rem, 7vw, 5.5rem); letter-spacing: -0.045em; line-height: 0.95; }
+.types .b { font-size: var(--text-l); max-width: 32em; }
+.types small { display: block; margin-top: 0.5rem; font-size: 0.875rem; color: var(--color-text-muted); }
+.logos { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.logo-tile { border-radius: var(--radius-m); padding: 2rem 1.5rem; min-height: 150px; display: grid; place-items: center; border: 1px solid var(--color-border); }
+.logo-tile .wm { font-size: 2rem; } .logo-tile .brand svg { width: 3rem; height: 2rem; }
+.logo-tile.only svg { width: 6rem; height: 4rem; }
+.states { display: grid; gap: 1.5rem; }
+.states-row { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: center; }
+.states-row > div { display: grid; gap: 0.4rem; justify-items: start; font-size: 0.8125rem; color: var(--color-text-muted); }
+.states-row .input { width: 220px; }
+.tok { width: 100%; border-collapse: collapse; font-size: var(--text-s); }
+.tok th, .tok td { text-align: left; padding: 0.7rem 1rem 0.7rem 0; border-top: 1px solid var(--color-border); vertical-align: top; font-weight: 400; }
+.tok th { color: var(--color-text-muted); }
+.tok-scroll { overflow-x: auto; }
+@media (min-width: 1000px) { .types { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; } .sys-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; } }
+@media (max-width: 999px) { .sys-two { display: grid; gap: 2.5rem; } }
+
+/* ---------- Movimiento reducido y versión ligera ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }
+}
+[data-mode="lite"] { scroll-behavior: auto; }
+[data-mode="lite"] .track i, [data-mode="lite"] .tab::after { transition: none; }
+</style>
+<noscript><style>.tabs, .track { display: none; } .stage { border-top: 1px solid var(--color-border); padding-top: 2.5rem; }</style></noscript>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="simbolo" viewBox="0 0 48 32"><g fill="none" stroke-width="4.5" stroke-linecap="round"><path class="sym-a" d="M24.07 7.57A11 11 0 1 0 24.07 24.43"/><path class="sym-b" d="M23.93 24.43A11 11 0 1 0 23.93 7.57"/></g></symbol>
+</svg>
+
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="confia.ing, inicio">
+      <svg aria-hidden="true"><use href="#simbolo"/></svg>
+      <span class="wm" aria-hidden="true">confia<i>.</i><b>ing</b></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a class="link-quiet" href="#donde-empezamos">Dónde empezamos</a>
+      <a class="link-quiet" href="#recorrido">Cómo lo hacemos realidad</a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang" role="group" aria-label="Idioma">
+        <a href="#inicio" lang="es" aria-current="true" aria-label="Español, idioma actual">ES</a>
+        <button type="button" lang="en" data-lang-en aria-label="English">EN</button>
+        <span class="lang-note" role="status" aria-live="polite"></span>
+      </div>
+      <a class="btn btn-primary btn-small" href="#agenda">Agenda 30 minutos</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menú</button>
+    </div>
+  </div>
+</header>
+<nav class="menu" id="menu" aria-label="Menú">
+  <div class="wrap">
+    <ul>
+      <li><a href="#donde-empezamos">Dónde empezamos</a></li>
+      <li><a href="#recorrido">Cómo lo hacemos realidad</a></li>
+      <li><a class="btn btn-primary" href="#agenda">Agenda 30 minutos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="contenido">
+
+<!-- ============ Hero ============ -->
+<section class="hero" id="inicio">
+  <div class="hero-slot slot" data-scene="0" data-zoom="1.45"><!--@@SVG0@@--></div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="hero-pre enter-fade">Transformación de IA para empresas que ya usan tecnología</p>
+      <h1 class="enter" style="--y:22px">Encuentra dónde la IA puede generar <span class="hilo">resultados</span> en tu empresa.</h1>
+      <p class="hero-text enter" style="--d:110ms;--y:12px">Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo desde el diagnóstico hasta soluciones que pueda operar y escalar.</p>
+      <div class="actions enter" style="--d:190ms;--y:8px">
+        <a class="btn btn-primary" href="#agenda">Agenda una conversación de 30 minutos</a>
+        <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+      </div>
+      <p class="hero-note enter-fade" style="--d:260ms">Una conversación exploratoria, sin costo ni compromiso.</p>
+    </div>
+    <ul class="pillars enter-fade" style="--d:320ms" aria-label="Tres pilares">
+      <li>Estrategia</li>
+      <li>Capacitación</li>
+      <li>Automatización</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ Dónde empezamos ============ -->
+<section class="section t-cal" id="donde-empezamos" aria-labelledby="h-donde">
+  <div class="wrap">
+    <div class="start-head">
+      <h2 id="h-donde">Empezamos por el trabajo, no por la tecnología.</h2>
+      <p class="lead">Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p>
+    </div>
+    <ol class="frictions" aria-label="Cuatro fricciones reconocibles">
+      <li><span class="n" aria-hidden="true">1</span><h3>Tareas repetitivas que cuestan horas.</h3><p>Trabajo operativo y verificable que tu equipo hace a mano cada semana: revisar, copiar, clasificar, responder.</p></li>
+      <li><span class="n" aria-hidden="true">2</span><h3>Sistemas y datos que no se hablan.</h3><p>Información repartida entre herramientas, con personas haciendo de puente.</p></li>
+      <li><span class="n" aria-hidden="true">3</span><h3>IA sin estrategia.</h3><p>Licencias compradas y equipos improvisando, sin saber si eso mejora la productividad.</p></li>
+      <li><span class="n" aria-hidden="true">4</span><h3>Equipos de software que no saben por dónde empezar.</h3><p>Quieren integrar IA en su ciclo de desarrollo, pero no tienen un método para hacerlo en cada fase.</p></li>
+    </ol>
+    <div class="questions">
+      <h3 id="h-preguntas">Preguntas que respondemos contigo</h3>
+      <ul aria-labelledby="h-preguntas">
+        <li>¿En qué proceso tiene sentido usar IA?</li>
+        <li>¿Qué datos, herramientas y personas necesito?</li>
+        <li>¿Cómo justifico el costo y mido el impacto?</li>
+        <li>¿Cómo evito fugas de información y soluciones difíciles de mantener?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Recorrido ============ -->
+<section class="section journey" id="recorrido" aria-labelledby="h-recorrido">
+  <div class="wrap">
+    <div class="journey-head">
+      <h2 id="h-recorrido">Un recorrido que hacemos juntos.</h2>
+      <div style="display:grid;gap:1rem">
+        <p class="lead">Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.</p>
+        <p class="legend"><span><i></i>Tu empresa</span><span class="k-us"><i></i>Confia.ing</span></p>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Las cinco etapas del recorrido">
+      <button class="tab" role="tab" id="tab-1" aria-controls="etapa-1" aria-selected="true"><span class="tab-n" aria-hidden="true">1</span><span class="tab-name">Conversación inicial</span><span class="vh tab-vh">Etapa 1: Conversación inicial</span></button>
+      <button class="tab" role="tab" id="tab-2" aria-controls="etapa-2" aria-selected="false" tabindex="-1"><span class="tab-n" aria-hidden="true">2</span><span class="tab-name">Diagnóstico</span><span class="vh tab-vh">Etapa 2: Diagnóstico</span></button>
+      <button class="tab" role="tab" id="tab-3" aria-controls="etapa-3" aria-selected="false" tabindex="-1"><span class="tab-n" aria-hidden="true">3</span><span class="tab-name">Roadmap</span><span class="vh tab-vh">Etapa 3: Roadmap</span></button>
+      <button class="tab" role="tab" id="tab-4" aria-controls="etapa-4" aria-selected="false" tabindex="-1"><span class="tab-n" aria-hidden="true">4</span><span class="tab-name">Piloto</span><span class="vh tab-vh">Etapa 4: Piloto</span></button>
+      <button class="tab" role="tab" id="tab-5" aria-controls="etapa-5" aria-selected="false" tabindex="-1"><span class="tab-n" aria-hidden="true">5</span><span class="tab-name">Escala y transferencia</span><span class="vh tab-vh">Etapa 5: Escala y transferencia</span></button>
+    </div>
+    <div class="track" aria-hidden="true"><i></i></div>
+
+    <div class="stages">
+      <div class="stage" role="tabpanel" id="etapa-1" aria-labelledby="tab-1" tabindex="0">
+        <figure class="stage-fig slot" data-scene="1"><!--@@SVG1@@--><span class="ing" aria-hidden="true">conversa<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 1 de 5</p>
+          <h3>Conversación inicial <span>30 minutos</span></h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Exploramos tus procesos y dónde podría aplicarse IA. Es una conversación, no un diagnóstico ni un compromiso.</dd></div>
+            <div><dt>Qué recibes</dt><dd>Una primera lectura de oportunidades y una idea clara de si podemos ayudarte.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Decides si avanzamos a un diagnóstico.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-primary btn-small" type="button" data-go="2">Ver etapa 2: Diagnóstico</button></div>
+        </div>
+      </div>
+      <div class="stage" role="tabpanel" id="etapa-2" aria-labelledby="tab-2" tabindex="0">
+        <figure class="stage-fig slot" data-scene="2"><!--@@SVG2@@--><span class="ing" aria-hidden="true">diagnostica<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 2 de 5</p>
+          <h3>Diagnóstico</h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Evaluamos oportunidades, fricciones y qué tan preparada está tu empresa: datos, herramientas y personas.</dd></div>
+            <div><dt>Qué recibes</dt><dd>Oportunidades priorizadas y lo que hay que preparar. El alcance se acuerda contigo.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Elegimos juntos por dónde empezar.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-secondary btn-small" type="button" data-go="1">Volver a la etapa 1</button><button class="btn btn-primary btn-small" type="button" data-go="3">Ver etapa 3: Roadmap</button></div>
+        </div>
+      </div>
+      <div class="stage" role="tabpanel" id="etapa-3" aria-labelledby="tab-3" tabindex="0">
+        <figure class="stage-fig slot" data-scene="3"><!--@@SVG3@@--><span class="ing" aria-hidden="true">traza<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 3 de 5</p>
+          <h3>Roadmap</h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Trazamos un plan de alto nivel: etapas, personas involucradas, costos y resultados esperados.</dd></div>
+            <div><dt>Qué recibes</dt><dd>El estado actual frente al estado deseado para los próximos meses.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Acordamos el primer piloto.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-secondary btn-small" type="button" data-go="2">Volver a la etapa 2</button><button class="btn btn-primary btn-small" type="button" data-go="4">Ver etapa 4: Piloto</button></div>
+        </div>
+      </div>
+      <div class="stage" role="tabpanel" id="etapa-4" aria-labelledby="tab-4" tabindex="0">
+        <figure class="stage-fig slot" data-scene="4"><!--@@SVG4@@--><span class="ing" aria-hidden="true">pilotea<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 4 de 5</p>
+          <h3>Piloto</h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Implementamos con demos, revisiones y ciclos de feedback.</dd></div>
+            <div><dt>Qué recibes</dt><dd>Una solución funcionando, con métricas y OKR del proyecto y del impacto en el negocio.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Si demuestra valor, lo escalamos.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-secondary btn-small" type="button" data-go="3">Volver a la etapa 3</button><button class="btn btn-primary btn-small" type="button" data-go="5">Ver etapa 5: Escala y transferencia</button></div>
+        </div>
+      </div>
+      <div class="stage" role="tabpanel" id="etapa-5" aria-labelledby="tab-5" tabindex="0">
+        <figure class="stage-fig slot" data-scene="5"><!--@@SVG5@@--><span class="ing" aria-hidden="true">transfiere<i>.</i><b>ing</b></span></figure>
+        <div class="stage-body">
+          <p class="stage-count">Etapa 5 de 5</p>
+          <h3>Escala y transferencia</h3>
+          <dl>
+            <div><dt>Qué hacemos</dt><dd>Diseñamos la solución para crecer, con monitoreo continuo.</dd></div>
+            <div><dt>Qué recibes</dt><dd>Capacitación y documentación para que tu equipo la opere. El soporte continuo es opcional.</dd></div>
+            <div class="decide"><dt>Siguiente paso</dt><dd>Tu equipo queda a cargo.</dd></div>
+          </dl>
+          <div class="stage-nav"><button class="btn btn-secondary btn-small" type="button" data-go="4">Volver a la etapa 4</button><button class="btn btn-secondary btn-small" type="button" data-go="1">Recorrer de nuevo</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Lo que ofrecemos ============ -->
+<section class="section offer" id="servicios" aria-labelledby="h-ofrecemos" style="padding-top:0">
+  <div class="wrap">
+    <h2 id="h-ofrecemos">Lo que ofrecemos</h2>
+    <div class="main-offer t-brasa">
+      <h3>Transformación de IA</h3>
+      <p>Estrategia, capacitación y automatización integradas para llevar la IA de la idea al resultado.</p>
+      <ul class="sum" aria-label="Lo que integra">
+        <li>Estrategia</li>
+        <li>Capacitación</li>
+        <li>Automatización</li>
+      </ul>
+    </div>
+    <ul class="others" aria-label="Otros servicios">
+      <li><h3>Capacitación en IA</h3><p>Para líderes y perfiles no técnicos: usar IA con criterio en flujos de trabajo reales.</p></li>
+      <li><h3>AI-SDLC</h3><p>Acompañamos a equipos de software a integrar IA en cada fase del ciclo de desarrollo.</p></li>
+      <li><h3>Software a la medida</h3><p>Cuando la solución necesita construirse.</p></li>
+      <li><h3>Soluciones generativas y agentivas</h3><p>Asesoría y construcción de agentes y sistemas basados en IA generativa.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ Por qué confiar ============ -->
+<section class="section t-cal" id="confiar" aria-labelledby="h-confiar">
+  <div class="wrap">
+    <h2 id="h-confiar">Por qué confiar</h2>
+    <div class="trust-grid">
+      <div class="proof">
+        <h3>Experiencia del equipo</h3>
+        <ul>
+          <li><strong>Más de cinco años</strong> en empresas SaaS de EE. UU. con clientes en todo el mundo.</li>
+          <li><strong>Sector salud:</strong> un sistema RAG agentivo para gestión documental de tratamientos médicos, con modelos locales y en la nube.</li>
+          <li><strong>Eficiencia en el uso de LLM:</strong> costos, modelos locales y enrutamiento de modelos.</li>
+          <li><strong>AI-SDLC:</strong> asesoría en todas las fases del ciclo de desarrollo.</li>
+        </ul>
+        <p class="note">Experiencia previa de quienes integran el equipo.</p>
+      </div>
+      <div class="principles">
+        <h3>Tres principios</h3>
+        <ul>
+          <li>Mantenible</li>
+          <li>Seguro</li>
+          <li>Medible</li>
+        </ul>
+        <p><strong>Seguridad:</strong> consideramos riesgos como fuga de información y prompt injection, y los requisitos de datos personales y normativos que apliquen a tu contexto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Cierre ============ -->
+<section class="section close" id="cierre" aria-labelledby="h-cierre">
+  <div class="wrap">
+    <div class="close-top">
+      <div class="close-slot slot" data-scene="5" data-zoom="1.25"><!--@@SVG5@@--></div>
+      <h2 id="h-cierre">Tu equipo ya trabaja duro. Hagamos que la IA trabaje con él.</h2>
+      <div class="actions">
+        <a class="btn btn-primary" href="#agenda">Agenda una conversación de 30 minutos</a>
+        <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+      </div>
+    </div>
+    <div class="contact">
+      <div class="panel cal" id="agenda" tabindex="-1">
+        <h3>Agenda 30 minutos</h3>
+        <div class="cal-box">
+          <svg aria-hidden="true"><use href="#simbolo"/></svg>
+          <p>Aquí se cargará el calendario de Calendly para elegir día y hora.</p>
+        </div>
+      </div>
+      <div class="panel" id="consulta" tabindex="-1">
+        <h3>¿Dónde quieres aplicar IA?</h3>
+        <form class="form" id="form" method="post" action="#consulta">
+          <div class="field">
+            <label for="f-nombre">Nombre</label>
+            <input class="input" id="f-nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="e-nombre">
+            <p class="err" id="e-nombre"></p>
+          </div>
+          <div class="field">
+            <label for="f-empresa">Empresa <small>(opcional)</small></label>
+            <input class="input" id="f-empresa" name="empresa" type="text" autocomplete="organization">
+          </div>
+          <fieldset class="pair">
+            <legend>Correo o teléfono <small>(al menos uno)</small></legend>
+            <div class="pair-grid">
+              <div class="field">
+                <label for="f-correo">Correo</label>
+                <input class="input" id="f-correo" name="correo" type="email" autocomplete="email" inputmode="email" aria-describedby="e-correo e-contacto">
+                <p class="err" id="e-correo"></p>
+              </div>
+              <div class="field">
+                <label for="f-tel">Teléfono</label>
+                <input class="input" id="f-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="e-tel e-contacto">
+                <p class="err" id="e-tel"></p>
+              </div>
+            </div>
+            <p class="err" id="e-contacto"></p>
+          </fieldset>
+          <div class="field">
+            <label for="f-donde">¿Dónde quieres aplicar IA? <small>(opcional)</small></label>
+            <textarea class="input" id="f-donde" name="donde" rows="4"></textarea>
+          </div>
+          <div class="field">
+            <label class="check" for="f-acepto">
+              <input id="f-acepto" name="acepto" type="checkbox" required aria-describedby="e-acepto">
+              <span>Acepto el tratamiento de mis datos para responder mi solicitud, según la <a href="#privacidad">Política de privacidad</a>.</span>
+            </label>
+            <p class="err" id="e-acepto"></p>
+          </div>
+          <button class="btn btn-primary" type="submit">Enviar consulta</button>
+        </form>
+        <div class="done" id="done" role="status" tabindex="-1" hidden>
+          <svg aria-hidden="true" style="width:4.2rem;height:2.8rem"><use href="#simbolo"/></svg>
+          <strong>Recibimos tu consulta.</strong>
+          <p>Te contactaremos pronto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ Pie ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="confia.ing, inicio">
+      <svg aria-hidden="true"><use href="#simbolo"/></svg>
+      <span class="wm" aria-hidden="true">confia<i>.</i><b>ing</b></span>
+    </a>
+    <div class="foot-row">
+      <a href="mailto:hola@confia.ing">hola@confia.ing</a>
+      <a class="link-quiet" href="#privacidad" id="privacidad">Privacidad</a>
+      <a class="link-quiet" href="#terminos" id="terminos">Términos</a>
+      <div class="lang" role="group" aria-label="Idioma">
+        <a href="#inicio" lang="es" aria-current="true" aria-label="Español, idioma actual">ES</a>
+        <button type="button" lang="en" data-lang-en aria-label="English">EN</button>
+        <span class="lang-note" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <p>© 2026 Confia.ing</p>
+      <div class="mode">
+        <div class="seg" role="group" aria-label="Versión de la página">
+          <button type="button" data-mode-set="lite" aria-pressed="false">Versión ligera</button>
+          <button type="button" data-mode-set="full" aria-pressed="false">Versión completa</button>
+        </div>
+        <p id="mode-note" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ Sistema de marca ============ -->
+<aside class="sys" aria-labelledby="h-sistema">
+  <div class="wrap">
+    <div style="display:grid;gap:1rem">
+      <h2 id="h-sistema">Sistema de marca</h2>
+      <p class="lead">Tinta cálida, cal y una brasa. Dos arcos que se enlazan: tú y nosotros. El punto de <span lang="en">.ing</span> es lo que sigue en marcha.</p>
+    </div>
+
+    <div>
+      <h3>Paleta: primitivas</h3>
+      <ul class="sw">
+        <li><i style="--c:var(--tinta-900)"></i><strong>Tinta 900</strong><code>#12100D</code></li>
+        <li><i style="--c:var(--tinta-800)"></i><strong>Tinta 800</strong><code>#1C1915</code></li>
+        <li><i style="--c:var(--tinta-600)"></i><strong>Tinta 600</strong><code>#3A342D</code></li>
+        <li><i style="--c:var(--ceniza-700)"></i><strong>Ceniza 700</strong><code>#4F473E</code></li>
+        <li><i style="--c:var(--ceniza-500)"></i><strong>Ceniza 500</strong><code>#857C70</code></li>
+        <li><i style="--c:var(--ceniza-400)"></i><strong>Ceniza 400</strong><code>#B0A79A</code></li>
+        <li><i style="--c:var(--cal-50)"></i><strong>Cal 50</strong><code>#F5EFE4</code></li>
+        <li><i style="--c:var(--cal-200)"></i><strong>Cal 200</strong><code>#E9E1D2</code></li>
+        <li><i style="--c:var(--cal-300)"></i><strong>Cal 300</strong><code>#D8CEBC</code></li>
+        <li><i style="--c:var(--cal-400)"></i><strong>Cal 400</strong><code>#8A8073</code></li>
+        <li><i style="--c:var(--brasa-300)"></i><strong>Brasa 300</strong><code>#FF9466</code></li>
+        <li><i style="--c:var(--brasa-500)"></i><strong>Brasa 500</strong><code>#FF5A1F</code></li>
+        <li><i style="--c:var(--brasa-700)"></i><strong>Brasa 700</strong><code>#B5380C</code></li>
+        <li><i style="--c:var(--brasa-800)"></i><strong>Brasa 800</strong><code>#8E2A06</code></li>
+        <li><i style="--c:var(--brote-400)"></i><strong>Brote 400</strong><code>#7FD9A0</code></li>
+        <li><i style="--c:var(--brote-700)"></i><strong>Brote 700</strong><code>#1F6B40</code></li>
+        <li><i style="--c:var(--alerta-400)"></i><strong>Alerta 400</strong><code>#FF8C9A</code></li>
+        <li><i style="--c:var(--alerta-700)"></i><strong>Alerta 700</strong><code>#B0203A</code></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Paleta: roles</h3>
+      <div class="tok-scroll">
+        <table class="tok">
+          <thead><tr><th scope="col">Rol</th><th scope="col">Sobre tinta</th><th scope="col">Sobre cal</th><th scope="col">Uso</th></tr></thead>
+          <tbody>
+            <tr><td><code>--color-background</code></td><td>Tinta 900 <code>#12100D</code></td><td>Cal 50 <code>#F5EFE4</code></td><td>Fondo de página y de banda</td></tr>
+            <tr><td><code>--color-surface</code></td><td>Tinta 800 <code>#1C1915</code></td><td>Cal 200 <code>#E9E1D2</code></td><td>Paneles, figura de cada etapa</td></tr>
+            <tr><td><code>--color-text</code></td><td>Cal 50 <code>#F5EFE4</code></td><td>Tinta 900 <code>#12100D</code></td><td>Texto; puntos de «tu empresa» en la escena</td></tr>
+            <tr><td><code>--color-text-muted</code></td><td>Ceniza 400 <code>#B0A79A</code></td><td>Ceniza 700 <code>#4F473E</code></td><td>Texto secundario; puntos aún dispersos</td></tr>
+            <tr><td><code>--color-primary</code></td><td>Brasa 500 <code>#FF5A1F</code></td><td>Brasa 700 <code>#B5380C</code></td><td>Acción principal; el hilo de Confia.ing</td></tr>
+            <tr><td><code>--color-link</code></td><td>Brasa 300 <code>#FF9466</code></td><td>Brasa 700 <code>#B5380C</code></td><td>Enlaces y decisiones de cada etapa</td></tr>
+            <tr><td><code>--color-focus</code></td><td>Cal 50 <code>#F5EFE4</code></td><td>Tinta 900 <code>#12100D</code></td><td>Anillo de foco, 2,5 px con 3 px de separación</td></tr>
+            <tr><td><code>--color-border</code></td><td>Tinta 600 <code>#3A342D</code></td><td>Cal 300 <code>#D8CEBC</code></td><td>Líneas divisorias; campos con Ceniza 500 o Cal 400</td></tr>
+            <tr><td><code>--color-error</code></td><td>Alerta 400 <code>#FF8C9A</code></td><td>Alerta 700 <code>#B0203A</code></td><td>Mensajes de error del formulario</td></tr>
+            <tr><td><code>--color-success</code></td><td>Brote 400 <code>#7FD9A0</code></td><td>Brote 700 <code>#1F6B40</code></td><td>Confirmación</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <h3>Tipografías</h3>
+      <div class="types">
+        <div><p class="a">Hagamos que la IA trabaje con él.</p><small>Bricolage Grotesque 400 a 800. Titulares, cifras de etapa y marca.</small></div>
+        <div><p class="b">Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p><small>Schibsted Grotesk 400 a 700. Texto, etiquetas y controles.</small></div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Logotipo y símbolo</h3>
+      <div class="logos">
+        <div class="logo-tile"><span class="brand"><svg aria-hidden="true"><use href="#simbolo"/></svg><span class="wm">confia<i>.</i><b>ing</b></span></span></div>
+        <div class="logo-tile t-cal"><span class="brand"><svg aria-hidden="true"><use href="#simbolo"/></svg><span class="wm">confia<i>.</i><b>ing</b></span></span></div>
+        <div class="logo-tile t-brasa"><span class="brand"><svg aria-hidden="true"><use href="#simbolo"/></svg><span class="wm">confia<i>.</i><b>ing</b></span></span></div>
+        <div class="logo-tile only"><svg role="img" aria-label="Símbolo: dos arcos enlazados"><use href="#simbolo"/></svg></div>
+      </div>
+    </div>
+
+    <div class="sys-two">
+      <div>
+        <h3>Botones y enlaces</h3>
+        <div class="states">
+          <div class="states-row">
+            <div><span class="btn btn-primary btn-small">Agenda</span>Normal</div>
+            <div><span class="btn btn-primary btn-small is-hover">Agenda</span>Hover</div>
+            <div><span class="btn btn-primary btn-small is-active">Agenda</span>Pulsado</div>
+            <div><span class="btn btn-primary btn-small is-focus">Agenda</span>Foco</div>
+            <div><button class="btn btn-primary btn-small" type="button" disabled>Agenda</button>Inactivo</div>
+          </div>
+          <div class="states-row">
+            <div><span class="btn btn-secondary btn-small">Cuéntanos</span>Normal</div>
+            <div><span class="btn btn-secondary btn-small is-hover">Cuéntanos</span>Hover</div>
+            <div><span class="btn btn-secondary btn-small is-active">Cuéntanos</span>Pulsado</div>
+            <div><span class="btn btn-secondary btn-small is-focus">Cuéntanos</span>Foco</div>
+            <div><button class="btn btn-secondary btn-small" type="button" disabled>Cuéntanos</button>Inactivo</div>
+          </div>
+          <div class="states-row">
+            <div><a href="#h-sistema">Enlace en texto</a>Subrayado, engrosa al pasar</div>
+            <div><a class="link-quiet" href="#h-sistema">Enlace de navegación</a>La línea se dibuja al pasar</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Campos</h3>
+        <div class="states">
+          <div class="states-row">
+            <div><input class="input" type="text" value="Normal" aria-label="Campo, estado normal" readonly></div>
+            <div><input class="input is-focus" type="text" value="Foco" aria-label="Campo, estado de foco" readonly></div>
+          </div>
+          <div class="states-row">
+            <div><input class="input is-error" type="text" value="nombre@" aria-label="Campo, estado de error" readonly><span class="err">Revisa el correo.</span></div>
+            <div><input class="input is-ok" type="text" value="nombre@empresa.com" aria-label="Campo, estado válido" readonly><span class="ok-msg">Correcto.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Movimiento</h3>
+      <div class="tok-scroll">
+        <table class="tok">
+          <thead><tr><th scope="col">Token</th><th scope="col">Valor</th><th scope="col">Dónde</th></tr></thead>
+          <tbody>
+            <tr><td><code>--ease-out</code></td><td><code>cubic-bezier(0.23, 1, 0.32, 1)</code></td><td>Todo lo que entra o responde</td></tr>
+            <tr><td><code>--ease-in-out</code></td><td><code>cubic-bezier(0.77, 0, 0.175, 1)</code></td><td>Lo que se desplaza en pantalla: la línea del recorrido</td></tr>
+            <tr><td><code>--dur-press</code></td><td>140 ms</td><td>Botón pulsado, escala 0,97</td></tr>
+            <tr><td><code>--dur-fast</code></td><td>180 ms</td><td>Color al pasar el cursor; cierre del menú</td></tr>
+            <tr><td><code>--dur-base</code></td><td>240 ms</td><td>Apertura del menú, subrayados, cambio de etapa</td></tr>
+            <tr><td><code>--dur-move</code></td><td>420 ms</td><td>Avance de la línea del recorrido</td></tr>
+            <tr><td><code>--dur-enter</code></td><td>700 ms</td><td>Entrada del hero, una vez, escalonada 0, 110, 190, 260 y 320 ms</td></tr>
+            <tr><td><code>--scene-follow</code></td><td>3,2 por segundo</td><td>La escena persigue la etapa elegida; se puede interrumpir en cualquier punto</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+/*@@STATES@@*/
+</script>
+<script>
+(function () {
+  'use strict';
+  var doc = document, root = doc.documentElement, $ = function (s, c) { return (c || doc).querySelector(s); }, $$ = function (s, c) { return Array.prototype.slice.call((c || doc).querySelectorAll(s)); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ----- Menú móvil ----- */
+  var menuBtn = $('.menu-btn'), menu = $('#menu');
+  function setMenu(open) {
+    menu.classList.toggle('is-open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.textContent = open ? 'Cerrar' : 'Menú';
+    if (open) menu.removeAttribute('inert'); else menu.setAttribute('inert', '');
+  }
+  setMenu(false);
+  menuBtn.addEventListener('click', function () { setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') { setMenu(false); menuBtn.focus(); } });
+  window.matchMedia('(min-width: 900px)').addEventListener('change', function (e) { if (e.matches) setMenu(false); });
+
+  /* ----- Idioma (la versión EN se redacta en la siguiente fase) ----- */
+  $$('[data-lang-en]').forEach(function (b) {
+    var note = b.parentNode.querySelector('.lang-note'), t;
+    b.addEventListener('click', function () { note.textContent = 'La versión en inglés llega en la siguiente fase.'; clearTimeout(t); t = setTimeout(function () { note.textContent = ''; }, 4000); });
+  });
+
+  /* ----- Anclas: llevar también el foco al destino ----- */
+  $$('a[href="#agenda"], a[href="#consulta"]').forEach(function (a) {
+    a.addEventListener('click', function () { var t = $(a.getAttribute('href')); if (t) setTimeout(function () { t.focus({ preventScroll: true }); }, 0); });
+  });
+
+  /* ----- Recorrido: pestañas ----- */
+  var tabs = $$('[role="tab"]'), panels = $$('[role="tabpanel"]'), track = $('.track i'), current = 0;
+  function selectTab(i, focus) {
+    i = (i + tabs.length) % tabs.length;
+    tabs.forEach(function (t, k) { var on = k === i; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; t.classList.toggle('is-done', k < i); });
+    panels.forEach(function (p, k) { p.hidden = k !== i; p.classList.toggle('is-in', k === i); });
+    track.style.setProperty('--p', (i / tabs.length).toFixed(3));
+    current = i;
+    if (focus) tabs[i].focus();
+    if (window.__scene) window.__scene.pick();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { selectTab(i, false); });
+    t.addEventListener('keydown', function (e) {
+      var k = e.key, n = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') n = current + 1;
+      else if (k === 'ArrowLeft' || k === 'ArrowUp') n = current - 1;
+      else if (k === 'Home') n = 0;
+      else if (k === 'End') n = tabs.length - 1;
+      if (n !== null) { e.preventDefault(); selectTab(n, true); }
+    });
+  });
+  $$('[data-go]').forEach(function (b) { b.addEventListener('click', function () { selectTab(+b.getAttribute('data-go') - 1, true); }); });
+  selectTab(0, false);
+  panels[0].classList.remove('is-in');
+
+  /* ----- Formulario (maqueta: valida en el navegador, no envía nada) ----- */
+  var form = $('#form'), done = $('#done');
+  form.setAttribute('novalidate', '');
+  function setErr(input, id, msg) { $('#' + id).textContent = msg || ''; if (input) { if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid'); } }
+  function validate() {
+    var nombre = $('#f-nombre'), correo = $('#f-correo'), tel = $('#f-tel'), acepto = $('#f-acepto'), first = null;
+    var c = correo.value.trim(), t = tel.value.trim();
+    var eNombre = nombre.value.trim() ? '' : 'Escribe tu nombre.';
+    var eCorreo = c && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c) ? 'Revisa el correo: debería verse como nombre@empresa.com.' : '';
+    var eTel = t && (t.replace(/\D/g, '').length < 7 || /[^\d\s()+.-]/.test(t)) ? 'Revisa el teléfono: sólo números, al menos 7 dígitos.' : '';
+    var eContacto = !c && !t ? 'Déjanos un correo o un teléfono para poder responderte.' : '';
+    var eAcepto = acepto.checked ? '' : 'Marca la casilla para que podamos responderte.';
+    setErr(nombre, 'e-nombre', eNombre); setErr(correo, 'e-correo', eCorreo); setErr(tel, 'e-tel', eTel);
+    $('#e-contacto').textContent = eContacto;
+    if (eContacto) { correo.setAttribute('aria-invalid', 'true'); tel.setAttribute('aria-invalid', 'true'); }
+    setErr(acepto, 'e-acepto', eAcepto);
+    first = eNombre ? nombre : (eContacto || eCorreo) ? correo : eTel ? tel : eAcepto ? acepto : null;
+    return first;
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var first = validate();
+    if (first) { first.focus(); return; }
+    form.hidden = true; done.hidden = false; done.focus();
+  });
+  form.addEventListener('input', function (e) { if (form.querySelector('[aria-invalid="true"]') || $('#e-acepto').textContent) validate(); });
+
+  /* ----- Escena WebGL: un solo lienzo que se muda a la ranura visible ----- */
+  var slots = $$('.slot'), visible = new Map(), scene = null, loading = false;
+  function bestSlot() {
+    var best = null, area = 0;
+    slots.forEach(function (s) { var a = visible.get(s) || 0; if (s.closest('[hidden]')) a = 0; if (a > area) { area = a; best = s; } });
+    return best;
+  }
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { visible.set(e.target, e.isIntersecting ? e.intersectionRect.width * e.intersectionRect.height : 0); });
+    if (scene) scene.pick();
+  }, { threshold: [0, 0.15, 0.4, 0.7, 1] }) : null;
+  if (io) slots.forEach(function (s) { io.observe(s); });
+
+  function hex(v) { v = v.trim().replace('#', ''); if (v.length === 3) v = v.replace(/./g, '$&$&'); var n = parseInt(v, 16); return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255]; }
+
+  function createScene(THREE) {
+    var canvas = doc.createElement('canvas'); canvas.className = 'scene-gl'; canvas.setAttribute('aria-hidden', 'true');
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false, powerPreference: 'default' });
+    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    renderer.setClearColor(0x000000, 0);
+    var small = Math.min(window.innerWidth, window.innerHeight) < 700;
+    var dpr = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 1.75);
+    renderer.setPixelRatio(dpr);
+    var N = small ? 1800 : 4400, st = confiaStates(N, 20261114);
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(st.pos[0], 3));
+    for (var k = 1; k < 6; k++) geo.setAttribute('p' + k, new THREE.BufferAttribute(st.pos[k], 3));
+    geo.setAttribute('aRole', new THREE.BufferAttribute(st.role, 1));
+    geo.setAttribute('aR1', new THREE.BufferAttribute(st.r1, 1));
+    geo.setAttribute('aR2', new THREE.BufferAttribute(st.r2, 1));
+    var U = { uS: { value: 0 }, uT: { value: 0 }, uScale: { value: 10 }, uEmber: { value: new THREE.Vector3() }, uLitC: { value: new THREE.Vector3() }, uAsh: { value: new THREE.Vector3() } };
+    var mat = new THREE.ShaderMaterial({
+      uniforms: U, transparent: true, depthTest: false, depthWrite: false,
+      vertexShader: [
+        'attribute vec3 p1; attribute vec3 p2; attribute vec3 p3; attribute vec3 p4; attribute vec3 p5;',
+        'attribute float aRole; attribute float aR1; attribute float aR2;',
+        'uniform float uS; uniform float uT; uniform float uScale;',
+        'varying float vRole; varying float vLit;',
+        'float seg(float k){ float t = clamp((uS - k) * 1.35 - aR1 * 0.35, 0.0, 1.0); return t * t * (3.0 - 2.0 * t); }',
+        'void main(){',
+        '  vec3 q4 = p4; float a = uT * 0.12 * (aRole > 0.5 ? -2.4 : 1.0); float ca = cos(a); float sa = sin(a); q4.xy = mat2(ca, sa, -sa, ca) * q4.xy;',
+        '  vec3 q5 = p5; float b = uT * 0.09; float cb = cos(b); float sb = sin(b); q5.xz = mat2(cb, sb, -sb, cb) * q5.xz;',
+        '  vec3 p = mix(position, p1, seg(0.0)); p = mix(p, p2, seg(1.0)); p = mix(p, p3, seg(2.0)); p = mix(p, q4, seg(3.0)); p = mix(p, q5, seg(4.0));',
+        '  float loose = mix(0.045, 0.007, clamp(uS, 0.0, 1.0));',
+        '  p += loose * vec3(sin(uT * 0.6 + aR1 * 40.0), cos(uT * 0.5 + aR2 * 31.0), sin(uT * 0.4 + aR1 * 17.0));',
+        '  vec4 mv = modelViewMatrix * vec4(p, 1.0);',
+        '  gl_Position = projectionMatrix * mv;',
+        '  float lf = uS * 0.21;',
+        '  vLit = 1.0 - smoothstep(lf - 0.04, lf + 0.04, aR2 + 0.04);',
+        '  vRole = aRole;',
+        '  gl_PointSize = uScale * (aRole > 0.5 ? 1.3 : 1.0) * (0.75 + 0.5 * aR1) / -mv.z;',
+        '}'].join('\n'),
+      fragmentShader: [
+        'uniform vec3 uEmber; uniform vec3 uLitC; uniform vec3 uAsh;',
+        'varying float vRole; varying float vLit;',
+        'void main(){',
+        '  float d = length(gl_PointCoord - 0.5);',
+        '  float m = smoothstep(0.5, 0.36, d);',
+        '  vec3 col = vRole > 0.5 ? uEmber : mix(uAsh, uLitC, vLit);',
+        '  float al = vRole > 0.5 ? 1.0 : mix(0.6, 0.96, vLit);',
+        '  gl_FragColor = vec4(col, m * al);',
+        '}'].join('\n')
+    });
+    var points = new THREE.Points(geo, mat); points.frustumCulled = false;
+    var group = new THREE.Group(); group.add(points); group.rotation.x = -0.16;
+    var world = new THREE.Scene(); world.add(group);
+    var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 30); camera.position.z = 4.66;
+
+    var slot = null, raf = 0, last = 0, s = 0, target = 0, time = 0, px = 0, py = 0, tx = 0, ty = 0, alive = true;
+    var follow = parseFloat(getComputedStyle(root).getPropertyValue('--scene-follow')) || 3.2;
+    var ro = 'ResizeObserver' in window ? new ResizeObserver(function () { size(); draw(); }) : null;
+
+    function colors() {
+      var cs = getComputedStyle(slot);
+      U.uEmber.value.fromArray(hex(cs.getPropertyValue('--color-primary')));
+      U.uLitC.value.fromArray(hex(cs.getPropertyValue('--color-text')));
+      U.uAsh.value.fromArray(hex(cs.getPropertyValue('--color-text-muted')));
+    }
+    function size() {
+      if (!slot) return;
+      var w = slot.clientWidth, h = slot.clientHeight; if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      var halfH = 1.25, halfW = halfH * camera.aspect;
+      var fit = Math.min(halfW / 1.8, halfH / 1.15) * (parseFloat(slot.getAttribute('data-zoom')) || 1);
+      group.scale.setScalar(fit);
+      U.uScale.value = Math.max(h * dpr * 0.0175 * Math.max(0.75, fit), 4.66 * 2.5 * dpr);
+    }
+    function draw() { U.uS.value = s; U.uT.value = time; renderer.render(world, camera); }
+    function frame(now) {
+      raf = 0;
+      if (!alive || !slot || doc.hidden) return;
+      var dt = Math.min(0.05, (now - last) / 1000 || 0.016); last = now;
+      var still = reduce.matches;
+      if (still) s = target; else { s += (target - s) * (1 - Math.exp(-dt * follow)); time += dt; }
+      px += (tx - px) * (1 - Math.exp(-dt * 4)); py += (ty - py) * (1 - Math.exp(-dt * 4));
+      group.rotation.y = 0.28 + (still ? 0 : Math.sin(time * 0.22) * 0.14) + px * 0.3;
+      group.rotation.x = -0.16 + py * 0.16;
+      draw();
+      if (!slot.classList.contains('is-live')) slot.classList.add('is-live');
+      if (!still || Math.abs(target - s) > 0.001) raf = requestAnimationFrame(frame);
+    }
+    function wake() { if (!raf && alive && slot && !doc.hidden) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+    function attach(next) {
+      if (next === slot) return;
+      if (slot) { slot.classList.remove('is-live'); if (ro) ro.unobserve(slot); }
+      slot = next;
+      if (!slot) { if (canvas.parentNode) canvas.parentNode.removeChild(canvas); cancelAnimationFrame(raf); raf = 0; return; }
+      slot.appendChild(canvas);
+      target = parseFloat(slot.getAttribute('data-scene')) || 0;
+      colors(); size(); if (ro) ro.observe(slot);
+      wake();
+    }
+    function pick() { if (alive) attach(bestSlot()); }
+    function onMove(e) { if (!slot || !slot.classList.contains('hero-slot')) { tx = ty = 0; return; } tx = e.clientX / window.innerWidth - 0.5; ty = e.clientY / window.innerHeight - 0.5; }
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) window.addEventListener('pointermove', onMove, { passive: true });
+    doc.addEventListener('visibilitychange', function () { if (!doc.hidden) wake(); });
+    canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); stop(); setMode('lite', 'se perdió el contexto gráfico'); });
+    function stop() { alive = false; cancelAnimationFrame(raf); raf = 0; if (slot) { slot.classList.remove('is-live'); if (ro) ro.unobserve(slot); } if (canvas.parentNode) canvas.parentNode.removeChild(canvas); slot = null; }
+    function start() { alive = true; pick(); }
+    return { pick: pick, stop: stop, start: start };
+  }
+
+  function loadScene() {
+    if (scene) { scene.start(); return; }
+    if (loading || !window.__confia.gl) return;
+    loading = true;
+    import('https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js').then(function (THREE) {
+      loading = false;
+      if (root.getAttribute('data-mode') !== 'full') return;
+      scene = window.__scene = createScene(THREE);
+      scene.pick();
+    }).catch(function () { loading = false; setMode('lite', 'no se pudo cargar la escena 3D'); });
+  }
+
+  /* ----- Versión ligera / completa ----- */
+  var modeBtns = $$('[data-mode-set]'), modeNote = $('#mode-note');
+  function setMode(mode, why) {
+    if (mode === 'full' && !window.__confia.gl) { mode = 'lite'; why = 'este navegador no tiene WebGL'; }
+    root.setAttribute('data-mode', mode);
+    modeBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode-set') === mode)); });
+    modeNote.textContent = mode === 'lite' ? (why ? 'Versión ligera activada: ' + why + '.' : 'Versión ligera: imágenes estáticas, sin 3D.') : 'Versión completa: escena 3D en vivo.';
+    if (mode === 'full') loadScene(); else if (scene) scene.stop();
+  }
+  modeBtns.forEach(function (b) { b.addEventListener('click', function () { var m = b.getAttribute('data-mode-set'); try { localStorage.setItem('confia-modo', m === 'full' ? 'completa' : 'ligera'); } catch (e) {} setMode(m, ''); }); });
+  var initial = root.getAttribute('data-mode') === 'full' ? 'full' : 'lite';
+  var auto = initial === 'lite' && window.__confia.explicit !== 'ligera' ? window.__confia.reasons.join(', ') : '';
+  function boot() { setMode(initial, auto); }
+  if (initial === 'full') {
+    /* la escena se carga después del primer pintado, cuando el navegador queda libre */
+    var later = function () { if ('requestIdleCallback' in window) requestIdleCallback(boot, { timeout: 1500 }); else setTimeout(boot, 300); };
+    if (doc.readyState === 'complete') later(); else window.addEventListener('load', later, { once: true });
+    modeBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode-set') === 'full')); });
+  } else boot();
+})();
+</script>
+</body>
+</html>

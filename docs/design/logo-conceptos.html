@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conceptos de logo · Confia.ing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&display=swap" rel="stylesheet">
+<style>
+/* Paleta del diseño finalista («Cercano y vivo»), sin cambios */
+:root{
+  --indigo-900:#1B1F4B; --indigo-700:#2D3380; --indigo-500:#4A4E78; --indigo-300:#7A7E9E; --indigo-100:#D9DBF0;
+  --coral-300:#FF8566; --coral-500:#FF6B4A; --coral-700:#B8371A;
+  --butter-300:#FFD979; --sage-300:#BFD8C2; --cream-50:#FBF5EA; --sand-200:#F1E6D2; --white:#FFFFFF;
+
+  --color-background:var(--cream-50); --color-surface:var(--white); --color-text:var(--indigo-900);
+  --color-text-muted:var(--indigo-500); --color-border:var(--sand-200); --color-border-strong:var(--indigo-300);
+  --color-emphasis:var(--coral-700); --color-focus:var(--indigo-700);
+  --logo-main:var(--indigo-900); --logo-accent:var(--coral-500); --logo-bg:var(--cream-50); --logo-on-accent:var(--indigo-900);
+  --font-display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:"DM Mono", ui-monospace, Menlo, monospace;
+  --gutter:clamp(20px, 5vw, 64px);
+}
+.t-cream{--logo-main:var(--indigo-900); --logo-accent:var(--coral-500); --logo-bg:var(--cream-50); background:var(--cream-50); color:var(--indigo-900)}
+.t-white{--logo-main:var(--indigo-900); --logo-accent:var(--coral-500); --logo-bg:var(--white); background:var(--white); color:var(--indigo-900)}
+.t-indigo{--logo-main:var(--cream-50); --logo-accent:var(--coral-500); --logo-bg:var(--indigo-900); background:var(--indigo-900); color:var(--cream-50)}
+.t-sage{--logo-main:var(--indigo-900); --logo-accent:var(--coral-700); --logo-bg:var(--sage-300); background:var(--sage-300); color:var(--indigo-900)}
+.t-coral{--logo-main:var(--indigo-900); --logo-accent:var(--white); --logo-bg:var(--coral-300); background:var(--coral-300); color:var(--indigo-900)}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0; background:var(--color-background); color:var(--color-text); font-family:var(--font-body); font-size:1.0625rem; line-height:1.6; -webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,figure{margin:0} ul{padding:0; list-style:none}
+svg{display:block}
+:focus-visible{outline:3px solid var(--color-focus); outline-offset:3px; border-radius:6px}
+.wrap{max-width:1240px; margin-inline:auto; padding-inline:var(--gutter)}
+.eyebrow{font-family:var(--font-mono); font-size:.8125rem; letter-spacing:.08em; text-transform:uppercase; color:var(--color-text-muted)}
+.display{font-family:var(--font-display); font-weight:500; letter-spacing:-.022em; line-height:1.05; font-variation-settings:"opsz" 144; text-wrap:balance}
+header.top{padding-block:clamp(40px, 7vw, 88px) clamp(24px, 4vw, 48px)}
+header.top h1{font-size:clamp(2.3rem, 5.4vw, 4.2rem); margin-top:14px}
+header.top h1 em{font-style:italic; font-weight:400; color:var(--color-emphasis)}
+header.top p.lede{margin-top:20px; max-width:44em; font-size:1.15rem; color:var(--color-text-muted)}
+nav.jump{display:flex; flex-wrap:wrap; gap:8px; margin-top:26px}
+nav.jump a{display:inline-flex; align-items:center; min-height:44px; padding:8px 18px; border:1.5px solid var(--color-border-strong); border-radius:999px; color:var(--color-text); text-decoration:none; font-weight:600; font-size:.95rem}
+nav.jump a:hover{background:var(--color-text); color:var(--color-background)}
+
+/* Piezas del logo: símbolo + palabra */
+.s-main{fill:var(--logo-main)} .s-accent{fill:var(--logo-accent)} .s-bg{stroke:var(--logo-bg)}
+.st-main{fill:none; stroke:var(--logo-main)} .st-accent{fill:none; stroke:var(--logo-accent)}
+.lockup{display:inline-flex; align-items:center; gap:.42em; color:var(--logo-main); line-height:1; white-space:nowrap}
+.lockup svg{width:1.3em; height:1.3em; flex:none}
+.lockup.stack{flex-direction:column; gap:.3em}
+.lockup.stack svg{width:2.1em; height:2.1em}
+.wm{font-family:var(--font-display); font-weight:600; letter-spacing:-.025em; font-variation-settings:"opsz" 72}
+.wm em{font-style:italic; font-weight:400}
+.wm .dot{color:var(--logo-accent)}
+.wm--sans{font-family:var(--font-body); font-weight:700; letter-spacing:-.035em}
+.wm--sans em{font-family:var(--font-display); font-weight:400; letter-spacing:-.02em}
+.wm--bigdot .dot{display:inline-block; width:.34em; height:.34em; margin:0 .06em -.02em; border-radius:50%; background:var(--logo-accent); vertical-align:baseline}
+.wm--light{font-weight:450}
+
+/* Tanda 2: la IA dentro de «confia» */
+.wm .ia{color:var(--logo-accent)}
+.wm .chip{display:inline-block; background:var(--logo-accent); color:var(--logo-on-accent); border-radius:.2em; padding:.03em .15em .09em; margin:0 .05em 0 .03em; line-height:1}
+.wm .idot{position:relative; display:inline-block}
+.wm .idot::before{content:""; position:absolute; left:50%; top:.1em; width:.23em; height:.23em; margin-left:-.115em; border-radius:50%; background:var(--logo-accent)}
+.wm--mix{font-weight:450}
+.wm--mix .IA{font-family:var(--font-body); font-weight:700; font-size:.8em; letter-spacing:.01em; color:var(--logo-accent)}
+.s-on{fill:var(--logo-on-accent)}
+.sym-serif{font-family:"Fraunces", Georgia, serif; font-weight:600}
+.sym-sans{font-family:"Figtree", system-ui, sans-serif; font-weight:700}
+.group-head{padding-block:clamp(40px, 6vw, 80px) 8px; border-top:1px solid var(--color-border-strong)}
+.group-head h2{font-size:clamp(2rem, 4.4vw, 3.4rem); margin-top:12px}
+.group-head h2 em{font-style:italic; font-weight:400; color:var(--color-emphasis)}
+.group-head p.lede{margin-top:16px; max-width:46em; font-size:1.1rem; color:var(--color-text-muted)}
+
+/* Ficha de cada concepto */
+.concept{padding-block:clamp(40px, 6vw, 80px); border-top:1px solid var(--color-border-strong)}
+.concept-head{display:grid; gap:14px; margin-bottom:28px}
+.concept-head h2{font-size:clamp(1.9rem, 3.6vw, 3rem)}
+.concept-head p{max-width:46em; color:var(--color-text-muted)}
+.tag{display:inline-block; margin-left:10px; padding:3px 12px; border-radius:999px; background:var(--butter-300); color:var(--indigo-900); font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; vertical-align:middle}
+.board{display:grid; gap:14px}
+.tile{position:relative; border-radius:22px; display:grid; place-items:center; padding:28px 20px; min-height:150px; border:1px solid var(--color-border)}
+.tile small{position:absolute; left:16px; bottom:12px; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; opacity:.7}
+.tile.hero{min-height:clamp(220px, 30vw, 340px); font-size:clamp(2.4rem, 7vw, 5.2rem)}
+.tile.mid{font-size:clamp(1.7rem, 3vw, 2.3rem)}
+.tile.sym svg{width:84px; height:84px}
+.sizes{display:flex; align-items:flex-end; gap:22px}
+.sizes figure{display:grid; justify-items:center; gap:8px; font-family:var(--font-mono); font-size:.68rem; opacity:.85}
+.sizes .fav{display:grid; place-items:center; border-radius:22%; background:var(--logo-bg)}
+.notes{display:grid; gap:14px; margin-top:22px}
+.notes div{padding:18px 20px; border-radius:16px; background:var(--color-surface); border:1px solid var(--color-border)}
+.notes h3{font-family:var(--font-mono); font-weight:500; font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; color:var(--color-text-muted); margin-bottom:6px}
+.notes p{font-size:.98rem}
+@media (min-width:760px){
+  .board{grid-template-columns:repeat(6, 1fr)}
+  .tile.hero{grid-column:span 6}
+  .tile.third{grid-column:span 2}
+  .tile.half{grid-column:span 3}
+  .notes{grid-template-columns:repeat(3, 1fr)}
+}
+
+/* Dirección de imagen */
+.direction{padding-block:clamp(40px, 6vw, 80px); border-top:1px solid var(--color-border-strong)}
+.direction h2{font-size:clamp(1.9rem, 3.6vw, 3rem); margin-bottom:10px}
+.direction > .wrap > p{max-width:46em; color:var(--color-text-muted)}
+.dgrid{display:grid; gap:14px; margin-top:28px}
+.dcard{border-radius:22px; padding:24px; border:1px solid var(--color-border); display:grid; gap:14px; align-content:start}
+.dcard h3{font-family:var(--font-display); font-weight:500; font-size:1.4rem; letter-spacing:-.012em; line-height:1.15}
+.dcard p{font-size:.98rem}
+.dcard svg{width:100%; height:auto}
+.icons{display:grid; grid-template-columns:repeat(6, 1fr); gap:10px}
+.icons svg{width:100%; aspect-ratio:1; fill:none; stroke:var(--logo-main); stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round}
+.icons .hot{stroke:var(--logo-accent)} .icons .hotf{fill:var(--logo-accent); stroke:none}
+.iso .top{fill:var(--white)} .iso .l{fill:var(--indigo-100)} .iso .r{fill:var(--sand-200)} .iso .alt{fill:var(--sage-300)} .iso .hot{fill:var(--coral-500)} .iso .hotd{fill:var(--coral-700)}
+.iso polygon{stroke:var(--indigo-900); stroke-width:1; stroke-linejoin:round}
+.iso .a{fill:var(--indigo-900)} .iso .b{fill:var(--coral-500)}
+.diag .line{fill:none; stroke:var(--logo-main); stroke-width:2; stroke-linecap:round}
+.diag .done{fill:none; stroke:var(--logo-accent); stroke-width:3; stroke-linecap:round}
+.diag circle{fill:var(--logo-bg); stroke:var(--logo-main); stroke-width:2}
+.diag circle.on{fill:var(--logo-accent); stroke:var(--logo-accent)}
+.diag text{font-family:var(--font-mono); font-size:9px; fill:var(--logo-main)}
+.donts li{padding:10px 0 10px 30px; border-top:1px solid var(--color-border-strong); position:relative; font-size:.98rem}
+.donts li::before{content:"✕"; position:absolute; left:4px; top:10px; font-weight:700; color:var(--color-emphasis)}
+@media (min-width:760px){ .dgrid{grid-template-columns:repeat(2, 1fr)} }
+.reco{margin-block:clamp(32px, 5vw, 64px); border-radius:28px; padding:clamp(24px, 4vw, 48px)}
+.reco h2{font-size:clamp(1.6rem, 3vw, 2.4rem); margin-bottom:12px}
+.reco p{max-width:48em}
+.reco p + p{margin-top:10px}
+footer{padding-block:28px 48px; font-size:.9rem; color:var(--color-text-muted)}
+</style>
+</head>
+<body>
+
+<!-- Símbolos -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <!-- 1 · Peldaños -->
+  <symbol id="s1" viewBox="0 0 32 32"><rect class="s-main" x="1" y="23" width="9.4" height="4.4" rx="1.2"/><rect class="s-main" x="11.3" y="17" width="9.4" height="4.4" rx="1.2"/><rect class="s-main" x="21.6" y="11" width="9.4" height="4.4" rx="1.2"/><circle class="s-main" cx="23.4" cy="6.2" r="2.7"/><circle class="s-accent" cx="29" cy="6.2" r="2.7"/></symbol>
+  <!-- 2 · El punto -->
+  <symbol id="s2" viewBox="0 0 32 32"><path class="st-main" stroke-width="5" stroke-linecap="round" d="M21.07 8.93A10 10 0 1 0 21.07 23.07"/><circle class="s-accent" cx="26.6" cy="16" r="3.7"/></symbol>
+  <!-- 3 · Dos juntos -->
+  <symbol id="s3" viewBox="0 0 32 32"><circle class="s-accent" cx="20.6" cy="13" r="7.6"/><circle class="s-main s-bg" cx="11.4" cy="13" r="7.6" stroke-width="2"/><rect class="s-main" x="3.8" y="25.2" width="24.4" height="3.3" rx="1.65"/></symbol>
+  <!-- 4 · Cinco tramos -->
+  <symbol id="s4" viewBox="0 0 32 32"><path class="st-main" stroke-width="5.4" stroke-dasharray="8.35 3" d="M24.43 8.93A11 11 0 1 0 24.43 23.07"/><path class="st-accent" stroke-width="5.4" stroke-dasharray="0 45.4 8.35 100" d="M24.43 8.93A11 11 0 1 0 24.43 23.07"/></symbol>
+  <!-- 5 · Tecla IA -->
+  <symbol id="s5" viewBox="0 0 32 32"><rect class="s-accent" x="2" y="2" width="28" height="28" rx="7.5"/><text class="s-on sym-serif" x="16" y="22.4" font-size="18" text-anchor="middle">ia</text></symbol>
+  <!-- 6 · El punto de la i -->
+  <symbol id="s6" viewBox="0 0 32 32"><rect class="s-main" x="5.6" y="12.4" width="5.2" height="14.8" rx="2.6"/><circle class="s-accent" cx="8.2" cy="5.9" r="3.4"/><circle class="st-main" cx="18.6" cy="19.9" r="4.9" stroke-width="4.8"/><rect class="s-main" x="21.3" y="12.4" width="5.1" height="14.8" rx="2.55"/></symbol>
+  <!-- 7 · IA en mayúscula -->
+  <symbol id="s7" viewBox="0 0 32 32"><text class="s-main sym-sans" x="13" y="23" font-size="19" text-anchor="middle">IA</text><circle class="s-accent" cx="27" cy="20.4" r="3"/></symbol>
+  <!-- 8 · ELEGIDO: cinco tramos + punto -->
+  <symbol id="s8" viewBox="0 0 32 32"><g transform="translate(-1.6 0)"><path class="st-main" stroke-width="5.4" stroke-dasharray="8.35 3" d="M24.43 8.93A11 11 0 1 0 24.43 23.07"/><path class="st-accent" stroke-width="5.4" stroke-dasharray="0 45.4 8.35 100" d="M24.43 8.93A11 11 0 1 0 24.43 23.07"/><circle class="s-accent" cx="28.2" cy="16" r="3.3"/></g></symbol>
+  <!-- 8b · variante: tramos de un solo color + punto -->
+  <symbol id="s8b" viewBox="0 0 32 32"><g transform="translate(-1.6 0)"><path class="st-main" stroke-width="5.4" stroke-dasharray="8.35 3" d="M24.43 8.93A11 11 0 1 0 24.43 23.07"/><circle class="s-accent" cx="28.2" cy="16" r="3.3"/></g></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Cierre de la Fase 3 · Exploración de marca</p>
+    <h1 class="display">El logo de <em>confia.ing</em></h1>
+    <p class="lede">Todos usan la paleta y las tipografías del diseño finalista. Cada uno se muestra en su versión principal, sobre los fondos de la página, apilado, como símbolo solo y reducido a tamaño de favicon, que es donde un logo se gana o se pierde.</p>
+    <nav class="jump" aria-label="Conceptos">
+      <a href="#elegido">Logo elegido</a><a href="#c1">1 · Peldaños</a><a href="#c2">2 · El punto</a><a href="#c3">3 · Dos juntos</a><a href="#c4">4 · Cinco tramos</a><a href="#ia">5–7 · Jugando con «IA»</a><a href="#imagen">Dirección de imagen</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="group-head" id="elegido" style="border-top:0; padding-top:0"><div class="wrap">
+  <p class="eyebrow">Decisión del 14 de noviembre de 2026</p>
+  <h2 class="display">Logo <em>elegido</em></h2>
+  <p class="lede">La «c» de cinco tramos como concepto central, con el punto naranja en su abertura, y el nombre con «IA» en mayúscula y en color.</p>
+</div></div>
+<div id="conceptos-elegido"></div>
+<div class="group-head"><div class="wrap">
+  <p class="eyebrow">Exploración previa</p>
+  <h2 class="display">Los conceptos de los que <em>sale</em></h2>
+</div></div>
+<div id="conceptos"></div>
+<div class="group-head" id="ia"><div class="wrap">
+  <p class="eyebrow">Segunda tanda</p>
+  <h2 class="display">La <em>IA</em> ya está dentro de «conf<em>ia</em>»</h2>
+  <p class="lede">El nombre termina en las dos letras del servicio. Estas tres propuestas hacen visible esa coincidencia: se lee «confía» y a la vez se ve «IA», sin añadir nada al nombre.</p>
+</div></div>
+<div id="conceptos-ia"></div>
+</main>
+
+<section class="direction" id="imagen">
+  <div class="wrap">
+    <p class="eyebrow">Imagen corporativa</p>
+    <h2 class="display">Dirección de imagen</h2>
+    <p>Lo que acompaña al logo en la página y en cualquier material: cómo se ilustra, cómo se dibujan los iconos y cómo se explica el recorrido. Sale de lo que ya funciona en el diseño finalista.</p>
+    <div class="dgrid">
+      <div class="dcard t-white">
+        <h3>Ilustración: piezas que se ordenan</h3>
+        <svg class="iso" viewBox="0 0 320 150" role="img" aria-label="Bloques isométricos: unos sueltos y otros formando un camino con dos esferas encima">
+          <g transform="translate(34 96) rotate(-18)"><polygon class="l" points="0,8 20,18 20,26 0,16"/><polygon class="r" points="20,18 40,8 40,16 20,26"/><polygon class="top" points="0,8 20,-2 40,8 20,18"/></g>
+          <g transform="translate(70 40) rotate(24)"><polygon class="l" points="0,8 20,18 20,26 0,16"/><polygon class="r" points="20,18 40,8 40,16 20,26"/><polygon class="alt" points="0,8 20,-2 40,8 20,18"/></g>
+          <g transform="translate(110 92) rotate(9)"><polygon class="l" points="0,8 20,18 20,26 0,16"/><polygon class="r" points="20,18 40,8 40,16 20,26"/><polygon class="top" points="0,8 20,-2 40,8 20,18"/></g>
+          <g transform="translate(160 86)"><polygon class="l" points="0,8 20,18 20,26 0,16"/><polygon class="r" points="20,18 40,8 40,16 20,26"/><polygon class="top" points="0,8 20,-2 40,8 20,18"/></g>
+          <g transform="translate(184 70)"><polygon class="l" points="0,8 20,18 20,26 0,16"/><polygon class="r" points="20,18 40,8 40,16 20,26"/><polygon class="alt" points="0,8 20,-2 40,8 20,18"/></g>
+          <g transform="translate(208 54)"><polygon class="l" points="0,8 20,18 20,26 0,16"/><polygon class="r" points="20,18 40,8 40,16 20,26"/><polygon class="top" points="0,8 20,-2 40,8 20,18"/></g>
+          <g transform="translate(232 38)"><polygon class="hotd" points="0,8 20,18 20,26 0,16"/><polygon class="hotd" points="20,18 40,8 40,16 20,26"/><polygon class="hot" points="0,8 20,-2 40,8 20,18"/></g>
+          <circle class="a" cx="222" cy="52" r="6"/><circle class="b" cx="236" cy="46" r="6"/>
+        </svg>
+        <p>Geometría simple en perspectiva isométrica: bloques dispersos que pasan a formar un camino, con dos esferas (tú y nosotros) que lo recorren. Color plano, contorno índigo fino, sin degradados.</p>
+      </div>
+      <div class="dcard t-white">
+        <h3>Iconografía: línea redondeada con un acento</h3>
+        <div class="icons" role="img" aria-label="Seis iconos de ejemplo: estrategia, capacitación, automatización, medible, seguro y mantenible">
+          <svg viewBox="0 0 32 32"><path d="M5 26h6v-6h6v-6h6V8h4"/><circle class="hotf" cx="26" cy="8" r="2.6"/></svg>
+          <svg viewBox="0 0 32 32"><circle cx="11" cy="12" r="4"/><circle class="hot" cx="21" cy="12" r="4"/><path d="M4 26c1-5 4-7 7-7s4 1 5 2c1-1 2-2 5-2s6 2 7 7"/></svg>
+          <svg viewBox="0 0 32 32"><path d="M26 16a10 10 0 1 1-3-7.1"/><path class="hot" d="M23 4v5h5"/></svg>
+          <svg viewBox="0 0 32 32"><path d="M5 27h22M9 27V17M16 27V9M23 27v-6"/><path class="hot" d="M5 13h22"/></svg>
+          <svg viewBox="0 0 32 32"><path d="M16 4l10 4v7c0 6-4 10-10 13C10 25 6 21 6 15V8z"/><path class="hot" d="M11.5 16l3.2 3.2 6-6.4"/></svg>
+          <svg viewBox="0 0 32 32"><rect x="5" y="5" width="14" height="14" rx="2.5"/><rect class="hot" x="13" y="13" width="14" height="14" rx="2.5"/></svg>
+        </div>
+        <p>Trazo de 1,75 px, extremos y uniones redondeados, en índigo. Un único elemento en coral por icono marca lo importante. Nunca rellenos pesados ni emoji.</p>
+      </div>
+      <div class="dcard t-white">
+        <h3>Diagramas: el recorrido como línea con paradas</h3>
+        <svg class="diag" viewBox="0 0 320 70" role="img" aria-label="Línea con cinco paradas numeradas; las tres primeras resaltadas en coral">
+          <path class="line" d="M20 40H300"/><path class="done" d="M20 40H160"/>
+          <circle class="on" cx="20" cy="40" r="7"/><circle class="on" cx="90" cy="40" r="7"/><circle class="on" cx="160" cy="40" r="7"/><circle cx="230" cy="40" r="7"/><circle cx="300" cy="40" r="7"/>
+          <text x="13" y="20">01</text><text x="83" y="20">02</text><text x="153" y="20">03</text><text x="223" y="20">04</text><text x="293" y="20">05</text>
+        </svg>
+        <p>Cualquier proceso se dibuja igual: una línea, paradas numeradas en monoespaciada, lo recorrido en coral. El mismo lenguaje sirve para propuestas, presentaciones y la propia página.</p>
+      </div>
+      <div class="dcard t-sage">
+        <h3>Lo que la marca no usa</h3>
+        <ul class="donts">
+          <li>Robots, cerebros, circuitos ni redes neuronales brillantes.</li>
+          <li>Degradados morados o azules «de IA» y destellos.</li>
+          <li>Fotografía de archivo de gente señalando pantallas.</li>
+          <li>Imágenes que sugieran capacidades que no ofrecemos.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="reco t-indigo">
+      <p class="eyebrow" style="color:var(--indigo-100)">Decisión</p>
+      <h2 class="display">Cinco tramos, con el punto y la IA en el nombre</h2>
+      <p>El concepto central es la «c» de cinco tramos (concepto 4). Se le añade el punto naranja de «El punto» (concepto 2) y el nombre adopta la «IA» en mayúscula y en color (concepto 7).</p>
+      <p>Los peldaños del concepto 1 siguen siendo el motivo de la escena 3D y de la ilustración. Los trazados definitivos, el favicon y la guía de marca se producen en el lote L1.</p>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">Confia.ing · Exploración de logo · Los trazados finales en SVG, el favicon y la guía de marca se producen en el lote L1 con el concepto elegido.</div></footer>
+
+<script>
+(function(){
+  var C = [
+    { id:'c1', n:'1', name:'Peldaños', tag:'El del diseño finalista', sym:'s1', wm:'wm',
+      idea:'Tres peldaños que suben y dos puntos encima: tú y nosotros recorriendo el camino. Es el símbolo que ya usa la página y el mismo motivo de la escena 3D.',
+      pro:'Cuenta el servicio de un vistazo: etapas, avance y compañía. Máxima coherencia con la escena.',
+      con:'Es el más detallado. A 16 px los peldaños pierden definición y necesita una versión simplificada.',
+      use:'Marca principal en la web, propuestas y presentaciones.' },
+    { id:'c2', n:'2', name:'El punto', tag:'', sym:'s2', wm:'wm wm--bigdot',
+      idea:'Una «c» abierta y, justo en la abertura, el punto coral de «.ing». El punto es lo que sigue en marcha: la acción continua que promete el nombre.',
+      pro:'El más simple y el que mejor aguanta en pequeño. El punto se vuelve un recurso gráfico reutilizable: viñetas, marcadores, cursor.',
+      con:'Muchas marcas usan una letra con un punto; es menos propio y no habla de camino ni de etapas.',
+      use:'Favicon, avatar de redes, firma de correo.' },
+    { id:'c3', n:'3', name:'Dos juntos', tag:'', sym:'s3', wm:'wm--sans',
+      idea:'Dos círculos que se solapan sobre una base: tu equipo y el nuestro trabajando sobre lo mismo. La palabra pasa a sin serifa para un tono más cercano, con «ing» en cursiva serif.',
+      pro:'Es el que mejor expresa confianza y cercanía. Formas muy amables y fáciles de animar.',
+      con:'Los círculos solapados son un recurso muy visto en otras marcas. Pierde la idea de recorrido.',
+      use:'Si se quiere poner la relación por delante del método.' },
+    { id:'c4', n:'4', name:'Cinco tramos', tag:'', sym:'s4', wm:'wm wm--light',
+      idea:'Una «c» construida con cinco tramos, uno por cada etapa del recorrido. El último, en coral, es la transferencia: el momento en que tu equipo queda a cargo.',
+      pro:'El más conceptual: inicial y método en una sola forma. Se puede animar tramo a tramo siguiendo las etapas.',
+      con:'A 16 px los cinco tramos se funden en un arco. Depende de que el recorrido siga teniendo cinco etapas.',
+      use:'Si se quiere que el método sea la firma de la marca.' }
+  ];
+  var C0 = [
+    { id:'c8', n:'elegido', name:'Cinco tramos, el punto y la IA', tag:'Elegido', sym:'s8', wm:'wm wm--mix',
+      word:'<span class="wm wm--mix">conf<span class="IA">IA</span><span class="dot">.</span><em>ing</em></span>',
+      idea:'Una «c» construida con cinco tramos, uno por cada etapa del recorrido. En su abertura, el punto naranja: lo que sigue en marcha, el «.ing». En el nombre, «IA» salta en mayúscula y en color dentro de «confia».',
+      pro:'Reúne las tres ideas de la marca: el método en cinco etapas, la acción continua y la IA que ya está en el nombre.',
+      con:'A 16 px los cinco tramos se funden; para ese tamaño se usa el favicon reducido. El último tramo y el punto comparten color: la variante de un solo color es más limpia si se percibe recargado.',
+      use:'Marca principal. El símbolo solo para avatar e icono de aplicación; el favicon reducido para la pestaña del navegador.',
+      extra:'<div class="tile sym half t-cream"><svg aria-hidden="true" focusable="false"><use href="#s8b"/></svg><small>Variante · tramos de un solo color</small></div>' +
+            '<div class="tile half t-white"><div class="sizes">' +
+              '<figure><span class="fav" style="width:64px;height:64px"><svg style="width:46px;height:46px" aria-hidden="true"><use href="#s2"/></svg></span><figcaption>64 px</figcaption></figure>' +
+              '<figure><span class="fav" style="width:32px;height:32px"><svg style="width:23px;height:23px" aria-hidden="true"><use href="#s2"/></svg></span><figcaption>32 px</figcaption></figure>' +
+              '<figure><span class="fav" style="width:16px;height:16px"><svg style="width:12px;height:12px" aria-hidden="true"><use href="#s2"/></svg></span><figcaption>16 px</figcaption></figure>' +
+            '</div><small>Favicon reducido · arco continuo + punto</small></div>' }
+  ];
+  var C2 = [
+    { id:'c5', n:'5', name:'Tecla IA', tag:'', sym:'s5', wm:'wm',
+      word:'<span class="wm">conf<span class="chip">ia</span><span class="dot">.</span><em>ing</em></span>',
+      idea:'Las letras «ia» van dentro de una tecla de color, como una etiqueta o una tecla de teclado. El resto del nombre queda sobrio; todo el acento cae en la IA. La tecla sola es el símbolo.',
+      pro:'Lectura inmediata: nadie se pierde que confia contiene IA. El símbolo «ia» funciona muy bien a 16 px y conecta con el formulario en modo terminal.',
+      con:'La tecla interrumpe la palabra: quien no sepa español puede leer «conf» + «ia» por separado.',
+      use:'Si se quiere que la IA sea lo primero que se recuerde de la marca.' },
+    { id:'c6', n:'6', name:'El punto de la i', tag:'', sym:'s6', wm:'wm',
+      word:'<span class="wm">conf<span class="ia"><span class="idot">ı</span>a</span><span class="dot">.</span><em>ing</em></span>',
+      idea:'«ia» cambia de color y el punto de la «i» crece hasta ser un círculo coral: ocupa el lugar de la tilde de «confía» y repite el punto de «.ing». El símbolo es un monograma geométrico: una barra, un punto y un anillo.',
+      pro:'El más fino de los tres: la palabra se lee de corrido y la IA aparece por color. El punto une tres ideas (tilde, IA, .ing) y el monograma es muy propio.',
+      con:'Más sutil: la coincidencia IA puede pasar desapercibida en un vistazo rápido.',
+      use:'Si se busca un logo elegante que revele la IA a la segunda mirada.' },
+    { id:'c7', n:'7', name:'IA en mayúscula', tag:'', sym:'s7', wm:'wm wm--mix',
+      word:'<span class="wm wm--mix">conf<span class="IA">IA</span><span class="dot">.</span><em>ing</em></span>',
+      idea:'Tres voces en una palabra: «conf» en serif ligera, «IA» en mayúscula sin serifa y en color, «ing» en cursiva. El contraste de letra y de color hace que IA salte como sigla.',
+      pro:'El más explícito y tipográfico; no depende de ningún dibujo. Fácil de reproducir en cualquier soporte.',
+      con:'Mezclar tres estilos en diez letras es arriesgado: puede leerse recargado y se parece a la forma en que muchas empresas de IA escriben su nombre.',
+      use:'Si la prioridad es que se entienda la sigla sin explicación.' }
+  ];
+  function sym(id, extra){ return '<svg ' + (extra || '') + ' aria-hidden="true" focusable="false"><use href="#' + id + '"/></svg>'; }
+  function word(cls){ return '<span class="' + cls + '">confia<span class="dot">' + (cls.indexOf('bigdot') > -1 ? '' : '.') + '</span><em>ing</em></span>'; }
+  function lock(c, stack){ return '<span class="lockup' + (stack ? ' stack' : '') + '">' + sym(c.sym) + (c.word || word(c.wm)) + '</span>'; }
+  function fav(c, px){ var inner = Math.round(px * .72); return '<figure><span class="fav" style="width:' + px + 'px;height:' + px + 'px">' + sym(c.sym, 'style="width:' + inner + 'px;height:' + inner + 'px"') + '</span><figcaption>' + px + ' px</figcaption></figure>'; }
+  function card(c){
+    return '<section class="concept" id="' + c.id + '" aria-labelledby="' + c.id + '-t"><div class="wrap">' +
+      '<div class="concept-head"><p class="eyebrow">Concepto ' + c.n + '</p>' +
+      '<h2 class="display" id="' + c.id + '-t">' + c.name + (c.tag ? '<span class="tag">' + c.tag + '</span>' : '') + '</h2><p>' + c.idea + '</p></div>' +
+      '<div class="board" role="img" aria-label="Aplicaciones del concepto ' + c.name + ': principal, sobre índigo, salvia y coral, apilado, símbolo y tamaños de favicon">' +
+        '<div class="tile hero t-cream">' + lock(c) + '<small>Principal · crema</small></div>' +
+        '<div class="tile mid third t-indigo">' + lock(c) + '<small>Sobre índigo</small></div>' +
+        '<div class="tile mid third t-sage">' + lock(c) + '<small>Sobre salvia</small></div>' +
+        '<div class="tile mid third t-coral">' + lock(c) + '<small>Sobre coral</small></div>' +
+        '<div class="tile mid third t-white">' + lock(c, true) + '<small>Apilado</small></div>' +
+        '<div class="tile sym third t-indigo">' + sym(c.sym) + '<small>Símbolo</small></div>' +
+        '<div class="tile third t-white"><div class="sizes">' + fav(c, 64) + fav(c, 32) + fav(c, 16) + '</div><small>' + (c.extra ? 'Símbolo completo en pequeño' : 'Favicon') + '</small></div>' + (c.extra || '') +
+      '</div>' +
+      '<div class="notes"><div><h3>A favor</h3><p>' + c.pro + '</p></div><div><h3>En contra</h3><p>' + c.con + '</p></div><div><h3>Mejor uso</h3><p>' + c.use + '</p></div></div>' +
+    '</div></section>';
+  }
+  document.getElementById('conceptos-elegido').innerHTML = C0.map(card).join('');
+  document.getElementById('conceptos').innerHTML = C.map(card).join('');
+  document.getElementById('conceptos-ia').innerHTML = C2.map(card).join('');
+})();
+</script>
+</body>
+</html>

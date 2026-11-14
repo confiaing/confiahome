@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propuesta C — Cercano y vivo · Confia.ing</title>
+<meta name="description" content="Transformación de IA para empresas que ya usan tecnología. Estrategia, capacitación y automatización.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='rgb(255,107,74)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* ==========================================================================
+   TOKENS — the only place where raw color values live
+   ========================================================================== */
+:root {
+  /* Level 1 · primitives */
+  --indigo-900: #1B1F4B;
+  --indigo-700: #2D3380;
+  --indigo-500: #4A4E78;
+  --indigo-300: #7A7E9E;
+  --indigo-100: #D9DBF0;
+  --coral-300: #FF8566;
+  --coral-500: #FF6B4A;
+  --coral-700: #B8371A;
+  --butter-300: #FFD979;
+  --sage-300: #BFD8C2;
+  --cream-50: #FBF5EA;
+  --sand-200: #F1E6D2;
+  --white: #FFFFFF;
+  --red-700: #B3261E;
+  --green-700: #1E6B45;
+
+  /* Level 2 · semantic roles */
+  --color-background: var(--cream-50);
+  --color-background-alt: var(--sand-200);
+  --color-surface: var(--white);
+  --color-surface-warm: var(--butter-300);
+  --color-surface-fresh: var(--sage-300);
+  --color-text: var(--indigo-900);
+  --color-text-muted: var(--indigo-500);
+  --color-primary: var(--coral-500);
+  --color-primary-hover: var(--coral-300);
+  --color-on-primary: var(--indigo-900);
+  --color-accent-text: var(--coral-700);
+  --color-inverse: var(--indigo-900);
+  --color-inverse-hover: var(--indigo-700);
+  --color-on-inverse: var(--cream-50);
+  --color-on-inverse-muted: var(--indigo-100);
+  --color-link: var(--indigo-700);
+  --color-link-hover: var(--coral-700);
+  --color-focus-base: var(--indigo-700);
+  --color-focus: var(--color-focus-base);
+  --color-focus-inverse: var(--butter-300);
+  --color-border: var(--sand-200);
+  --color-border-strong: var(--indigo-300);
+  --color-error: var(--red-700);
+  --color-success: var(--green-700);
+
+  /* Type, shape, motion */
+  --font-display: "Bricolage Grotesque", "Familjen Grotesk", "Trebuchet MS", sans-serif;
+  --font-text: "Figtree", "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-s: 14px;
+  --radius-m: 24px;
+  --radius-l: clamp(28px, 4vw, 48px);
+  --radius-pill: 999px;
+  --gutter: clamp(20px, 5vw, 48px);
+  --section-y: clamp(64px, 9vw, 128px);
+  --ease: cubic-bezier(.22, .8, .3, 1);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+[hidden] { display: none !important; }
+img, svg { max-width: 100%; display: block; }
+h1, h2, h3, h4, p, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.04; letter-spacing: -0.025em; font-weight: 700; text-wrap: balance; }
+h1 { font-size: clamp(2.6rem, 6.4vw, 5.6rem); line-height: .98; letter-spacing: -0.035em; font-weight: 800; }
+h2 { font-size: clamp(2.1rem, 4.6vw, 3.75rem); }
+h3 { font-size: clamp(1.3rem, 2vw, 1.55rem); line-height: 1.15; letter-spacing: -0.015em; }
+p { text-wrap: pretty; }
+a { color: var(--color-link); text-decoration: underline; text-decoration-color: var(--color-primary); text-decoration-thickness: 2px; text-underline-offset: 4px; transition: color .15s var(--ease); }
+a:hover, a.is-hover { color: var(--color-link-hover); }
+:focus-visible, .is-focus { outline: 3px solid var(--color-focus); outline-offset: 3px; border-radius: 6px; }
+.on-inverse { --color-focus: var(--color-focus-inverse); }
+
+.wrap { width: 100%; max-width: 1248px; margin-inline: auto; padding-inline: var(--gutter); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.skip-link { position: absolute; left: 16px; top: -80px; z-index: 100; background: var(--color-inverse); color: var(--color-on-inverse); padding: 12px 20px; border-radius: var(--radius-pill); font-weight: 600; text-decoration: none; }
+.skip-link:focus { top: 12px; color: var(--color-on-inverse); outline-color: var(--color-primary); }
+
+.f-primary { fill: var(--color-primary); }
+.f-inverse { fill: var(--color-inverse); }
+.f-warm { fill: var(--color-surface-warm); }
+.f-fresh { fill: var(--color-surface-fresh); }
+.f-bg { fill: var(--color-background); }
+.f-alt { fill: var(--color-background-alt); }
+.s-bg { stroke: var(--color-background); fill: none; }
+.s-inverse { stroke: var(--color-inverse); fill: none; }
+
+/* ---------- Logo ---------- */
+.logo { display: inline-flex; align-items: baseline; font-family: var(--font-display); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.04em; line-height: 1; color: var(--color-text); text-decoration: none; padding: 6px 2px; }
+.logo:hover { color: var(--color-text); }
+.logo-dot { display: inline-block; width: .44em; height: .44em; border-radius: 50%; background: var(--color-primary); margin: 0 .07em; transform: translateY(.02em); transition: transform .2s var(--ease); }
+.logo:hover .logo-dot { transform: translateY(.02em) scale(1.15); }
+.logo--inverse, .logo--inverse:hover { color: var(--color-on-inverse); }
+
+/* ---------- Buttons ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 13px 28px; border-radius: 28px; border: 2px solid transparent; font: 600 1.0625rem/1.25 var(--font-text); text-align: center; text-decoration: none; cursor: pointer; transition: background-color .18s var(--ease), color .18s var(--ease), border-color .18s var(--ease); }
+.btn:focus-visible, .btn.is-focus { border-radius: 28px; }
+.btn .arrow { flex: none; width: 18px; height: 18px; transition: transform .2s var(--ease); }
+.btn:hover .arrow, .btn.is-hover .arrow { transform: translateX(4px); }
+.btn .arrow path { stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+.btn-primary:hover, .btn-primary.is-hover { background: var(--color-primary-hover); color: var(--color-on-primary); }
+.btn-secondary { background: transparent; color: var(--color-text); border-color: var(--color-text); }
+.btn-secondary:hover, .btn-secondary.is-hover { background: var(--color-inverse); color: var(--color-on-inverse); }
+.btn-inverse { background: var(--color-inverse); color: var(--color-on-inverse); }
+.btn-inverse:hover, .btn-inverse.is-hover { background: var(--color-inverse-hover); color: var(--color-on-inverse); }
+.btn-small { min-height: 46px; padding: 9px 22px; font-size: 1rem; }
+.btn[disabled] { background: var(--color-border); color: var(--color-text-muted); cursor: not-allowed; }
+
+/* ---------- Language switch ---------- */
+.lang { display: inline-flex; padding: 3px; border-radius: var(--radius-pill); border: 2px solid var(--color-border-strong); gap: 2px; }
+.lang button { min-width: 44px; min-height: 36px; border: 0; border-radius: var(--radius-pill); background: transparent; color: inherit; font: 600 .9rem/1 var(--font-text); letter-spacing: .04em; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--color-inverse); color: var(--color-on-inverse); }
+.on-inverse .lang button[aria-pressed="true"] { background: var(--color-background); color: var(--color-text); }
+.lang button:focus-visible { border-radius: var(--radius-pill); }
+
+/* ---------- Eyebrow / tags ---------- */
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; line-height: 1.3; }
+.eyebrow::before { content: ""; flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--color-primary); }
+.lede { font-size: clamp(1.125rem, 1.6vw, 1.3rem); line-height: 1.55; max-width: 38em; }
+.section { padding-block: var(--section-y); }
+.section-head { display: grid; gap: 20px; max-width: 860px; margin-bottom: clamp(36px, 5vw, 64px); }
+.band { margin-inline: clamp(8px, 1.6vw, 24px); border-radius: var(--radius-l); }
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.site-header { position: sticky; top: 0; z-index: 50; background: var(--color-background); }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 76px; }
+.nav-toggle { display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 18px; border-radius: var(--radius-pill); border: 2px solid var(--color-text); background: transparent; color: var(--color-text); font: 600 1rem/1 var(--font-text); cursor: pointer; }
+.nav-toggle:focus-visible { border-radius: var(--radius-pill); }
+.nav-toggle .bars { position: relative; width: 18px; height: 12px; }
+.nav-toggle .bars::before, .nav-toggle .bars::after { content: ""; position: absolute; left: 0; right: 0; height: 2.5px; border-radius: 2px; background: currentColor; transition: transform .2s var(--ease); }
+.nav-toggle .bars::before { top: 0; } .nav-toggle .bars::after { bottom: 0; }
+.nav-toggle[aria-expanded="true"] .bars::before { transform: translateY(4.75px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .bars::after { transform: translateY(-4.75px) rotate(-45deg); }
+.nav-panel { position: absolute; left: 0; right: 0; top: 100%; background: var(--color-background); border-bottom: 2px solid var(--color-border); padding: 8px var(--gutter) 28px; display: grid; gap: 20px; justify-items: start; }
+.js .nav-panel:not(.is-open) { display: none; }
+html:not(.js) .nav-toggle { display: none; }
+html:not(.js) .nav-panel { position: static; border: 0; padding: 0 0 16px; }
+html:not(.js) .site-header .wrap { flex-wrap: wrap; }
+.nav-links { display: grid; width: 100%; }
+.nav-links a { display: block; padding: 14px 0; font-family: var(--font-display); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.015em; color: var(--color-text); text-decoration: none; border-bottom: 2px solid var(--color-border); }
+.nav-links a:hover { color: var(--color-link-hover); }
+.nav-panel .btn { width: 100%; }
+
+@media (min-width: 1040px) {
+  .nav-toggle { display: none; }
+  .nav-panel, .js .nav-panel:not(.is-open) { position: static; display: flex; align-items: center; gap: 28px; padding: 0; border: 0; flex: 1; justify-content: flex-end; }
+  .nav-links { display: flex; gap: 32px; width: auto; margin-right: auto; margin-left: 40px; }
+  .nav-links a { padding: 10px 0; border: 0; font-family: var(--font-text); font-size: 1.0625rem; letter-spacing: 0; }
+  .nav-panel .btn { width: auto; }
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero { padding-block: clamp(32px, 5vw, 72px) clamp(56px, 8vw, 112px); }
+.hero-grid { display: grid; gap: clamp(40px, 6vw, 72px); align-items: center; }
+.hero-copy { display: grid; gap: clamp(20px, 2.4vw, 30px); justify-items: start; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
+.cta-note { font-size: 1rem; color: var(--color-text-muted); }
+.pillars { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.pillars li { padding: 9px 20px; border-radius: var(--radius-pill); font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.01em; }
+.pillars li:nth-child(1) { background: var(--color-surface-warm); }
+.pillars li:nth-child(2) { background: var(--color-surface-fresh); }
+.pillars li:nth-child(3) { background: var(--color-inverse); color: var(--color-on-inverse); }
+.hero-art { width: 100%; max-width: 440px; margin-inline: auto; }
+.hero-art svg { width: 100%; height: auto; }
+@media (max-width: 559px) { .cta-row { width: 100%; } .cta-row .btn { width: 100%; } }
+@media (min-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); }
+  .hero-art { max-width: 560px; }
+}
+
+/* ==========================================================================
+   DÓNDE EMPEZAMOS
+   ========================================================================== */
+.start { background: var(--color-inverse); color: var(--color-on-inverse); }
+.start .lede { color: var(--color-on-inverse-muted); }
+.frictions { display: grid; gap: 16px; }
+.friction { position: relative; display: grid; align-content: start; gap: 12px; padding: clamp(24px, 3vw, 32px); border-radius: var(--radius-m); color: var(--color-text); min-height: 100%; }
+.friction:nth-child(1) { background: var(--color-surface-warm); }
+.friction:nth-child(2) { background: var(--color-surface-fresh); }
+.friction:nth-child(3) { background: var(--color-background); }
+.friction:nth-child(4) { background: var(--color-primary); color: var(--color-on-primary); }
+.friction-num { font-family: var(--font-display); font-weight: 800; font-size: 3.25rem; line-height: 1; letter-spacing: -0.04em; margin-bottom: clamp(20px, 4vw, 56px); }
+.friction p { font-size: 1.0625rem; line-height: 1.5; }
+.questions { margin-top: clamp(48px, 7vw, 96px); display: grid; gap: clamp(24px, 4vw, 56px); }
+.questions h3 { font-family: var(--font-text); font-size: 1.0625rem; font-weight: 600; letter-spacing: 0; color: var(--color-on-inverse-muted); }
+.questions ul { display: grid; }
+.questions li { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: baseline; padding-block: clamp(16px, 2vw, 24px); border-top: 2px solid var(--color-inverse-hover); font-family: var(--font-display); font-weight: 600; font-size: clamp(1.35rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.02em; }
+.questions li::before { content: ""; width: .42em; height: .42em; border-radius: 50%; background: var(--color-primary); transform: translateY(-.12em); }
+@media (min-width: 620px) { .frictions { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) {
+  .frictions { grid-template-columns: repeat(4, 1fr); }
+  .questions { grid-template-columns: 260px 1fr; }
+  .questions h3 { padding-top: 28px; }
+}
+
+/* ==========================================================================
+   JOURNEY
+   ========================================================================== */
+.trail { position: relative; margin-bottom: 28px; }
+.trail-svg, .trail-dot { display: none; }
+.trail-base { stroke: var(--color-border-strong); fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 1 14; }
+.trail-progress { stroke: var(--color-inverse); fill: none; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+/* Compact stepper (mobile first) */
+.trail-tabs { position: relative; display: flex; justify-content: space-between; align-items: center; }
+.trail-tabs::before { content: ""; position: absolute; left: 24px; right: 24px; top: 50%; border-top: 4px dotted var(--color-border-strong); transform: translateY(-50%); }
+.trail-tab { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 4px; border: 0; background: transparent; color: var(--color-text); font: 600 .95rem/1.2 var(--font-text); cursor: pointer; border-radius: 28px; }
+.trail-tab:focus-visible { border-radius: 28px; }
+.trail-tab .num { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--color-surface); border: 2px solid var(--color-text); font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; transition: background-color .2s var(--ease), transform .2s var(--ease), border-color .2s var(--ease); }
+.trail-tab:hover .num { background: var(--color-surface-warm); }
+.trail-tab[aria-selected="true"] .num { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); transform: scale(1.18); }
+.trail-tab .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (min-width: 720px) {
+  .trail { aspect-ratio: 1000 / 300; margin-bottom: 56px; }
+  .trail-svg { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .trail-dot { display: block; position: absolute; z-index: 1; width: 56px; height: 56px; border-radius: 50%; background: var(--color-primary); transform: translate(-50%, -50%); pointer-events: none; }
+  .trail-tabs { position: absolute; inset: 0; display: block; z-index: 2; }
+  .trail-tabs::before { content: none; }
+  .trail-tab { position: absolute; left: var(--x); top: var(--y); width: 140px; transform: translate(-50%, -26px); }
+  .trail-tab.is-up { flex-direction: column-reverse; transform: translate(-50%, calc(-100% + 26px)); }
+  .trail-tab .label { position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; font-size: .95rem; }
+  .trail-tab[aria-selected="true"] .label { font-weight: 700; }
+  .trail-tab[aria-selected="true"] .num { background: transparent; border-color: transparent; transform: none; }
+  html:not(.js) .trail-tab[aria-selected="true"] .num { background: var(--color-primary); }
+}
+@media (min-width: 1000px) { .trail-tab { width: 170px; } .trail-tab .label { font-size: 1.0625rem; } }
+
+.stage { background: var(--color-surface); border-radius: var(--radius-l); padding: clamp(22px, 4vw, 48px); display: grid; gap: clamp(22px, 3vw, 36px); }
+.stage + .stage { margin-top: 20px; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .stage { animation: stage-in .26s var(--ease); }
+  @keyframes stage-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+}
+.stage-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.stage-count { width: 100%; font-weight: 600; font-size: 1rem; color: var(--color-accent-text); }
+.stage-head h3 { font-size: clamp(1.75rem, 3.4vw, 2.6rem); letter-spacing: -0.03em; }
+.chip { display: inline-block; padding: 6px 16px; border-radius: var(--radius-pill); background: var(--color-inverse); color: var(--color-on-inverse); font-weight: 600; font-size: .95rem; }
+.stage-parts { display: grid; gap: 14px; }
+.part { border-radius: var(--radius-m); padding: clamp(20px, 2.4vw, 28px); display: grid; gap: 10px; align-content: start; }
+.part:nth-child(1) { background: var(--color-background); }
+.part:nth-child(2) { background: var(--color-surface-fresh); }
+.part:nth-child(3) { background: var(--color-surface-warm); }
+.part h4 { display: flex; align-items: center; gap: 10px; font-family: var(--font-text); font-size: 1rem; font-weight: 700; letter-spacing: 0; line-height: 1.3; }
+.part h4 svg { width: 22px; height: 22px; flex: none; }
+.part p { font-size: 1.125rem; line-height: 1.5; }
+@media (min-width: 860px) { .stage-parts { grid-template-columns: repeat(3, 1fr); } }
+
+/* ==========================================================================
+   SERVICES
+   ========================================================================== */
+.offer { background: var(--color-surface-fresh); }
+.offer-grid { display: grid; gap: 16px; }
+.offer-main { position: relative; overflow: hidden; background: var(--color-inverse); color: var(--color-on-inverse); border-radius: var(--radius-l); padding: clamp(28px, 4vw, 56px); display: grid; gap: 20px; align-content: start; min-height: 420px; }
+.offer-main .tag { justify-self: start; padding: 6px 16px; border-radius: var(--radius-pill); background: var(--color-primary); color: var(--color-on-primary); font-weight: 700; font-size: .95rem; }
+.offer-main h3 { font-size: clamp(2.3rem, 5vw, 4rem); line-height: .98; letter-spacing: -0.035em; font-weight: 800; }
+.offer-main p { font-size: clamp(1.125rem, 1.6vw, 1.3rem); line-height: 1.5; max-width: 26em; color: var(--color-on-inverse-muted); }
+.offer-main svg { width: min(100%, 360px); height: auto; margin-top: auto; padding-top: 24px; }
+.offer-rest { display: grid; gap: 16px; }
+.offer-card { background: var(--color-background); border-radius: var(--radius-m); padding: clamp(22px, 2.6vw, 30px); display: grid; gap: 10px; align-content: start; }
+.offer-card h3 { font-size: 1.3rem; }
+.offer-card p { font-size: 1rem; line-height: 1.5; color: var(--color-text-muted); }
+@media (min-width: 600px) { .offer-rest { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .offer-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
+
+/* ==========================================================================
+   TRUST
+   ========================================================================== */
+.trust-grid { display: grid; gap: clamp(40px, 6vw, 80px); }
+.trust-list { display: grid; margin-top: clamp(28px, 4vw, 44px); }
+.trust-list li { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: baseline; padding-block: 20px; border-top: 2px solid var(--color-border); font-size: 1.125rem; line-height: 1.5; }
+.trust-list li::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--color-primary); }
+.trust-note { margin-top: 20px; font-size: 1rem; color: var(--color-text-muted); font-style: italic; }
+.principles { display: grid; gap: 12px; }
+.principles h3 { font-family: var(--font-text); font-size: 1rem; font-weight: 600; letter-spacing: 0; color: var(--color-text-muted); margin-bottom: 4px; }
+.principle { border-radius: var(--radius-pill); padding: clamp(18px, 2.6vw, 28px) clamp(26px, 4vw, 44px); font-family: var(--font-display); font-weight: 700; font-size: clamp(1.8rem, 3.6vw, 2.9rem); line-height: 1; letter-spacing: -0.03em; }
+.principle:nth-of-type(1) { background: var(--color-surface-warm); margin-right: 18%; }
+.principle:nth-of-type(2) { background: var(--color-inverse); color: var(--color-on-inverse); margin-inline: 9%; }
+.principle:nth-of-type(3) { background: var(--color-surface-fresh); margin-left: 18%; }
+.security { margin-top: 12px; background: var(--color-surface); border-radius: var(--radius-m); padding: clamp(22px, 2.6vw, 30px); font-size: 1.0625rem; }
+@media (min-width: 1000px) { .trust-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: start; } }
+
+/* ==========================================================================
+   CLOSING + FORM
+   ========================================================================== */
+.closing { background: var(--color-primary); color: var(--color-on-primary); --color-focus: var(--color-inverse); }
+.closing-head { display: grid; gap: clamp(24px, 3vw, 36px); justify-items: start; margin-bottom: clamp(40px, 6vw, 72px); }
+.closing-head h2 { font-size: clamp(2.3rem, 5.6vw, 4.6rem); line-height: .98; letter-spacing: -0.035em; font-weight: 800; max-width: 15em; }
+.closing-grid { display: grid; gap: 16px; }
+.panel { border-radius: var(--radius-l); padding: clamp(22px, 4vw, 44px); }
+.panel h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); letter-spacing: -0.025em; margin-bottom: 24px; }
+.panel-form { background: var(--color-background); color: var(--color-text); --color-focus: var(--color-focus-base); }
+.panel-agenda { background: var(--color-inverse); color: var(--color-on-inverse); --color-focus: var(--color-focus-inverse); display: grid; align-content: start; gap: 20px; }
+.panel-agenda h3 { margin-bottom: 0; }
+.panel-agenda p { color: var(--color-on-inverse-muted); }
+.cal { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.cal span { aspect-ratio: 1; border-radius: 30%; border: 2px solid var(--color-inverse-hover); }
+.cal span.on { background: var(--color-inverse-hover); }
+.cal span.pick { background: var(--color-primary); border-color: var(--color-primary); border-radius: 50%; }
+.mock-note { border: 2px dashed var(--color-on-inverse-muted); border-radius: var(--radius-s); padding: 14px 18px; font-size: 1rem; }
+
+.form-grid { display: grid; gap: 18px; }
+.field { display: grid; gap: 6px; }
+.field label, .field-label { font-weight: 600; font-size: 1rem; }
+.input { width: 100%; min-height: 54px; padding: 12px 16px; border-radius: var(--radius-s); border: 2px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); font: 400 1.0625rem/1.4 var(--font-text); transition: border-color .15s var(--ease); }
+textarea.input { min-height: 132px; resize: vertical; }
+.input:hover, .input.is-hover { border-color: var(--color-text); }
+.input:focus-visible, .input.is-focus { border-color: var(--color-focus); border-radius: var(--radius-s); outline-offset: 2px; }
+.input[aria-invalid="true"], .input.is-error { border-color: var(--color-error); }
+.hint { font-size: .95rem; color: var(--color-text-muted); }
+.error { font-size: .95rem; font-weight: 600; color: var(--color-error); }
+.check { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: 1rem; line-height: 1.45; }
+.check input { appearance: none; -webkit-appearance: none; width: 26px; height: 26px; margin: 0; border-radius: 8px; border: 2px solid var(--color-border-strong); background: var(--color-surface); cursor: pointer; display: grid; place-items: center; }
+.check input:checked { background: var(--color-inverse); border-color: var(--color-inverse); }
+.check input:checked::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--color-primary); }
+.check input[aria-invalid="true"] { border-color: var(--color-error); }
+.confirm { display: grid; gap: 16px; justify-items: start; padding-block: 12px; }
+.confirm:focus-visible { border-radius: var(--radius-s); }
+.confirm .ok { width: 56px; height: 56px; border-radius: 50%; background: var(--color-success); display: grid; place-items: center; }
+.confirm .ok svg { width: 26px; height: 26px; }
+.confirm .ok path { stroke: var(--color-surface); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.confirm p { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.1; letter-spacing: -0.025em; }
+@media (min-width: 620px) { .form-grid .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } }
+@media (max-width: 619px) { .form-grid .two { display: grid; gap: 18px; } .panel-form .btn { width: 100%; } }
+@media (min-width: 1000px) { .closing-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: start; } }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.site-footer { background: var(--color-inverse); color: var(--color-on-inverse); margin-top: clamp(8px, 1.6vw, 24px); padding-block: clamp(48px, 6vw, 80px) 36px; }
+.site-footer a:not(.logo) { color: var(--color-on-inverse); }
+.site-footer a:not(.logo):hover { color: var(--color-surface-warm); }
+.footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 36px; border-bottom: 2px solid var(--color-inverse-hover); }
+.footer-top .logo { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+.footer-mail { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.2rem, 2.2vw, 1.6rem); letter-spacing: -0.015em; }
+.footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-top: 28px; font-size: 1rem; }
+.footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+.footer-links a { display: inline-block; padding-block: 8px; }
+.site-footer .lang { border-color: var(--color-on-inverse-muted); }
+.copyright { color: var(--color-on-inverse-muted); }
+
+/* ==========================================================================
+   BRAND SYSTEM STRIP
+   ========================================================================== */
+.brand-system { background: var(--color-surface); padding-block: 56px 72px; font-size: .95rem; }
+.brand-system h2 { font-size: 1.6rem; letter-spacing: -0.02em; }
+.brand-system .intro { color: var(--color-text-muted); margin-top: 6px; margin-bottom: 36px; }
+.bs-block { padding-block: 28px; border-top: 2px solid var(--color-border); display: grid; gap: 18px; }
+.bs-block h3 { font-family: var(--font-text); font-size: .95rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--color-text-muted); }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.swatch { display: grid; gap: 8px; }
+.swatch i { display: block; height: 72px; border-radius: var(--radius-s); border: 2px solid var(--color-border); }
+.swatch b { display: block; font-weight: 700; line-height: 1.3; }
+.swatch span { display: block; color: var(--color-text-muted); line-height: 1.35; font-size: .875rem; }
+.sw-1 i { background: var(--color-inverse); } .sw-2 i { background: var(--color-link); } .sw-3 i { background: var(--color-text-muted); }
+.sw-4 i { background: var(--color-border-strong); } .sw-5 i { background: var(--color-on-inverse-muted); } .sw-6 i { background: var(--color-primary); }
+.sw-7 i { background: var(--color-primary-hover); } .sw-8 i { background: var(--color-accent-text); } .sw-9 i { background: var(--color-surface-warm); }
+.sw-10 i { background: var(--color-surface-fresh); } .sw-11 i { background: var(--color-background); } .sw-12 i { background: var(--color-border); }
+.sw-13 i { background: var(--color-surface); } .sw-14 i { background: var(--color-error); } .sw-15 i { background: var(--color-success); }
+.type-grid, .logo-grid, .state-grid { display: grid; gap: 16px; }
+.type-sample { background: var(--color-background); border-radius: var(--radius-m); padding: 24px; display: grid; gap: 10px; min-width: 0; }
+.type-sample .big { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.9rem, 4vw, 2.75rem); line-height: 1; letter-spacing: -0.035em; }
+.type-sample .body { font-size: 1.125rem; line-height: 1.55; }
+.type-sample small { color: var(--color-text-muted); font-size: .875rem; }
+.logo-tile { border-radius: var(--radius-m); padding: 32px 24px; display: grid; place-items: center; min-height: 140px; }
+.logo-tile .logo { font-size: clamp(1.9rem, 4vw, 2.6rem); }
+.logo-tile.light { background: var(--color-background); }
+.logo-tile.dark { background: var(--color-inverse); }
+.logo-tile.warm { background: var(--color-surface-warm); }
+.symbol { width: 64px; height: 64px; border-radius: 50%; background: var(--color-primary); }
+.state-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; }
+.state-row > div { display: grid; gap: 8px; justify-items: start; min-width: 0; }
+.state-row small { color: var(--color-text-muted); font-size: .875rem; }
+.state-row .input { width: 220px; max-width: 100%; }
+.state-pad { padding: 6px; }
+@media (min-width: 760px) { .type-grid { grid-template-columns: 1fr 1fr; } .logo-grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<!-- ============================== HEADER ============================== -->
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="confia.ing, inicio"><span aria-hidden="true">confia</span><span class="logo-dot" aria-hidden="true"></span><span aria-hidden="true">ing</span></a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu">
+      <span class="bars" aria-hidden="true"></span>Menú
+    </button>
+
+    <div class="nav-panel" id="menu">
+      <nav class="nav-links" aria-label="Principal">
+        <a href="#donde-empezamos">Dónde empezamos</a>
+        <a href="#como">Cómo lo hacemos realidad</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" aria-pressed="true" lang="es"><span class="sr-only">Español, </span>ES</button>
+        <button type="button" aria-pressed="false" lang="en"><span class="sr-only">English, </span>EN</button>
+      </div>
+      <a class="btn btn-primary btn-small" href="#agenda">Agenda 30 minutos</a>
+    </div>
+  </div>
+</header>
+
+<main id="contenido">
+
+<!-- ============================== HERO ============================== -->
+<section class="hero" id="inicio">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Transformación de IA para empresas que ya usan tecnología</p>
+      <h1>Encuentra dónde la IA puede generar resultados en tu empresa.</h1>
+      <p class="lede">Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo desde el diagnóstico hasta soluciones que pueda operar y escalar.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#agenda">Agenda una conversación de 30 minutos
+          <svg class="arrow" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg>
+        </a>
+        <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+      </div>
+      <p class="cta-note">Una conversación exploratoria, sin costo ni compromiso.</p>
+      <ul class="pillars" aria-label="Pilares">
+        <li>Estrategia</li>
+        <li>Capacitación</li>
+        <li>Automatización</li>
+      </ul>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 520 520" focusable="false">
+        <!-- sage quarter + butter circle peeking behind the main block -->
+        <path class="f-fresh" d="M20 490a170 170 0 0 1 170-170v170z"/>
+        <circle class="f-warm" cx="112" cy="128" r="96"/>
+        <!-- main block -->
+        <rect class="f-inverse" x="90" y="64" width="400" height="400" rx="96"/>
+        <!-- stacked blocks: process growing -->
+        <rect class="f-fresh" x="270" y="376" width="56" height="40" rx="14"/>
+        <rect class="f-bg" x="334" y="336" width="56" height="80" rx="18"/>
+        <rect class="f-fresh" x="398" y="286" width="56" height="130" rx="18"/>
+        <!-- two people, abstract: head + shoulders -->
+        <circle class="f-warm" cx="146" cy="342" r="22"/>
+        <path class="f-warm" d="M106 416a40 40 0 0 1 80 0z"/>
+        <circle class="f-bg" cx="218" cy="356" r="18"/>
+        <path class="f-bg" d="M186 416a32 32 0 0 1 64 0z"/>
+        <!-- the path they travel together -->
+        <path class="s-bg" d="M150 262C200 262 214 208 270 208S344 262 392 204 430 150 438 132" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 13"/>
+        <circle class="f-bg" cx="270" cy="208" r="9"/>
+        <circle class="f-bg" cx="372" cy="226" r="9"/>
+        <!-- the point of trust -->
+        <circle class="f-primary" cx="438" cy="124" r="30"/>
+        <!-- arc echo -->
+        <path class="s-inverse" d="M452 500a70 70 0 0 0 48-66" stroke-width="10" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== DÓNDE EMPEZAMOS ============================== -->
+<section class="section band start on-inverse" id="donde-empezamos" aria-labelledby="t-donde">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Dónde empezamos</p>
+      <h2 id="t-donde">Empezamos por el trabajo, no por la tecnología.</h2>
+      <p class="lede">Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p>
+    </div>
+
+    <ol class="frictions">
+      <li class="friction">
+        <span class="friction-num" aria-hidden="true">01</span>
+        <h3>Tareas repetitivas que cuestan horas.</h3>
+        <p>Trabajo operativo y verificable que tu equipo hace a mano cada semana: revisar, copiar, clasificar, responder.</p>
+      </li>
+      <li class="friction">
+        <span class="friction-num" aria-hidden="true">02</span>
+        <h3>Sistemas y datos que no se hablan.</h3>
+        <p>Información repartida entre herramientas, con personas haciendo de puente.</p>
+      </li>
+      <li class="friction">
+        <span class="friction-num" aria-hidden="true">03</span>
+        <h3>IA sin estrategia.</h3>
+        <p>Licencias compradas y equipos improvisando, sin saber si eso mejora la productividad.</p>
+      </li>
+      <li class="friction">
+        <span class="friction-num" aria-hidden="true">04</span>
+        <h3>Equipos de software que no saben por dónde empezar.</h3>
+        <p>Quieren integrar IA en su ciclo de desarrollo, pero no tienen un método para hacerlo en cada fase.</p>
+      </li>
+    </ol>
+
+    <div class="questions">
+      <h3>Preguntas que respondemos contigo:</h3>
+      <ul>
+        <li>¿En qué proceso tiene sentido usar IA?</li>
+        <li>¿Qué datos, herramientas y personas necesito?</li>
+        <li>¿Cómo justifico el costo y mido el impacto?</li>
+        <li>¿Cómo evito fugas de información y soluciones difíciles de mantener?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== JOURNEY ============================== -->
+<section class="section" id="como" aria-labelledby="t-como">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Cómo lo hacemos realidad</p>
+      <h2 id="t-como">Un recorrido que hacemos juntos.</h2>
+      <p class="lede">Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.</p>
+    </div>
+
+    <div class="trail">
+      <svg class="trail-svg" viewBox="0 0 1000 300" aria-hidden="true" focusable="false">
+        <path class="trail-base" d="M0 150C40 150 50 200 100 200C170 200 230 110 300 110S430 200 500 200S630 110 700 110S830 200 900 200S960 150 1000 140"/>
+        <path class="trail-progress" id="trail-path" pathLength="1" d="M0 150C40 150 50 200 100 200C170 200 230 110 300 110S430 200 500 200S630 110 700 110S830 200 900 200S960 150 1000 140"/>
+      </svg>
+      <span class="trail-dot" id="trail-dot" aria-hidden="true" style="left:10%;top:66.667%"></span>
+
+      <div class="trail-tabs" role="tablist" aria-label="Etapas del recorrido">
+        <button class="trail-tab" role="tab" type="button" id="tab-1" aria-controls="panel-1" aria-selected="true" style="--x:10%;--y:66.667%">
+          <span class="num" aria-hidden="true">1</span><span class="label">Conversación inicial</span>
+        </button>
+        <button class="trail-tab is-up" role="tab" type="button" id="tab-2" aria-controls="panel-2" aria-selected="false" style="--x:30%;--y:36.667%">
+          <span class="num" aria-hidden="true">2</span><span class="label">Diagnóstico</span>
+        </button>
+        <button class="trail-tab" role="tab" type="button" id="tab-3" aria-controls="panel-3" aria-selected="false" style="--x:50%;--y:66.667%">
+          <span class="num" aria-hidden="true">3</span><span class="label">Roadmap</span>
+        </button>
+        <button class="trail-tab is-up" role="tab" type="button" id="tab-4" aria-controls="panel-4" aria-selected="false" style="--x:70%;--y:36.667%">
+          <span class="num" aria-hidden="true">4</span><span class="label">Piloto</span>
+        </button>
+        <button class="trail-tab" role="tab" type="button" id="tab-5" aria-controls="panel-5" aria-selected="false" style="--x:90%;--y:66.667%">
+          <span class="num" aria-hidden="true">5</span><span class="label">Escala y transferencia</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="stages">
+      <article class="stage" role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+        <header class="stage-head">
+          <p class="stage-count">Etapa 1 de 5</p>
+          <h3>Conversación inicial</h3>
+          <span class="chip">30 minutos</span>
+        </header>
+        <div class="stage-parts">
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><circle class="f-inverse" cx="11" cy="11" r="9"/></svg>Qué hacemos</h4>
+            <p>Exploramos tus procesos y dónde podría aplicarse IA. Es una conversación, no un diagnóstico ni un compromiso.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="f-inverse" x="2" y="2" width="18" height="18" rx="6"/></svg>Qué recibes</h4>
+            <p>Una primera lectura de oportunidades y una idea clara de si podemos ayudarte.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><path class="s-inverse" d="M3 11h15M12 5l6 6-6 6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Siguiente paso</h4>
+            <p>Decides si avanzamos a un diagnóstico.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="stage" role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0">
+        <header class="stage-head">
+          <p class="stage-count">Etapa 2 de 5</p>
+          <h3>Diagnóstico</h3>
+        </header>
+        <div class="stage-parts">
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><circle class="f-inverse" cx="11" cy="11" r="9"/></svg>Qué hacemos</h4>
+            <p>Evaluamos oportunidades, fricciones y qué tan preparada está tu empresa: datos, herramientas y personas.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="f-inverse" x="2" y="2" width="18" height="18" rx="6"/></svg>Qué recibes</h4>
+            <p>Oportunidades priorizadas y lo que hay que preparar. El alcance se acuerda contigo.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><path class="s-inverse" d="M3 11h15M12 5l6 6-6 6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Siguiente paso</h4>
+            <p>Elegimos juntos por dónde empezar.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="stage" role="tabpanel" id="panel-3" aria-labelledby="tab-3" tabindex="0">
+        <header class="stage-head">
+          <p class="stage-count">Etapa 3 de 5</p>
+          <h3>Roadmap</h3>
+        </header>
+        <div class="stage-parts">
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><circle class="f-inverse" cx="11" cy="11" r="9"/></svg>Qué hacemos</h4>
+            <p>Trazamos un plan de alto nivel: etapas, personas involucradas, costos y resultados esperados.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="f-inverse" x="2" y="2" width="18" height="18" rx="6"/></svg>Qué recibes</h4>
+            <p>El estado actual frente al estado deseado para los próximos meses.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><path class="s-inverse" d="M3 11h15M12 5l6 6-6 6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Siguiente paso</h4>
+            <p>Acordamos el primer piloto.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="stage" role="tabpanel" id="panel-4" aria-labelledby="tab-4" tabindex="0">
+        <header class="stage-head">
+          <p class="stage-count">Etapa 4 de 5</p>
+          <h3>Piloto</h3>
+        </header>
+        <div class="stage-parts">
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><circle class="f-inverse" cx="11" cy="11" r="9"/></svg>Qué hacemos</h4>
+            <p>Implementamos con demos, revisiones y ciclos de feedback.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="f-inverse" x="2" y="2" width="18" height="18" rx="6"/></svg>Qué recibes</h4>
+            <p>Una solución funcionando, con métricas y OKR del proyecto y del impacto en el negocio.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><path class="s-inverse" d="M3 11h15M12 5l6 6-6 6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Siguiente paso</h4>
+            <p>Si demuestra valor, lo escalamos.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="stage" role="tabpanel" id="panel-5" aria-labelledby="tab-5" tabindex="0">
+        <header class="stage-head">
+          <p class="stage-count">Etapa 5 de 5</p>
+          <h3>Escala y transferencia</h3>
+        </header>
+        <div class="stage-parts">
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><circle class="f-inverse" cx="11" cy="11" r="9"/></svg>Qué hacemos</h4>
+            <p>Diseñamos la solución para crecer, con monitoreo continuo.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="f-inverse" x="2" y="2" width="18" height="18" rx="6"/></svg>Qué recibes</h4>
+            <p>Capacitación y documentación para que tu equipo la opere. El soporte continuo es opcional.</p>
+          </div>
+          <div class="part">
+            <h4><svg viewBox="0 0 22 22" aria-hidden="true"><path class="s-inverse" d="M3 11h15M12 5l6 6-6 6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Siguiente paso</h4>
+            <p>Tu equipo queda a cargo.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== LO QUE OFRECEMOS ============================== -->
+<section class="section band offer" id="servicios" aria-labelledby="t-ofrecemos">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="t-ofrecemos">Lo que ofrecemos</h2>
+    </div>
+
+    <div class="offer-grid">
+      <article class="offer-main on-inverse">
+        <span class="tag">Principal</span>
+        <h3>Transformación de IA</h3>
+        <p>Estrategia, capacitación y automatización integradas para llevar la IA de la idea al resultado.</p>
+        <svg viewBox="0 0 360 150" aria-hidden="true" focusable="false">
+          <!-- three integrated pieces travelling towards a result -->
+          <circle class="f-warm" cx="62" cy="88" r="56"/>
+          <circle class="f-fresh" cx="138" cy="88" r="56" opacity=".92"/>
+          <rect class="f-bg" x="170" y="32" width="112" height="112" rx="36" opacity=".95"/>
+          <path class="s-inverse" d="M40 88h220" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 13"/>
+          <circle class="f-primary" cx="318" cy="88" r="28"/>
+        </svg>
+      </article>
+
+      <div class="offer-rest">
+        <article class="offer-card">
+          <h3>Capacitación en IA.</h3>
+          <p>Para líderes y perfiles no técnicos: usar IA con criterio en flujos de trabajo reales.</p>
+        </article>
+        <article class="offer-card">
+          <h3>AI-SDLC.</h3>
+          <p>Acompañamos a equipos de software a integrar IA en cada fase del ciclo de desarrollo.</p>
+        </article>
+        <article class="offer-card">
+          <h3>Software a la medida.</h3>
+          <p>Cuando la solución necesita construirse.</p>
+        </article>
+        <article class="offer-card">
+          <h3>Soluciones generativas y agentivas.</h3>
+          <p>Asesoría y construcción de agentes y sistemas basados en IA generativa.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== POR QUÉ CONFIAR ============================== -->
+<section class="section" id="confianza" aria-labelledby="t-confiar">
+  <div class="wrap trust-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:0">
+        <p class="eyebrow">Por qué confiar</p>
+        <h2 id="t-confiar">Experiencia del equipo</h2>
+      </div>
+      <ul class="trust-list">
+        <li>Más de cinco años en empresas SaaS de EE. UU. con clientes en todo el mundo.</li>
+        <li>Sector salud: un sistema RAG agentivo para gestión documental de tratamientos médicos, con modelos locales y en la nube.</li>
+        <li>Eficiencia en el uso de LLM: costos, modelos locales y enrutamiento de modelos.</li>
+        <li>AI-SDLC: asesoría en todas las fases del ciclo de desarrollo.</li>
+      </ul>
+      <p class="trust-note">Experiencia previa de quienes integran el equipo.</p>
+    </div>
+
+    <div class="principles">
+      <h3>Tres principios</h3>
+      <p class="principle">Mantenible</p>
+      <p class="principle">Seguro</p>
+      <p class="principle">Medible</p>
+      <p class="security"><strong>Seguridad:</strong> consideramos riesgos como fuga de información y prompt injection, y los requisitos de datos personales y normativos que apliquen a tu contexto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CIERRE ============================== -->
+<section class="section band closing" id="cierre" aria-labelledby="t-cierre">
+  <div class="wrap">
+    <div class="closing-head">
+      <h2 id="t-cierre">Tu equipo ya trabaja duro. Hagamos que la IA trabaje con él.</h2>
+      <div class="cta-row">
+        <a class="btn btn-inverse" href="#agenda">Agenda una conversación de 30 minutos
+          <svg class="arrow" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg>
+        </a>
+        <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+      </div>
+    </div>
+
+    <div class="closing-grid">
+      <div class="panel panel-form" id="consulta">
+        <h3>Cuéntanos dónde quieres aplicar IA</h3>
+
+        <form id="form-consulta" class="form-grid" novalidate>
+          <div class="two">
+            <div class="field">
+              <label for="f-nombre">Nombre</label>
+              <input class="input" id="f-nombre" name="nombre" type="text" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="f-empresa">Empresa</label>
+              <input class="input" id="f-empresa" name="empresa" type="text" autocomplete="organization">
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label for="f-correo">Correo</label>
+              <input class="input" id="f-correo" name="correo" type="email" autocomplete="email" inputmode="email" aria-describedby="contacto-hint contacto-error">
+            </div>
+            <div class="field">
+              <label for="f-telefono">Teléfono</label>
+              <input class="input" id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="contacto-hint contacto-error">
+            </div>
+          </div>
+          <div>
+            <p class="hint" id="contacto-hint">Correo o teléfono, al menos uno.</p>
+            <p class="error" id="contacto-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="f-mensaje">¿Dónde quieres aplicar IA?</label>
+            <textarea class="input" id="f-mensaje" name="mensaje" rows="4"></textarea>
+          </div>
+          <div>
+            <label class="check">
+              <input type="checkbox" id="f-acepto" name="acepto" aria-describedby="acepto-error">
+              <span>Acepto el tratamiento de mis datos para responder mi solicitud, según la <a href="#privacidad">Política de privacidad</a>.</span>
+            </label>
+            <p class="error" id="acepto-error" role="alert" hidden></p>
+          </div>
+          <div>
+            <button class="btn btn-primary" type="submit">Enviar consulta</button>
+          </div>
+        </form>
+
+        <div class="confirm" id="form-confirm" role="status" tabindex="-1" hidden>
+          <span class="ok" aria-hidden="true"><svg viewBox="0 0 26 26"><path d="M5 13.5l5.5 5.5L21 8"/></svg></span>
+          <p>Recibimos tu consulta. Te contactaremos pronto.</p>
+        </div>
+      </div>
+
+      <aside class="panel panel-agenda" id="agenda" aria-labelledby="t-agenda" tabindex="-1">
+        <h3 id="t-agenda">Agenda 30 minutos</h3>
+        <p>Una conversación exploratoria, sin costo ni compromiso.</p>
+        <div class="cal" aria-hidden="true">
+          <span></span><span class="on"></span><span class="on"></span><span></span><span class="on"></span>
+          <span class="on"></span><span></span><span class="pick"></span><span class="on"></span><span></span>
+          <span></span><span class="on"></span><span></span><span class="on"></span><span class="on"></span>
+        </div>
+        <p class="mock-note">Maqueta: aquí se cargará el calendario de Calendly.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================== PIE ============================== -->
+<footer class="site-footer on-inverse">
+  <div class="wrap">
+    <div class="footer-top">
+      <a class="logo logo--inverse" href="#inicio" aria-label="confia.ing, inicio"><span aria-hidden="true">confia</span><span class="logo-dot" aria-hidden="true"></span><span aria-hidden="true">ing</span></a>
+      <a class="footer-mail" href="mailto:hola@confia.ing">hola@confia.ing</a>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="#privacidad" id="privacidad">Privacidad</a>
+        <a href="#terminos" id="terminos">Términos</a>
+        <div class="lang" role="group" aria-label="Idioma">
+          <button type="button" aria-pressed="true" lang="es"><span class="sr-only">Español, </span>ES</button>
+          <button type="button" aria-pressed="false" lang="en"><span class="sr-only">English, </span>EN</button>
+        </div>
+      </div>
+      <p class="copyright">© 2026 Confia.ing</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================== SISTEMA DE MARCA ============================== -->
+<section class="brand-system" aria-labelledby="t-sistema">
+  <div class="wrap">
+    <h2 id="t-sistema">Sistema de marca</h2>
+    <p class="intro">Propuesta C · Cercano y vivo. Referencia interna de la maqueta, no forma parte de la home.</p>
+
+    <div class="bs-block">
+      <h3>Paleta</h3>
+      <div class="swatches">
+        <div class="swatch sw-1"><i></i><b>text · inverse</b><span>indigo-900 · #1B1F4B</span></div>
+        <div class="swatch sw-2"><i></i><b>link · focus</b><span>indigo-700 · #2D3380</span></div>
+        <div class="swatch sw-3"><i></i><b>text-muted</b><span>indigo-500 · #4A4E78</span></div>
+        <div class="swatch sw-4"><i></i><b>border-strong</b><span>indigo-300 · #7A7E9E</span></div>
+        <div class="swatch sw-5"><i></i><b>on-inverse-muted</b><span>indigo-100 · #D9DBF0</span></div>
+        <div class="swatch sw-6"><i></i><b>primary</b><span>coral-500 · #FF6B4A</span></div>
+        <div class="swatch sw-7"><i></i><b>primary-hover</b><span>coral-300 · #FF8566</span></div>
+        <div class="swatch sw-8"><i></i><b>accent-text · link-hover</b><span>coral-700 · #B8371A</span></div>
+        <div class="swatch sw-9"><i></i><b>surface-warm · focus-inverse</b><span>butter-300 · #FFD979</span></div>
+        <div class="swatch sw-10"><i></i><b>surface-fresh</b><span>sage-300 · #BFD8C2</span></div>
+        <div class="swatch sw-11"><i></i><b>background</b><span>cream-50 · #FBF5EA</span></div>
+        <div class="swatch sw-12"><i></i><b>background-alt · border</b><span>sand-200 · #F1E6D2</span></div>
+        <div class="swatch sw-13"><i></i><b>surface</b><span>white · #FFFFFF</span></div>
+        <div class="swatch sw-14"><i></i><b>error</b><span>red-700 · #B3261E</span></div>
+        <div class="swatch sw-15"><i></i><b>success</b><span>green-700 · #1E6B45</span></div>
+      </div>
+    </div>
+
+    <div class="bs-block">
+      <h3>Tipografía</h3>
+      <div class="type-grid">
+        <div class="type-sample">
+          <small>Titulares · Bricolage Grotesque 600–800</small>
+          <p class="big">Un recorrido que hacemos juntos.</p>
+          <small>Aa Bb Cc Ññ 0123456789 ¿?</small>
+        </div>
+        <div class="type-sample">
+          <small>Texto · Figtree 400–700</small>
+          <p class="body">Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.</p>
+          <small>Aa Bb Cc Ññ 0123456789 ¿?</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="bs-block">
+      <h3>Logo</h3>
+      <div class="logo-grid">
+        <div class="logo-tile light"><span class="logo" role="img" aria-label="confia.ing sobre fondo claro"><span aria-hidden="true">confia</span><span class="logo-dot" aria-hidden="true"></span><span aria-hidden="true">ing</span></span></div>
+        <div class="logo-tile dark"><span class="logo logo--inverse" role="img" aria-label="confia.ing sobre fondo oscuro"><span aria-hidden="true">confia</span><span class="logo-dot" aria-hidden="true"></span><span aria-hidden="true">ing</span></span></div>
+        <div class="logo-tile warm"><span class="logo" role="img" aria-label="confia.ing sobre fondo cálido"><span aria-hidden="true">confia</span><span class="logo-dot" aria-hidden="true"></span><span aria-hidden="true">ing</span></span></div>
+        <div class="logo-tile dark"><span class="symbol" role="img" aria-label="Símbolo: el punto"></span></div>
+      </div>
+    </div>
+
+    <div class="bs-block">
+      <h3>Botones, enlaces y campos</h3>
+      <div class="state-row">
+        <div><span class="btn btn-primary btn-small">Primario</span><small>Reposo</small></div>
+        <div><span class="btn btn-primary btn-small is-hover">Primario</span><small>Hover</small></div>
+        <div class="state-pad"><span class="btn btn-primary btn-small is-focus">Primario</span><small>Foco</small></div>
+        <div><span class="btn btn-secondary btn-small">Secundario</span><small>Reposo</small></div>
+        <div><span class="btn btn-secondary btn-small is-hover">Secundario</span><small>Hover</small></div>
+        <div><span class="btn btn-inverse btn-small">Inverso</span><small>Sobre coral</small></div>
+        <div><button class="btn btn-small" type="button" disabled>Inactivo</button><small>Deshabilitado</small></div>
+      </div>
+      <div class="state-row">
+        <div><a href="#t-sistema">Enlace</a><small>Reposo</small></div>
+        <div><a href="#t-sistema" class="is-hover">Enlace</a><small>Hover</small></div>
+        <div class="state-pad"><a href="#t-sistema" class="is-focus">Enlace</a><small>Foco</small></div>
+      </div>
+      <div class="state-row">
+        <div><input class="input" type="text" value="Reposo" aria-label="Campo en reposo" readonly><small>Reposo</small></div>
+        <div class="state-pad"><input class="input is-focus" type="text" value="Foco" aria-label="Campo con foco" readonly><small>Foco</small></div>
+        <div><input class="input is-error" type="text" value="Error" aria-label="Campo con error" readonly><small class="error">Mensaje de error</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ---------- Mobile nav ---------- */
+  var toggle = document.querySelector('.nav-toggle');
+  var panel = document.getElementById('menu');
+  function setNav(open) {
+    panel.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+  toggle.addEventListener('click', function () { setNav(toggle.getAttribute('aria-expanded') !== 'true'); });
+  panel.addEventListener('click', function (e) { if (e.target.closest('a')) setNav(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setNav(false); toggle.focus(); }
+  });
+
+  /* ---------- Journey tabs ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.trail-tab'));
+  var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
+  var path = document.getElementById('trail-path');
+  var dot = document.getElementById('trail-dot');
+  var STOPS = [[100, 200], [300, 110], [500, 200], [700, 110], [900, 200]];
+  var total = 0, lens = null, curLen = 0, raf = 0, current = 0;
+
+  function geometry() {
+    if (lens) return true;
+    try {
+      total = path.getTotalLength();
+      if (!total) return false;
+      var best = STOPS.map(function () { return { d: Infinity, l: 0 }; });
+      for (var i = 0; i <= 600; i++) {
+        var l = total * i / 600, p = path.getPointAtLength(l);
+        STOPS.forEach(function (s, k) {
+          var d = Math.abs(p.x - s[0]) + Math.abs(p.y - s[1]);
+          if (d < best[k].d) { best[k].d = d; best[k].l = l; }
+        });
+      }
+      lens = best.map(function (b) { return b.l; });
+      return true;
+    } catch (err) { return false; }
+  }
+  function place(len) {
+    var p = path.getPointAtLength(len);
+    dot.style.left = (p.x / 10) + '%';
+    dot.style.top = (p.y / 3) + '%';
+    path.style.strokeDashoffset = String(1 - len / total);
+    curLen = len;
+  }
+  function moveDot(i, animate) {
+    if (!geometry()) return;
+    cancelAnimationFrame(raf);
+    var from = curLen, to = lens[i];
+    if (!animate || reduce.matches) { place(to); return; }
+    var start = null, dur = 300;
+    function step(ts) {
+      if (start === null) start = ts;
+      var t = Math.min(1, (ts - start) / dur);
+      var e = 1 - Math.pow(1 - t, 3);
+      place(from + (to - from) * e);
+      if (t < 1) raf = requestAnimationFrame(step);
+    }
+    raf = requestAnimationFrame(step);
+  }
+  function select(i, focus, animate) {
+    tabs.forEach(function (t, k) {
+      var on = k === i;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      panels[k].hidden = !on;
+    });
+    current = i;
+    if (focus) tabs[i].focus();
+    moveDot(i, animate);
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { select(i, false, true); });
+    t.addEventListener('keydown', function (e) {
+      var n = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') n = 0;
+      else if (e.key === 'End') n = tabs.length - 1;
+      if (n !== null) { e.preventDefault(); select(n, true, true); }
+    });
+  });
+  select(0, false, false);
+  window.addEventListener('resize', function () { if (geometry()) place(lens[current]); });
+
+  /* ---------- Agenda / consulta anchors: move focus for keyboard users ---------- */
+  document.querySelectorAll('a[href="#agenda"]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      var el = document.getElementById('agenda');
+      setTimeout(function () { el.focus({ preventScroll: true }); }, 0);
+    });
+  });
+
+  /* ---------- Form (visual mock, no network) ---------- */
+  var form = document.getElementById('form-consulta');
+  var confirmBox = document.getElementById('form-confirm');
+  var email = document.getElementById('f-correo');
+  var tel = document.getElementById('f-telefono');
+  var consent = document.getElementById('f-acepto');
+  var contactErr = document.getElementById('contacto-error');
+  var consentErr = document.getElementById('acepto-error');
+
+  function show(el, msg) { el.textContent = msg; el.hidden = !msg; }
+  function invalid(el, on) { if (on) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid'); }
+
+  function validate() {
+    var e = email.value.trim(), t = tel.value.trim(), first = null;
+    invalid(email, false); invalid(tel, false); invalid(consent, false);
+    show(contactErr, ''); show(consentErr, '');
+
+    if (!e && !t) {
+      show(contactErr, 'Déjanos un correo o un teléfono para poder responderte.');
+      invalid(email, true); invalid(tel, true); first = email;
+    } else if (e && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) {
+      show(contactErr, 'Revisa el correo: parece incompleto.');
+      invalid(email, true); first = email;
+    } else if (t && t.replace(/\D/g, '').length < 7) {
+      show(contactErr, 'Revisa el teléfono: parece incompleto.');
+      invalid(tel, true); first = tel;
+    }
+    if (!consent.checked) {
+      show(consentErr, 'Necesitamos tu aceptación para responder tu solicitud.');
+      invalid(consent, true); first = first || consent;
+    }
+    return first;
+  }
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var first = validate();
+    if (first) { first.focus(); return; }
+    form.hidden = true;
+    confirmBox.hidden = false;
+    confirmBox.focus();
+  });
+  [email, tel, consent].forEach(function (el) {
+    el.addEventListener('input', function () { if (!contactErr.hidden || !consentErr.hidden) validate(); });
+  });
+
+  /* ---------- Language switch (non-functional mock) ---------- */
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function (e) { e.preventDefault(); });
+  });
+})();
+</script>
+</body>
+</html>

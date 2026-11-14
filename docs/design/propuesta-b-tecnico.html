@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propuesta B — Técnico preciso · Confia.ing</title>
+<meta name="description" content="Transformación de IA para empresas que ya usan tecnología.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='rgb(11,19,22)'/%3E%3Cpath d='M19.6 11.4A7 7 0 1 0 19.6 20.6' fill='none' stroke='rgb(238,243,241)' stroke-width='3.2'/%3E%3Crect x='22' y='19' width='4.5' height='4.5' fill='rgb(197,242,92)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root {
+  /* ── Primitivos ─────────────────────────── */
+  --ink-950: #070D0F;
+  --ink-900: #0B1316;
+  --ink-850: #0F191D;
+  --ink-800: #142126;
+  --ink-700: #1E2F35;
+  --ink-500: #56717B;
+  --ink-400: #7C939B;
+  --ink-300: #A9BBC1;
+  --paper-100: #EEF3F1;
+  --lime-300: #D8F88C;
+  --lime-400: #C5F25C;
+  --lime-700: #4F6B0E;
+  --coral-400: #FF8F80;
+
+  /* ── Roles semánticos ───────────────────── */
+  --color-background: var(--ink-900);
+  --color-background-deep: var(--ink-950);
+  --color-surface: var(--ink-850);
+  --color-surface-raised: var(--ink-800);
+  --color-border: var(--ink-700);
+  --color-border-strong: var(--ink-500);
+  --color-text: var(--paper-100);
+  --color-text-muted: var(--ink-300);
+  --color-text-subtle: var(--ink-400);
+  --color-primary: var(--lime-400);
+  --color-primary-hover: var(--lime-300);
+  --color-on-primary: var(--ink-950);
+  --color-primary-soft: color-mix(in srgb, var(--lime-400) 9%, transparent);
+  --color-link: var(--lime-400);
+  --color-focus: var(--lime-300);
+  --color-error: var(--coral-400);
+  --color-success: var(--lime-400);
+  --color-grid: color-mix(in srgb, var(--ink-300) 7%, transparent);
+  --color-header: color-mix(in srgb, var(--ink-900) 86%, transparent);
+  --color-inverse-background: var(--paper-100);
+  --color-inverse-text: var(--ink-900);
+  --color-inverse-accent: var(--lime-700);
+
+  /* ── Tipografía y medidas ───────────────── */
+  --font-sans: "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --gutter: 20px;
+  --maxw: 1240px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --section: clamp(72px, 9vw, 132px);
+}
+@media (min-width: 700px) { :root { --gutter: 32px; } }
+@media (min-width: 1100px) { :root { --gutter: 48px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, p, ul, ol, dl, dd, figure, fieldset { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+fieldset { border: 0; min-width: 0; }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+button, input, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--color-primary); color: var(--color-on-primary); }
+
+.wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+.mono { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.skip {
+  position: absolute; left: 16px; top: -64px; z-index: 100;
+  background: var(--color-primary); color: var(--color-on-primary);
+  padding: 10px 16px; font-weight: 600; text-decoration: none;
+  transition: top 160ms var(--ease);
+}
+.skip:focus { top: 12px; }
+
+/* ── Logo ─────────────────────────────────── */
+.logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--color-text); }
+.logo__mark { width: 28px; height: 28px; flex: none; }
+.logo__mark .m-bg { fill: var(--color-surface-raised); stroke: var(--color-border-strong); }
+.logo__mark .m-c { fill: none; stroke: var(--color-text); stroke-width: 3.2; }
+.logo__mark .m-dot { fill: var(--color-primary); }
+.logo__word { font-weight: 600; font-size: 1.1875rem; letter-spacing: -.035em; line-height: 1; white-space: nowrap; }
+.logo__word span { font-family: var(--font-mono); font-weight: 500; font-size: .9em; letter-spacing: -.02em; color: var(--color-primary); margin-left: -.1em; }
+
+/* ── Botones y enlaces ────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 12px 20px;
+  border: 1px solid transparent; border-radius: 3px;
+  font-weight: 600; font-size: 1rem; line-height: 1.25; text-decoration: none; text-align: center;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease), color 160ms var(--ease);
+}
+.btn svg { width: 16px; height: 16px; flex: none; transition: transform 200ms var(--ease); }
+.btn:hover svg, .btn.is-hover svg { transform: translateX(3px); }
+.btn--primary { background: var(--color-primary); color: var(--color-on-primary); }
+.btn--primary:hover, .btn--primary.is-hover { background: var(--color-primary-hover); }
+.btn--secondary { background: transparent; color: var(--color-text); border-color: var(--color-border-strong); }
+.btn--secondary:hover, .btn--secondary.is-hover { border-color: var(--color-primary); color: var(--color-primary); }
+.btn--sm { min-height: 40px; padding: 8px 14px; font-size: .9375rem; }
+.btn.is-focus, .field input.is-focus { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.btn[aria-disabled="true"] { background: var(--color-surface-raised); color: var(--color-text-subtle); border-color: var(--color-border); cursor: not-allowed; }
+.link { color: var(--color-link); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.link:hover, .link.is-hover { color: var(--color-primary-hover); text-decoration-thickness: 2px; }
+
+/* ── Header ───────────────────────────────── */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--color-header);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+}
+.header__in { display: flex; align-items: center; gap: 16px; min-height: 64px; flex-wrap: wrap; position: relative; }
+.nav { order: 5; width: 100%; padding: 8px 0 20px; }
+.nav ul { display: flex; flex-direction: column; }
+.nav a:not(.btn) {
+  display: block; padding: 14px 0; border-bottom: 1px solid var(--color-border);
+  color: var(--color-text); text-decoration: none; font-weight: 500;
+}
+.nav a:not(.btn):hover { color: var(--color-primary); }
+.nav .btn { width: 100%; margin-top: 20px; }
+.header__cta { display: none; }
+.lang { display: inline-flex; align-items: center; border: 1px solid var(--color-border); border-radius: 3px; margin-left: auto; }
+.lang a, .lang span {
+  font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em;
+  padding: 7px 9px; text-decoration: none; color: var(--color-text-muted); line-height: 1;
+}
+.lang a:hover { color: var(--color-text); }
+.lang [aria-current] { background: var(--color-surface-raised); color: var(--color-primary); }
+.burger {
+  display: none; width: 44px; height: 44px; margin-right: -10px;
+  background: none; border: 0; cursor: pointer; align-items: center; justify-content: center;
+}
+.burger i { display: block; width: 20px; height: 8px; border-block: 1.5px solid var(--color-text); transition: height 180ms var(--ease); }
+.burger[aria-expanded="true"] i { height: 0; border-bottom: 0; }
+.js .burger { display: inline-flex; }
+.js .nav { display: none; }
+.js .nav.is-open { display: block; }
+@media (min-width: 940px) {
+  .header__in { flex-wrap: nowrap; gap: 28px; min-height: 68px; }
+  .js .burger, .burger { display: none; }
+  .nav, .js .nav { display: block; order: 0; width: auto; padding: 0; margin-left: 28px; }
+  .nav ul { flex-direction: row; gap: 28px; }
+  .nav a:not(.btn) { padding: 8px 0; border: 0; font-size: .9375rem; color: var(--color-text-muted); }
+  .nav a:not(.btn):hover { color: var(--color-text); }
+  .nav .btn { display: none; }
+  .header__cta { display: inline-flex; }
+}
+
+/* ── Hero ─────────────────────────────────── */
+.hero { position: relative; padding-block: clamp(48px, 7vw, 104px) clamp(56px, 7vw, 96px); border-bottom: 1px solid var(--color-border); overflow: hidden; }
+.gridtex::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(var(--color-grid) 1px, transparent 1px), linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 48px 48px; background-position: center top;
+  -webkit-mask-image: radial-gradient(ellipse 80% 90% at 72% 38%, black 10%, transparent 78%);
+  mask-image: radial-gradient(ellipse 80% 90% at 72% 38%, black 10%, transparent 78%);
+}
+.hero__in { position: relative; display: grid; gap: 48px; align-items: center; }
+.hero__in > * { min-width: 0; }
+.eyebrow { display: flex; gap: 12px; align-items: baseline; color: var(--color-primary); margin-bottom: 24px; }
+.eyebrow b { font-weight: 400; color: var(--color-text-subtle); flex: none; }
+h1 {
+  font-size: clamp(2.25rem, 5.1vw, 4.125rem); line-height: 1.04; letter-spacing: -.04em; font-weight: 600;
+  text-wrap: balance; max-width: 15em;
+}
+.hero__lead { margin-top: 24px; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); line-height: 1.55; color: var(--color-text-muted); max-width: 36em; }
+.cta-row { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
+.cta-note { margin-top: 16px; font-size: .9375rem; color: var(--color-text-subtle); }
+.pillars { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--color-border); color: var(--color-text-muted); }
+.pillars li { display: inline-flex; align-items: center; gap: 10px; }
+.pillars li::before { content: ""; width: 6px; height: 6px; background: var(--color-primary); }
+@media (min-width: 620px) { .cta-row { flex-direction: row; flex-wrap: wrap; } }
+@media (min-width: 1040px) { .hero__in { grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 64px; } }
+
+.corners { position: relative; }
+.corners::after {
+  content: ""; position: absolute; inset: -1px; pointer-events: none; --c: var(--color-primary);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / 12px 1px no-repeat, linear-gradient(var(--c), var(--c)) top left / 1px 12px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 12px 1px no-repeat, linear-gradient(var(--c), var(--c)) top right / 1px 12px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 12px 1px no-repeat, linear-gradient(var(--c), var(--c)) bottom left / 1px 12px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 12px 1px no-repeat, linear-gradient(var(--c), var(--c)) bottom right / 1px 12px no-repeat;
+}
+.schematic { border: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-surface) 80%, transparent); }
+.schematic svg { width: 100%; height: auto; }
+.schematic figcaption { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--color-border); color: var(--color-text-subtle); font-size: .6875rem; }
+.s-wire { fill: none; stroke: var(--color-border-strong); stroke-width: 1.25; }
+.s-loop { fill: none; stroke: var(--color-text-subtle); stroke-width: 1.25; stroke-dasharray: 3 4; }
+.s-node { fill: var(--color-surface-raised); stroke: var(--color-text-subtle); stroke-width: 1.25; }
+.s-rule { stroke: var(--color-border); stroke-width: 1; }
+.s-tick { stroke: var(--color-border-strong); stroke-width: 1; }
+.s-main { fill: none; stroke: var(--color-primary); stroke-width: 2; }
+.s-acc { stroke: var(--color-primary); stroke-width: 1.25; fill: none; }
+.s-stop { fill: var(--color-background); stroke: var(--color-primary); stroke-width: 2; }
+.s-end { fill: var(--color-primary); }
+.s-txt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; fill: var(--color-text-subtle); }
+.s-txt--acc { fill: var(--color-primary); }
+.s-pulse { fill: var(--color-primary); animation: pulse 4.8s var(--ease) infinite; }
+@keyframes pulse { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 70% { transform: translateX(480px); opacity: 1; } 80%, 100% { transform: translateX(480px); opacity: 0; } }
+
+/* ── Secciones ────────────────────────────── */
+.section { padding-block: var(--section); border-bottom: 1px solid var(--color-border); position: relative; }
+.section--alt { background: var(--color-surface); }
+.head { display: grid; gap: 20px; margin-bottom: clamp(40px, 5vw, 64px); }
+.head > * { min-width: 0; }
+h2 { font-size: clamp(1.75rem, 3.6vw, 2.875rem); line-height: 1.08; letter-spacing: -.035em; font-weight: 600; text-wrap: balance; }
+.lead { font-size: clamp(1.0625rem, 1.4vw, 1.1875rem); color: var(--color-text-muted); max-width: 34em; }
+@media (min-width: 940px) { .head { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 64px; align-items: end; } }
+
+/* Fricciones */
+.frictions { display: grid; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
+.friction { background: var(--color-background); padding: 28px 24px 32px; display: flex; flex-direction: column; gap: 12px; }
+.friction .mono { color: var(--color-primary); }
+.friction h3 { font-size: 1.1875rem; line-height: 1.25; letter-spacing: -.02em; font-weight: 600; margin-top: 20px; }
+.friction p { color: var(--color-text-muted); font-size: .9688rem; }
+@media (min-width: 640px) { .frictions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1140px) { .frictions { grid-template-columns: repeat(4, minmax(0, 1fr)); } .friction h3 { margin-top: 40px; } }
+
+.questions { margin-top: clamp(40px, 5vw, 64px); display: grid; gap: 20px; }
+.questions > * { min-width: 0; }
+.questions h3 { font-size: 1.1875rem; font-weight: 600; letter-spacing: -.02em; }
+.questions ul { display: grid; border-top: 1px solid var(--color-border); }
+.questions li { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--color-border); font-size: 1.0625rem; }
+.questions li .mono { color: var(--color-text-subtle); }
+@media (min-width: 940px) {
+  .questions { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 64px; }
+  .questions ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; }
+}
+
+/* ── Journey ──────────────────────────────── */
+.journey { display: grid; border: 1px solid var(--color-border); background: var(--color-background); }
+.journey > * { min-width: 0; }
+.journey__bar { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--color-border); color: var(--color-text-subtle); }
+.journey__bar span:last-child { color: var(--color-primary); }
+.tabs { display: flex; overflow-x: auto; position: relative; padding: 12px 6px 8px; border-bottom: 1px solid var(--color-border); scrollbar-width: thin; scrollbar-color: var(--color-border-strong) transparent; }
+.tab {
+  position: relative; flex: 1 0 144px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+  padding: 12px 12px 14px; background: none; border: 0; border-radius: 2px; text-align: left; cursor: pointer;
+  color: var(--color-text-muted);
+  transition: color 160ms var(--ease), background-color 160ms var(--ease);
+}
+.tab:focus-visible { outline-offset: -2px; }
+.tab__n {
+  position: relative; z-index: 2; display: grid; place-items: center; width: 30px; height: 30px; flex: none;
+  border: 1px solid var(--color-border-strong); background: var(--color-background);
+  font-family: var(--font-mono); font-size: .75rem; color: var(--color-text-muted);
+  transition: background-color 200ms var(--ease), border-color 200ms var(--ease), color 200ms var(--ease);
+}
+.tab::before { /* conector */
+  content: ""; position: absolute; z-index: 1; top: 27px; left: 42px; right: -12px; height: 1px;
+  background: var(--color-border-strong); transition: background-color 240ms var(--ease);
+}
+.tab:last-child::before { display: none; }
+.tab.is-done::before { background: var(--color-primary); }
+.tab.is-done .tab__n { border-color: var(--color-primary); color: var(--color-primary); }
+.tab__t { display: flex; flex-direction: column; gap: 4px; font-weight: 500; font-size: .9688rem; line-height: 1.25; }
+.tab__t small { font-family: var(--font-mono); font-size: .6875rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 400; }
+.tab:hover { color: var(--color-text); }
+.tab:hover .tab__n { border-color: var(--color-primary); }
+.tab[aria-selected="true"] { color: var(--color-text); }
+.tab[aria-selected="true"] .tab__n { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); font-weight: 500; }
+.tab[aria-selected="true"] .tab__t small { color: var(--color-primary); }
+html:not(.js) .tab[aria-selected="true"] .tab__n { background: var(--color-background); color: var(--color-text-muted); border-color: var(--color-border-strong); }
+
+.panel { padding: 24px 20px 28px; }
+.panel + .panel { border-top: 1px solid var(--color-border); }
+.panel:focus-visible { outline-offset: -3px; }
+.js .panel { animation: panel-in 240ms var(--ease); }
+@keyframes panel-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.panel__meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: var(--color-primary); }
+.meter { display: flex; gap: 4px; }
+.meter i { width: 22px; height: 4px; background: var(--color-border); }
+.meter i.on { background: var(--color-primary); }
+.panel h3 { margin-top: 20px; font-size: clamp(1.5rem, 2.6vw, 2.125rem); line-height: 1.1; letter-spacing: -.03em; font-weight: 600; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.tag { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 400; padding: 5px 8px; border: 1px solid var(--color-primary); color: var(--color-primary); line-height: 1; }
+.spec { margin-top: 28px; border-top: 1px solid var(--color-border); }
+.spec__row { display: grid; gap: 6px; padding: 18px 0; border-bottom: 1px solid var(--color-border); }
+.spec dt { display: flex; gap: 10px; color: var(--color-text-subtle); padding-top: 4px; }
+.spec dt b { font-weight: 400; color: var(--color-primary); }
+.spec dd { font-size: 1.0625rem; line-height: 1.5; max-width: 38em; }
+.spec__row--next dd { display: flex; gap: 12px; align-items: baseline; font-weight: 500; }
+.spec__row--next dd::before { content: "→"; font-family: var(--font-mono); color: var(--color-primary); flex: none; }
+.panel__nav { display: none; justify-content: space-between; gap: 12px; margin-top: 24px; }
+.js .panel__nav { display: flex; }
+.step { background: none; border: 1px solid var(--color-border-strong); border-radius: 3px; padding: 10px 14px; min-height: 40px; cursor: pointer; color: var(--color-text); transition: border-color 160ms var(--ease), color 160ms var(--ease); }
+.step:hover:not(:disabled) { border-color: var(--color-primary); color: var(--color-primary); }
+.step:disabled { color: var(--color-text-subtle); border-color: var(--color-border); cursor: not-allowed; }
+@media (min-width: 620px) {
+  .panel { padding: 32px 32px 36px; }
+  .spec__row { grid-template-columns: 190px minmax(0, 1fr); gap: 24px; padding: 22px 0; }
+}
+@media (min-width: 1000px) {
+  .journey { grid-template-columns: 340px minmax(0, 1fr); grid-template-rows: auto 1fr; }
+  .journey__bar { grid-column: 1 / -1; padding: 12px 20px; }
+  .tabs { flex-direction: column; overflow: visible; padding: 16px 12px; border-bottom: 0; border-right: 1px solid var(--color-border); background: var(--color-surface); }
+  .tab { flex: none; flex-direction: row; align-items: center; gap: 16px; padding: 18px 16px; }
+  .tab::before { top: 52px; bottom: -14px; left: 30.5px; right: auto; width: 1px; height: auto; }
+  .tab__t { font-size: 1.0625rem; }
+  .tab[aria-selected="true"] { background: var(--color-surface-raised); box-shadow: inset 2px 0 0 var(--color-primary); }
+  html:not(.js) .tab[aria-selected="true"] { background: none; box-shadow: none; }
+  .panels { display: flex; flex-direction: column; }
+  .js .panel { flex: 1; display: flex; flex-direction: column; }
+  .panel { padding: 40px 48px 40px; }
+  .js .panel__nav { margin-top: auto; padding-top: 28px; }
+}
+
+/* ── Servicios ────────────────────────────── */
+.services { display: grid; gap: 20px; }
+.services > * { min-width: 0; }
+.svc-main { border: 1px solid var(--color-primary); background: var(--color-primary-soft); padding: 28px 24px 32px; display: flex; flex-direction: column; }
+.svc-main .mono { color: var(--color-primary); display: flex; justify-content: space-between; gap: 12px; }
+.svc-main h3 { margin-top: clamp(40px, 7vw, 96px); font-size: clamp(2rem, 4.4vw, 3.5rem); line-height: 1; letter-spacing: -.04em; font-weight: 600; }
+.svc-main p { margin-top: 20px; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); line-height: 1.5; max-width: 30em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.chips li { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; padding: 8px 10px; border: 1px solid var(--color-border-strong); background: var(--color-background); }
+.svc-list { border-top: 1px solid var(--color-border); }
+.svc { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 8px; padding: 22px 0; border-bottom: 1px solid var(--color-border); }
+.svc .mono { color: var(--color-text-subtle); padding-top: 5px; }
+.svc h3 { font-size: 1.125rem; line-height: 1.3; letter-spacing: -.015em; font-weight: 600; }
+.svc p { grid-column: 2; color: var(--color-text-muted); font-size: .9688rem; }
+@media (min-width: 620px) { .svc-main { padding: 36px 36px 40px; } }
+@media (min-width: 1000px) { .services { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 56px; } .svc-list { align-self: stretch; display: flex; flex-direction: column; } .svc { flex: 1; align-content: center; } }
+
+/* ── Confianza ────────────────────────────── */
+.trust { display: grid; gap: 48px; }
+.trust > * { min-width: 0; }
+.xp { border-top: 1px solid var(--color-border); margin-top: 32px; }
+.xp li { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--color-border); font-size: 1.0625rem; line-height: 1.5; }
+.xp .mono { color: var(--color-primary); }
+.note { margin-top: 16px; font-size: .875rem; color: var(--color-text-subtle); }
+.principles { border: 1px solid var(--color-border); background: var(--color-background); }
+.principles ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--color-border); }
+.principles li { padding: 20px 14px 22px; display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+.principles li + li { border-left: 1px solid var(--color-border); }
+.principles li svg { width: 28px; height: 28px; stroke: var(--color-primary); fill: none; stroke-width: 1.5; }
+.principles li strong { font-size: clamp(.9375rem, 2.6vw, 1.25rem); letter-spacing: -.02em; font-weight: 600; }
+.principles p { padding: 22px 20px 24px; color: var(--color-text-muted); }
+.principles p .mono { display: block; color: var(--color-text-subtle); margin-bottom: 8px; }
+@media (min-width: 620px) { .principles li { padding: 24px 24px 26px; } .principles p { padding: 24px; } }
+@media (min-width: 1000px) { .trust { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 72px; align-items: start; } }
+
+/* ── Cierre ───────────────────────────────── */
+.close { overflow: hidden; }
+.close.gridtex::before { -webkit-mask-image: linear-gradient(black, transparent 60%); mask-image: linear-gradient(black, transparent 60%); }
+.close__head { position: relative; max-width: 880px; }
+.close__head h2 { font-size: clamp(2rem, 4.6vw, 3.625rem); line-height: 1.04; letter-spacing: -.04em; }
+.close__grid { position: relative; display: grid; gap: 24px; margin-top: clamp(48px, 6vw, 80px); }
+.close__grid > * { min-width: 0; }
+.card { border: 1px solid var(--color-border); background: var(--color-surface); padding: 24px 20px 28px; }
+.card__top { display: flex; justify-content: space-between; gap: 12px; color: var(--color-text-subtle); padding-bottom: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--color-border); }
+.card__top span:first-child { color: var(--color-primary); }
+.card h3 { font-size: 1.375rem; letter-spacing: -.025em; line-height: 1.2; font-weight: 600; margin-bottom: 24px; }
+@media (min-width: 620px) { .card { padding: 32px; } }
+@media (min-width: 1000px) { .close__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 32px; align-items: start; } }
+
+.form { display: grid; gap: 18px; }
+.form__2 { display: grid; gap: 18px; }
+@media (min-width: 620px) { .form__2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.field { display: grid; gap: 7px; min-width: 0; }
+.field label, .legend { font-size: .875rem; font-weight: 500; color: var(--color-text); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: space-between; align-items: baseline; margin-bottom: 12px; width: 100%; }
+.legend .mono { font-size: .6875rem; color: var(--color-text-subtle); font-weight: 400; }
+.field input, .field textarea {
+  width: 100%; min-height: 48px; padding: 12px 14px; font-size: 1rem;
+  background: var(--color-background); color: var(--color-text);
+  border: 1px solid var(--color-border-strong); border-radius: 3px;
+  transition: border-color 160ms var(--ease);
+}
+.field textarea { min-height: 112px; resize: vertical; line-height: 1.5; }
+.field input:hover, .field textarea:hover { border-color: var(--color-text-muted); }
+.field input:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; border-color: var(--color-primary); }
+.field input[aria-invalid="true"], .field input.is-error { border-color: var(--color-error); }
+.error { color: var(--color-error); font-size: .875rem; display: flex; gap: 8px; align-items: baseline; }
+.error::before { content: "!"; font-family: var(--font-mono); font-weight: 500; flex: none; }
+.check { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; align-items: start; font-size: .9375rem; color: var(--color-text-muted); }
+.check input { appearance: none; -webkit-appearance: none; width: 22px; height: 22px; margin: 1px 0 0; border: 1px solid var(--color-border-strong); border-radius: 2px; background: var(--color-background); cursor: pointer; display: grid; place-items: center; }
+.check input:checked { background: var(--color-primary); border-color: var(--color-primary); }
+.check input:checked::after { content: ""; width: 11px; height: 6px; border-left: 2px solid var(--color-on-primary); border-bottom: 2px solid var(--color-on-primary); transform: translateY(-1.5px) rotate(-45deg); }
+.check input[aria-invalid="true"] { border-color: var(--color-error); }
+.form .btn { justify-self: start; }
+.done { display: grid; gap: 16px; padding: 24px 0 8px; }
+.done svg { width: 40px; height: 40px; stroke: var(--color-success); fill: none; stroke-width: 1.5; }
+.done p { font-size: 1.375rem; line-height: 1.3; letter-spacing: -.02em; font-weight: 600; }
+.done:focus-visible { outline-offset: 8px; }
+
+.cal { border: 1px dashed var(--color-border-strong); padding: 20px; display: grid; gap: 20px; }
+.cal p { color: var(--color-text-muted); font-size: .9688rem; }
+.cal__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.cal__grid i { aspect-ratio: 1; border: 1px solid var(--color-border); }
+.cal__grid i.av { border-color: var(--color-border-strong); background: var(--color-surface-raised); }
+.cal__grid i.pick { background: var(--color-primary); border-color: var(--color-primary); }
+.cal__slots { display: flex; flex-wrap: wrap; gap: 8px; }
+.cal__slots i { height: 34px; width: 76px; border: 1px solid var(--color-border); }
+
+/* ── Pie ──────────────────────────────────── */
+.footer { padding-block: 40px; background: var(--color-background-deep); }
+.footer__in { display: flex; flex-wrap: wrap; gap: 24px 40px; align-items: center; justify-content: space-between; }
+.footer__brand { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.footer__links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; font-size: .9375rem; }
+.footer__links a:not(.lang a) { color: var(--color-text-muted); text-decoration: none; padding: 6px 0; }
+.footer__links a:not(.lang a):hover { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
+.footer .lang { margin: 0; }
+.footer__copy { width: 100%; padding-top: 24px; border-top: 1px solid var(--color-border); color: var(--color-text-subtle); text-transform: none; }
+
+/* ── Sistema de marca ─────────────────────── */
+.brand { background: var(--color-background-deep); border-top: 1px solid var(--color-border); padding-block: 48px 64px; }
+.brand__title { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; color: var(--color-text-subtle); margin-bottom: 32px; }
+.brand__title h2 { font: inherit; letter-spacing: inherit; color: var(--color-primary); }
+.brand__grid { display: grid; gap: 40px 48px; }
+.brand__grid > * { min-width: 0; }
+.brand h3 { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 400; color: var(--color-text-subtle); padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--color-border); }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; }
+.sw { font-size: .8125rem; line-height: 1.35; min-width: 0; }
+.sw i { display: block; height: 52px; border: 1px solid var(--color-border-strong); margin-bottom: 8px; }
+.sw code { display: block; font-family: var(--font-mono); font-size: .6875rem; color: var(--color-text-subtle); overflow-wrap: anywhere; }
+.type-s { display: grid; gap: 20px; }
+.type-s .big { font-size: 2rem; font-weight: 600; letter-spacing: -.04em; line-height: 1.05; }
+.type-s .txt { color: var(--color-text-muted); }
+.type-s .mn { font-family: var(--font-mono); font-size: .8125rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-primary); }
+.type-s small { display: block; font-family: var(--font-mono); font-size: .6875rem; color: var(--color-text-subtle); margin-bottom: 6px; letter-spacing: .04em; }
+.logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.logos > div { display: grid; place-items: center; min-height: 96px; padding: 16px 10px; border: 1px solid var(--color-border); background: var(--color-background); }
+.logos .on-light { background: var(--color-inverse-background); border-color: var(--color-inverse-background); }
+.on-light .logo { color: var(--color-inverse-text); }
+.on-light .logo__word span { color: var(--color-inverse-accent); }
+.on-light .logo__mark .m-bg { fill: var(--color-inverse-text); stroke: var(--color-inverse-text); }
+.logos .logo__mark--lg { width: 48px; height: 48px; }
+.states { display: grid; gap: 16px; }
+.states__row { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; }
+.states .field { max-width: 240px; flex: 1 1 180px; }
+@media (min-width: 760px) { .brand__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .brand__grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, .9fr) minmax(0, 1fr); } .brand__states { grid-column: 1 / -1; } .brand__states .states { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .s-pulse { display: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="header">
+  <div class="wrap header__in">
+    <a class="logo" href="#top" aria-label="confia.ing — inicio">
+      <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x=".5" y=".5" width="31" height="31"/><path class="m-c" d="M19.6 11.4A7 7 0 1 0 19.6 20.6"/><rect class="m-dot" x="22" y="19" width="4.5" height="4.5"/></svg>
+      <span class="logo__word">confia<span>.ing</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <ul>
+        <li><a href="#donde-empezamos">Dónde empezamos</a></li>
+        <li><a href="#como-lo-hacemos">Cómo lo hacemos realidad</a></li>
+      </ul>
+      <a class="btn btn--primary" href="#agenda">Agenda 30 minutos</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma">
+      <span aria-current="true" lang="es"><span class="sr-only">Español, idioma actual: </span>ES</span>
+      <a href="#top" lang="en" hreflang="en" aria-label="English">EN</a>
+    </div>
+    <a class="btn btn--primary btn--sm header__cta" href="#agenda">Agenda 30 minutos</a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menú"><i></i></button>
+  </div>
+</header>
+
+<main id="contenido">
+  <!-- ══ HERO ══ -->
+  <section class="hero gridtex" id="top" aria-labelledby="h-hero">
+    <div class="wrap hero__in">
+      <div>
+        <p class="mono eyebrow">Transformación de IA para empresas que ya usan tecnología</p>
+        <h1 id="h-hero">Encuentra dónde la IA puede generar resultados en tu empresa.</h1>
+        <p class="hero__lead">Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo desde el diagnóstico hasta soluciones que pueda operar y escalar.</p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href="#agenda">Agenda una conversación de 30 minutos
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+          <a class="btn btn--secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+        </div>
+        <p class="cta-note">Una conversación exploratoria, sin costo ni compromiso.</p>
+        <ul class="pillars mono" aria-label="Pilares">
+          <li>Estrategia</li><li>Capacitación</li><li>Automatización</li>
+        </ul>
+      </div>
+
+      <figure class="schematic corners">
+        <svg viewBox="0 0 560 440" role="img" aria-label="Esquema: un proceso con muchos cruces y vueltas manuales se convierte en un flujo directo de cinco pasos.">
+          <!-- reglas -->
+          <g class="s-tick" aria-hidden="true">
+            <path d="M40 0v6M100 0v4M160 0v6M220 0v4M280 0v6M340 0v4M400 0v6M460 0v4M520 0v6"/>
+            <path d="M0 60h6M0 120h4M0 180h6M0 240h4M0 300h6M0 360h4M0 420h6"/>
+          </g>
+          <text class="s-txt" x="24" y="34" aria-hidden="true">A · PROCESO ACTUAL</text>
+          <text class="s-txt" x="536" y="34" text-anchor="end" aria-hidden="true">X 040–520</text>
+
+          <!-- A: enredado -->
+          <g class="s-wire">
+            <path d="M47 130H90V80H123"/><path d="M47 130H90V190H123"/>
+            <path d="M137 80H190V130H233"/><path d="M137 190H190V130"/>
+            <path d="M247 130H285V80H323"/><path d="M247 130H285V200H323"/>
+            <path d="M337 80H385V140H423"/><path d="M337 200H385V140"/>
+            <path d="M437 140H470V100H503"/>
+          </g>
+          <g class="s-loop">
+            <path d="M330 207V226H130V197"/>
+            <path d="M330 73V54H130V73"/>
+            <path d="M510 107V226H430V147"/>
+          </g>
+          <g class="s-node">
+            <rect x="33" y="123" width="14" height="14"/><rect x="123" y="73" width="14" height="14"/>
+            <rect x="123" y="183" width="14" height="14"/><rect x="233" y="123" width="14" height="14"/>
+            <rect x="323" y="73" width="14" height="14"/><rect x="323" y="193" width="14" height="14"/>
+            <rect x="423" y="133" width="14" height="14"/><rect x="503" y="93" width="14" height="14"/>
+          </g>
+
+          <!-- transición -->
+          <path class="s-rule" d="M24 262H256M304 262H536" stroke-dasharray="2 5"/>
+          <path class="s-acc" d="M280 246v30M273 270l7 7 7-7"/>
+
+          <!-- B: directo -->
+          <text class="s-txt s-txt--acc" x="24" y="304" aria-hidden="true">B · PROCESO OPTIMIZADO</text>
+          <path class="s-main" d="M40 350H520"/>
+          <circle class="s-pulse" cx="40" cy="350" r="3.5"/>
+          <g class="s-stop">
+            <rect x="33" y="343" width="14" height="14"/><rect x="153" y="343" width="14" height="14"/>
+            <rect x="273" y="343" width="14" height="14"/><rect x="393" y="343" width="14" height="14"/>
+          </g>
+          <rect class="s-end" x="511" y="341" width="18" height="18"/>
+          <g class="s-txt" text-anchor="middle" aria-hidden="true">
+            <text x="40" y="384">01</text><text x="160" y="384">02</text><text x="280" y="384">03</text><text x="400" y="384">04</text>
+            <text class="s-txt--acc" x="520" y="384">05</text>
+          </g>
+          <!-- cota -->
+          <g class="s-tick"><path d="M40 404v12M520 404v12M40 410H520"/></g>
+        </svg>
+        <figcaption class="mono"><span>Fig. 01</span><span>A → B</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ══ 01 DÓNDE EMPEZAMOS ══ -->
+  <section class="section" id="donde-empezamos" aria-labelledby="h-donde">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="mono eyebrow"><b>01</b>Dónde empezamos</p>
+          <h2 id="h-donde">Empezamos por el trabajo, no por la tecnología.</h2>
+        </div>
+        <p class="lead">Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p>
+      </div>
+
+      <ol class="frictions">
+        <li class="friction"><span class="mono" aria-hidden="true">F—01</span>
+          <h3>Tareas repetitivas que cuestan horas.</h3>
+          <p>Trabajo operativo y verificable que tu equipo hace a mano cada semana: revisar, copiar, clasificar, responder.</p></li>
+        <li class="friction"><span class="mono" aria-hidden="true">F—02</span>
+          <h3>Sistemas y datos que no se hablan.</h3>
+          <p>Información repartida entre herramientas, con personas haciendo de puente.</p></li>
+        <li class="friction"><span class="mono" aria-hidden="true">F—03</span>
+          <h3>IA sin estrategia.</h3>
+          <p>Licencias compradas y equipos improvisando, sin saber si eso mejora la productividad.</p></li>
+        <li class="friction"><span class="mono" aria-hidden="true">F—04</span>
+          <h3>Equipos de software que no saben por dónde empezar.</h3>
+          <p>Quieren integrar IA en su ciclo de desarrollo, pero no tienen un método para hacerlo en cada fase.</p></li>
+      </ol>
+
+      <div class="questions">
+        <h3>Preguntas que respondemos contigo:</h3>
+        <ul>
+          <li><span class="mono" aria-hidden="true">P1</span>¿En qué proceso tiene sentido usar IA?</li>
+          <li><span class="mono" aria-hidden="true">P2</span>¿Qué datos, herramientas y personas necesito?</li>
+          <li><span class="mono" aria-hidden="true">P3</span>¿Cómo justifico el costo y mido el impacto?</li>
+          <li><span class="mono" aria-hidden="true">P4</span>¿Cómo evito fugas de información y soluciones difíciles de mantener?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 02 CÓMO LO HACEMOS REALIDAD ══ -->
+  <section class="section section--alt" id="como-lo-hacemos" aria-labelledby="h-como">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="mono eyebrow"><b>02</b>Cómo lo hacemos realidad</p>
+          <h2 id="h-como">Un recorrido que hacemos juntos.</h2>
+        </div>
+        <p class="lead">Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.</p>
+      </div>
+
+      <div class="journey corners" id="journey">
+        <div class="journey__bar mono" aria-hidden="true"><span>Recorrido</span><span id="journey-count">Etapa 01 / 05</span></div>
+        <div class="tabs" role="tablist" aria-label="Etapas del recorrido" aria-orientation="vertical">
+          <button class="tab" role="tab" type="button" id="tab-1" aria-controls="panel-1" aria-selected="true">
+            <span class="tab__n" aria-hidden="true">01</span><span class="tab__t">Conversación inicial<small>30 min</small></span></button>
+          <button class="tab" role="tab" type="button" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1">
+            <span class="tab__n" aria-hidden="true">02</span><span class="tab__t">Diagnóstico</span></button>
+          <button class="tab" role="tab" type="button" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1">
+            <span class="tab__n" aria-hidden="true">03</span><span class="tab__t">Roadmap</span></button>
+          <button class="tab" role="tab" type="button" id="tab-4" aria-controls="panel-4" aria-selected="false" tabindex="-1">
+            <span class="tab__n" aria-hidden="true">04</span><span class="tab__t">Piloto</span></button>
+          <button class="tab" role="tab" type="button" id="tab-5" aria-controls="panel-5" aria-selected="false" tabindex="-1">
+            <span class="tab__n" aria-hidden="true">05</span><span class="tab__t">Escala y transferencia</span></button>
+        </div>
+
+        <div class="panels">
+          <section class="panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+            <div class="panel__meta mono"><span>Etapa 01 / 05</span><span class="meter" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span></div>
+            <h3>Conversación inicial <span class="tag">30 minutos</span></h3>
+            <dl class="spec">
+              <div class="spec__row"><dt class="mono"><b>A</b>Qué hacemos</dt><dd>Exploramos tus procesos y dónde podría aplicarse IA. Es una conversación, no un diagnóstico ni un compromiso.</dd></div>
+              <div class="spec__row"><dt class="mono"><b>B</b>Qué recibes</dt><dd>Una primera lectura de oportunidades y una idea clara de si podemos ayudarte.</dd></div>
+              <div class="spec__row spec__row--next"><dt class="mono"><b>C</b>Siguiente paso</dt><dd>Decides si avanzamos a un diagnóstico.</dd></div>
+            </dl>
+            <div class="panel__nav"><button class="step mono" type="button" data-go="-1" disabled>← Anterior</button><button class="step mono" type="button" data-go="1">Siguiente →</button></div>
+          </section>
+
+          <section class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0">
+            <div class="panel__meta mono"><span>Etapa 02 / 05</span><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></div>
+            <h3>Diagnóstico</h3>
+            <dl class="spec">
+              <div class="spec__row"><dt class="mono"><b>A</b>Qué hacemos</dt><dd>Evaluamos oportunidades, fricciones y qué tan preparada está tu empresa: datos, herramientas y personas.</dd></div>
+              <div class="spec__row"><dt class="mono"><b>B</b>Qué recibes</dt><dd>Oportunidades priorizadas y lo que hay que preparar. El alcance se acuerda contigo.</dd></div>
+              <div class="spec__row spec__row--next"><dt class="mono"><b>C</b>Siguiente paso</dt><dd>Elegimos juntos por dónde empezar.</dd></div>
+            </dl>
+            <div class="panel__nav"><button class="step mono" type="button" data-go="-1">← Anterior</button><button class="step mono" type="button" data-go="1">Siguiente →</button></div>
+          </section>
+
+          <section class="panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" tabindex="0">
+            <div class="panel__meta mono"><span>Etapa 03 / 05</span><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+            <h3>Roadmap</h3>
+            <dl class="spec">
+              <div class="spec__row"><dt class="mono"><b>A</b>Qué hacemos</dt><dd>Trazamos un plan de alto nivel: etapas, personas involucradas, costos y resultados esperados.</dd></div>
+              <div class="spec__row"><dt class="mono"><b>B</b>Qué recibes</dt><dd>El estado actual frente al estado deseado para los próximos meses.</dd></div>
+              <div class="spec__row spec__row--next"><dt class="mono"><b>C</b>Siguiente paso</dt><dd>Acordamos el primer piloto.</dd></div>
+            </dl>
+            <div class="panel__nav"><button class="step mono" type="button" data-go="-1">← Anterior</button><button class="step mono" type="button" data-go="1">Siguiente →</button></div>
+          </section>
+
+          <section class="panel" role="tabpanel" id="panel-4" aria-labelledby="tab-4" tabindex="0">
+            <div class="panel__meta mono"><span>Etapa 04 / 05</span><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+            <h3>Piloto</h3>
+            <dl class="spec">
+              <div class="spec__row"><dt class="mono"><b>A</b>Qué hacemos</dt><dd>Implementamos con demos, revisiones y ciclos de feedback.</dd></div>
+              <div class="spec__row"><dt class="mono"><b>B</b>Qué recibes</dt><dd>Una solución funcionando, con métricas y OKR del proyecto y del impacto en el negocio.</dd></div>
+              <div class="spec__row spec__row--next"><dt class="mono"><b>C</b>Siguiente paso</dt><dd>Si demuestra valor, lo escalamos.</dd></div>
+            </dl>
+            <div class="panel__nav"><button class="step mono" type="button" data-go="-1">← Anterior</button><button class="step mono" type="button" data-go="1">Siguiente →</button></div>
+          </section>
+
+          <section class="panel" role="tabpanel" id="panel-5" aria-labelledby="tab-5" tabindex="0">
+            <div class="panel__meta mono"><span>Etapa 05 / 05</span><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+            <h3>Escala y transferencia</h3>
+            <dl class="spec">
+              <div class="spec__row"><dt class="mono"><b>A</b>Qué hacemos</dt><dd>Diseñamos la solución para crecer, con monitoreo continuo.</dd></div>
+              <div class="spec__row"><dt class="mono"><b>B</b>Qué recibes</dt><dd>Capacitación y documentación para que tu equipo la opere. El soporte continuo es opcional.</dd></div>
+              <div class="spec__row spec__row--next"><dt class="mono"><b>C</b>Siguiente paso</dt><dd>Tu equipo queda a cargo.</dd></div>
+            </dl>
+            <div class="panel__nav"><button class="step mono" type="button" data-go="-1">← Anterior</button><button class="step mono" type="button" data-go="1" disabled>Siguiente →</button></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ LO QUE OFRECEMOS ══ -->
+  <section class="section" id="lo-que-ofrecemos" aria-labelledby="h-ofrecemos">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="mono eyebrow"><b>03</b>Servicios</p>
+          <h2 id="h-ofrecemos">Lo que ofrecemos</h2>
+        </div>
+      </div>
+      <div class="services">
+        <article class="svc-main corners">
+          <p class="mono"><span>S—01</span><span>Principal</span></p>
+          <h3>Transformación de IA</h3>
+          <p>Estrategia, capacitación y automatización integradas para llevar la IA de la idea al resultado.</p>
+          <ul class="chips" aria-label="Pilares"><li>Estrategia</li><li>Capacitación</li><li>Automatización</li></ul>
+        </article>
+        <ul class="svc-list">
+          <li class="svc"><span class="mono" aria-hidden="true">02</span><h3>Capacitación en IA.</h3>
+            <p>Para líderes y perfiles no técnicos: usar IA con criterio en flujos de trabajo reales.</p></li>
+          <li class="svc"><span class="mono" aria-hidden="true">03</span><h3>AI-SDLC.</h3>
+            <p>Acompañamos a equipos de software a integrar IA en cada fase del ciclo de desarrollo.</p></li>
+          <li class="svc"><span class="mono" aria-hidden="true">04</span><h3>Software a la medida.</h3>
+            <p>Cuando la solución necesita construirse.</p></li>
+          <li class="svc"><span class="mono" aria-hidden="true">05</span><h3>Soluciones generativas y agentivas.</h3>
+            <p>Asesoría y construcción de agentes y sistemas basados en IA generativa.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ POR QUÉ CONFIAR ══ -->
+  <section class="section section--alt" id="por-que-confiar" aria-labelledby="h-confiar">
+    <div class="wrap trust">
+      <div>
+        <p class="mono eyebrow"><b>04</b>Por qué confiar</p>
+        <h2 id="h-confiar">Experiencia del equipo</h2>
+        <ul class="xp">
+          <li><span class="mono" aria-hidden="true">E1</span>Más de cinco años en empresas SaaS de EE. UU. con clientes en todo el mundo.</li>
+          <li><span class="mono" aria-hidden="true">E2</span>Sector salud: un sistema RAG agentivo para gestión documental de tratamientos médicos, con modelos locales y en la nube.</li>
+          <li><span class="mono" aria-hidden="true">E3</span>Eficiencia en el uso de LLM: costos, modelos locales y enrutamiento de modelos.</li>
+          <li><span class="mono" aria-hidden="true">E4</span>AI-SDLC: asesoría en todas las fases del ciclo de desarrollo.</li>
+        </ul>
+        <p class="note">Experiencia previa de quienes integran el equipo.</p>
+      </div>
+      <div class="principles corners">
+        <ul aria-label="Tres principios">
+          <li><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="3.5" y="3.5" width="9" height="9"/><rect x="15.5" y="3.5" width="9" height="9"/><rect x="3.5" y="15.5" width="9" height="9"/><path d="M15.5 20h9M20 15.5v9"/></svg><strong>Mantenible</strong></li>
+          <li><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 3.5l9 3.5v6.5c0 5-3.6 9-9 11-5.4-2-9-6-9-11V7z"/><path d="M10 14l3 3 5-6"/></svg><strong>Seguro</strong></li>
+          <li><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M3.5 3.5v21h21"/><path d="M8 19l5-6 4 3 6-9"/></svg><strong>Medible</strong></li>
+        </ul>
+        <p><span class="mono">Seguridad</span>Consideramos riesgos como fuga de información y prompt injection, y los requisitos de datos personales y normativos que apliquen a tu contexto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CIERRE ══ -->
+  <section class="section close gridtex" id="cierre" aria-labelledby="h-cierre">
+    <div class="wrap">
+      <div class="close__head">
+        <p class="mono eyebrow"><b>05</b>Siguiente paso</p>
+        <h2 id="h-cierre">Tu equipo ya trabaja duro. Hagamos que la IA trabaje con él.</h2>
+        <div class="cta-row">
+          <a class="btn btn--primary" href="#agenda">Agenda una conversación de 30 minutos
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+          <a class="btn btn--secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+        </div>
+      </div>
+
+      <div class="close__grid">
+        <div class="card" id="consulta">
+          <div class="card__top mono"><span>Consulta</span><span>Formulario</span></div>
+          <h3>Cuéntanos dónde quieres aplicar IA</h3>
+          <form class="form" id="form" novalidate>
+            <div class="form__2">
+              <div class="field"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" type="text" autocomplete="name"></div>
+              <div class="field"><label for="f-empresa">Empresa</label><input id="f-empresa" name="empresa" type="text" autocomplete="organization"></div>
+            </div>
+            <fieldset aria-describedby="e-contacto">
+              <legend class="legend">Contacto <span class="mono">Correo o teléfono, al menos uno</span></legend>
+              <div class="form__2">
+                <div class="field"><label for="f-correo">Correo</label><input id="f-correo" name="correo" type="email" autocomplete="email" inputmode="email"></div>
+                <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel"></div>
+              </div>
+              <p class="error" id="e-contacto" role="alert" hidden></p>
+            </fieldset>
+            <div class="field"><label for="f-donde">¿Dónde quieres aplicar IA?</label><textarea id="f-donde" name="donde" rows="4"></textarea></div>
+            <div>
+              <label class="check"><input id="f-acepto" name="acepto" type="checkbox" aria-describedby="e-acepto"><span>Acepto el tratamiento de mis datos para responder mi solicitud, según la <a class="link" href="#privacidad">Política de privacidad</a>.</span></label>
+              <p class="error" id="e-acepto" role="alert" hidden style="margin-top:10px"></p>
+            </div>
+            <button class="btn btn--primary" type="submit">Enviar consulta</button>
+          </form>
+          <div class="done" id="done" role="status" tabindex="-1" hidden>
+            <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38"/><path d="M11 20.5l6 6 12-13"/></svg>
+            <p>Recibimos tu consulta. Te contactaremos pronto.</p>
+          </div>
+        </div>
+
+        <div class="card" id="agenda" tabindex="-1">
+          <div class="card__top mono"><span>Agenda</span><span>30 min</span></div>
+          <h3>Agenda una conversación de 30 minutos</h3>
+          <div class="cal">
+            <p><span class="mono" style="display:block;color:var(--color-text-subtle);margin-bottom:8px">Marcador · Calendly</span>Aquí se cargará el calendario de Calendly para elegir día y hora.</p>
+            <div class="cal__grid" aria-hidden="true">
+              <i></i><i></i><i class="av"></i><i class="av"></i><i></i><i></i><i></i>
+              <i></i><i class="av"></i><i class="av"></i><i class="pick"></i><i class="av"></i><i></i><i></i>
+              <i></i><i class="av"></i><i></i><i class="av"></i><i class="av"></i><i></i><i></i>
+              <i></i><i class="av"></i><i class="av"></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="cal__slots" aria-hidden="true"><i></i><i></i><i></i></div>
+          </div>
+          <p class="cta-note">Una conversación exploratoria, sin costo ni compromiso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ══ PIE ══ -->
+<footer class="footer">
+  <div class="wrap footer__in">
+    <div class="footer__brand">
+      <a class="logo" href="#top" aria-label="confia.ing — inicio">
+        <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x=".5" y=".5" width="31" height="31"/><path class="m-c" d="M19.6 11.4A7 7 0 1 0 19.6 20.6"/><rect class="m-dot" x="22" y="19" width="4.5" height="4.5"/></svg>
+        <span class="logo__word">confia<span>.ing</span></span>
+      </a>
+      <a class="link" href="mailto:hola@confia.ing">hola@confia.ing</a>
+    </div>
+    <nav class="footer__links" aria-label="Legal e idioma">
+      <a href="#privacidad" id="privacidad">Privacidad</a>
+      <a href="#terminos" id="terminos">Términos</a>
+      <div class="lang" role="group" aria-label="Idioma">
+        <span aria-current="true" lang="es"><span class="sr-only">Español, idioma actual: </span>ES</span>
+        <a href="#top" lang="en" hreflang="en" aria-label="English">EN</a>
+      </div>
+    </nav>
+    <p class="footer__copy mono">© 2026 Confia.ing</p>
+  </div>
+</footer>
+
+<!-- ══ SISTEMA DE MARCA ══ -->
+<aside class="brand" aria-labelledby="h-brand">
+  <div class="wrap">
+    <div class="brand__title mono"><h2 id="h-brand">Sistema de marca</h2><span>Propuesta B · Técnico preciso</span></div>
+    <div class="brand__grid">
+      <div>
+        <h3>Paleta · rol / primitivo</h3>
+        <div class="swatches">
+          <div class="sw"><i style="background:var(--color-background)"></i>background<code>ink-900 #0B1316</code></div>
+          <div class="sw"><i style="background:var(--color-background-deep)"></i>background-deep<code>ink-950 #070D0F</code></div>
+          <div class="sw"><i style="background:var(--color-surface)"></i>surface<code>ink-850 #0F191D</code></div>
+          <div class="sw"><i style="background:var(--color-surface-raised)"></i>surface-raised<code>ink-800 #142126</code></div>
+          <div class="sw"><i style="background:var(--color-border)"></i>border<code>ink-700 #1E2F35</code></div>
+          <div class="sw"><i style="background:var(--color-border-strong)"></i>border-strong<code>ink-500 #56717B</code></div>
+          <div class="sw"><i style="background:var(--color-text-subtle)"></i>text-subtle<code>ink-400 #7C939B</code></div>
+          <div class="sw"><i style="background:var(--color-text-muted)"></i>text-muted<code>ink-300 #A9BBC1</code></div>
+          <div class="sw"><i style="background:var(--color-text)"></i>text<code>paper-100 #EEF3F1</code></div>
+          <div class="sw"><i style="background:var(--color-primary)"></i>primary · link · success<code>lime-400 #C5F25C</code></div>
+          <div class="sw"><i style="background:var(--color-focus)"></i>focus · primary-hover<code>lime-300 #D8F88C</code></div>
+          <div class="sw"><i style="background:var(--color-inverse-accent)"></i>inverse-accent<code>lime-700 #4F6B0E</code></div>
+          <div class="sw"><i style="background:var(--color-error)"></i>error<code>coral-400 #FF8F80</code></div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Tipografía</h3>
+        <div class="type-s">
+          <div><small>Geist 600 · titulares · −0.04em</small><p class="big">Empezamos por el trabajo.</p></div>
+          <div><small>Geist 400 · texto · 16–20 px</small><p class="txt">Identificamos oportunidades reales y definimos cómo medir su impacto.</p></div>
+          <div><small>Geist Mono 400 · etiquetas y metadatos</small><p class="mn">Etapa 03 / 05 · 30 min</p></div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Logotipo</h3>
+        <div class="logos">
+          <div><span class="logo"><svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x=".5" y=".5" width="31" height="31"/><path class="m-c" d="M19.6 11.4A7 7 0 1 0 19.6 20.6"/><rect class="m-dot" x="22" y="19" width="4.5" height="4.5"/></svg><span class="logo__word">confia<span>.ing</span></span></span></div>
+          <div class="on-light"><span class="logo"><svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x=".5" y=".5" width="31" height="31"/><path class="m-c" d="M19.6 11.4A7 7 0 1 0 19.6 20.6"/><rect class="m-dot" x="22" y="19" width="4.5" height="4.5"/></svg><span class="logo__word">confia<span>.ing</span></span></span></div>
+          <div><svg class="logo__mark logo__mark--lg" viewBox="0 0 32 32" role="img" aria-label="Símbolo sobre fondo oscuro"><rect class="m-bg" x=".5" y=".5" width="31" height="31"/><path class="m-c" d="M19.6 11.4A7 7 0 1 0 19.6 20.6"/><rect class="m-dot" x="22" y="19" width="4.5" height="4.5"/></svg></div>
+          <div class="on-light"><svg class="logo__mark logo__mark--lg" viewBox="0 0 32 32" role="img" aria-label="Símbolo sobre fondo claro"><rect class="m-bg" x=".5" y=".5" width="31" height="31"/><path class="m-c" d="M19.6 11.4A7 7 0 1 0 19.6 20.6"/><rect class="m-dot" x="22" y="19" width="4.5" height="4.5"/></svg></div>
+        </div>
+      </div>
+
+      <div class="brand__states">
+        <h3>Estados · botón / enlace / campo</h3>
+        <div class="states">
+          <div class="states__row">
+            <span class="btn btn--primary btn--sm">Primario</span>
+            <span class="btn btn--primary btn--sm is-hover">Hover</span>
+            <span class="btn btn--primary btn--sm is-focus">Foco</span>
+            <span class="btn btn--sm" aria-disabled="true">Inactivo</span>
+          </div>
+          <div class="states__row">
+            <span class="btn btn--secondary btn--sm">Secundario</span>
+            <span class="btn btn--secondary btn--sm is-hover">Hover</span>
+            <span class="btn btn--secondary btn--sm is-focus">Foco</span>
+            <span class="link">Enlace</span>
+            <span class="link is-hover">Enlace hover</span>
+          </div>
+          <div class="states__row">
+            <div class="field"><label for="s-1">Campo</label><input id="s-1" type="text" value="Normal" readonly tabindex="-1"></div>
+            <div class="field"><label for="s-2">Foco</label><input id="s-2" class="is-focus" type="text" value="Activo" readonly tabindex="-1"></div>
+            <div class="field"><label for="s-3">Error</label><input id="s-3" class="is-error" type="text" value="Inválido" readonly tabindex="-1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── Menú móvil ── */
+  var burger = document.querySelector('.burger'), nav = document.getElementById('nav');
+  function setNav(open) { nav.classList.toggle('is-open', open); burger.setAttribute('aria-expanded', String(open)); }
+  burger.addEventListener('click', function () { setNav(burger.getAttribute('aria-expanded') !== 'true'); });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) setNav(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') { setNav(false); burger.focus(); }
+  });
+
+  /* ── Recorrido: pestañas ── */
+  var list = document.querySelector('[role="tablist"]');
+  var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+  var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
+  var count = document.getElementById('journey-count');
+  var mqV = window.matchMedia('(min-width: 1000px)');
+  function orient() { list.setAttribute('aria-orientation', mqV.matches ? 'vertical' : 'horizontal'); }
+  orient(); (mqV.addEventListener ? mqV.addEventListener('change', orient) : mqV.addListener(orient));
+
+  function select(i, focus) {
+    i = Math.max(0, Math.min(tabs.length - 1, i));
+    tabs.forEach(function (t, j) {
+      var on = j === i;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      t.classList.toggle('is-done', j < i);
+      panels[j].hidden = !on;
+    });
+    count.textContent = 'Etapa 0' + (i + 1) + ' / 05';
+    if (focus) tabs[i].focus({ preventScroll: true });
+    if (list.scrollWidth > list.clientWidth) {
+      var left = tabs[i].offsetLeft - (list.clientWidth - tabs[i].offsetWidth) / 2;
+      list.scrollTo({ left: left, behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function current() { return tabs.findIndex(function (t) { return t.getAttribute('aria-selected') === 'true'; }); }
+  tabs.forEach(function (t, i) { t.addEventListener('click', function () { select(i, false); }); });
+  list.addEventListener('keydown', function (e) {
+    var i = current(), n = null;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') n = (i + 1) % tabs.length;
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') n = (i - 1 + tabs.length) % tabs.length;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = tabs.length - 1;
+    if (n !== null) { e.preventDefault(); select(n, true); }
+  });
+  document.getElementById('journey').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-go]');
+    if (b) select(current() + Number(b.dataset.go), true);
+  });
+  select(0, false);
+
+  /* ── Formulario (maqueta, sin red) ── */
+  var form = document.getElementById('form'), done = document.getElementById('done');
+  var correo = document.getElementById('f-correo'), tel = document.getElementById('f-tel'), acepto = document.getElementById('f-acepto');
+  var eContacto = document.getElementById('e-contacto'), eAcepto = document.getElementById('e-acepto');
+  function show(el, msg) { el.textContent = msg; el.hidden = !msg; }
+  function validate() {
+    var c = correo.value.trim(), t = tel.value.trim(), msg = '', first = null;
+    var okMail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c);
+    var okTel = t.replace(/\D/g, '').length >= 7 && /^[+\d][\d\s().-]*$/.test(t);
+    correo.removeAttribute('aria-invalid'); tel.removeAttribute('aria-invalid'); acepto.removeAttribute('aria-invalid');
+    if (!c && !t) { msg = 'Escribe un correo o un teléfono para poder responderte.'; correo.setAttribute('aria-invalid', 'true'); tel.setAttribute('aria-invalid', 'true'); first = correo; }
+    else if (c && !okMail) { msg = 'Revisa el correo: parece incompleto.'; correo.setAttribute('aria-invalid', 'true'); first = correo; }
+    else if (t && !okTel) { msg = 'Revisa el teléfono: usa al menos 7 dígitos.'; tel.setAttribute('aria-invalid', 'true'); first = tel; }
+    show(eContacto, msg);
+    var msg2 = acepto.checked ? '' : 'Necesitamos tu aceptación para responder la solicitud.';
+    if (msg2) { acepto.setAttribute('aria-invalid', 'true'); first = first || acepto; }
+    show(eAcepto, msg2);
+    return first;
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = validate();
+    if (bad) { bad.focus(); return; }
+    form.hidden = true; done.hidden = false; done.focus();
+  });
+  [correo, tel, acepto].forEach(function (el) {
+    el.addEventListener('input', function () { if (!eContacto.hidden || !eAcepto.hidden) validate(); });
+  });
+})();
+</script>
+</body>
+</html>

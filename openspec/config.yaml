@@ -1,0 +1,122 @@
+schema: spec-driven
+
+# Capa de estándares del proyecto. Aquí va lo que vale para TODOS los cambios;
+# la intención de cada lote vive en su propuesta (openspec/changes/<lote>/).
+context: |
+  Idioma: los artefactos se escriben en español. Los encabezados estructurales de
+  OpenSpec y las palabras clave SHALL/MUST se mantienen en inglés. El código, los
+  identificadores y los nombres de archivo van en inglés.
+
+  Dominio: home pública de Confia.ing, consultoría de transformación de IA para pymes.
+  Audiencia: CEO y CTO. Dos conversiones: agendar 30 minutos (Calendly) o enviar una
+  consulta (formulario). Bilingüe ES/EN. Fuente de requisitos: PRD-confia-ing-home-details.md.
+  Plan por lotes: BACKLOG.md (L0 a L10). Cada lote es un cambio de OpenSpec.
+  Escenarios de aceptación por ítem: docs/escenarios.md (GIVEN/WHEN/THEN y nivel de prueba).
+
+  Stack: Next.js (App Router) + React + TypeScript estricto, desplegado en Cloudflare
+  Workers con @opennextjs/cloudflare. Tailwind CSS v4. Supabase Postgres. Zod. Three.js
+  solo para la escena del recorrido. npm. Todo en planes gratuitos.
+
+  Arquitectura (docs/architecture/, ADR-0001 a 0010):
+  - src/domain/ es TypeScript puro: MAY importar solo `zod` y el propio dominio.
+    Depende de interfaces (puertos).
+  - src/adapters/ es el único lugar que MAY hablar con servicios externos; importa solo domain.
+  - src/components/ MAY importar domain, i18n y lib; MUST NOT importar adapters ni lib/server.
+  - src/app/ solo compone; MAY importar components, lib, lib/server, domain e i18n.
+  - src/lib/server/ y worker/ MAY importar adapters, domain, i18n y lib.
+  - src/i18n/ y src/lib/ MUST NOT importar otras carpetas del proyecto.
+  - Un único layout raíz en src/app/[locale]/layout.tsx. Las páginas legales viven en
+    [locale]/[legal]/ y su slug por idioma sale de src/i18n/.
+  - El navegador MUST NOT hablar con Supabase. Solo el código de servidor (Route
+    Handlers y worker/), con la secret key.
+  - Toda tabla nueva MUST tener RLS activado y ninguna política para anon/authenticated.
+  - Sin middleware ni proxy.ts: la detección de idioma vive en el Route Handler de "/".
+
+  Diseño (fuente: docs/design/ronda5-cercano-3d-finalista.html y logo-conceptos.html):
+  - Paleta fija de 15 colores en src/styles/tokens.css. Los componentes MUST usar solo
+    roles semánticos (--color-* y, la escena, --scene-*). Bajo src/ MUST NOT haber
+    colores literales fuera de tokens.css; se admiten transparent, currentColor e inherit.
+    Exentos: public/brand/, tests/ y docs/.
+  - Tipografías: Fraunces (títulos), Figtree (texto), DM Mono (etiquetas), auto-alojadas.
+  - Ritmo de secciones: crema, banda de color con esquinas suaves, crema.
+  - Versión ligera obligatoria: sin WebGL, con ahorro de datos, conexión 2g/3g,
+    dispositivo limitado o prefers-reduced-motion se sirve la escena en SVG estático.
+    Three.js MUST cargarse de forma diferida, después de que la página sea legible,
+    empaquetado con la app (nunca desde un CDN).
+  - El formulario ofrece dos modos (terminal y clásico) sobre los mismos campos y la
+    misma validación.
+
+  Contenido y claims (PRD §7, §8):
+  - La llamada de 30 minutos es exploratoria: MUST NOT presentarse como diagnóstico.
+  - La experiencia se atribuye al equipo y a trabajo previo. Sin clientes, logos,
+    métricas ni testimonios. Sin precios. Sin afirmar certificaciones.
+  - Todo texto visible MUST existir en ES y EN en src/i18n/dictionaries/.
+
+  Accesibilidad y rendimiento:
+  - WCAG 2.1 AA. Todo es operable con teclado. Foco visible. Un solo h1 por página.
+  - El contenido informativo MUST estar en el HTML inicial y ser legible sin JavaScript
+    ni animación. Formulario y agenda requieren JavaScript: sin él MUST mostrarse el
+    correo de contacto y el enlace directo a Calendly.
+  - `"use client"` solo en hojas interactivas; nunca en páginas, layouts ni secciones.
+  - Presupuesto, en ambos modos de escena, medido con Playwright emulando un Pixel 7,
+    CPU ×4 y red de 1,6 Mbps / 150 ms: LCP < 2,5 s, CLS < 0,1.
+  - JS inicial de /es ≤ 200 kB comprimido (gzip), sin contar Three.js, que es diferido.
+    El límite se confirma en L0 tras medir la base de Next.js.
+  - `npm run build:worker` MUST fallar si el Worker supera 3 MiB comprimido, medido
+    sobre la salida de `wrangler deploy --dry-run`.
+
+  Privacidad y seguridad:
+  - Analítica sin cookies. MUST NOT guardarse IP, identificador de visitante ni el
+    texto del mensaje en eventos analíticos. El navegador solo guarda preferencias
+    funcionales (cookie locale, modo de escena).
+  - Entornos: SERVICES=memory (pruebas U/I/E y desarrollo por defecto) usa
+    src/adapters/memory/ sin red; SERVICES=real usa Supabase local en desarrollo y
+    contrato, y los servicios reales solo en producción. Desarrollo y pruebas MUST NOT
+    apuntar a la base de producción.
+  - Secretos: .env.development.local para desarrollo; .env.prod solo para cargar secretos y migrar;
+    wrangler secret en producción. .env no contiene secretos. MUST NOT aparecer en el
+    código, en los artefactos ni en los logs.
+  - Formulario: Turnstile verificado en servidor, campo trampa y límite de frecuencia.
+
+  Validación disponible (declarar aquí lo que el agente puede ejecutar):
+  npm run lint · npm run typecheck · npm test (Vitest: unitario e integración, sin red) ·
+  npm run e2e (Playwright contra el build de producción, servicios en memoria) ·
+  npm run test:contract (Supabase local) · npm run build (next build) ·
+  npm run build:worker (Worker + límite de tamaño) · npm run measure:js · npm run preview.
+  Nunca se da por superada una comprobación no ejecutada ni se silencia con exclusiones.
+  Puerta de cierre de lote: lint, typecheck, test, e2e, build:worker, measure:js y carga
+  de /es en preview.
+  Las pruebas que deben hacer fallar el lint o el tipado usan tests/fixtures/, fuera del
+  alcance normal de ESLint y tsc, y se comprueban desde una prueba.
+
+rules:
+  proposal:
+    - Nombrar el lote del BACKLOG.md que cubre y las historias incluidas (por ID).
+    - Declarar siempre qué queda fuera de alcance.
+    - Listar los ADR que aplican y si el cambio contradice alguno.
+    - Máximo 500 palabras.
+  specs:
+    - Un requisito por comportamiento observable, con SHALL/MUST.
+    - Cada requisito lleva al menos un escenario GIVEN/WHEN/THEN. Los de nivel U, I y E los verifica una prueba automática; los de nivel C y M, una ejecución cuya evidencia se anota en tasks.md.
+    - Cubrir ES y EN, teclado y movimiento reducido cuando el requisito toque la interfaz.
+    - Partir de los escenarios del lote en docs/escenarios.md; cada uno MUST aparecer como #### Scenario.
+    - Un comportamiento nuevo que surja al implementar se añade primero a docs/escenarios.md.
+  design:
+    - Decir en qué carpeta vive cada pieza y respetar las reglas de dependencia.
+    - Una decisión con alternativas reales se registra como ADR nuevo en docs/architecture/adr/.
+    - Indicar el nivel de prueba de cada pieza (unitario, integración o E2E).
+  tasks:
+    - TDD. Cada tarea de implementación va precedida por su prueba en rojo, y cita el escenario que cubre.
+    - Tareas de dos horas como máximo, ordenadas para que la suite quede en verde al cerrar cada una.
+    - Terminar con la puerta de cierre de lote, la actualización de README y BACKLOG y el commit local.
+
+operations:
+  apply:
+    guidance:
+      - Trabajar un lote completo antes de empezar el siguiente.
+      - Un commit local al cerrar cada lote. MUST NOT hacerse push ni desplegar hasta que el fundador lo pida; la v1 se sube completa al final.
+      - Ante un requisito ambiguo, detenerse y preguntar en lugar de suponer.
+  archive:
+    guidance:
+      - Archivar solo con la suite en verde y la revisión de código resuelta.
+      - Resumir qué cambió en openspec/specs/ y actualizar el estado del lote en BACKLOG.md.

@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "confiahome",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Producción usa servicios reales de forma explícita. En local, .dev.vars lo cambia a memory.
+  "vars": { "SERVICES": "real" },
+  "observability": { "enabled": true }
+}

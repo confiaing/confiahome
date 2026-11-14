@@ -1,0 +1,35 @@
+# dependencias y builds
+node_modules/
+.next/
+.open-next/
+.wrangler/
+out/
+dist/
+coverage/
+playwright-report/
+test-results/
+
+# secretos: nunca se suben
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# supabase local
+supabase/.temp/
+supabase/.branches/
+
+# sistema y editor
+.DS_Store
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.tsbuildinfo
+next-env.d.ts
+
+# restos de herramientas de diseño (perfiles de navegador, capturas, cachés)
+docs/design/**/.taste-skill/
+docs/design/**/.hallmark/
+docs/design/**/node_modules/

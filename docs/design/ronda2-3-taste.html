@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="es" data-type="service" data-radius="soft" data-buttons="block" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ronda 2 · Propuesta 3 — Dirección de arte · Confia.ing</title>
+<meta name="description" content="Confia.ing acompaña a pequeñas y medianas empresas a encontrar dónde la IA genera resultados: diagnóstico, roadmap, piloto y transferencia al equipo.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Confia.ing: transformación de IA para empresas que ya usan tecnología">
+<meta property="og:description" content="Identificamos oportunidades reales de IA, definimos cómo medir su impacto y acompañamos a tu equipo hasta soluciones que pueda operar.">
+<meta property="og:image" content="ronda2-3-taste-assets/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="ronda2-3-taste-assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#e6dbc7">
+<!-- <link rel="canonical" href="https://confia.ing/"> -->
+<meta name="site-kind" content="other">
+<meta name="page-type" content="service">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400..700&family=Libre+Franklin:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ronda2-3-taste-assets/system.css">
+<link rel="stylesheet" href="ronda2-3-taste-assets/ui/cards.css">
+<link rel="stylesheet" href="ronda2-3-taste-assets/motion/motion.css">
+<link rel="stylesheet" href="ronda2-3-taste-assets/backgrounds/backgrounds.css">
+<link rel="stylesheet" href="ronda2-3-taste-assets/layout/layout.css">
+<link rel="stylesheet" href="ronda2-3-taste-assets/icons/icon.css">
+<style>
+:root {
+  /* primitives: the dealt palette "cobalt-on-sand" (start.mjs), plus two state colours */
+  --sand-100: #e6dbc7;
+  --sand-200: #ddd0b9;
+  --cobalt-900: #062b8a;
+  --cobalt-800: #153a90;
+  --cobalt-600: #3253a4;
+  --mist-300: #aab0bc;
+  --brick-700: #a3271c;
+  --moss-800: #17592f;
+
+  /* semantic roles: components use only these */
+  --color-background: var(--sand-100);
+  --color-surface: var(--sand-200);
+  --color-text: var(--cobalt-900);
+  --color-text-muted: var(--cobalt-600);
+  --color-primary: var(--cobalt-900);
+  --color-on-primary: var(--sand-100);
+  --color-link: var(--cobalt-900);
+  --color-focus: var(--cobalt-900);
+  --color-border: color-mix(in oklab, var(--cobalt-900) 20%, transparent);
+  --color-error: var(--brick-700);
+  --color-success: var(--moss-800);
+  --color-inverse-background: var(--cobalt-900);
+  --color-inverse-surface: var(--cobalt-800);
+  --color-inverse-text: var(--sand-100);
+  --color-inverse-text-muted: var(--mist-300);
+
+  /* the kit's tokens, fed from the roles (values as start.mjs printed them) */
+  --p-bg: var(--color-background); --p-surface: var(--color-surface); --p-ink: var(--color-text); --p-muted: var(--color-text-muted);
+  --p-accent: var(--color-primary); --p-accent-ink: var(--color-on-primary); --p-action: var(--color-primary); --p-action-ink: var(--color-on-primary);
+  --p-inv-bg: var(--color-inverse-background); --p-inv-surface: var(--color-inverse-surface); --p-inv-ink: var(--color-inverse-text); --p-inv-muted: var(--color-inverse-text-muted);
+  --p-inv-accent: var(--color-inverse-text); --p-inv-accent-ink: var(--color-inverse-background); --p-inv-action: var(--color-inverse-text); --p-inv-action-ink: var(--color-inverse-background);
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-text: "Libre Franklin", system-ui, sans-serif;
+  --display-weight: 400;
+  --display-tracking: -0.02em;
+  --display-tracking-xl: -0.026em;
+}
+</style>
+<script>document.documentElement.classList.add('m-enter','js');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script src="ronda2-3-taste-assets/backgrounds/backgrounds.js"></script>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="ronda2-3-taste-assets/moments/moments.js">
+<link rel="modulepreload" href="ronda2-3-taste-assets/moments/lib.js">
+<link rel="modulepreload" href="ronda2-3-taste-assets/moments/word-highlight/moment.js">
+<link rel="modulepreload" href="ronda2-3-taste-assets/moments/picture-develops/moment.js">
+<!-- page CSS: what sits inside a visual, the brief's own parts (language switch, journey panels, Calendly slot,
+     form states, brand strip). Colours only through the --color-* roles. -->
+<style>
+  .form { --error: var(--color-error); }
+  .nav__logo .tld { color: var(--muted); }
+  .hero__note { font-size: var(--t-small); color: var(--ink); }
+
+  /* photographs: one frame recipe, as tall as the text beside it */
+  .shot, .develop { margin: 0; border-radius: var(--r-lg); overflow: hidden; height: var(--shot-h, 420px); }
+  .shot > img, .develop > img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
+  @media (max-width: 1023px) { .shot, .develop { height: auto; aspect-ratio: var(--shot-r, 4 / 3); margin-top: var(--s-7); } }
+
+  /* language switch */
+  .lang { display: inline-flex; align-items: center; gap: 2px; }
+  .lang button { min-width: 44px; height: 44px; padding: 0 var(--s-2); border: 0; border-radius: var(--r-sm); background: none; color: var(--muted); font: 500 var(--t-small)/1 var(--font-text); cursor: pointer; }
+  .lang button[aria-pressed="true"] { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+  .lang button:hover { color: var(--ink); }
+  .lang__sep { color: var(--muted); font-size: var(--t-small); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* statement */
+  #preguntas .mo-wh__text { max-width: 1120px; }
+
+  /* the journey: five tabs, one panel at a time, the same height each */
+  #recorrido .tabs { margin-bottom: var(--s-6); }
+  #recorrido .tab { height: 44px; font-size: var(--t-body); }
+  #recorrido .tab:focus-visible { outline: 2px solid var(--action); outline-offset: 3px; }
+  #recorrido .tab .n { font-variant-numeric: tabular-nums; margin-right: var(--s-2); }
+  .stage-panels { min-height: 400px; }
+  .js .stage-panel[data-wait] { display: none; }
+  .stage-panel h3 { font: var(--display-weight) var(--t-h3)/1.2 var(--font-display); letter-spacing: var(--display-tracking); margin-bottom: var(--s-5); }
+  .stage-panel h3 span { color: var(--muted); }
+  .stage-facts { margin: 0; }
+  .stage-facts > div { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: var(--s-4); padding-block: var(--s-4); border-bottom: 1px solid var(--line); }
+  .stage-facts > div:first-child { padding-top: 0; }
+  .stage-facts dt { font-size: var(--t-small); font-weight: 500; color: var(--muted); padding-top: 2px; }
+  .stage-facts dd { margin: 0; font-size: var(--t-body); line-height: 1.55; }
+  #recorrido { --shot-h: 400px; }
+  @media (max-width: 639px) { .stage-facts > div { grid-template-columns: 1fr; gap: var(--s-1); } .stage-panels { min-height: 0; } }
+
+  /* services: the lead service as the one card with its photograph */
+  .lead-service > .shot { height: 340px; }
+  .lead-service__body { display: grid; gap: var(--s-4); align-content: start; }
+  .lead-service__body h3 { font: var(--display-weight) var(--t-h3)/1.2 var(--font-display); letter-spacing: var(--display-tracking); }
+  .lead-service__body p:not(.t-label) { font-size: var(--t-lead); line-height: 1.5; max-width: 40ch; }
+  .lead-service__body .pills { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .others { list-style: none; margin: var(--s-6) 0 0; padding: 0; }
+  .others > li { display: grid; gap: var(--s-1); align-content: start; padding-top: var(--s-4); border-top: 1px solid var(--line-strong); }
+  @media (max-width: 1023px) { .lead-service > .shot { height: auto; } .others > li { grid-column: auto / span 6; } }
+  @media (max-width: 639px) { .others > li { grid-column: 1 / -1; } }
+
+  /* trust */
+  #confianza { --shot-h: 500px; }
+  .principles { margin-top: var(--s-6); }
+  .principles h3 { font: var(--display-weight) var(--t-h3)/1.2 var(--font-display); letter-spacing: var(--display-tracking); margin-bottom: var(--s-3); }
+
+  /* the Calendly slot */
+  .slot { scroll-margin-top: calc(var(--nav) + var(--s-5)); height: 500px; border-radius: var(--r-lg); background: var(--surface); padding: var(--s-7); display: grid; grid-template-rows: auto 1fr; gap: var(--s-6); }
+  .slot h3 { font: var(--display-weight) var(--t-h3)/1.2 var(--font-display); letter-spacing: var(--display-tracking); }
+  .slot__grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-auto-rows: 1fr; gap: var(--s-2); }
+  .slot__grid span { border: 1px solid var(--line-strong); border-radius: var(--r-sm); }
+  .slot__grid span:nth-child(7n + 3) { background: var(--bg); }
+  @media (max-width: 1023px) { .slot { margin-top: var(--s-7); height: 360px; padding: var(--s-5); } }
+
+  /* the enquiry form */
+  #consulta { --shot-h: 588px; }
+  #consulta .field :is(input, textarea) { background: var(--surface); }
+  #consulta .field textarea { min-height: 88px; }
+  .consent { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-3); align-items: start; font-size: var(--t-small); line-height: 1.5; min-height: 44px; }
+  .consent a { text-decoration: underline; text-underline-offset: 3px; }
+  .consent .field__error { grid-column: 2; }
+  .form__status[data-state="ok"] { color: var(--color-success); font-weight: 500; font-size: var(--t-body); }
+  .form__status[data-state="bad"] { color: var(--color-error); font-weight: 500; }
+  @media (max-width: 639px) { #consulta .form { grid-template-columns: 1fr; } }
+
+  .close__second { align-self: start; }
+  .footer__col .lang { margin-left: calc(-1 * var(--s-2)); }
+
+  /* tablet and phone screen counts (layout-v4.md section 2): each stacked section fills its one or two screens,
+     the photograph taking what the words leave */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    #inicio, #recorrido, #servicios, #confianza, #consulta { --h: 2; }
+    #servicios { --shot-r: 20 / 21; } #confianza { --shot-r: 9 / 10; } #consulta { --shot-r: 1 / 1; }
+  }
+  @media (max-width: 639px) {
+    .hero--photo { --photo: 32svh; }
+    .hero__kicker, .hero__note { display: none; }
+    #inicio, #recorrido, #servicios, #consulta { --hm: 2; }
+    #inicio, #recorrido { --shot-r: 5 / 7; } #servicios { --shot-r: 7 / 10; } #confianza { --shot-r: 4 / 5; } #consulta { --shot-r: 1 / 1; }
+    #confianza .develop { margin-top: 0; }
+    .slot { height: 320px; }
+  }
+
+  /* SISTEMA DE MARCA: the strip after the footer */
+  .brandsys { background: var(--color-surface); color: var(--color-text); padding: var(--padt) 0 var(--padb); }
+  .brandsys .t-label { color: var(--color-text-muted); margin-bottom: var(--s-4); }
+  .brandsys__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-7) var(--gutter); margin-top: var(--head-gap); }
+  .brandsys__col { display: grid; gap: var(--s-7); align-content: start; }
+  .tokens { width: 100%; border-collapse: collapse; font-size: var(--t-small); }
+  .tokens th, .tokens td { text-align: left; font-weight: 400; padding: 10px var(--s-3) 10px 0; border-bottom: 1px solid var(--color-border); overflow-wrap: anywhere; }
+  .tokens thead th { color: var(--color-text-muted); font-weight: 500; padding-top: 0; }
+  .tokens tbody th { font-weight: 500; }
+  .tokens .chip { width: 32px; padding-right: 0; }
+  .tokens i { display: block; width: 20px; height: 20px; border-radius: 50%; background: var(--c); border: 1px solid var(--color-text); }
+  .specimen-d { font: 400 var(--t-h3)/1.1 var(--font-display); letter-spacing: -0.02em; }
+  .specimen-t { font: 400 var(--t-body)/1.55 var(--font-text); margin-top: var(--s-3); max-width: 52ch; }
+  .logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
+  .logo-tile { display: grid; place-items: center; height: 112px; min-width: 0; border-radius: var(--r-md); border: 1px solid var(--color-border); background: var(--color-background); color: var(--color-text); }
+  .logo-tile--dark { background: var(--color-inverse-background); color: var(--color-inverse-text); border-color: var(--color-inverse-background); }
+  .logo-tile .wm { display: inline-flex; align-items: center; gap: var(--s-2); font: 500 22px/1 var(--font-display); letter-spacing: -0.02em; }
+  .logo-tile .wm .mark { background: currentColor; }
+  .logo-tile .wm .tld { opacity: .8; }
+  .states { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); justify-items: start; align-items: center; }
+  .states--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-items: stretch; }
+  .demo-btn { display: inline-flex; align-items: center; height: 44px; max-width: 100%; padding: 0 var(--s-4); border-radius: var(--r-btn); border: 1px solid var(--color-primary); background: var(--color-primary); color: var(--color-on-primary); font: 500 var(--t-small)/1 var(--font-text); }
+  .demo-btn--2 { background: transparent; color: var(--color-text); border-color: var(--color-border); }
+  .demo-btn.is-hover { background: color-mix(in oklab, var(--color-primary) 86%, var(--color-background)); }
+  .demo-btn--2.is-hover { background: transparent; border-color: var(--color-text); }
+  .demo-btn.is-focus, .demo-input.is-focus, .demo-link.is-focus { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+  .demo-link { color: var(--color-link); font-weight: 500; text-decoration: underline; text-decoration-color: var(--color-border); text-underline-offset: 4px; font-size: var(--t-body); }
+  .demo-link.is-hover { text-decoration-color: currentColor; }
+  .demo-input { display: flex; align-items: center; height: 48px; min-width: 0; padding: 0 var(--s-3); border-radius: var(--r-sm); border: 1px solid var(--color-border); background: var(--color-background); color: var(--color-text); font-size: var(--t-body); }
+  .demo-input.is-error { border: 2px solid var(--color-error); }
+  .demo-input.is-ok { border: 2px solid var(--color-success); }
+  @media (max-width: 1023px) { .brandsys__grid { grid-template-columns: minmax(0, 1fr); } }
+
+  @media (max-width: 639px) { .footer__legal > span { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); width: 100%; } .footer__legal > span > a { grid-row: 2; } }
+  @media (max-width: 359px) { .nav:not(.is-open) .nav__actions { display: none; } .nav:not(.is-open) .nav__toggle { margin-left: auto; } }
+</style>
+</head>
+<body>
+<!-- type: service (site-kind other)
+     deal: hero photo, nav nav-mega, close close-type, footer footer-columns, rhythm dark-band (#recorrido), buttons block, mark arc
+     palette cobalt-on-sand, pairing source-serif (Source Serif 4 / Libre Franklin), radius soft
+     moments: word-highlight (#preguntas), picture-develops (#confianza)
+     The brief overrides the kit in five places: the journey is a tablist, the form is a visual mock with an inline
+     confirmation, the Calendly slot, the ES/EN switch, and the "Sistema de marca" strip after the footer. -->
+
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Saltar al contenido</a>
+    <a class="nav__logo" href="#top" aria-label="confia.ing, inicio"><span class="mark" data-mark="arc" aria-hidden="true"></span><span>confia<span class="tld">.ing</span></span></a>
+    <nav class="nav__links" aria-label="Principal">
+      <div class="nav__item"><a class="nav__link" href="#inicio">Dónde empezamos</a></div>
+      <div class="nav__item">
+        <a class="nav__link" href="#recorrido">Cómo lo hacemos realidad <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu">
+          <div class="wrap grid">
+            <div class="menu-col span-4">
+              <p class="t-label">El recorrido</p>
+              <a href="#recorrido">Las cinco etapas<span>De la conversación a la escala</span></a>
+              <a href="#confianza">Experiencia del equipo<span>Mantenible, seguro, medible</span></a>
+            </div>
+            <div class="menu-col span-4">
+              <p class="t-label">Lo que ofrecemos</p>
+              <a href="#servicios">Transformación de IA<span>Servicio principal</span></a>
+              <a href="#servicios">Capacitación, AI-SDLC y software<span>Otros cuatro servicios</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" lang="es" aria-pressed="true" data-lang="es" aria-label="Español">ES</button><span class="lang__sep" aria-hidden="true">/</span><button type="button" lang="en" aria-pressed="false" data-lang="en" aria-label="English">EN</button>
+        <span class="sr-only" role="status" id="lang-status"></span>
+      </div>
+      <a class="btn btn--primary" href="#agenda">Agenda 30 minutos</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menú">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO: the dealt photo hero, the words in a solid box on the photograph's calm left side -->
+  <section class="hero hero--photo" data-enter data-calm="left" aria-labelledby="hero-h">
+    <picture class="hero__bg" style="--ly-pos: 72% 50%; --ly-pos-phone: 50% 60%">
+      <source media="(max-width: 639px)" srcset="ronda2-3-taste-assets/img/photo-f145762554-phone.jpg">
+      <img src="ronda2-3-taste-assets/img/photo-f145762554-1920.jpg" srcset="ronda2-3-taste-assets/img/photo-f145762554-960.jpg 960w, ronda2-3-taste-assets/img/photo-f145762554-1280.jpg 1280w, ronda2-3-taste-assets/img/photo-f145762554-1920.jpg 1920w" sizes="100vw" width="1920" height="1280" alt="Un sendero de piedra sube entre pinos sobre el mar, con la costa al fondo" fetchpriority="high" decoding="async" data-phone-fill data-source="stand-in" data-subject="sendero">
+    </picture>
+    <div class="wrap"><div class="hero-text">
+      <div class="hero__text">
+        <p class="hero__kicker">Transformación de IA para empresas que ya usan tecnología</p>
+        <h1 id="hero-h">IA con resultados en tu empresa</h1>
+        <p class="hero__lead">Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo del diagnóstico a soluciones que pueda operar y escalar.</p>
+        <div class="btn-row"><a class="btn btn--primary" href="#agenda">Agenda 30 minutos</a><a class="btn btn--secondary" href="#consulta">Cuéntanos dónde aplicar IA</a></div>
+        <p class="hero__note">Una conversación exploratoria, sin costo ni compromiso. Estrategia · Capacitación · Automatización</p>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- DONDE EMPEZAMOS: the four frictions beside a photograph of work checked by hand -->
+  <section class="section" id="inicio" aria-labelledby="inicio-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="inicio-h">Empezamos por el trabajo, no por la tecnología.</h2>
+        <p>Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p>
+      </div>
+      <div class="grid grid--top">
+        <ul class="rows span-6">
+          <li><span class="rows__name">Tareas repetitivas que cuestan horas</span><p>Trabajo operativo y verificable que tu equipo hace a mano cada semana: revisar, copiar, clasificar, responder.</p></li>
+          <li><span class="rows__name">Sistemas y datos que no se hablan</span><p>Información repartida entre herramientas, con personas haciendo de puente.</p></li>
+          <li><span class="rows__name">IA sin estrategia</span><p>Licencias compradas y equipos improvisando, sin saber si eso mejora la productividad.</p></li>
+          <li><span class="rows__name">Equipos de software que no saben por dónde empezar</span><p>Quieren integrar IA en su ciclo de desarrollo, pero no tienen un método para hacerlo en cada fase.</p></li>
+        </ul>
+        <figure class="shot span-6 start-7" style="--pos: 50% 62%"><img src="ronda2-3-taste-assets/img/photo-f196430935-960.jpg" srcset="ronda2-3-taste-assets/img/photo-f196430935-500.jpg 500w, ronda2-3-taste-assets/img/photo-f196430935-960.jpg 960w" sizes="(max-width: 1023px) 100vw, 50vw" width="960" height="1438" alt="Una mano revisa virutas de madera sobre la mesa de una máquina de taller" loading="lazy" decoding="async" data-source="stand-in" data-subject="mano en el taller"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREGUNTAS: the statement moment (word-highlight): the buyer's four questions -->
+  <section class="section statement" id="preguntas" data-moment="word-highlight" aria-label="Preguntas que respondemos contigo">
+    <div class="wrap">
+      <p class="t-label">Preguntas que respondemos contigo</p>
+      <p class="mo-wh__text">¿En qué proceso tiene sentido usar IA? ¿Qué datos, herramientas y personas necesito? ¿Cómo justifico el costo y <strong>mido el impacto</strong>? ¿Cómo evito fugas de información y soluciones difíciles de mantener?</p>
+    </div>
+  </section>
+
+  <!-- RECORRIDO: the dark band. Five stages as a tablist (the brief's ask); every panel is in the HTML -->
+  <section class="section ground-inverse" id="recorrido" aria-labelledby="recorrido-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="recorrido-h">Un recorrido que hacemos juntos.</h2>
+        <p>Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Las cinco etapas del recorrido">
+        <button class="tab" role="tab" type="button" id="tab-1" aria-selected="true" aria-controls="etapa-1"><span class="n">1</span>Conversación inicial</button>
+        <button class="tab" role="tab" type="button" id="tab-2" aria-selected="false" aria-controls="etapa-2" tabindex="-1"><span class="n">2</span>Diagnóstico</button>
+        <button class="tab" role="tab" type="button" id="tab-3" aria-selected="false" aria-controls="etapa-3" tabindex="-1"><span class="n">3</span>Roadmap</button>
+        <button class="tab" role="tab" type="button" id="tab-4" aria-selected="false" aria-controls="etapa-4" tabindex="-1"><span class="n">4</span>Piloto</button>
+        <button class="tab" role="tab" type="button" id="tab-5" aria-selected="false" aria-controls="etapa-5" tabindex="-1"><span class="n">5</span>Escala y transferencia</button>
+      </div>
+      <div class="grid grid--top">
+        <div class="stage-panels span-6">
+          <div class="stage-panel" role="tabpanel" id="etapa-1" aria-labelledby="tab-1" tabindex="0">
+            <h3>Conversación inicial <span>· 30 minutos</span></h3>
+            <dl class="stage-facts">
+              <div><dt>Qué hacemos</dt><dd>Exploramos tus procesos y dónde podría aplicarse IA. Es una conversación, no un diagnóstico ni un compromiso.</dd></div>
+              <div><dt>Qué recibes</dt><dd>Una primera lectura de oportunidades y una idea clara de si podemos ayudarte.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Decides si avanzamos a un diagnóstico.</dd></div>
+            </dl>
+          </div>
+          <div class="stage-panel" role="tabpanel" id="etapa-2" aria-labelledby="tab-2" tabindex="0" data-wait>
+            <h3>Diagnóstico</h3>
+            <dl class="stage-facts">
+              <div><dt>Qué hacemos</dt><dd>Evaluamos oportunidades, fricciones y qué tan preparada está tu empresa: datos, herramientas y personas.</dd></div>
+              <div><dt>Qué recibes</dt><dd>Oportunidades priorizadas y lo que hay que preparar. El alcance se acuerda contigo.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Elegimos juntos por dónde empezar.</dd></div>
+            </dl>
+          </div>
+          <div class="stage-panel" role="tabpanel" id="etapa-3" aria-labelledby="tab-3" tabindex="0" data-wait>
+            <h3>Roadmap</h3>
+            <dl class="stage-facts">
+              <div><dt>Qué hacemos</dt><dd>Trazamos un plan de alto nivel: etapas, personas involucradas, costos y resultados esperados.</dd></div>
+              <div><dt>Qué recibes</dt><dd>El estado actual frente al estado deseado para los próximos meses.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Acordamos el primer piloto.</dd></div>
+            </dl>
+          </div>
+          <div class="stage-panel" role="tabpanel" id="etapa-4" aria-labelledby="tab-4" tabindex="0" data-wait>
+            <h3>Piloto</h3>
+            <dl class="stage-facts">
+              <div><dt>Qué hacemos</dt><dd>Implementamos con demos, revisiones y ciclos de feedback.</dd></div>
+              <div><dt>Qué recibes</dt><dd>Una solución funcionando, con métricas y OKR del proyecto y del impacto en el negocio.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Si demuestra valor, lo escalamos.</dd></div>
+            </dl>
+          </div>
+          <div class="stage-panel" role="tabpanel" id="etapa-5" aria-labelledby="tab-5" tabindex="0" data-wait>
+            <h3>Escala y transferencia</h3>
+            <dl class="stage-facts">
+              <div><dt>Qué hacemos</dt><dd>Diseñamos la solución para crecer, con monitoreo continuo.</dd></div>
+              <div><dt>Qué recibes</dt><dd>Capacitación y documentación para que tu equipo la opere. El soporte continuo es opcional.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Tu equipo queda a cargo.</dd></div>
+            </dl>
+          </div>
+        </div>
+        <figure class="shot span-6 start-7" style="--pos: 40% 50%"><img src="ronda2-3-taste-assets/img/photo-f47657460.jpg" srcset="ronda2-3-taste-assets/img/photo-f47657460-500.jpg 500w, ronda2-3-taste-assets/img/photo-f47657460-960.jpg 960w, ronda2-3-taste-assets/img/photo-f47657460.jpg 1280w" sizes="(max-width: 1023px) 100vw, 50vw" width="1280" height="853" alt="Unas manos aseguran una cuerda azul a un anclaje sobre la roca antes de escalar" loading="lazy" decoding="async" data-source="stand-in" data-subject="cuerda y anclaje"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- LO QUE OFRECEMOS: the lead service as the one card with its photograph, the other four as rows -->
+  <section class="section" id="servicios" aria-labelledby="servicios-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="servicios-h">Lo que ofrecemos</h2>
+      </div>
+      <article class="grid grid--top lead-service">
+        <div class="lead-service__body span-6">
+          <p class="t-label muted">Servicio principal</p>
+          <h3>Transformación de IA</h3>
+          <p>Estrategia, capacitación y automatización integradas para llevar la IA de la idea al resultado.</p>
+          <div class="pills"><span class="pill">Estrategia</span><span class="pill">Capacitación</span><span class="pill">Automatización</span></div>
+        </div>
+        <figure class="shot span-6 start-7" style="--pos: 50% 42%"><img src="ronda2-3-taste-assets/img/photo-f61684081-960.jpg" srcset="ronda2-3-taste-assets/img/photo-f61684081-500.jpg 500w, ronda2-3-taste-assets/img/photo-f61684081-960.jpg 960w" sizes="(max-width: 1023px) 100vw, 58vw" width="960" height="615" alt="Un banco de carpintero con sus herramientas ordenadas en la pared de un taller de madera" loading="lazy" decoding="async" data-source="stand-in" data-subject="taller"></figure>
+      </article>
+      <ul class="grid others">
+        <li class="span-3"><span class="rows__name">Capacitación en IA</span><p>Para líderes y perfiles no técnicos: usar IA con criterio en flujos de trabajo reales.</p></li>
+        <li class="span-3"><span class="rows__name">AI-SDLC</span><p>Acompañamos a equipos de software a integrar IA en cada fase del ciclo de desarrollo.</p></li>
+        <li class="span-3"><span class="rows__name">Software a la medida</span><p>Cuando la solución necesita construirse.</p></li>
+        <li class="span-3"><span class="rows__name">Soluciones generativas y agentivas</span><p>Asesoría y construcción de agentes y sistemas basados en IA generativa.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- POR QUE CONFIAR: the team's experience beside the photograph that develops (picture-develops) -->
+  <section class="section g2m" id="confianza" aria-labelledby="confianza-h">
+    <div class="wrap grid grid--top">
+      <div class="span-6">
+        <div class="section-head">
+          <h2 id="confianza-h">Experiencia del equipo. <span class="muted">Por qué confiar.</span></h2>
+        </div>
+        <ul class="rows">
+          <li><p>Más de cinco años en empresas SaaS de EE. UU. con clientes en todo el mundo.</p></li>
+          <li><p>Sector salud: un sistema RAG agentivo para gestión documental de tratamientos médicos, con modelos locales y en la nube.</p></li>
+          <li><p>Eficiencia en el uso de LLM: costos, modelos locales y enrutamiento de modelos.</p></li>
+          <li><p>AI-SDLC: asesoría en todas las fases del ciclo de desarrollo.</p></li>
+        </ul>
+        <p class="t-small muted" style="margin-top: var(--s-3)">Experiencia previa de quienes integran el equipo.</p>
+        <div class="principles">
+          <h3>Mantenible · Seguro · Medible</h3>
+          <p>Consideramos riesgos como fuga de información y prompt injection, y los requisitos de datos personales y normativos que apliquen a tu contexto.</p>
+        </div>
+      </div>
+      <figure class="develop span-6 start-7" data-moment="picture-develops" style="--pos: 40% 60%"><img src="ronda2-3-taste-assets/img/photo-f58811588.jpg" srcset="ronda2-3-taste-assets/img/photo-f58811588-500.jpg 500w, ronda2-3-taste-assets/img/photo-f58811588-960.jpg 960w, ronda2-3-taste-assets/img/photo-f58811588.jpg 1280w" sizes="(max-width: 1023px) 100vw, 50vw" width="1280" height="962" alt="Un compás de precisión sobre un banco de trabajo de madera, junto a un estuche de cuero" loading="lazy" decoding="async" data-source="stand-in" data-subject="compás sobre el banco"></figure>
+    </div>
+  </section>
+
+  <!-- CIERRE: the two actions and the slot where Calendly loads -->
+  <section class="section" id="cierre" aria-labelledby="cierre-h">
+    <div class="wrap grid grid--top">
+      <div class="span-6">
+        <div class="section-head">
+          <h2 id="cierre-h">Tu equipo ya trabaja duro. <span class="muted">Hagamos que la IA trabaje con él.</span></h2>
+          <p>Una conversación exploratoria, sin costo ni compromiso.</p>
+        </div>
+        <div class="btn-row"><a class="btn btn--primary" href="#agenda">Agenda 30 minutos</a><a class="btn btn--secondary" href="#consulta">Cuéntanos dónde aplicar IA</a></div>
+      </div>
+      <!-- CLIENT SLOT: the Calendly inline widget mounts in #agenda (replace the inner markup with the embed) -->
+      <div class="slot span-6 start-7" id="agenda" tabindex="-1" role="group" aria-label="Agenda de la conversación inicial">
+        <div>
+          <h3>Elige día y hora</h3>
+          <p>Aquí se carga el calendario de Calendly para reservar la conversación de 30 minutos.</p>
+        </div>
+        <div class="slot__grid" role="img" aria-label="Calendario de reservas, aún sin cargar"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSULTA: the enquiry form (a visual mock: checked in the browser, nothing is sent) -->
+  <section class="section" id="consulta" aria-labelledby="consulta-h">
+    <div class="wrap grid grid--top">
+      <div class="span-6">
+        <div class="section-head">
+          <h2 id="consulta-h">Cuéntanos dónde quieres aplicar IA</h2>
+          <p>Déjanos un correo o un teléfono: con uno de los dos basta para responderte.</p>
+        </div>
+        <form class="form" id="consulta-form" novalidate data-mock>
+          <div class="field"><label for="f-nombre">Nombre</label>
+            <input id="f-nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="f-nombre-err">
+            <p class="field__error" id="f-nombre-err" hidden>Escribe tu nombre.</p></div>
+          <div class="field"><label for="f-empresa">Empresa</label>
+            <input id="f-empresa" name="empresa" type="text" autocomplete="organization" required aria-describedby="f-empresa-err">
+            <p class="field__error" id="f-empresa-err" hidden>Escribe el nombre de tu empresa.</p></div>
+          <div class="field"><label for="f-correo">Correo</label>
+            <input id="f-correo" name="correo" type="email" autocomplete="email" inputmode="email" aria-describedby="f-correo-err">
+            <p class="field__error" id="f-correo-err" hidden>Escribe un correo con @ o deja un teléfono.</p></div>
+          <div class="field"><label for="f-telefono">Teléfono</label>
+            <input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="f-telefono-err">
+            <p class="field__error" id="f-telefono-err" hidden>Escribe un teléfono de al menos 7 dígitos o deja un correo.</p></div>
+          <div class="field field--full"><label for="f-donde">¿Dónde quieres aplicar IA?</label>
+            <textarea id="f-donde" name="donde" rows="3" required aria-describedby="f-donde-err"></textarea>
+            <p class="field__error" id="f-donde-err" hidden>Cuéntanos en una línea el proceso o el área.</p></div>
+          <div class="consent">
+            <input class="m-check" id="f-acepto" name="acepto" type="checkbox" required aria-describedby="f-acepto-err">
+            <label for="f-acepto">Acepto el tratamiento de mis datos para responder mi solicitud, según la <a href="ronda2-3-taste-assets/privacidad.html">Política de privacidad</a>.</label>
+            <p class="field__error" id="f-acepto-err" hidden>Marca la casilla para enviar la consulta.</p>
+          </div>
+          <div class="btn-row"><button class="btn btn--secondary" type="submit">Enviar consulta</button></div>
+          <p class="form__status" role="status" data-form-status></p>
+        </form>
+      </div>
+      <figure class="shot span-6 start-7" style="--pos: 50% 55%"><img src="ronda2-3-taste-assets/img/photo-d183.jpg" srcset="ronda2-3-taste-assets/img/photo-d183-500.jpg 500w, ronda2-3-taste-assets/img/photo-d183-960.jpg 960w, ronda2-3-taste-assets/img/photo-d183.jpg 1280w" sizes="(max-width: 1023px) 100vw, 50vw" width="1280" height="853" alt="Un cuaderno abierto en blanco con un lápiz sobre una mesa de madera oscura" loading="lazy" decoding="async" data-source="library-057" data-subject="cuaderno"></figure>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">Agenda una conversación de 30 minutos</h2>
+      </div>
+      <a class="btn btn--primary btn--xl" href="#agenda">Agenda 30 minutos<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top" aria-label="confia.ing, inicio"><span class="mark" data-mark="arc" aria-hidden="true"></span><span>confia<span class="tld">.ing</span></span></a>
+          <p class="footer__lede">Transformación de IA para empresas que ya usan tecnología</p>
+        </div>
+        <div class="span-2 footer__col"><h3>Dónde empezamos</h3><ul><li><a href="#inicio">Fricciones</a></li><li><a href="#preguntas">Preguntas</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Cómo lo hacemos</h3><ul><li><a href="#recorrido">Recorrido</a></li><li><a href="#servicios">Servicios</a></li><li><a href="#confianza">Experiencia</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Contacto</h3><ul><li><a href="mailto:hola@confia.ing">hola@confia.ing</a></li><li><a href="#consulta">Enviar consulta</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Idioma</h3>
+          <div class="lang" role="group" aria-label="Idioma">
+            <button type="button" lang="es" aria-pressed="true" data-lang="es" aria-label="Español">ES</button><span class="lang__sep" aria-hidden="true">/</span><button type="button" lang="en" aria-pressed="false" data-lang="en" aria-label="English">EN</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer__legal">
+        <span><span style="grid-column: 1 / -1">&copy; 2026 Confia.ing &nbsp;</span> <a href="ronda2-3-taste-assets/privacidad.html">Privacidad</a> &nbsp; <a href="ronda2-3-taste-assets/terminos.html">Términos</a></span>
+        <div class="socials"></div>
+        <a class="credits" href="ronda2-3-taste-assets/creditos.html">Fotografías vía Wikimedia Commons: autores y licencias</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- SISTEMA DE MARCA: the brief's strip after the footer (not part of the homepage itself) -->
+<section class="brandsys" id="sistema-de-marca" aria-labelledby="brandsys-h">
+  <div class="wrap">
+    <h2 id="brandsys-h">Sistema de marca</h2>
+    <div class="brandsys__grid">
+      <div>
+        <p class="t-label">Paleta: roles y valores</p>
+        <table class="tokens">
+          <thead><tr><td></td><th scope="col">Rol</th><th scope="col">Primitivo</th><th scope="col">Valor</th></tr></thead>
+          <tbody>
+            <tr><td class="chip"><i style="--c: var(--color-background)"></i></td><th scope="row">--color-background</th><td>sand-100</td><td>#E6DBC7</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-surface)"></i></td><th scope="row">--color-surface</th><td>sand-200</td><td>#DDD0B9</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-text)"></i></td><th scope="row">--color-text</th><td>cobalt-900</td><td>#062B8A</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-text-muted)"></i></td><th scope="row">--color-text-muted</th><td>cobalt-600</td><td>#3253A4</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-primary)"></i></td><th scope="row">--color-primary</th><td>cobalt-900</td><td>#062B8A</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-link)"></i></td><th scope="row">--color-link</th><td>cobalt-900</td><td>#062B8A</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-focus)"></i></td><th scope="row">--color-focus</th><td>cobalt-900</td><td>#062B8A</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-border)"></i></td><th scope="row">--color-border</th><td>cobalt-900</td><td>20 %</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-inverse-surface)"></i></td><th scope="row">--color-inverse-surface</th><td>cobalt-800</td><td>#153A90</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-inverse-text-muted)"></i></td><th scope="row">--color-inverse-text-muted</th><td>mist-300</td><td>#AAB0BC</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-error)"></i></td><th scope="row">--color-error</th><td>brick-700</td><td>#A3271C</td></tr>
+            <tr><td class="chip"><i style="--c: var(--color-success)"></i></td><th scope="row">--color-success</th><td>moss-800</td><td>#17592F</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="brandsys__col">
+        <div>
+          <p class="t-label">Tipografías</p>
+          <p class="specimen-d">Source Serif 4</p>
+          <p class="specimen-t">Titulares en peso 400, con tracking de −2 %. Libre Franklin para el texto, en 400 y 500: botones, etiquetas y formularios.</p>
+        </div>
+        <div>
+          <p class="t-label">Logotipo: claro y oscuro</p>
+          <div class="logos">
+            <div class="logo-tile" role="img" aria-label="Logotipo confia.ing sobre fondo claro"><span class="wm"><span class="mark" data-mark="arc" aria-hidden="true"></span><span>confia<span class="tld">.ing</span></span></span></div>
+            <div class="logo-tile logo-tile--dark" role="img" aria-label="Logotipo confia.ing sobre fondo oscuro"><span class="wm"><span class="mark" data-mark="arc" aria-hidden="true"></span><span>confia<span class="tld">.ing</span></span></span></div>
+          </div>
+        </div>
+        <div>
+          <p class="t-label">Botones y enlaces: reposo, hover, foco</p>
+          <div class="states">
+            <span class="demo-btn">Primario</span><span class="demo-btn is-hover">Primario</span><span class="demo-btn is-focus">Primario</span>
+            <span class="demo-btn demo-btn--2">Secundario</span><span class="demo-btn demo-btn--2 is-hover">Secundario</span><span class="demo-btn demo-btn--2 is-focus">Secundario</span>
+            <span class="demo-link">Enlace</span><span class="demo-link is-hover">Enlace</span><span class="demo-link is-focus">Enlace</span>
+          </div>
+        </div>
+        <div>
+          <p class="t-label">Campos: reposo, foco, error, correcto</p>
+          <div class="states states--2">
+            <span class="demo-input">Correo</span><span class="demo-input is-focus">Correo</span>
+            <span class="demo-input is-error">Correo</span><span class="demo-input is-ok">Correo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script type="module" src="ronda2-3-taste-assets/system.js"></script>
+<script type="module" src="ronda2-3-taste-assets/motion/motion.js"></script>
+<script type="module" src="ronda2-3-taste-assets/layout/layout.js"></script>
+<script src="ronda2-3-taste-assets/page.js" defer></script>
+</body>
+</html>

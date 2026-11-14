@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="es" data-mode="lite">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ronda 2 · Propuesta 1 — Experiencia 3D · Confia.ing</title>
+<meta name="description" content="Transformación de IA para empresas que ya usan tecnología. Un recorrido en cinco etapas que hacemos juntos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   1. TOKENS — primitivos + roles semánticos (única fuente de color)
+   ============================================================ */
+:root{
+  /* Primitivos */
+  --paper-50:#FBF8F2; --paper-100:#F4EFE6; --paper-200:#E7DFD0; --paper-300:#CFC4B0;
+  --pine-900:#0E231C; --pine-800:#143229; --pine-700:#1E463A; --pine-500:#3B7A63; --pine-300:#9DC4B2;
+  --ember-300:#F3A592; --ember-400:#EE6A4B; --ember-600:#C4391F; --ember-700:#A32C15;
+  --sun-400:#F2B441;
+  --stone-600:#4A5C54; --stone-400:#7C8A82; --mist-200:#B9C8BF; --blush-50:#FFEFE9;
+  --red-700:#B3261E; --green-700:#1F6B4A; --white:#FFFFFF;
+
+  /* Roles semánticos (tema claro, por defecto) */
+  --color-background:var(--paper-100);
+  --color-surface:var(--paper-50);
+  --color-surface-strong:var(--paper-200);
+  --color-text:var(--pine-900);
+  --color-text-muted:var(--stone-600);
+  --color-primary:var(--ember-600);
+  --color-primary-hover:var(--ember-700);
+  --color-on-primary:var(--white);
+  --color-link:var(--ember-700);
+  --color-accent:var(--sun-400);
+  --color-focus:var(--pine-900);
+  --color-border:var(--paper-300);
+  --color-border-strong:var(--stone-400);
+  --color-error:var(--red-700);
+  --color-success:var(--green-700);
+  /* Roles de la escena (los leen el SVG y el 3D) */
+  --scene-top:var(--paper-50); --scene-side-a:var(--paper-300); --scene-side-b:var(--paper-200);
+  --scene-alt:var(--pine-300); --scene-dark:var(--pine-700);
+  --scene-accent:var(--ember-600); --scene-accent-shade:var(--ember-700);
+  --scene-line:var(--pine-900);
+  --scene-comp-a:var(--pine-900); --scene-comp-b:var(--ember-600); --scene-bead:var(--sun-400);
+
+  --font-display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:"DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius:18px; --radius-s:10px;
+  --gutter:clamp(20px, 5vw, 64px);
+  --header-h:68px;
+}
+.theme-light{
+  --color-background:var(--paper-100); --color-surface:var(--paper-50); --color-surface-strong:var(--paper-200);
+  --color-text:var(--pine-900); --color-text-muted:var(--stone-600);
+  --color-primary:var(--ember-600); --color-primary-hover:var(--ember-700); --color-on-primary:var(--white);
+  --color-link:var(--ember-700); --color-focus:var(--pine-900);
+  --color-border:var(--paper-300); --color-border-strong:var(--stone-400);
+  color:var(--color-text);
+}
+.theme-dark{
+  --color-background:var(--pine-900); --color-surface:var(--pine-800); --color-surface-strong:var(--pine-700);
+  --color-text:var(--paper-100); --color-text-muted:var(--mist-200);
+  --color-primary:var(--ember-400); --color-primary-hover:var(--ember-300); --color-on-primary:var(--pine-900);
+  --color-link:var(--sun-400); --color-focus:var(--sun-400);
+  --color-border:var(--pine-700); --color-border-strong:var(--stone-400);
+  --scene-top:var(--paper-100); --scene-side-a:var(--pine-500); --scene-side-b:var(--paper-300);
+  --scene-alt:var(--pine-300); --scene-dark:var(--pine-500);
+  --scene-accent:var(--ember-400); --scene-accent-shade:var(--ember-600);
+  --scene-line:var(--pine-900);
+  --scene-comp-a:var(--sun-400); --scene-comp-b:var(--ember-400);
+  color:var(--color-text); background:var(--color-background);
+}
+.theme-accent{
+  --color-background:var(--ember-600); --color-surface:var(--ember-700); --color-surface-strong:var(--ember-700);
+  --color-text:var(--white); --color-text-muted:var(--blush-50);
+  --color-primary:var(--pine-900); --color-primary-hover:var(--pine-700); --color-on-primary:var(--paper-50);
+  --color-link:var(--white); --color-focus:var(--white);
+  --color-border:var(--ember-300); --color-border-strong:var(--blush-50);
+  --scene-top:var(--paper-50); --scene-side-a:var(--paper-300); --scene-side-b:var(--paper-200);
+  --scene-alt:var(--sun-400); --scene-dark:var(--pine-800);
+  --scene-accent:var(--pine-900); --scene-accent-shade:var(--pine-800);
+  --scene-line:var(--pine-900);
+  --scene-comp-a:var(--pine-900); --scene-comp-b:var(--sun-400);
+  color:var(--color-text); background:var(--color-background);
+}
+
+/* ============================================================
+   2. BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:calc(var(--header-h) + 16px); -webkit-text-size-adjust:100%}
+body{margin:0; background:var(--color-background); color:var(--color-text); font-family:var(--font-body); font-size:1.0625rem; line-height:1.6; -webkit-font-smoothing:antialiased}
+main{overflow-x:clip}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0; list-style:none}
+img,svg{display:block; max-width:100%}
+a{color:var(--color-link); text-underline-offset:.2em; text-decoration-thickness:1.5px}
+a:hover{text-decoration-thickness:2.5px}
+button,input,textarea{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--color-focus); outline-offset:3px; border-radius:6px}
+::selection{background:var(--color-primary); color:var(--color-on-primary)}
+.wrap{width:100%; max-width:1320px; margin-inline:auto; padding-inline:var(--gutter)}
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+.skip{position:absolute; left:12px; top:-80px; z-index:200; background:var(--color-text); color:var(--color-background); padding:12px 18px; border-radius:var(--radius-s); font-weight:600; text-decoration:none}
+.skip:focus{top:12px}
+.eyebrow{font-family:var(--font-mono); font-size:.8125rem; letter-spacing:.08em; text-transform:uppercase; color:var(--color-text-muted)}
+.display{font-family:var(--font-display); font-weight:500; letter-spacing:-.022em; line-height:1.04; font-variation-settings:"opsz" 144}
+.display em{font-style:italic; font-weight:400; color:var(--color-primary)}
+h2.display{font-size:clamp(2.1rem, 4.6vw, 3.9rem)}
+.lede{font-size:clamp(1.08rem, 1.5vw, 1.3rem); color:var(--color-text-muted); max-width:38em; line-height:1.55}
+.section{padding-block:clamp(72px, 10vw, 150px)}
+
+/* Botones */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:.6em; min-height:52px; padding:14px 26px; border-radius:999px; border:1.5px solid transparent; font-weight:600; font-size:1rem; line-height:1.2; text-decoration:none; cursor:pointer; text-align:center; transition:background-color .2s, color .2s, border-color .2s, transform .2s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--color-primary); color:var(--color-on-primary)}
+.btn-primary:hover,.btn-primary.is-hover{background:var(--color-primary-hover)}
+.btn-primary .arrow{transition:transform .25s}
+.btn-primary:hover .arrow{transform:translateX(4px)}
+.btn-secondary{background:transparent; color:var(--color-text); border-color:var(--color-text)}
+.btn-secondary:hover,.btn-secondary.is-hover{background:var(--color-text); color:var(--color-background)}
+.btn-small{min-height:44px; padding:10px 20px; font-size:.95rem}
+.btn[disabled]{opacity:.45; cursor:not-allowed}
+.is-focus{outline:3px solid var(--color-focus); outline-offset:3px}
+
+/* Marca */
+.brand{display:inline-flex; align-items:center; gap:10px; color:var(--color-text); text-decoration:none; font-family:var(--font-display); font-size:1.5rem; font-weight:600; letter-spacing:-.02em; line-height:1}
+.brand .mark{width:30px; height:30px; flex:none}
+.brand .mark rect{fill:currentColor}
+.brand .mark .m-a{fill:currentColor}
+.brand .mark .m-b{fill:var(--color-primary)}
+.brand .dot{color:var(--color-primary)}
+.brand em{font-style:italic; font-weight:400}
+
+/* Idioma */
+.lang{display:inline-flex; align-items:center; border:1.5px solid var(--color-border-strong); border-radius:999px; padding:3px; gap:2px}
+.lang button{border:0; background:transparent; min-width:40px; min-height:34px; border-radius:999px; font-family:var(--font-mono); font-size:.8125rem; letter-spacing:.06em; cursor:pointer; color:var(--color-text)}
+.lang button[aria-pressed="true"]{background:var(--color-text); color:var(--color-background)}
+
+/* ============================================================
+   3. HEADER
+   ============================================================ */
+.site-header{position:sticky; top:0; z-index:60; background:var(--color-background); border-bottom:1px solid transparent; transition:border-color .3s}
+.site-header.is-scrolled{border-bottom-color:var(--color-border)}
+.site-header .wrap{display:flex; align-items:center; justify-content:space-between; gap:20px; min-height:var(--header-h)}
+.nav-desktop{display:none; align-items:center; gap:28px}
+.nav-desktop a.nav-link,.nav-mobile a.nav-link{color:var(--color-text); text-decoration:none; font-weight:500; font-size:.98rem; padding:8px 2px; border-bottom:1.5px solid transparent}
+.nav-desktop a.nav-link:hover{border-bottom-color:var(--color-primary)}
+.nav-toggle{display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:999px; border:1.5px solid var(--color-border-strong); background:transparent; cursor:pointer}
+.nav-toggle svg{width:22px; height:22px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round}
+.nav-toggle .x{display:none}
+.nav-toggle[aria-expanded="true"] .x{display:block}
+.nav-toggle[aria-expanded="true"] .bars{display:none}
+.nav-mobile{display:none; border-top:1px solid var(--color-border); background:var(--color-background)}
+.nav-mobile.is-open{display:block}
+.nav-mobile .wrap{display:flex; flex-direction:column; align-items:stretch; gap:6px; padding-block:18px 26px; min-height:0}
+.nav-mobile a.nav-link{font-family:var(--font-display); font-size:1.5rem; padding:12px 0; border-bottom:1px solid var(--color-border)}
+.nav-mobile .row{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-top:16px; flex-wrap:wrap}
+@media (min-width:1024px){
+  .nav-desktop{display:flex}
+  .nav-toggle,.nav-mobile,.nav-mobile.is-open{display:none}
+}
+
+/* ============================================================
+   4. ESCENA (ranuras compartidas por SVG ligero y canvas 3D)
+   ============================================================ */
+.scene-slot{position:relative; overflow:hidden; background:var(--color-background)}
+.scene-svg,.scene-canvas{position:absolute; inset:0; width:100%; height:100%}
+.scene-svg{transition:opacity .6s}
+.scene-svg svg{width:100%; height:100%}
+.scene-canvas{display:block; animation:sceneIn .7s ease both}
+@keyframes sceneIn{from{opacity:0}to{opacity:1}}
+html[data-mode="full"] .scene-slot.has-canvas .scene-svg{opacity:0}
+.scene-loading{position:absolute; left:16px; bottom:16px; display:none; align-items:center; gap:8px; padding:7px 12px; border-radius:999px; background:var(--color-surface); color:var(--color-text); border:1px solid var(--color-border); font-family:var(--font-mono); font-size:.72rem; letter-spacing:.04em}
+.scene-loading::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--color-primary); animation:pulse 1s ease-in-out infinite alternate}
+@keyframes pulse{from{opacity:.25}to{opacity:1}}
+html[data-three="loading"] .scene-loading{display:inline-flex}
+/* SVG isométrico */
+.b polygon{stroke:var(--scene-line); stroke-width:.7; stroke-linejoin:round}
+.b .ft{fill:var(--scene-top)} .b .fl{fill:var(--scene-side-a)} .b .fr{fill:var(--scene-side-b)}
+.t-alt .ft{fill:var(--scene-alt)}
+.t-dark .ft,.t-dark .fl,.t-dark .fr{fill:var(--scene-dark)}
+.t-accent .ft{fill:var(--scene-accent)} .t-accent .fl,.t-accent .fr{fill:var(--scene-accent-shade)}
+.seg,.frag,.comp{transition:opacity .5s}
+.seg.is-ghost polygon{fill:none; stroke:var(--color-text); stroke-dasharray:2 2.5; stroke-width:.6; opacity:.4}
+.frag{opacity:.9} .frag.is-off{opacity:0}
+.comp.is-off{opacity:0}
+.c-a{fill:var(--scene-comp-a)} .c-b{fill:var(--scene-comp-b)}
+.c-a,.c-b{stroke:var(--scene-line); stroke-width:.7}
+.bead{fill:var(--scene-bead); stroke:var(--scene-line); stroke-width:.5}
+.num{font-family:var(--font-mono); font-size:11px; fill:var(--color-text); text-anchor:middle; paint-order:stroke; stroke:var(--color-background); stroke-width:4px; stroke-linejoin:round}
+.num.is-active{fill:var(--color-primary); font-weight:500}
+html[data-mode="full"] .has-canvas .num{display:none}
+/* Marcadores HTML proyectados sobre el 3D */
+.pins{position:absolute; inset:0; pointer-events:none; display:none}
+html[data-mode="full"] .has-canvas .pins{display:block}
+.pin{position:absolute; left:0; top:0; width:34px; height:34px; margin:-17px 0 0 -17px; display:grid; place-items:center; border-radius:50%; border:1.5px solid var(--color-text); background:var(--color-background); color:var(--color-text); font-family:var(--font-mono); font-size:.72rem; pointer-events:auto; cursor:pointer; will-change:transform; transition:background-color .25s, color .25s, border-color .25s}
+.pin.is-active{background:var(--color-primary); border-color:var(--color-primary); color:var(--color-on-primary)}
+
+/* ============================================================
+   5. HERO
+   ============================================================ */
+.hero{position:relative; padding-top:clamp(36px, 6vw, 84px)}
+.hero-copy{position:relative; z-index:2; max-width:780px}
+.hero h1{font-size:clamp(2.55rem, 7.4vw, 5.5rem); margin-top:20px}
+.hero .lede{margin-top:26px}
+.cta-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:34px}
+.cta-note{margin-top:16px; font-size:.95rem; color:var(--color-text-muted)}
+.pillars{display:flex; flex-wrap:wrap; gap:8px 26px; margin-top:44px; padding-top:22px; border-top:1px solid var(--color-border); font-family:var(--font-mono); font-size:.84rem; letter-spacing:.08em; text-transform:uppercase}
+.pillars li{display:flex; align-items:center; gap:10px}
+.pillars li::before{content:""; width:14px; height:5px; border-radius:2px; background:var(--color-primary)}
+.pillars li:nth-child(2)::before{transform:translateY(-3px)} .pillars li:nth-child(3)::before{transform:translateY(-6px)}
+.hero .scene-slot{height:clamp(300px, 46svh, 470px); margin-top:8px; margin-inline:calc(var(--gutter) * -1); background:transparent;
+  -webkit-mask-image:linear-gradient(180deg, transparent 0, #000 20%); mask-image:linear-gradient(180deg, transparent 0, #000 20%)}
+@media (max-width:479px){ .cta-row .btn{width:100%} }
+@media (min-width:1024px){
+  .hero{min-height:min(calc(100svh - var(--header-h)), 900px); display:flex; align-items:center; padding-block:60px 90px}
+  .hero-copy{max-width:min(56%, 760px)}
+  .hero .scene-slot{position:absolute; top:0; bottom:0; right:0; left:auto; width:60%; height:auto; margin:0;
+    -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 34%); mask-image:linear-gradient(90deg, transparent 0, #000 34%)}
+}
+
+/* ============================================================
+   6. DÓNDE EMPEZAMOS
+   ============================================================ */
+.start{background:var(--color-surface)}
+.start-grid{display:grid; gap:44px}
+.start-head .lede{margin-top:22px}
+.frictions{display:grid; gap:16px; counter-reset:f}
+.friction{counter-increment:f; position:relative; padding:26px 24px 28px; background:var(--color-background); border:1px solid var(--color-border); border-radius:var(--radius); transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
+.friction::before{content:"0" counter(f); font-family:var(--font-mono); font-size:.8rem; color:var(--color-link); letter-spacing:.08em}
+.friction h3{font-family:var(--font-display); font-weight:500; font-size:1.42rem; line-height:1.15; letter-spacing:-.012em; margin:12px 0 10px}
+.friction p{color:var(--color-text-muted); font-size:1rem}
+@media (min-width:768px){
+  .frictions{grid-template-columns:1fr 1fr; gap:22px}
+  .friction:nth-child(1){transform:rotate(-1.4deg) translateY(6px)}
+  .friction:nth-child(2){transform:rotate(1.1deg) translateY(-8px)}
+  .friction:nth-child(3){transform:rotate(.8deg) translateX(-6px)}
+  .friction:nth-child(4){transform:rotate(-1deg) translateY(10px)}
+  .frictions:hover .friction,.friction:hover{transform:none; border-color:var(--color-border-strong)}
+}
+@media (min-width:1100px){ .start-grid{grid-template-columns:5fr 7fr; gap:72px; align-items:start} .start-head{position:sticky; top:calc(var(--header-h) + 40px)} }
+.questions{margin-top:clamp(56px, 8vw, 110px); border-radius:calc(var(--radius) + 8px); padding:clamp(28px, 5vw, 64px)}
+.questions ol{display:grid; gap:0; margin-top:26px; counter-reset:q}
+.questions li{counter-increment:q; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:baseline; padding:20px 0; border-top:1px solid var(--color-border); font-family:var(--font-display); font-style:italic; font-weight:400; font-size:clamp(1.3rem, 2.5vw, 1.95rem); line-height:1.2; letter-spacing:-.01em}
+.questions li::before{content:"0" counter(q); font-family:var(--font-mono); font-style:normal; font-size:.78rem; color:var(--color-link); letter-spacing:.08em}
+@media (min-width:900px){ .questions ol{grid-template-columns:1fr 1fr; column-gap:56px} }
+
+/* ============================================================
+   7. RECORRIDO (pieza central)
+   ============================================================ */
+.journey-head{max-width:820px; margin-bottom:clamp(32px, 5vw, 60px)}
+.journey-head .lede{margin-top:20px}
+.journey-stage{position:sticky; top:var(--header-h); z-index:5; height:clamp(230px, 37svh, 380px); margin-inline:calc(var(--gutter) * -1); border-bottom:1px solid var(--color-border)}
+.journey-stage .scene-slot{position:absolute; inset:0}
+.journey-content{padding-top:22px}
+.tabs{display:flex; gap:8px; overflow-x:auto; padding:6px var(--gutter) 12px; margin-inline:calc(var(--gutter) * -1); scrollbar-width:none; scroll-snap-type:x proximity}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto; display:flex; align-items:center; gap:12px; min-height:52px; padding:10px 18px 10px 12px; border-radius:999px; border:1.5px solid var(--color-border); background:transparent; color:var(--color-text-muted); cursor:pointer; text-align:left; scroll-snap-align:center; transition:background-color .25s, color .25s, border-color .25s}
+.tab:hover{border-color:var(--color-border-strong); color:var(--color-text)}
+.tab .tab-n{display:grid; place-items:center; width:32px; height:32px; flex:none; border-radius:50%; border:1.5px solid currentColor; font-family:var(--font-mono); font-size:.74rem}
+.tab .tab-t{font-weight:600; font-size:.98rem; line-height:1.15}
+.tab .tab-m{display:none; font-family:var(--font-mono); font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; margin-left:auto}
+.tab[aria-selected="true"]{background:var(--color-surface); border-color:var(--color-primary); color:var(--color-text)}
+.tab[aria-selected="true"] .tab-n{background:var(--color-primary); border-color:var(--color-primary); color:var(--color-on-primary)}
+.panel{margin-top:14px; padding:clamp(22px, 3vw, 34px); background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius)}
+.panel:not([hidden]){animation:panelIn .45s ease both}
+@keyframes panelIn{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
+.panel h3{font-family:var(--font-display); font-weight:500; font-size:clamp(1.7rem, 3vw, 2.3rem); line-height:1.08; letter-spacing:-.018em}
+.panel h3 span{display:block; margin-top:8px; font-family:var(--font-mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--color-link)}
+.panel dl{margin-top:20px}
+.panel dl > div{padding:16px 0; border-top:1px solid var(--color-border)}
+.panel dt{font-family:var(--font-mono); font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; color:var(--color-text-muted); margin-bottom:6px}
+.panel dd{font-size:1.04rem}
+.panel dl > div:last-child dd{font-family:var(--font-display); font-style:italic; font-size:1.3rem; line-height:1.25; color:var(--color-link)}
+@media (min-width:1024px){
+  .journey-grid{display:grid; grid-template-columns:minmax(0, 1.3fr) minmax(0, 1fr); gap:clamp(32px, 4vw, 64px); align-items:start}
+  .journey-stage{top:calc(var(--header-h) + 24px); height:min(calc(100svh - var(--header-h) - 48px), 700px); margin:0; border:1px solid var(--color-border); border-radius:calc(var(--radius) + 6px); overflow:hidden}
+  .journey-content{padding-top:0}
+  .tabs{flex-direction:column; overflow:visible; padding:0; margin:0; gap:6px}
+  .tab{border-radius:14px; padding:12px 18px 12px 12px; border-color:transparent}
+  .tab .tab-m{display:block}
+  .tab:hover{border-color:var(--color-border)}
+  .panel{margin-top:18px}
+}
+
+/* ============================================================
+   8. LO QUE OFRECEMOS
+   ============================================================ */
+.offer h2{margin-bottom:clamp(28px, 4vw, 52px)}
+.offer-main{position:relative; overflow:hidden; border-radius:calc(var(--radius) + 10px); padding:clamp(30px, 6vw, 80px); display:grid; gap:28px}
+.offer-main h3{font-family:var(--font-display); font-weight:500; font-size:clamp(2.5rem, 7vw, 5.6rem); line-height:.98; letter-spacing:-.03em; font-variation-settings:"opsz" 144}
+.offer-main h3 em{font-style:italic; font-weight:400; color:var(--color-primary)}
+.offer-main p{font-size:clamp(1.12rem, 1.7vw, 1.42rem); line-height:1.45; max-width:30em; color:var(--color-text-muted)}
+.offer-main .steps{position:absolute; right:-10px; bottom:-6px; width:min(46%, 440px); opacity:.95; pointer-events:none}
+.offer-main .steps rect{fill:var(--color-surface-strong)} .offer-main .steps rect.hot{fill:var(--color-primary)}
+.offer-main .steps circle.a{fill:var(--color-accent)} .offer-main .steps circle.b{fill:var(--color-primary)}
+.offer-main > *:not(.steps){position:relative; z-index:1}
+@media (max-width:767px){ .offer-main{padding-bottom:150px} .offer-main .steps{width:72%} }
+.offer-rest{display:grid; gap:16px; margin-top:16px}
+.offer-card{padding:24px 24px 28px; border:1px solid var(--color-border); border-radius:var(--radius); background:var(--color-surface)}
+.offer-card h3{font-family:var(--font-display); font-weight:500; font-size:1.42rem; line-height:1.15; letter-spacing:-.012em; margin-bottom:10px}
+.offer-card p{color:var(--color-text-muted); font-size:1rem}
+@media (min-width:640px){ .offer-rest{grid-template-columns:1fr 1fr} }
+@media (min-width:1100px){ .offer-rest{grid-template-columns:repeat(4, 1fr); gap:20px; margin-top:20px} }
+
+/* ============================================================
+   9. POR QUÉ CONFIAR
+   ============================================================ */
+.trust{background:var(--color-surface)}
+.trust-grid{display:grid; gap:56px}
+.trust-list{margin-top:30px}
+.trust-list li{padding:20px 0 20px 34px; border-top:1px solid var(--color-border); position:relative; font-size:1.1rem; line-height:1.45}
+.trust-list li::before{content:""; position:absolute; left:2px; top:30px; width:16px; height:5px; border-radius:2px; background:var(--color-primary)}
+.trust-note{margin-top:8px; padding-top:18px; border-top:1px solid var(--color-border); font-size:.92rem; color:var(--color-text-muted); font-style:italic}
+.principles li{font-family:var(--font-display); font-weight:500; font-size:clamp(2.6rem, 7.5vw, 5.4rem); line-height:1; letter-spacing:-.03em; font-variation-settings:"opsz" 144; padding:10px 0}
+.principles li:nth-child(2){font-style:italic; font-weight:400; color:var(--color-primary); padding-left:.45em}
+.principles li:nth-child(3){padding-left:.9em}
+.security{margin-top:30px; padding:22px 24px; border-left:4px solid var(--color-primary); background:var(--color-background); border-radius:0 var(--radius-s) var(--radius-s) 0; max-width:34em}
+@media (min-width:1024px){ .trust-grid{grid-template-columns:1fr 1fr; gap:88px; align-items:start} }
+
+/* ============================================================
+   10. CIERRE
+   ============================================================ */
+.closing{padding-bottom:clamp(64px, 8vw, 120px)}
+.closing .scene-slot{height:clamp(230px, 34vw, 440px)}
+.closing-head{margin-top:clamp(8px, 2vw, 28px); max-width:1000px}
+.closing-head h2{font-size:clamp(2.4rem, 6.6vw, 5.4rem)}
+.closing-head h2 em{color:var(--color-text)}
+.closing-grid{display:grid; gap:24px; margin-top:clamp(48px, 7vw, 96px); align-items:start}
+@media (min-width:1024px){ .closing-grid{grid-template-columns:1.15fr 1fr; gap:32px} }
+.card{background:var(--color-background); color:var(--color-text); border-radius:calc(var(--radius) + 6px); padding:clamp(24px, 4vw, 44px)}
+.card h3{font-family:var(--font-display); font-weight:500; font-size:clamp(1.6rem, 2.6vw, 2.1rem); line-height:1.1; letter-spacing:-.015em}
+.form{display:grid; gap:18px; margin-top:24px}
+.form-row{display:grid; gap:18px}
+@media (min-width:600px){ .form-row{grid-template-columns:1fr 1fr} }
+.field label{display:block; font-weight:600; font-size:.95rem; margin-bottom:7px}
+.field input,.field textarea{width:100%; min-height:52px; padding:13px 15px; background:var(--color-surface); border:1.5px solid var(--color-border-strong); border-radius:var(--radius-s); color:var(--color-text); transition:border-color .2s}
+.field textarea{min-height:120px; resize:vertical}
+.field input:hover,.field textarea:hover,.field input.is-hover{border-color:var(--color-text)}
+.field input:focus-visible,.field textarea:focus-visible,.field input.is-focus{outline:3px solid var(--color-focus); outline-offset:2px; border-color:var(--color-text)}
+.field [aria-invalid="true"],.field input.is-error{border-color:var(--color-error); border-width:2px}
+.hint{font-size:.9rem; color:var(--color-text-muted)}
+.err{display:flex; gap:7px; align-items:flex-start; margin-top:7px; font-size:.9rem; font-weight:600; color:var(--color-error)}
+.err::before{content:"!"; flex:none; display:grid; place-items:center; width:18px; height:18px; margin-top:2px; border-radius:50%; background:var(--color-error); color:var(--color-surface); font-size:.75rem; font-weight:700}
+.err[hidden]{display:none}
+.check{display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; font-size:.96rem}
+.check input{width:22px; height:22px; margin:2px 0 0; accent-color:var(--color-primary)}
+.form-ok{display:flex; gap:12px; align-items:flex-start; padding:16px 18px; border-radius:var(--radius-s); border:2px solid var(--color-success); color:var(--color-success); font-weight:600; background:var(--color-surface)}
+.form-ok[hidden]{display:none}
+.form-ok svg{flex:none; width:22px; height:22px; margin-top:2px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round}
+.agenda{scroll-margin-top:calc(var(--header-h) + 20px)}
+.agenda-slot{margin-top:22px; min-height:320px; display:grid; place-items:center; text-align:center; padding:28px; border:2px dashed var(--color-border-strong); border-radius:var(--radius); color:var(--color-text-muted); background:var(--color-surface)}
+.agenda-slot strong{display:block; font-family:var(--font-mono); font-weight:500; font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--color-text); margin-bottom:8px}
+.agenda-grid{display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; width:min(100%, 280px); margin:0 auto 22px}
+.agenda-grid i{aspect-ratio:1; border-radius:6px; background:var(--color-surface-strong)}
+.agenda-grid i.on{background:var(--color-primary)}
+
+/* ============================================================
+   11. PIE
+   ============================================================ */
+.site-footer{padding-block:56px 36px}
+.footer-top{display:flex; flex-wrap:wrap; gap:24px 40px; align-items:center; justify-content:space-between}
+.footer-top .brand{font-size:2rem}
+.footer-mail{font-family:var(--font-display); font-size:clamp(1.3rem, 3vw, 1.9rem); font-style:italic}
+.footer-bottom{display:flex; flex-wrap:wrap; gap:18px 32px; align-items:center; justify-content:space-between; margin-top:40px; padding-top:24px; border-top:1px solid var(--color-border); font-size:.95rem}
+.footer-links{display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center}
+.footer-links a{color:var(--color-text); padding:8px 0}
+.mode{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin-top:24px; font-size:.88rem; color:var(--color-text-muted)}
+.mode-switch{display:inline-flex; border:1.5px solid var(--color-border-strong); border-radius:999px; padding:3px; gap:2px}
+.mode-switch button{border:0; background:transparent; min-height:38px; padding:6px 16px; border-radius:999px; cursor:pointer; font-size:.88rem; font-weight:600; color:var(--color-text)}
+.mode-switch button[aria-pressed="true"]{background:var(--color-text); color:var(--color-background)}
+
+/* ============================================================
+   12. SISTEMA DE MARCA
+   ============================================================ */
+.system{padding-block:clamp(56px, 7vw, 96px); background:var(--color-surface); border-top:1px solid var(--color-border)}
+.system h2{font-family:var(--font-display); font-weight:500; font-size:clamp(1.8rem, 3vw, 2.5rem); letter-spacing:-.02em}
+.system h3{font-family:var(--font-mono); font-weight:500; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:var(--color-text-muted); margin:44px 0 16px}
+.swatches{display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:14px}
+.swatch{border:1px solid var(--color-border); border-radius:var(--radius-s); overflow:hidden; background:var(--color-background); font-size:.85rem}
+.swatch i{display:block; height:74px; border-bottom:1px solid var(--color-border)}
+.swatch div{padding:10px 12px 12px}
+.swatch b{display:block; font-weight:600} .swatch code{font-family:var(--font-mono); font-size:.78rem} .swatch span{display:block; color:var(--color-text-muted); font-size:.78rem; line-height:1.35; margin-top:4px}
+.types{display:grid; gap:16px}
+@media (min-width:900px){ .types{grid-template-columns:1.4fr 1fr 1fr} }
+.type{padding:22px; border:1px solid var(--color-border); border-radius:var(--radius-s); background:var(--color-background)}
+.type small{display:block; font-family:var(--font-mono); font-size:.74rem; letter-spacing:.06em; color:var(--color-text-muted); margin-bottom:12px}
+.logos{display:grid; gap:16px}
+@media (min-width:700px){ .logos{grid-template-columns:repeat(3, 1fr)} }
+.logo-tile{display:grid; place-items:center; min-height:140px; border-radius:var(--radius-s); border:1px solid var(--color-border); background:var(--color-background)}
+.logo-tile .brand{font-size:1.9rem}
+.states{display:flex; flex-wrap:wrap; gap:14px 18px; align-items:center}
+.states + .states{margin-top:18px}
+.states .field{width:min(100%, 230px)}
+.states small{font-family:var(--font-mono); font-size:.72rem; color:var(--color-text-muted); display:block; margin-top:6px}
+
+/* ============================================================
+   13. MOVIMIENTO REDUCIDO / MODO LIGERO
+   ============================================================ */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+}
+html[data-mode="lite"]{scroll-behavior:auto}
+html[data-mode="lite"] .scene-canvas{display:none}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="site-header" id="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="confia.ing — inicio">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="23" width="9.4" height="4.4" rx="1.2"/><rect x="11.3" y="17" width="9.4" height="4.4" rx="1.2"/><rect x="21.6" y="11" width="9.4" height="4.4" rx="1.2"/><circle class="m-a" cx="23.4" cy="6.2" r="2.7"/><circle class="m-b" cx="29" cy="6.2" r="2.7"/></svg>
+      <span>confia<span class="dot">.</span><em>ing</em></span>
+    </a>
+    <nav class="nav-desktop" aria-label="Principal">
+      <a class="nav-link" href="#donde-empezamos">Dónde empezamos</a>
+      <a class="nav-link" href="#como">Cómo lo hacemos realidad</a>
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" aria-pressed="true" lang="es">ES</button>
+        <button type="button" aria-pressed="false" lang="en">EN</button>
+      </div>
+      <a class="btn btn-primary btn-small" href="#agenda" data-agenda>Agenda 30 minutos</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-mobile" aria-label="Menú">
+      <svg class="bars" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+      <svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav class="nav-mobile" id="nav-mobile" aria-label="Principal, móvil">
+    <div class="wrap">
+      <a class="nav-link" href="#donde-empezamos">Dónde empezamos</a>
+      <a class="nav-link" href="#como">Cómo lo hacemos realidad</a>
+      <div class="row">
+        <div class="lang" role="group" aria-label="Idioma">
+          <button type="button" aria-pressed="true" lang="es">ES</button>
+          <button type="button" aria-pressed="false" lang="en">EN</button>
+        </div>
+        <a class="btn btn-primary btn-small" href="#agenda" data-agenda>Agenda 30 minutos</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="contenido">
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">Transformación de IA para empresas que ya usan tecnología</p>
+        <h1 class="display" id="hero-title">Encuentra dónde la IA puede generar <em>resultados</em> en tu empresa.</h1>
+        <p class="lede">Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo desde el diagnóstico hasta soluciones que pueda operar y escalar.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#agenda" data-agenda>Agenda una conversación de 30 minutos <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+        </div>
+        <p class="cta-note">Una conversación exploratoria, sin costo ni compromiso.</p>
+        <ul class="pillars" aria-label="Pilares">
+          <li>Estrategia</li><li>Capacitación</li><li>Automatización</li>
+        </ul>
+      </div>
+      <div class="scene-slot" data-scene="hero" aria-hidden="true">
+        <div class="scene-svg"></div>
+        <span class="scene-loading">Cargando escena 3D…</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DÓNDE EMPEZAMOS -->
+  <section class="section start" id="donde-empezamos" aria-labelledby="start-title">
+    <div class="wrap">
+      <div class="start-grid">
+        <div class="start-head">
+          <p class="eyebrow">Dónde empezamos</p>
+          <h2 class="display" id="start-title" style="margin-top:16px">Empezamos por el trabajo, no por la tecnología.</h2>
+          <p class="lede">Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p>
+        </div>
+        <ol class="frictions">
+          <li class="friction"><h3>Tareas repetitivas que cuestan horas.</h3><p>Trabajo operativo y verificable que tu equipo hace a mano cada semana: revisar, copiar, clasificar, responder.</p></li>
+          <li class="friction"><h3>Sistemas y datos que no se hablan.</h3><p>Información repartida entre herramientas, con personas haciendo de puente.</p></li>
+          <li class="friction"><h3>IA sin estrategia.</h3><p>Licencias compradas y equipos improvisando, sin saber si eso mejora la productividad.</p></li>
+          <li class="friction"><h3>Equipos de software que no saben por dónde empezar.</h3><p>Quieren integrar IA en su ciclo de desarrollo, pero no tienen un método para hacerlo en cada fase.</p></li>
+        </ol>
+      </div>
+      <div class="questions theme-dark">
+        <h3 class="eyebrow">Preguntas que respondemos contigo</h3>
+        <ol>
+          <li>¿En qué proceso tiene sentido usar IA?</li>
+          <li>¿Qué datos, herramientas y personas necesito?</li>
+          <li>¿Cómo justifico el costo y mido el impacto?</li>
+          <li>¿Cómo evito fugas de información y soluciones difíciles de mantener?</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO LO HACEMOS REALIDAD -->
+  <section class="section journey theme-dark" id="como" aria-labelledby="journey-title">
+    <div class="wrap">
+      <div class="journey-head">
+        <p class="eyebrow">Cómo lo hacemos realidad</p>
+        <h2 class="display" id="journey-title" style="margin-top:16px">Un recorrido que hacemos <em>juntos</em>.</h2>
+        <p class="lede">Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.</p>
+      </div>
+      <div class="journey-grid">
+        <div class="journey-stage">
+          <div class="scene-slot" data-scene="journey" data-stage="0" aria-hidden="true">
+            <div class="scene-svg"></div>
+            <div class="pins"><span class="pin">01</span><span class="pin">02</span><span class="pin">03</span><span class="pin">04</span><span class="pin">05</span></div>
+            <span class="scene-loading">Cargando escena 3D…</span>
+          </div>
+        </div>
+        <div class="journey-content">
+          <div class="tabs" role="tablist" aria-label="Etapas del recorrido">
+            <button class="tab" role="tab" type="button" id="tab-1" aria-controls="panel-1" aria-selected="true"><span class="tab-n">01</span><span class="tab-t">Conversación inicial</span><span class="tab-m">30 min</span></button>
+            <button class="tab" role="tab" type="button" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1"><span class="tab-n">02</span><span class="tab-t">Diagnóstico</span></button>
+            <button class="tab" role="tab" type="button" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1"><span class="tab-n">03</span><span class="tab-t">Roadmap</span></button>
+            <button class="tab" role="tab" type="button" id="tab-4" aria-controls="panel-4" aria-selected="false" tabindex="-1"><span class="tab-n">04</span><span class="tab-t">Piloto</span></button>
+            <button class="tab" role="tab" type="button" id="tab-5" aria-controls="panel-5" aria-selected="false" tabindex="-1"><span class="tab-n">05</span><span class="tab-t">Escala y transferencia</span></button>
+          </div>
+
+          <div class="panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+            <h3>Conversación inicial <span>Etapa 1 · 30 minutos</span></h3>
+            <dl>
+              <div><dt>Qué hacemos</dt><dd>Exploramos tus procesos y dónde podría aplicarse IA. Es una conversación, no un diagnóstico ni un compromiso.</dd></div>
+              <div><dt>Qué recibes</dt><dd>Una primera lectura de oportunidades y una idea clara de si podemos ayudarte.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Decides si avanzamos a un diagnóstico.</dd></div>
+            </dl>
+          </div>
+          <div class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0" hidden>
+            <h3>Diagnóstico <span>Etapa 2</span></h3>
+            <dl>
+              <div><dt>Qué hacemos</dt><dd>Evaluamos oportunidades, fricciones y qué tan preparada está tu empresa: datos, herramientas y personas.</dd></div>
+              <div><dt>Qué recibes</dt><dd>Oportunidades priorizadas y lo que hay que preparar. El alcance se acuerda contigo.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Elegimos juntos por dónde empezar.</dd></div>
+            </dl>
+          </div>
+          <div class="panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" tabindex="0" hidden>
+            <h3>Roadmap <span>Etapa 3</span></h3>
+            <dl>
+              <div><dt>Qué hacemos</dt><dd>Trazamos un plan de alto nivel: etapas, personas involucradas, costos y resultados esperados.</dd></div>
+              <div><dt>Qué recibes</dt><dd>El estado actual frente al estado deseado para los próximos meses.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Acordamos el primer piloto.</dd></div>
+            </dl>
+          </div>
+          <div class="panel" role="tabpanel" id="panel-4" aria-labelledby="tab-4" tabindex="0" hidden>
+            <h3>Piloto <span>Etapa 4</span></h3>
+            <dl>
+              <div><dt>Qué hacemos</dt><dd>Implementamos con demos, revisiones y ciclos de feedback.</dd></div>
+              <div><dt>Qué recibes</dt><dd>Una solución funcionando, con métricas y OKR del proyecto y del impacto en el negocio.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Si demuestra valor, lo escalamos.</dd></div>
+            </dl>
+          </div>
+          <div class="panel" role="tabpanel" id="panel-5" aria-labelledby="tab-5" tabindex="0" hidden>
+            <h3>Escala y transferencia <span>Etapa 5</span></h3>
+            <dl>
+              <div><dt>Qué hacemos</dt><dd>Diseñamos la solución para crecer, con monitoreo continuo.</dd></div>
+              <div><dt>Qué recibes</dt><dd>Capacitación y documentación para que tu equipo la opere. El soporte continuo es opcional.</dd></div>
+              <div><dt>Siguiente paso</dt><dd>Tu equipo queda a cargo.</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LO QUE OFRECEMOS -->
+  <section class="section offer" aria-labelledby="offer-title">
+    <div class="wrap">
+      <h2 class="display" id="offer-title">Lo que ofrecemos</h2>
+      <article class="offer-main theme-dark">
+        <h3>Transformación <em>de IA</em></h3>
+        <p>Estrategia, capacitación y automatización integradas para llevar la IA de la idea al resultado.</p>
+        <svg class="steps" viewBox="0 0 220 120" aria-hidden="true">
+          <rect x="0" y="96" width="40" height="24" rx="3"/><rect x="45" y="78" width="40" height="42" rx="3"/><rect x="90" y="60" width="40" height="60" rx="3"/><rect x="135" y="42" width="40" height="78" rx="3"/><rect class="hot" x="180" y="24" width="40" height="96" rx="3"/>
+          <circle class="a" cx="192" cy="13" r="7"/><circle class="b" cx="208" cy="13" r="7"/>
+        </svg>
+      </article>
+      <div class="offer-rest">
+        <article class="offer-card"><h3>Capacitación en IA.</h3><p>Para líderes y perfiles no técnicos: usar IA con criterio en flujos de trabajo reales.</p></article>
+        <article class="offer-card"><h3>AI-SDLC.</h3><p>Acompañamos a equipos de software a integrar IA en cada fase del ciclo de desarrollo.</p></article>
+        <article class="offer-card"><h3>Software a la medida.</h3><p>Cuando la solución necesita construirse.</p></article>
+        <article class="offer-card"><h3>Soluciones generativas y agentivas.</h3><p>Asesoría y construcción de agentes y sistemas basados en IA generativa.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ CONFIAR -->
+  <section class="section trust" aria-labelledby="trust-title">
+    <div class="wrap trust-grid">
+      <div>
+        <p class="eyebrow">Por qué confiar</p>
+        <h2 class="display" id="trust-title" style="margin-top:16px">Experiencia del equipo</h2>
+        <ul class="trust-list">
+          <li>Más de cinco años en empresas SaaS de EE. UU. con clientes en todo el mundo.</li>
+          <li>Sector salud: un sistema RAG agentivo para gestión documental de tratamientos médicos, con modelos locales y en la nube.</li>
+          <li>Eficiencia en el uso de LLM: costos, modelos locales y enrutamiento de modelos.</li>
+          <li>AI-SDLC: asesoría en todas las fases del ciclo de desarrollo.</li>
+        </ul>
+        <p class="trust-note">Experiencia previa de quienes integran el equipo.</p>
+      </div>
+      <div>
+        <p class="eyebrow">Tres principios</p>
+        <ul class="principles" style="margin-top:14px">
+          <li>Mantenible</li><li>Seguro</li><li>Medible</li>
+        </ul>
+        <p class="security"><strong>Seguridad:</strong> consideramos riesgos como fuga de información y prompt injection, y los requisitos de datos personales y normativos que apliquen a tu contexto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="closing theme-accent" aria-labelledby="closing-title">
+    <div class="scene-slot" data-scene="closing" aria-hidden="true">
+      <div class="scene-svg"></div>
+    </div>
+    <div class="wrap">
+      <div class="closing-head">
+        <h2 class="display" id="closing-title">Tu equipo ya trabaja duro. Hagamos que la IA trabaje <em>con él</em>.</h2>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#agenda" data-agenda>Agenda una conversación de 30 minutos <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+        </div>
+      </div>
+
+      <div class="closing-grid">
+        <div class="card theme-light" id="consulta" style="scroll-margin-top:calc(var(--header-h) + 20px)">
+          <h3>Cuéntanos dónde quieres aplicar IA</h3>
+          <form class="form" id="form" novalidate>
+            <div class="form-row">
+              <div class="field">
+                <label for="f-nombre">Nombre</label>
+                <input id="f-nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="e-nombre">
+                <p class="err" id="e-nombre" hidden>Escribe tu nombre.</p>
+              </div>
+              <div class="field">
+                <label for="f-empresa">Empresa</label>
+                <input id="f-empresa" name="empresa" type="text" autocomplete="organization">
+              </div>
+            </div>
+            <div class="form-row" role="group" aria-labelledby="contacto-hint">
+              <div class="field">
+                <label for="f-correo">Correo</label>
+                <input id="f-correo" name="correo" type="email" autocomplete="email" inputmode="email" aria-describedby="contacto-hint e-correo">
+                <p class="err" id="e-correo" hidden></p>
+              </div>
+              <div class="field">
+                <label for="f-telefono">Teléfono</label>
+                <input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="contacto-hint e-telefono">
+                <p class="err" id="e-telefono" hidden></p>
+              </div>
+            </div>
+            <p class="hint" id="contacto-hint">Correo o teléfono, al menos uno.</p>
+            <div class="field">
+              <label for="f-donde">¿Dónde quieres aplicar IA?</label>
+              <textarea id="f-donde" name="donde" rows="4"></textarea>
+            </div>
+            <div>
+              <label class="check" for="f-acepto">
+                <input id="f-acepto" name="acepto" type="checkbox" required aria-describedby="e-acepto">
+                <span>Acepto el tratamiento de mis datos para responder mi solicitud, según la <a href="#pie">Política de privacidad</a>.</span>
+              </label>
+              <p class="err" id="e-acepto" hidden>Necesitamos tu aceptación para responderte.</p>
+            </div>
+            <div><button class="btn btn-primary" type="submit">Enviar consulta</button></div>
+            <p class="form-ok" id="form-ok" role="status" tabindex="-1" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+              <span>Recibimos tu consulta. Te contactaremos pronto.</span>
+            </p>
+          </form>
+        </div>
+
+        <div class="card agenda theme-light" id="agenda" tabindex="-1" aria-labelledby="agenda-title">
+          <h3 id="agenda-title">Agenda una conversación de 30 minutos</h3>
+          <p class="hint" style="margin-top:10px">Una conversación exploratoria, sin costo ni compromiso.</p>
+          <div class="agenda-slot">
+            <div>
+              <div class="agenda-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <strong>Calendario de reservas</strong>
+              Aquí se cargará Calendly para elegir día y hora.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- PIE -->
+<footer class="site-footer theme-dark" id="pie">
+  <div class="wrap">
+    <div class="footer-top">
+      <a class="brand" href="#top" aria-label="confia.ing — inicio">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="23" width="9.4" height="4.4" rx="1.2"/><rect x="11.3" y="17" width="9.4" height="4.4" rx="1.2"/><rect x="21.6" y="11" width="9.4" height="4.4" rx="1.2"/><circle class="m-a" cx="23.4" cy="6.2" r="2.7"/><circle class="m-b" cx="29" cy="6.2" r="2.7"/></svg>
+        <span>confia<span class="dot">.</span><em>ing</em></span>
+      </a>
+      <a class="footer-mail" href="mailto:hola@confia.ing">hola@confia.ing</a>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="#pie">Privacidad</a>
+        <a href="#pie">Términos</a>
+        <div class="lang" role="group" aria-label="Idioma">
+          <button type="button" aria-pressed="true" lang="es">ES</button>
+          <button type="button" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </div>
+      <p>© 2026 Confia.ing</p>
+    </div>
+    <div class="mode">
+      <div class="mode-switch" role="group" aria-label="Versión de la página">
+        <button type="button" id="mode-lite" aria-pressed="true">Versión ligera</button>
+        <button type="button" id="mode-full" aria-pressed="false">Versión completa</button>
+      </div>
+      <span id="mode-status" role="status"></span>
+    </div>
+  </div>
+</footer>
+
+<!-- SISTEMA DE MARCA -->
+<section class="system theme-light" aria-labelledby="system-title">
+  <div class="wrap">
+    <p class="eyebrow">Propuesta 1 · Experiencia 3D</p>
+    <h2 id="system-title" style="margin-top:10px">Sistema de marca</h2>
+
+    <h3>Paleta</h3>
+    <div class="swatches">
+      <div class="swatch"><i style="background:var(--paper-100)"></i><div><b>Papel 100</b><code>#F4EFE6</code><span>--color-background</span></div></div>
+      <div class="swatch"><i style="background:var(--paper-50)"></i><div><b>Papel 50</b><code>#FBF8F2</code><span>--color-surface</span></div></div>
+      <div class="swatch"><i style="background:var(--paper-300)"></i><div><b>Papel 300</b><code>#CFC4B0</code><span>--color-border</span></div></div>
+      <div class="swatch"><i style="background:var(--pine-900)"></i><div><b>Pino 900</b><code>#0E231C</code><span>--color-text · --color-focus · fondo oscuro</span></div></div>
+      <div class="swatch"><i style="background:var(--pine-700)"></i><div><b>Pino 700</b><code>#1E463A</code><span>borde y superficie en oscuro</span></div></div>
+      <div class="swatch"><i style="background:var(--pine-300)"></i><div><b>Pino 300</b><code>#9DC4B2</code><span>escena · sostenibilidad</span></div></div>
+      <div class="swatch"><i style="background:var(--ember-600)"></i><div><b>Brasa 600</b><code>#C4391F</code><span>--color-primary</span></div></div>
+      <div class="swatch"><i style="background:var(--ember-700)"></i><div><b>Brasa 700</b><code>#A32C15</code><span>--color-link · hover primario</span></div></div>
+      <div class="swatch"><i style="background:var(--ember-400)"></i><div><b>Brasa 400</b><code>#EE6A4B</code><span>--color-primary en oscuro</span></div></div>
+      <div class="swatch"><i style="background:var(--sun-400)"></i><div><b>Sol 400</b><code>#F2B441</code><span>--color-accent · foco y enlace en oscuro</span></div></div>
+      <div class="swatch"><i style="background:var(--stone-600)"></i><div><b>Piedra 600</b><code>#4A5C54</code><span>--color-text-muted</span></div></div>
+      <div class="swatch"><i style="background:var(--red-700)"></i><div><b>Error</b><code>#B3261E</code><span>--color-error</span></div></div>
+      <div class="swatch"><i style="background:var(--green-700)"></i><div><b>Éxito</b><code>#1F6B4A</code><span>--color-success</span></div></div>
+    </div>
+
+    <h3>Tipografía</h3>
+    <div class="types">
+      <div class="type"><small>Fraunces · títulos · 400–600 + itálica</small><p class="display" style="font-size:clamp(2rem,4vw,3.2rem)">Un recorrido que hacemos <em>juntos</em>.</p></div>
+      <div class="type"><small>Figtree · texto e interfaz · 400–700</small><p>Empezamos por el trabajo, no por la tecnología. Entendemos cómo trabaja tu empresa antes de hablar de herramientas.</p></div>
+      <div class="type"><small>DM Mono · etiquetas y números</small><p class="eyebrow" style="color:var(--color-text)">01 · Conversación inicial<br>02 · Diagnóstico<br>03 · Roadmap</p></div>
+    </div>
+
+    <h3>Logotipo</h3>
+    <div class="logos">
+      <div class="logo-tile theme-light"><span class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="23" width="9.4" height="4.4" rx="1.2"/><rect x="11.3" y="17" width="9.4" height="4.4" rx="1.2"/><rect x="21.6" y="11" width="9.4" height="4.4" rx="1.2"/><circle class="m-a" cx="23.4" cy="6.2" r="2.7"/><circle class="m-b" cx="29" cy="6.2" r="2.7"/></svg><span>confia<span class="dot">.</span><em>ing</em></span></span></div>
+      <div class="logo-tile theme-dark"><span class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="23" width="9.4" height="4.4" rx="1.2"/><rect x="11.3" y="17" width="9.4" height="4.4" rx="1.2"/><rect x="21.6" y="11" width="9.4" height="4.4" rx="1.2"/><circle class="m-a" cx="23.4" cy="6.2" r="2.7"/><circle class="m-b" cx="29" cy="6.2" r="2.7"/></svg><span>confia<span class="dot">.</span><em>ing</em></span></span></div>
+      <div class="logo-tile theme-accent"><span class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="23" width="9.4" height="4.4" rx="1.2"/><rect x="11.3" y="17" width="9.4" height="4.4" rx="1.2"/><rect x="21.6" y="11" width="9.4" height="4.4" rx="1.2"/><circle class="m-a" cx="23.4" cy="6.2" r="2.7"/><circle class="m-b" cx="29" cy="6.2" r="2.7"/></svg><span>confia<span class="dot">.</span><em>ing</em></span></span></div>
+    </div>
+
+    <h3>Botones, enlaces y campos</h3>
+    <div class="states">
+      <div><span class="btn btn-primary">Primario</span><small>normal</small></div>
+      <div><span class="btn btn-primary is-hover">Primario</span><small>hover</small></div>
+      <div><span class="btn btn-primary is-focus">Primario</span><small>foco</small></div>
+      <div><button class="btn btn-primary" type="button" disabled>Primario</button><small>inactivo</small></div>
+      <div><span class="btn btn-secondary">Secundario</span><small>normal</small></div>
+      <div><span class="btn btn-secondary is-hover">Secundario</span><small>hover</small></div>
+      <div><a href="#system-title">Enlace de texto</a><small>enlace</small></div>
+    </div>
+    <div class="states">
+      <div class="field"><input type="text" value="Normal" aria-label="Campo, estado normal" readonly><small>normal</small></div>
+      <div class="field"><input class="is-hover" type="text" value="Hover" aria-label="Campo, estado hover" readonly><small>hover</small></div>
+      <div class="field"><input class="is-focus" type="text" value="Foco" aria-label="Campo, estado foco" readonly><small>foco</small></div>
+      <div class="field"><input class="is-error" type="text" value="Error" aria-label="Campo, estado error" readonly><p class="err">Mensaje de error</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+'use strict';
+var root = document.documentElement;
+var $ = function(s, c){ return (c || document).querySelector(s); };
+var $$ = function(s, c){ return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+var clamp = function(v, a, b){ return Math.max(a, Math.min(b, v)); };
+
+/* ------------------------------------------------------------
+   MODELO COMPARTIDO: un camino de cinco tramos. Lo dibujan igual
+   el SVG ligero (isométrico, estático) y la escena 3D.
+   ------------------------------------------------------------ */
+var STOPS = [0.12, 0.34, 0.56, 0.78, 1];
+function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function curve(t){ return [-13 + 26 * t, 5 * t, Math.sin(t * Math.PI * 2) * 3.5]; }
+function tangent(t){ var tx = 26, tz = Math.PI * 2 * 3.5 * Math.cos(t * Math.PI * 2), l = Math.hypot(tx, tz); return [tx / l, tz / l]; }
+function segOf(t){ for (var k = 0; k < 5; k++) if (t <= STOPS[k] + 1e-6) return k; return 4; }
+var MODEL = (function(){
+  var r = rng(11), items = [];
+  function add(t, bt, dm, dy, dl, size, tone, kind){
+    items.push({ t:t, bt:bt, dm:dm, dy:dy, dl:dl, size:size, tone:tone, kind:kind, seg:segOf(t),
+      sc:[(r() - .5) * 11, .8 + r() * 4.6, (r() - .5) * 10],
+      axis:[r() - .5, r() - .5, r() - .5], ang:r() * 6.283, spin:(r() - .5) * .5, ph:r() * 6.283 });
+  }
+  var i = 0, k, t;
+  for (t = 0; t <= 1.0001; t += 0.015, i++){
+    var near = false;
+    for (k = 0; k < 5; k++) if (Math.abs(t - STOPS[k]) < 0.04) near = true;
+    if (near) continue;
+    var tone = r() < .2 ? 'alt' : (r() < .14 ? 'dark' : 'stone');
+    add(t, t, 0, 0, 0, [.36, .16, 1.7], tone, 'step');
+    if (i % 2 === 0){ add(t, t, 0, .13, 1.03, [.13, .13, .13], 'dark', 'edge'); add(t, t, 0, .13, -1.03, [.13, .13, .13], 'dark', 'edge'); }
+  }
+  for (k = 0; k < 5; k++){
+    for (var a = -1; a <= 1; a++) for (var b = -1; b <= 1; b++)
+      add(STOPS[k], STOPS[k] - r() * .035, a * .8, .02, b * .8, [.72, .2, .72], (a === 0 && b === 0) ? 'alt' : 'stone', 'tile');
+    add(STOPS[k], STOPS[k], .8, .62, -.8, [.2, 1, .2], 'accent', 'post');
+  }
+  return items;
+})();
+function buildAmount(it, p){ var x = clamp((p - (it.bt - .14)) / .14, 0, 1); return x * x * (3 - 2 * x); }
+
+/* ------------------------------------------------------------
+   VERSIÓN LIGERA: el mismo camino en SVG isométrico en línea
+   ------------------------------------------------------------ */
+function buildSVG(kind){
+  var S = 20, minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+  function pr(x, y, z){ return [(x + z) * .866 * S, ((z - x) * .5 - y) * S]; }
+  function ext(q){ minX = Math.min(minX, q[0]); maxX = Math.max(maxX, q[0]); minY = Math.min(minY, q[1]); maxY = Math.max(maxY, q[1]); }
+  function pts(a){ return a.map(function(v){ var q = pr(v[0], v[1], v[2]); return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' '); }
+  function ord(it){ var c = curve(it.t); return [c[0] + it.dm, c[1] + it.dy, c[2] + it.dl]; }
+  function sca(it, f){ var o = ord(it); return [o[0] + it.sc[0] * f, o[1] + it.sc[1] * f, o[2] + it.sc[2] * f]; }
+  function depth(c){ return (c[2] - c[0]) * 100 + c[1]; }
+  function box(it, c, rot){
+    var hm = it.size[0] / 2, h = it.size[1] / 2, hl = it.size[2] / 2, o = pr(c[0], c[1], c[2]); ext(o);
+    return '<g class="b t-' + it.tone + '" transform="translate(' + o[0].toFixed(1) + ' ' + o[1].toFixed(1) + ')' + (rot ? ' rotate(' + rot.toFixed(0) + ')' : '') + '">' +
+      '<polygon class="fl" points="' + pts([[-hm,h,-hl],[-hm,h,hl],[-hm,-h,hl],[-hm,-h,-hl]]) + '"/>' +
+      '<polygon class="fr" points="' + pts([[-hm,h,hl],[hm,h,hl],[hm,-h,hl],[-hm,-h,hl]]) + '"/>' +
+      '<polygon class="ft" points="' + pts([[-hm,h,-hl],[hm,h,-hl],[hm,h,hl],[-hm,h,hl]]) + '"/></g>';
+  }
+  function draw(list, pos, tilt){
+    return list.map(function(it){ return { it:it, c:pos(it) }; })
+      .sort(function(a, b){ return depth(a.c) - depth(b.c); })
+      .map(function(o){ return box(o.it, o.c, tilt ? (o.it.ang / 6.283 - .5) * 80 : 0); }).join('');
+  }
+  function comps(p){
+    var c = curve(p), a = pr(c[0] - .1, c[1] + .36, c[2] - .3), b = pr(c[0] + .1, c[1] + .36, c[2] + .3);
+    return '<circle class="c-a" cx="' + a[0].toFixed(1) + '" cy="' + a[1].toFixed(1) + '" r="4.6"/><circle class="c-b" cx="' + b[0].toFixed(1) + '" cy="' + b[1].toFixed(1) + '" r="4.6"/>';
+  }
+  var out = '', k;
+  if (kind === 'hero'){
+    var p0 = .06;
+    out += draw(MODEL.filter(function(it){ return buildAmount(it, p0) > .5; }), ord);
+    out += comps(.04);
+    out += draw(MODEL.filter(function(it){ return buildAmount(it, p0) <= .5; }), function(it){ return sca(it, .8); }, true);
+  } else if (kind === 'journey'){
+    for (k = 4; k >= 0; k--) out += '<g class="seg" data-k="' + k + '">' + draw(MODEL.filter(function(it){ return it.seg === k; }), ord) + '</g>';
+    for (k = 4; k >= 0; k--) out += '<g class="frag" data-k="' + k + '">' + draw(MODEL.filter(function(it, i){ return it.seg === k && it.kind !== 'edge' && i % 2 === 0; }), function(it){ return sca(it, .5); }, true) + '</g>';
+    for (k = 0; k < 5; k++){
+      out += '<g class="comp" data-k="' + k + '">' + comps(STOPS[k]) + '</g>';
+      var c = curve(STOPS[k]), q = pr(c[0], c[1] + 2.1, c[2]); ext(q);
+      out += '<text class="num" data-k="' + k + '" x="' + q[0].toFixed(1) + '" y="' + q[1].toFixed(1) + '">0' + (k + 1) + '</text>';
+    }
+  } else {
+    for (k = 4; k >= 0; k--) out += draw(MODEL.filter(function(it){ return it.seg === k; }), ord);
+    for (k = 1; k < 12; k++){ var cb = curve(k / 12.6), qb = pr(cb[0], cb[1] + .6, cb[2]); out += '<circle class="bead" cx="' + qb[0].toFixed(1) + '" cy="' + qb[1].toFixed(1) + '" r="2.4"/>'; }
+    out += comps(1);
+  }
+  var pad = 34;
+  return '<svg viewBox="' + (minX - pad).toFixed(0) + ' ' + (minY - pad).toFixed(0) + ' ' + (maxX - minX + pad * 2).toFixed(0) + ' ' + (maxY - minY + pad * 2).toFixed(0) + '" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">' + out + '</svg>';
+}
+var slots = $$('.scene-slot');
+slots.forEach(function(s){ $('.scene-svg', s).innerHTML = buildSVG(s.dataset.scene); });
+var journeySlot = $('.scene-slot[data-scene="journey"]');
+function svgStage(i){
+  $$('.seg', journeySlot).forEach(function(g){ g.classList.toggle('is-ghost', +g.dataset.k > i); });
+  $$('.frag', journeySlot).forEach(function(g){ g.classList.toggle('is-off', +g.dataset.k <= i); });
+  $$('.comp', journeySlot).forEach(function(g){ g.classList.toggle('is-off', +g.dataset.k !== i); });
+  $$('.num', journeySlot).forEach(function(g){ g.classList.toggle('is-active', +g.dataset.k === i); });
+  $$('.pin', journeySlot).forEach(function(g, k){ g.classList.toggle('is-active', k === i); });
+}
+
+/* ------------------------------------------------------------
+   PESTAÑAS DEL RECORRIDO (tablist accesible)
+   ------------------------------------------------------------ */
+var tablist = $('[role="tablist"]'), tabs = $$('[role="tab"]'), panels = $$('[role="tabpanel"]'), stage = 0;
+var mqDesk = window.matchMedia('(min-width:1024px)');
+function orient(){ tablist.setAttribute('aria-orientation', mqDesk.matches ? 'vertical' : 'horizontal'); }
+orient(); if (mqDesk.addEventListener) mqDesk.addEventListener('change', orient);
+function selectStage(i, focus){
+  stage = i;
+  tabs.forEach(function(t, j){ var on = j === i; t.setAttribute('aria-selected', on ? 'true' : 'false'); t.tabIndex = on ? 0 : -1; panels[j].hidden = !on; });
+  journeySlot.dataset.stage = i; svgStage(i);
+  if (focus) tabs[i].focus({ preventScroll:true });
+  if (!mqDesk.matches){
+    var t = tabs[i], left = t.offsetLeft - tablist.offsetLeft - (tablist.clientWidth - t.offsetWidth) / 2;
+    tablist.scrollTo({ left:left, behavior: root.dataset.mode === 'full' ? 'smooth' : 'auto' });
+  }
+}
+tabs.forEach(function(t, i){
+  t.addEventListener('click', function(){ selectStage(i, false); });
+  t.addEventListener('keydown', function(e){
+    var n = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = tabs.length - 1;
+    if (n !== null){ e.preventDefault(); selectStage(n, true); }
+  });
+});
+$$('.pin', journeySlot).forEach(function(pin, k){ pin.addEventListener('click', function(){ selectStage(k, false); }); });
+svgStage(0);
+
+/* ------------------------------------------------------------
+   NAVEGACIÓN, IDIOMA, AGENDA
+   ------------------------------------------------------------ */
+var header = $('.site-header'), navBtn = $('.nav-toggle'), navMob = $('#nav-mobile');
+function setNav(open){ navMob.classList.toggle('is-open', open); navBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+navBtn.addEventListener('click', function(){ setNav(navBtn.getAttribute('aria-expanded') !== 'true'); });
+navMob.addEventListener('click', function(e){ if (e.target.closest('a')) setNav(false); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && navBtn.getAttribute('aria-expanded') === 'true'){ setNav(false); navBtn.focus(); } });
+var onScroll = function(){ header.classList.toggle('is-scrolled', window.scrollY > 8); };
+window.addEventListener('scroll', onScroll, { passive:true }); onScroll();
+$$('[data-agenda]').forEach(function(a){ a.addEventListener('click', function(){ var el = $('#agenda'); window.setTimeout(function(){ el.focus({ preventScroll:true }); }, 0); }); });
+
+/* ------------------------------------------------------------
+   FORMULARIO (maqueta: valida en el navegador, no envía nada)
+   ------------------------------------------------------------ */
+var form = $('#form'), ok = $('#form-ok');
+function setErr(input, errEl, msg){
+  if (msg){ errEl.textContent = msg; errEl.hidden = false; input.setAttribute('aria-invalid', 'true'); }
+  else { errEl.hidden = true; input.removeAttribute('aria-invalid'); }
+  return !msg;
+}
+form.addEventListener('submit', function(e){
+  e.preventDefault(); ok.hidden = true;
+  var n = $('#f-nombre'), c = $('#f-correo'), t = $('#f-telefono'), a = $('#f-acepto');
+  var cv = c.value.trim(), tv = t.value.trim(), first = null, good;
+  good = setErr(n, $('#e-nombre'), n.value.trim() ? '' : 'Escribe tu nombre.'); if (!good) first = first || n;
+  var cMsg = '', tMsg = '';
+  if (!cv && !tv){ cMsg = 'Déjanos un correo o un teléfono para responderte.'; }
+  else {
+    if (cv && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cv)) cMsg = 'Revisa el correo: falta algo, por ejemplo nombre@empresa.com.';
+    if (tv && tv.replace(/\D/g, '').length < 7) tMsg = 'Revisa el teléfono: necesita al menos 7 dígitos.';
+  }
+  good = setErr(c, $('#e-correo'), cMsg); if (!good) first = first || c;
+  good = setErr(t, $('#e-telefono'), tMsg); if (!good) first = first || t;
+  good = setErr(a, $('#e-acepto'), a.checked ? '' : 'Necesitamos tu aceptación para responderte.'); if (!good) first = first || a;
+  if (first){ first.focus(); return; }
+  form.reset(); ok.hidden = false; ok.focus();
+});
+
+/* ------------------------------------------------------------
+   MODO: completo (3D) o ligero (SVG). Three.js solo se descarga
+   cuando la página ya es legible y el modo completo aplica.
+   ------------------------------------------------------------ */
+function hasWebGL(){ try { var c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch (e){ return false; } }
+function autoLiteReason(){
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'movimiento reducido activado';
+  if (conn && conn.saveData) return 'ahorro de datos activado';
+  if (conn && /(^|-)2g|3g/.test(conn.effectiveType || '')) return 'conexión lenta';
+  if ((navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2)) return 'dispositivo de bajos recursos';
+  return '';
+}
+var webgl = hasWebGL(), scene3d = null, loading = false, mode = 'lite';
+var btnLite = $('#mode-lite'), btnFull = $('#mode-full'), statusEl = $('#mode-status');
+function stored(){ try { return localStorage.getItem('confia-modo'); } catch (e){ return null; } }
+function store(v){ try { localStorage.setItem('confia-modo', v); } catch (e){} }
+function setMode(m, note){
+  mode = m; root.dataset.mode = m;
+  btnLite.setAttribute('aria-pressed', m === 'lite' ? 'true' : 'false');
+  btnFull.setAttribute('aria-pressed', m === 'full' ? 'true' : 'false');
+  statusEl.textContent = note || '';
+  if (m === 'full') scheduleScene();
+  else { if (scene3d){ scene3d.destroy(); scene3d = null; } delete root.dataset.three; }
+}
+function scheduleScene(){
+  var go = function(){ (window.requestIdleCallback || function(f){ return setTimeout(f, 200); })(loadScene, { timeout:1500 }); };
+  if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once:true });
+}
+function loadScene(){
+  if (scene3d || loading || mode !== 'full') return;
+  loading = true; root.dataset.three = 'loading';
+  import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js').then(function(THREE){
+    loading = false;
+    if (mode !== 'full'){ delete root.dataset.three; return; }
+    scene3d = createScene(THREE); root.dataset.three = 'ready';
+  }).catch(function(){
+    loading = false; setMode('lite', 'No se pudo cargar la escena 3D; se muestra la versión ligera.');
+  });
+}
+btnLite.addEventListener('click', function(){ store('lite'); setMode('lite', 'Versión ligera: ilustraciones estáticas, sin 3D.'); });
+btnFull.addEventListener('click', function(){
+  if (!webgl){ setMode('lite', 'Este navegador no ofrece WebGL; se mantiene la versión ligera.'); return; }
+  store('full'); setMode('full', 'Versión completa: escena 3D.');
+});
+(function(){
+  var pref = stored(), why = autoLiteReason();
+  if (!webgl) setMode('lite', 'Versión ligera automática: WebGL no disponible.');
+  else if (pref === 'lite') setMode('lite', 'Versión ligera elegida.');
+  else if (pref === 'full') setMode('full', '');
+  else if (why) setMode('lite', 'Versión ligera automática: ' + why + '.');
+  else setMode('full', '');
+})();
+
+/* ------------------------------------------------------------
+   ESCENA 3D — geometría procedural, un solo canvas que se muda
+   a la ranura visible (hero · recorrido · cierre)
+   ------------------------------------------------------------ */
+function createScene(THREE){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'scene-canvas'; canvas.setAttribute('aria-hidden', 'true');
+  var small = window.matchMedia('(max-width: 767px)').matches || window.matchMedia('(pointer: coarse)').matches;
+  var renderer = new THREE.WebGLRenderer({ canvas:canvas, antialias:true, alpha:true, powerPreference:'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2));
+  renderer.setClearColor(0x000000, 0);
+  var useShadows = !small;
+  renderer.shadowMap.enabled = useShadows; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  var scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0xffffff, 20, 60);
+  var camera = new THREE.PerspectiveCamera(32, 1, .1, 220);
+  var hemi = new THREE.HemisphereLight(0xffffff, 0xffffff, 1.5); scene.add(hemi);
+  var sun = new THREE.DirectionalLight(0xffffff, 2.6); scene.add(sun); scene.add(sun.target);
+  if (useShadows){
+    sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
+    var sc = sun.shadow.camera; sc.left = -17; sc.right = 17; sc.top = 17; sc.bottom = -17; sc.near = 1; sc.far = 70;
+    sun.shadow.bias = -.0004; sun.shadow.normalBias = .03;
+  }
+
+  var N = MODEL.length;
+  var mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ roughness:.9, metalness:0 }), N);
+  mesh.frustumCulled = false; mesh.castShadow = useShadows; mesh.receiveShadow = useShadows; scene.add(mesh);
+  var Y = new THREE.Vector3(0, 1, 0);
+  var data = MODEL.map(function(it){
+    var c = curve(it.t), u = tangent(it.t), nx = -u[1], nz = u[0];
+    var o = new THREE.Vector3(c[0] + u[0] * it.dm + nx * it.dl, c[1] + it.dy, c[2] + u[1] * it.dm + nz * it.dl);
+    return { it:it, o:o, q:new THREE.Quaternion().setFromAxisAngle(Y, Math.atan2(-u[1], u[0])),
+      s:new THREE.Vector3(it.size[0], it.size[1], it.size[2]),
+      sc:new THREE.Vector3(o.x + it.sc[0], o.y + it.sc[1], o.z + it.sc[2]),
+      axis:new THREE.Vector3(it.axis[0], it.axis[1], it.axis[2]).normalize() };
+  });
+  var sphere = new THREE.SphereGeometry(.21, 28, 18);
+  var compA = new THREE.Mesh(sphere, new THREE.MeshStandardMaterial({ roughness:.55 }));
+  var compB = new THREE.Mesh(sphere, new THREE.MeshStandardMaterial({ roughness:.55 }));
+  compA.castShadow = compB.castShadow = useShadows; scene.add(compA, compB);
+  var BEADS = 12;
+  var beads = new THREE.InstancedMesh(new THREE.SphereGeometry(.11, 12, 8), new THREE.MeshBasicMaterial(), BEADS);
+  beads.frustumCulled = false; scene.add(beads);
+
+  var pins = $$('.pin', journeySlot);
+  var active = null, view = 'hero', running = false, raf = 0, last = 0, time = 0, p = 0.02, snap = true;
+  var mx = 0, my = 0, tmx = 0, tmy = 0;
+  var tP = new THREE.Vector3(), tQ = new THREE.Quaternion(), pos = new THREE.Vector3(), quat = new THREE.Quaternion(), M = new THREE.Matrix4();
+  var camPos = new THREE.Vector3(), camLook = new THREE.Vector3(), wantPos = new THREE.Vector3(), wantLook = new THREE.Vector3(), v3 = new THREE.Vector3(), one = new THREE.Vector3(1, 1, 1);
+
+  function cssColor(cs, name){ return new THREE.Color((cs.getPropertyValue(name) || '#888').trim()); }
+  function applyTheme(slot){
+    var cs = getComputedStyle(slot);
+    var tones = { stone:cssColor(cs, '--scene-top'), alt:cssColor(cs, '--scene-alt'), dark:cssColor(cs, '--scene-dark'), accent:cssColor(cs, '--scene-accent') };
+    for (var i = 0; i < N; i++) mesh.setColorAt(i, tones[MODEL[i].tone]);
+    mesh.instanceColor.needsUpdate = true;
+    var bg = cssColor(cs, '--color-background');
+    scene.fog.color.copy(bg); hemi.groundColor.copy(bg).lerp(new THREE.Color(0xffffff), .25);
+    compA.material.color.copy(cssColor(cs, '--scene-comp-a'));
+    compB.material.color.copy(cssColor(cs, '--scene-comp-b'));
+    beads.material.color.copy(cssColor(cs, '--scene-bead'));
+  }
+  function resize(){
+    if (!active) return;
+    var w = active.clientWidth, h = active.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  var ro = new ResizeObserver(resize);
+  function attach(slot){
+    if (active){ active.classList.remove('has-canvas'); ro.unobserve(active); }
+    active = slot; view = slot.dataset.scene; slot.insertBefore(canvas, slot.children[1] || null); slot.classList.add('has-canvas');
+    ro.observe(slot); resize(); applyTheme(slot); snap = true;
+  }
+
+  function targetP(scrollIn){
+    if (view === 'journey') return STOPS[stage];
+    if (view === 'closing') return .8 + .2 * clamp(scrollIn * 1.5, 0, 1);
+    return .03 + .09 * clamp(scrollIn - .55, 0, 1);
+  }
+  function placeCamera(scrollN){
+    var a = camera.aspect, k, c;
+    if (view === 'journey'){
+      c = curve(clamp(p, 0, 1)); k = clamp(1.45 / a, 1, 2.1);
+      /* al avanzar, la cámara rodea a la pareja y termina mirando atrás: todo el camino recorrido */
+      var e = clamp((p - .12) / .88, 0, 1), yaw = -.28 + 1.3 * e * e + mx * .07, ox = -5.2 * k, oz = 13.5 * k;
+      wantPos.set(c[0] + ox * Math.cos(yaw) + oz * Math.sin(yaw), c[1] + (4.4 + 4.2 * e * e) * k - my * .5 + scrollN * 1.6, c[2] - ox * Math.sin(yaw) + oz * Math.cos(yaw));
+      wantLook.set(c[0] + 1.2 - 5.2 * e * e, c[1] + .2 - .6 * e * e, c[2]);
+    } else if (view === 'closing'){
+      c = curve(.5); k = clamp(3 / a, 1, 3);
+      var ang = Math.sin(time * .13) * .14 + mx * .05;
+      wantPos.set(c[0] + Math.sin(ang) * 18 * k, c[1] + 6 * k + scrollN * 2, c[2] + Math.cos(ang) * 18 * k);
+      wantLook.set(c[0], c[1] + .6, c[2]);
+    } else {
+      c = curve(0); k = clamp(1.5 / a, 1, 2.2);
+      var hx = a > 1.25 ? -2.5 : 4.5;   /* ancho: el inicio del camino queda a la derecha del texto; estrecho: centrado */
+      wantPos.set(c[0] + hx - 5.5 * k + mx * 1.3, c[1] + 6.2 * k - my * .7 + scrollN * 3.5, c[2] + 16.5 * k);
+      wantLook.set(c[0] + hx, c[1] + 2.2, c[2]);
+    }
+  }
+  function frame(now){
+    raf = 0; if (!running) return; raf = requestAnimationFrame(frame);
+    var dt = Math.min(.05, (now - last) / 1000 || .016); last = now; time += dt;
+    var rect = active.getBoundingClientRect(), vh = window.innerHeight || 1;
+    var scrollIn = clamp((vh - rect.top) / (vh + rect.height), 0, 1);     /* 0 al entrar, 1 al salir */
+    var scrollN = clamp(((rect.top + rect.height / 2) - vh / 2) / vh, -1, 1);
+    var goal = targetP(scrollIn);
+    if (snap && view !== 'closing') p = goal; else p += (goal - p) * (1 - Math.exp(-dt * 1.7));
+    mx += (tmx - mx) * (1 - Math.exp(-dt * 3)); my += (tmy - my) * (1 - Math.exp(-dt * 3));
+
+    for (var i = 0; i < N; i++){
+      var d = data[i], it = d.it, b = buildAmount(it, p);
+      if (b >= 1){ M.compose(d.o, d.q, d.s); }
+      else {
+        tP.copy(d.sc); tP.y += Math.sin(time * .6 + it.ph) * .35; tP.x += Math.cos(time * .43 + it.ph) * .22;
+        tQ.setFromAxisAngle(d.axis, it.ang + time * it.spin);
+        pos.lerpVectors(tP, d.o, b); quat.slerpQuaternions(tQ, d.q, b);
+        M.compose(pos, quat, d.s);
+      }
+      mesh.setMatrixAt(i, M);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+
+    var pc = clamp(p, 0, 1), c = curve(pc), u = tangent(pc), hop = Math.abs(goal - p) > .004 ? Math.abs(Math.sin(time * 9)) * .09 : 0;
+    compA.position.set(c[0] - u[1] * -.27 - u[0] * .12, c[1] + .34 + hop, c[2] + u[0] * -.27 - u[1] * .12);
+    compB.position.set(c[0] - u[1] * .27 + u[0] * .12, c[1] + .34 + (hop ? Math.abs(Math.sin(time * 9 + 1.2)) * .09 : 0), c[2] + u[0] * .27 + u[1] * .12);
+
+    var flow = clamp((p - .6) / .35, 0, 1); flow = flow * flow * (3 - 2 * flow);
+    for (var j = 0; j < BEADS; j++){
+      var bt = ((time * .045 + j / BEADS) % 1) * pc, bc = curve(bt), edge = Math.min(1, bt * 30, (pc - bt) * 30);
+      v3.set(bc[0], bc[1] + .5 + Math.sin(time * 2 + j) * .05, bc[2]);
+      M.compose(v3, quat.identity(), one.setScalar(Math.max(.0001, flow * edge)));
+      beads.setMatrixAt(j, M);
+    }
+    beads.instanceMatrix.needsUpdate = true;
+
+    placeCamera(scrollN);
+    if (snap){ camPos.copy(wantPos); camLook.copy(wantLook); snap = false; }
+    else { var f = 1 - Math.exp(-dt * 4); camPos.lerp(wantPos, f); camLook.lerp(wantLook, f); }
+    camera.position.copy(camPos); camera.lookAt(camLook);
+    var dist = camPos.distanceTo(camLook);
+    scene.fog.near = dist * .8; scene.fog.far = dist * 2.3;
+    sun.position.set(camLook.x + 7, camLook.y + 16, camLook.z + 9); sun.target.position.copy(camLook);
+
+    renderer.render(scene, camera);
+
+    if (view === 'journey'){
+      var w = active.clientWidth, h = active.clientHeight;
+      for (var s = 0; s < 5; s++){
+        var sc2 = curve(STOPS[s]); v3.set(sc2[0], sc2[1] + 1.9, sc2[2]).project(camera);
+        var x = (v3.x * .5 + .5) * w, y = (-v3.y * .5 + .5) * h, on = v3.z < 1 && x > 20 && x < w - 20 && y > 20 && y < h - 20;
+        pins[s].style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+        pins[s].style.visibility = on ? 'visible' : 'hidden';
+      }
+    }
+  }
+  function start(){ if (running) return; running = true; last = performance.now(); raf = requestAnimationFrame(frame); }
+  function stop(){ running = false; if (raf){ cancelAnimationFrame(raf); raf = 0; } }
+
+  /* Solo se renderiza si alguna ranura está en pantalla y la pestaña visible */
+  var vis = new Map();
+  function pick(){
+    var best = null, bh = 0;
+    vis.forEach(function(h, el){ if (h > bh){ bh = h; best = el; } });
+    if (!best || document.hidden){ stop(); return; }
+    if (best !== active) attach(best);
+    start();
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ vis.set(e.target, e.isIntersecting ? e.intersectionRect.height : 0); });
+    pick();
+  }, { threshold:[0, .05, .2, .4, .6, .8, 1] });
+  slots.forEach(function(s){ io.observe(s); });
+  document.addEventListener('visibilitychange', pick);
+  function onPointer(e){ tmx = (e.clientX / window.innerWidth) * 2 - 1; tmy = (e.clientY / window.innerHeight) * 2 - 1; }
+  if (window.matchMedia('(pointer: fine)').matches) window.addEventListener('pointermove', onPointer, { passive:true });
+  canvas.addEventListener('webglcontextlost', function(e){ e.preventDefault(); setMode('lite', 'La escena 3D se detuvo; se muestra la versión ligera.'); });
+
+  return {
+    destroy:function(){
+      stop(); io.disconnect(); ro.disconnect();
+      document.removeEventListener('visibilitychange', pick); window.removeEventListener('pointermove', onPointer);
+      if (active) active.classList.remove('has-canvas');
+      canvas.remove(); mesh.geometry.dispose(); mesh.material.dispose(); sphere.dispose(); beads.geometry.dispose(); beads.material.dispose();
+      renderer.dispose();
+    }
+  };
+}
+})();
+</script>
+</body>
+</html>

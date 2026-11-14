@@ -1,0 +1,5 @@
+/* Tailwind solo analiza src/: el resto del repositorio (docs, maquetas, pruebas) no genera estilos. */
+@import "tailwindcss" source(none);
+@source "../**/*.{ts,tsx}";
+
+/* Los tokens de diseño llegan en el lote L1 (src/styles/tokens.css). */

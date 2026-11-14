@@ -1,0 +1,1306 @@
+<!doctype html>
+<html lang="es" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ronda 2 · Propuesta 2 — Movimiento y oficio · Confia.ing</title>
+<meta name="description" content="Confia.ing — Transformación de IA para empresas que ya usan tecnología.">
+<meta name="theme-color" content="#FAF8F4">
+<script>document.documentElement.className = 'js';</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   1. TOKENS — primitives, then semantic roles. Components use roles only.
+   ===================================================================== */
+:root {
+  /* Primitives */
+  --ink-900: #15120F;
+  --ink-800: #221E1A;
+  --ink-700: #3A342E;
+  --ink-500: #5E564E;
+  --ink-300: #B5ADA2;
+  --paper-0: #FFFFFF;
+  --paper-50: #FAF8F4;
+  --paper-100: #F0EDE6;
+  --paper-200: #DCD6CB;
+  --signal-400: #FF6A45;
+  --signal-500: #F2431D;
+  --signal-700: #B8290A;
+  --sun-400: #FFC53D;
+  --red-600: #B3261E;
+  --red-300: #FF9A8F;
+  --green-700: #1B6B45;
+  --green-300: #7FD6A6;
+
+  /* Motion tokens */
+  --dur-press: 120ms;     /* press feedback */
+  --dur-fast: 160ms;      /* hover, color, exits */
+  --dur-base: 220ms;      /* small UI: errors, swaps */
+  --dur-move: 280ms;      /* on-screen morphs: tab indicator */
+  --dur-reveal: 520ms;    /* scroll reveals (marketing) */
+  --dur-hero: 700ms;      /* hero entrance + flow assembly (explanatory) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  /* Springs (read by JS): response in seconds, damping ratio */
+  --spring-move-response: 0.38;  --spring-move-damping: 1;
+  --spring-flick-response: 0.36; --spring-flick-damping: 0.86;
+  --spring-toy-response: 0.42;   --spring-toy-damping: 0.62;
+
+  /* Type */
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-l: 28px;
+  --radius-m: 18px;
+  --radius-s: 12px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --header-h: 68px;
+}
+
+/* Semantic roles — light (default) */
+:root, .theme-light {
+  --color-background: var(--paper-50);
+  --color-background-alt: var(--paper-100);
+  --color-surface: var(--paper-0);
+  --color-text: var(--ink-900);
+  --color-text-muted: var(--ink-500);
+  --color-primary: var(--signal-500);
+  --color-primary-hover: var(--signal-400);
+  --color-on-primary: var(--ink-900);
+  --color-accent-text: var(--signal-700);
+  --color-link: var(--signal-700);
+  --color-focus: var(--ink-900);
+  --color-border: var(--paper-200);
+  --color-border-strong: var(--ink-500);
+  --color-highlight: var(--sun-400);
+  --color-error: var(--red-600);
+  --color-success: var(--green-700);
+  --color-logo-dot: var(--signal-500);
+}
+.theme-dark {
+  --color-background: var(--ink-900);
+  --color-background-alt: var(--ink-800);
+  --color-surface: var(--ink-800);
+  --color-text: var(--paper-50);
+  --color-text-muted: var(--ink-300);
+  --color-primary: var(--signal-500);
+  --color-primary-hover: var(--signal-400);
+  --color-on-primary: var(--ink-900);
+  --color-accent-text: var(--signal-400);
+  --color-link: var(--signal-400);
+  --color-focus: var(--sun-400);
+  --color-border: var(--ink-700);
+  --color-border-strong: var(--ink-300);
+  --color-highlight: var(--sun-400);
+  --color-error: var(--red-300);
+  --color-success: var(--green-300);
+  --color-logo-dot: var(--signal-500);
+}
+.theme-signal {
+  --color-background: var(--signal-500);
+  --color-background-alt: var(--signal-400);
+  --color-surface: var(--signal-400);
+  --color-text: var(--ink-900);
+  --color-text-muted: var(--ink-900);
+  --color-primary: var(--ink-900);
+  --color-primary-hover: var(--ink-700);
+  --color-on-primary: var(--paper-50);
+  --color-accent-text: var(--ink-900);
+  --color-link: var(--ink-900);
+  --color-focus: var(--ink-900);
+  --color-border: var(--ink-900);
+  --color-border-strong: var(--ink-900);
+  --color-highlight: var(--sun-400);
+  --color-logo-dot: var(--paper-50);
+}
+.theme-light, .theme-dark, .theme-signal { background-color: var(--color-background); color: var(--color-text); }
+
+/* =====================================================================
+   2. BASE
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-padding-top: calc(var(--header-h) + 20px);
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font: 400 1.0625rem/1.55 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+[hidden] { display: none !important; }
+img, svg { display: block; }
+a { color: var(--color-link); text-underline-offset: 0.18em; text-decoration-thickness: 1.5px; }
+button { font: inherit; color: inherit; }
+button, a, [role="tab"] { touch-action: manipulation; }
+button, [role="tab"] { -webkit-user-select: none; user-select: none; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; border-radius: 6px; }
+.vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.wrap { width: 100%; max-width: 1368px; margin-inline: auto; padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right)); }
+.section { padding-block: clamp(72px, 10vw, 148px); }
+.mono { font: 500 0.8125rem/1.3 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.eyebrow { color: var(--color-accent-text); display: flex; align-items: center; gap: 0.7em; margin-bottom: 1.4rem; }
+.eyebrow::before { content: ""; width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--color-primary); flex: none; }
+.theme-signal .eyebrow::before { background: var(--color-text); }
+.h2 { font: 700 clamp(2.1rem, 4.7vw, 4.1rem)/1.02 var(--font-display); letter-spacing: -0.028em; text-wrap: balance; max-width: 18ch; }
+.lede { font-size: clamp(1.0625rem, 1.5vw, 1.3125rem); line-height: 1.5; color: var(--color-text-muted); max-width: 46ch; text-wrap: pretty; }
+.section-head { display: grid; gap: 1.5rem; margin-bottom: clamp(40px, 6vw, 80px); }
+@media (min-width: 900px) {
+  .section-head { grid-template-columns: 1.15fr 0.85fr; align-items: end; gap: 3rem; }
+  .section-head .eyebrow { grid-column: 1 / -1; margin-bottom: 0; }
+}
+
+.skip {
+  position: fixed; top: 10px; left: 10px; z-index: 100;
+  background: var(--color-text); color: var(--color-background);
+  padding: 0.75em 1.1em; border-radius: 999px; font-weight: 600; text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip:focus { transform: none; }
+
+/* ---------- Logo ---------- */
+.logo {
+  font: 700 1.5rem/1 var(--font-display); letter-spacing: -0.04em;
+  color: var(--color-text); text-decoration: none; display: inline-flex; align-items: baseline; white-space: nowrap;
+}
+.logo .dot {
+  width: 0.24em; height: 0.24em; border-radius: 50%; background: var(--color-logo-dot);
+  margin-inline: 0.045em; flex: none; font-size: inherit; overflow: hidden; text-indent: -9em;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6em;
+  min-height: 54px; padding: 0.8em 1.5em;
+  border: 1.5px solid transparent; border-radius: 999px;
+  font: 600 1rem/1.2 var(--font-body); text-decoration: none; text-align: left; cursor: pointer;
+  background: transparent; color: var(--color-text);
+  transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+.btn:active, .btn.is-active { transform: scale(0.97); }
+.btn svg { flex: none; transition: transform var(--dur-fast) var(--ease-out); }
+.btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+.btn-secondary { border-color: var(--color-text); }
+.btn-small { min-height: 44px; padding: 0.55em 1.15em; font-size: 0.9375rem; }
+.btn[aria-disabled="true"], .btn:disabled { cursor: default; }
+.btn.is-disabled { opacity: 0.45; cursor: not-allowed; }
+.btn.is-focus { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.btn-primary.is-hover { background: var(--color-primary-hover); }
+.btn-secondary.is-hover { background: var(--color-text); color: var(--color-background); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-secondary:hover { background: var(--color-text); color: var(--color-background); }
+  .btn:hover svg { transform: translateX(3px); }
+}
+
+/* ---------- Language switch ---------- */
+.lang { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1.5px solid var(--color-border); border-radius: 999px; }
+.lang button {
+  min-width: 40px; min-height: 36px; border: 0; border-radius: 999px; background: transparent; cursor: pointer;
+  font: 500 0.8125rem/1 var(--font-mono); letter-spacing: 0.04em; color: var(--color-text-muted);
+  transition: transform var(--dur-press) var(--ease-out), color var(--dur-fast) ease;
+}
+.lang button:active { transform: scale(0.95); }
+.lang button[aria-pressed="true"] { background: var(--color-text); color: var(--color-background); }
+@media (hover: hover) and (pointer: fine) { .lang button[aria-pressed="false"]:hover { color: var(--color-text); } }
+
+/* =====================================================================
+   3. HEADER
+   ===================================================================== */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  padding-top: env(safe-area-inset-top);
+  background: color-mix(in srgb, var(--color-background) 78%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%);
+}
+@media (prefers-reduced-transparency: reduce) { .header { background: var(--color-background); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+.header-bar { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: var(--header-h); }
+.menu { display: flex; align-items: center; gap: clamp(1rem, 2.4vw, 2.25rem); }
+.menu-links { display: flex; gap: clamp(1rem, 2.4vw, 2.25rem); }
+.menu-links a { color: var(--color-text); text-decoration: none; font-weight: 500; font-size: 0.9375rem; padding: 0.6em 0; display: inline-block; }
+@media (hover: hover) and (pointer: fine) { .menu-links a:hover { text-decoration: underline; } }
+.menu-btn { display: none; }
+/* Scroll progress: scroll-driven, compositor-only. Hidden where unsupported. */
+.progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  .progress {
+    display: block; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+    background: var(--color-primary); transform-origin: 0 50%;
+    animation: progress linear both; animation-timeline: scroll(root);
+  }
+  @keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
+
+@media (max-width: 859px) {
+  .js .menu-btn {
+    display: inline-flex; align-items: center; gap: 0.6em; min-height: 44px; padding: 0 1em 0 0.9em;
+    border: 1.5px solid var(--color-text); border-radius: 999px; background: transparent; cursor: pointer;
+    font: 600 0.9375rem/1 var(--font-body);
+    transition: transform var(--dur-press) var(--ease-out);
+  }
+  .js .menu-btn:active { transform: scale(0.97); }
+  .menu-icon { position: relative; width: 16px; height: 10px; }
+  .menu-icon::before, .menu-icon::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 2px; border-radius: 2px; background: currentColor;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .menu-icon::before { top: 0; } .menu-icon::after { bottom: 0; }
+  .menu-btn[aria-expanded="true"] .menu-icon::before { transform: translateY(4px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .menu-icon::after { transform: translateY(-4px) rotate(-45deg); }
+
+  .menu { flex-direction: column; align-items: stretch; gap: 1.1rem; }
+  .menu-links { flex-direction: column; gap: 0; }
+  .menu-links a { font: 600 1.625rem/1.15 var(--font-display); letter-spacing: -0.02em; padding: 0.55em 0; border-bottom: 1.5px solid var(--color-border); display: block; }
+  .menu .lang { align-self: flex-start; }
+  .menu .btn { width: 100%; }
+  /* Without JS the menu simply sits under the bar. With JS it is an origin-aware sheet. */
+  html:not(.js) .header { position: static; }
+  html:not(.js) .header-bar { flex-wrap: wrap; padding-block: 12px; }
+  html:not(.js) .menu { width: 100%; }
+  .js .menu {
+    position: absolute; top: calc(100% + 6px); left: 12px; right: 12px;
+    padding: 12px 20px 20px; border-radius: var(--radius-l);
+    background: var(--color-surface); border: 1.5px solid var(--color-text);
+    transform-origin: calc(100% - 48px) 0;
+    opacity: 0; transform: translateY(-8px) scale(0.97); visibility: hidden;
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast);
+  }
+  .js .menu.is-open {
+    opacity: 1; transform: none; visibility: visible;
+    transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), visibility 0s;
+  }
+}
+
+/* =====================================================================
+   4. HERO
+   ===================================================================== */
+.hero { padding-block: clamp(36px, 6vw, 84px) clamp(64px, 8vw, 120px); }
+.hero .eyebrow { animation: fade 400ms ease both; }
+.h1 {
+  font: 700 clamp(2.6rem, 6.3vw, 5.75rem)/0.98 var(--font-display);
+  letter-spacing: -0.035em; font-optical-sizing: auto; text-wrap: balance; max-width: 22ch;
+  isolation: isolate;
+}
+.h1 .w { display: inline-block; --rise: 0.38em; animation: rise var(--dur-hero) var(--ease-out) var(--d, 0ms) both; }
+.h1 .mark { position: relative; white-space: nowrap; }
+.h1 .mark::before {
+  content: ""; position: absolute; z-index: -1; inset: 0.54em -0.07em 0.04em; border-radius: 0.06em;
+  background: var(--color-highlight);
+  animation: wipe-x 520ms var(--ease-in-out) 520ms both;
+}
+.hero-grid { display: grid; gap: clamp(40px, 6vw, 72px); margin-top: clamp(28px, 4vw, 56px); }
+@media (min-width: 960px) { .hero-grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: start; } }
+.hero-copy .lede { animation: rise 600ms var(--ease-out) 180ms both; --rise: 10px; color: var(--color-text); }
+.cta-block { animation: rise 600ms var(--ease-out) 260ms both; --rise: 8px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2rem; }
+.cta-note { margin-top: 1rem; font-size: 0.9375rem; color: var(--color-text-muted); }
+.pillars { display: flex; flex-wrap: wrap; gap: 0.5em 1.1em; margin-top: clamp(28px, 4vw, 48px); padding-top: 1.25rem; border-top: 1.5px solid var(--color-text); animation: fade 500ms ease 340ms both; }
+.pillars li { display: flex; align-items: center; gap: 1.1em; }
+.pillars li + li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
+@media (max-width: 559px) { .cta-row .btn { width: 100%; justify-content: space-between; } }
+
+@keyframes rise { from { opacity: 0; transform: translateY(var(--rise, 12px)); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes wipe-x { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* ---------- Board: scattered manual work → a clear flow ---------- */
+.board {
+  --k: 1;
+  position: relative; overflow: clip; border-radius: var(--radius-l);
+  padding: clamp(20px, 3vw, 32px);
+  animation: fade 500ms ease 120ms both;
+}
+@media (max-width: 520px) { .board { --k: 0.5; } }
+.board-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: clamp(20px, 3vw, 30px); color: var(--color-text-muted); }
+.swap { display: inline-grid; }
+.swap > * { grid-area: 1 / 1; transition: opacity var(--dur-base) ease, filter var(--dur-base) ease; }
+.state { padding: 0.5em 0.9em; border: 1.5px solid var(--color-border-strong); border-radius: 999px; color: var(--color-text); text-align: center; }
+.state .s-b { color: var(--color-highlight); }
+.flow { position: relative; display: grid; gap: clamp(10px, 1.6vw, 14px); }
+.flow::before {
+  content: ""; position: absolute; left: 0.72rem; top: 1.3rem; bottom: 1.5rem; width: 2px; background: var(--color-border-strong);
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 600ms var(--ease-in-out) 420ms;
+}
+.row { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); align-items: center; min-height: 3rem; }
+.num {
+  position: relative; z-index: 1; width: 1.6rem; height: 1.6rem; display: grid; place-items: center; border-radius: 50%;
+  background: var(--color-background); border: 2px solid var(--color-border-strong);
+  font: 500 0.6875rem/1 var(--font-mono); color: var(--color-text-muted);
+  transition: opacity var(--dur-base) ease calc(var(--d, 0ms) + 380ms);
+}
+.slot { display: inline-block; justify-self: start; transition: transform var(--dur-hero) var(--ease-in-out) var(--d, 0ms); }
+.chip {
+  display: inline-block; padding: 0.5em 1em; border-radius: 999px;
+  background: var(--color-text); color: var(--color-background);
+  font: 600 clamp(1rem, 1.5vw, 1.1875rem)/1.2 var(--font-display); letter-spacing: -0.01em; white-space: nowrap;
+  -webkit-user-select: none; user-select: none;
+  transition: transform var(--dur-press) var(--ease-out);
+}
+.chip.is-held { transition: none; cursor: grabbing; position: relative; z-index: 3; }
+.chip-ghost { background: var(--color-background); color: var(--color-text); box-shadow: inset 0 0 0 1.5px var(--color-border-strong); font-weight: 500; font-size: 0.9375rem; }
+.res { display: flex; flex-wrap: wrap; gap: 8px; }
+.result {
+  justify-self: start; display: inline-flex; align-items: center; gap: 0.6em; padding: 0.55em 1.1em 0.55em 0.8em; border-radius: 999px;
+  background: var(--color-primary); color: var(--color-on-primary);
+  font: 700 clamp(1rem, 1.5vw, 1.1875rem)/1.2 var(--font-display);
+  transition: opacity 300ms ease 820ms, transform 420ms var(--ease-out) 820ms;
+}
+.result i { width: 0.6em; height: 0.6em; border-radius: 50%; background: currentColor; }
+.row-result .num { border-color: var(--color-primary); background: var(--color-primary); }
+.board-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: clamp(20px, 3vw, 30px); padding-top: 16px; border-top: 1.5px solid var(--color-border); color: var(--color-text-muted); font-size: 0.875rem; }
+.board-foot .btn { flex: none; }
+html:not(.js) .board-foot { display: none; }
+@media (hover: hover) and (pointer: fine) { .js .chip[data-drag] { cursor: grab; } .js .chip.is-held { cursor: grabbing; } }
+@media (hover: none), (pointer: coarse) { .drag-hint { display: none; } }
+
+/* Scattered state (JS only). Leaving the flow is quick; assembling is deliberate. */
+.js .board:not(.is-flow) .slot { transform: translate(calc(var(--sx) * var(--k)), calc(var(--sy) * var(--k))) rotate(var(--sr)); transition: transform 420ms var(--ease-out); }
+.js .board:not(.is-flow) .flow::before { clip-path: inset(0 0 100% 0); transition: clip-path var(--dur-fast) var(--ease-out); }
+.js .board:not(.is-flow) .num { opacity: 0; transition: opacity var(--dur-fast) ease; }
+.js .board:not(.is-flow) .result { opacity: 0; transform: scale(0.94); transition: opacity var(--dur-fast) ease, transform var(--dur-fast) ease; }
+.js .board:not(.is-flow) .s-b, .board.is-flow .s-a, html:not(.js) .s-a { opacity: 0; filter: blur(3px); }
+
+/* =====================================================================
+   5. SCROLL REVEALS — one entrance per container
+   ===================================================================== */
+.js .reveal { opacity: 0; transform: translateY(14px); }
+.js .reveal.in { opacity: 1; transform: none; transition: opacity var(--dur-reveal) var(--ease-out) var(--d, 0ms), transform var(--dur-reveal) var(--ease-out) var(--d, 0ms); }
+
+/* =====================================================================
+   6. DÓNDE EMPEZAMOS
+   ===================================================================== */
+.frictions { display: grid; gap: 14px; }
+@media (min-width: 720px) { .frictions { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1200px) { .frictions { grid-template-columns: repeat(4, 1fr); } }
+.friction { background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-l); padding: clamp(22px, 2.4vw, 30px); display: flex; flex-direction: column; gap: 0.9rem; min-height: 100%; }
+.friction .n { color: var(--color-accent-text); }
+.friction h3 { font: 700 1.4375rem/1.12 var(--font-display); letter-spacing: -0.02em; margin-top: clamp(20px, 4vw, 64px); text-wrap: balance; }
+.friction p { color: var(--color-text-muted); font-size: 1rem; }
+.questions { margin-top: 14px; border-radius: var(--radius-l); padding: clamp(24px, 4vw, 56px); display: grid; gap: clamp(20px, 3vw, 40px); }
+@media (min-width: 900px) { .questions { grid-template-columns: 0.42fr 1fr; } }
+.questions h3 { font: 500 0.8125rem/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted); }
+.questions li { font: 600 clamp(1.3125rem, 2.5vw, 2.125rem)/1.15 var(--font-display); letter-spacing: -0.022em; padding-block: 0.65em; border-top: 1.5px solid var(--color-border); text-wrap: balance; }
+.questions li:first-child { border-top: 0; padding-top: 0; }
+.questions li:last-child { padding-bottom: 0; }
+
+/* =====================================================================
+   7. JOURNEY — accessible tabs, clip-path indicator, swipeable track
+   ===================================================================== */
+.tabs-scroll { overflow-x: auto; scrollbar-width: none; padding: 6px; margin: -6px -6px 14px; overscroll-behavior-x: contain; }
+.tabs-scroll::-webkit-scrollbar { display: none; }
+.tabs-inner { position: relative; display: inline-flex; min-width: 100%; border-radius: 999px; background: var(--color-surface); }
+.tablist, .tabs-active { display: flex; gap: 4px; padding: 6px; width: 100%; }
+.tab {
+  flex: 1 0 auto; display: inline-flex; align-items: center; justify-content: center; gap: 0.6em;
+  min-height: 48px; padding: 0 1.15em; border: 0; border-radius: 999px; background: transparent; cursor: pointer;
+  font: 600 0.9375rem/1 var(--font-body); color: var(--color-text-muted); white-space: nowrap;
+  transition: transform var(--dur-press) var(--ease-out), color var(--dur-fast) ease;
+}
+.tab .tn { font: 500 0.75rem/1 var(--font-mono); opacity: 0.8; }
+button.tab:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { button.tab:hover { color: var(--color-text); } }
+/* The active look is a clipped duplicate of the list: text colour changes exactly where the pill is. */
+.tabs-active {
+  position: absolute; inset: 0; pointer-events: none; border-radius: 999px;
+  background: var(--color-primary);
+  clip-path: inset(6px 100% 6px 6px round 999px);
+  transition: clip-path var(--dur-move) var(--ease-in-out);
+}
+.tabs-active .tab { color: var(--color-on-primary); }
+.tabs-active.no-anim { transition: none; }
+
+.stages { position: relative; }
+.stage {
+  position: relative; background: var(--color-surface); border-radius: var(--radius-l);
+  padding: clamp(24px, 4.4vw, 60px); overflow: hidden;
+}
+.stage:focus-visible { outline-offset: -6px; border-radius: var(--radius-l); }
+.stage-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; padding-right: clamp(4.5rem, 14vw, 12rem); min-height: clamp(4rem, 9vw, 8rem); align-content: center; }
+.stage-head h3 { font: 700 clamp(1.75rem, 3.8vw, 3.25rem)/1.02 var(--font-display); letter-spacing: -0.028em; }
+.badge { display: inline-block; padding: 0.5em 0.85em; border-radius: 999px; background: var(--color-highlight); color: var(--color-background); }
+.stage-num { position: absolute; top: clamp(8px, 2vw, 28px); right: clamp(20px, 4vw, 56px); font: 800 clamp(4.5rem, 12vw, 10.5rem)/1 var(--font-display); letter-spacing: -0.05em; color: var(--color-primary); }
+.stage-grid { display: grid; gap: 0; margin-top: clamp(24px, 4vw, 52px); }
+.stage-grid > div { padding-block: 1.25rem; border-top: 1.5px solid var(--color-border); }
+.stage-grid dt { color: var(--color-text-muted); margin-bottom: 0.75rem; }
+.stage-grid dd { font-size: clamp(1.0625rem, 1.4vw, 1.25rem); line-height: 1.45; text-wrap: pretty; }
+.stage-grid .next dt { color: var(--color-highlight); }
+.stage-grid .next dd { font: 600 clamp(1.1875rem, 1.7vw, 1.5rem)/1.2 var(--font-display); letter-spacing: -0.015em; }
+@media (min-width: 900px) {
+  .stage-grid { grid-template-columns: repeat(3, 1fr); column-gap: clamp(24px, 3vw, 48px); }
+  .stage-grid > div { padding-block: 1.5rem 0; }
+}
+/* No JS: every stage is simply stacked and readable. */
+html:not(.js) .tabs-scroll, html:not(.js) .journey-ctrl { display: none; }
+html:not(.js) .stage + .stage { margin-top: 14px; }
+/* JS: a horizontal track moved with transform only. */
+.js .stages { overflow: clip; border-radius: var(--radius-l); touch-action: pan-y; }
+.js .track { display: flex; gap: 14px; }
+.js .stage { flex: 0 0 100%; min-width: 0; }
+.js .stages.is-dragging { -webkit-user-select: none; user-select: none; }
+.journey-ctrl { display: flex; align-items: center; gap: 12px; margin-top: 18px; color: var(--color-text-muted); }
+.round { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--color-border-strong); background: transparent; color: var(--color-text); cursor: pointer; transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-fast) ease, color var(--dur-fast) ease, opacity var(--dur-fast) ease; }
+.round:active { transform: scale(0.94); }
+.round[aria-disabled="true"] { opacity: 0.35; cursor: default; }
+.round[aria-disabled="true"]:active { transform: none; }
+@media (hover: hover) and (pointer: fine) { .round:not([aria-disabled="true"]):hover { background: var(--color-text); color: var(--color-background); } }
+.journey-ctrl .count { margin-left: 6px; white-space: nowrap; }
+.journey-ctrl .hint { margin-left: auto; font-size: 0.875rem; text-align: right; text-wrap: balance; }
+@media (hover: hover) and (pointer: fine) { .hint-touch { display: none; } }
+@media (hover: none), (pointer: coarse) { .hint-keys { display: none; } }
+@media (max-width: 479px) { .hint-keys { display: none; } }
+
+/* =====================================================================
+   8. LO QUE OFRECEMOS
+   ===================================================================== */
+.services { display: grid; gap: 14px; }
+.service { border-radius: var(--radius-l); padding: clamp(22px, 2.6vw, 34px); background: var(--color-surface); border: 1.5px solid var(--color-border); display: flex; flex-direction: column; gap: 0.8rem; }
+.service h3 { font: 700 1.4375rem/1.1 var(--font-display); letter-spacing: -0.02em; }
+.service p { color: var(--color-text-muted); font-size: 1rem; }
+.service .idx { color: var(--color-text-muted); margin-bottom: auto; padding-bottom: clamp(20px, 3vw, 48px); }
+.service-main { border: 0; background: var(--color-background); padding: clamp(28px, 4vw, 56px); gap: 1.25rem; justify-content: space-between; min-height: clamp(360px, 44vw, 560px); }
+.service-main { container-type: inline-size; }
+.service-main h3 { font-size: clamp(2.25rem, 14.5cqi, 6rem); line-height: 0.92; letter-spacing: -0.04em; }
+.service-main p { color: var(--color-text); font-size: clamp(1.125rem, 1.6vw, 1.375rem); line-height: 1.4; max-width: 30ch; font-weight: 500; }
+.service-main .tagrow { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { display: inline-block; padding: 0.55em 0.95em; border-radius: 999px; border: 1.5px solid var(--color-border-strong); }
+.tag-solid { background: var(--color-text); color: var(--color-background); border-color: var(--color-text); }
+@media (min-width: 720px) { .services { grid-template-columns: repeat(2, 1fr); } .service-main { grid-column: 1 / -1; } }
+@media (min-width: 1100px) { .services { grid-template-columns: 1.5fr 1fr 1fr; } .service-main { grid-column: 1; grid-row: 1 / span 2; } }
+
+/* =====================================================================
+   9. POR QUÉ CONFIAR
+   ===================================================================== */
+.trust { background: var(--color-background-alt); }
+.trust-grid { display: grid; gap: clamp(48px, 6vw, 96px); }
+@media (min-width: 960px) { .trust-grid { grid-template-columns: 1fr 1fr; } }
+.xp { margin-top: clamp(28px, 4vw, 48px); }
+.xp li { padding-block: 1.1rem; border-top: 1.5px solid var(--color-text); font-size: clamp(1.0625rem, 1.4vw, 1.25rem); line-height: 1.4; display: grid; grid-template-columns: 2.4rem 1fr; text-wrap: pretty; }
+.xp li span { color: var(--color-accent-text); padding-top: 0.3em; }
+.xp-note { margin-top: 1.25rem; padding-top: 1.1rem; border-top: 1.5px solid var(--color-text); color: var(--color-text-muted); font-size: 0.9375rem; }
+.principles li { font: 800 clamp(3rem, 8.4vw, 7rem)/0.92 var(--font-display); letter-spacing: -0.045em; display: flex; align-items: baseline; gap: 0.18em; }
+.principles li::after { content: ""; width: 0.16em; height: 0.16em; border-radius: 50%; background: var(--color-primary); flex: none; }
+.security { margin-top: clamp(24px, 3vw, 40px); max-width: 44ch; font-size: 1.0625rem; color: var(--color-text); padding-left: 1.1rem; border-left: 3px solid var(--color-primary); }
+
+/* =====================================================================
+   10. CIERRE — CTAs, form, agenda placeholder
+   ===================================================================== */
+.closing .h2 { font-size: clamp(2.5rem, 7.2vw, 6.5rem); line-height: 0.96; letter-spacing: -0.04em; max-width: 14ch; }
+.contact { display: grid; gap: 14px; margin-top: clamp(48px, 7vw, 96px); align-items: start; }
+@media (min-width: 960px) { .contact { grid-template-columns: 1.1fr 0.9fr; } }
+.card { position: relative; border-radius: var(--radius-l); padding: clamp(22px, 3.4vw, 44px); scroll-margin-top: calc(var(--header-h) + 20px); }
+.card > h3 { font: 700 clamp(1.5rem, 2.6vw, 2.125rem)/1.08 var(--font-display); letter-spacing: -0.025em; margin-bottom: 1.5rem; text-wrap: balance; }
+/* Arriving via an "Agenda" button: a brief ring shows where you landed. */
+.card::after { content: ""; position: absolute; inset: -5px; border-radius: calc(var(--radius-l) + 5px); border: 3px solid var(--color-focus); opacity: 0; pointer-events: none; }
+.theme-signal .card::after { border-color: var(--ink-900); }
+.card:target::after { animation: landed 1400ms ease 300ms both; }
+@keyframes landed { 0% { opacity: 0; } 20% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
+
+.form { display: grid; gap: 18px; }
+.two { display: grid; gap: 18px; }
+@media (min-width: 560px) { .two { grid-template-columns: 1fr 1fr; } }
+.field { display: grid; gap: 7px; min-width: 0; }
+.field label, .legend { font-weight: 600; font-size: 0.9375rem; }
+.field input, .field textarea {
+  width: 100%; font: 400 1rem/1.4 var(--font-body); color: var(--color-text);
+  padding: 0.85em 1em; min-height: 54px; border: 1.5px solid var(--color-border-strong); border-radius: 14px; background: var(--color-surface);
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+.field textarea { min-height: 128px; resize: vertical; }
+.field input:focus-visible, .field textarea:focus-visible, .field .is-focus { outline: 2px solid var(--color-focus); outline-offset: 2px; border-color: var(--color-text); border-radius: 14px; }
+.field [aria-invalid="true"] { border-color: var(--color-error); box-shadow: inset 0 0 0 1px var(--color-error); }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 10px; }
+.legend { padding: 0; display: flex; flex-wrap: wrap; gap: 0.5em; align-items: baseline; }
+.legend small { font-weight: 400; color: var(--color-text-muted); font-size: 0.875rem; }
+.sub label { font-weight: 500; font-size: 0.875rem; color: var(--color-text-muted); }
+.err { color: var(--color-error); font-size: 0.9rem; font-weight: 600; display: flex; gap: 0.5em; align-items: flex-start; }
+.err:empty { display: none; }
+.err::before { content: "!"; flex: none; width: 1.25em; height: 1.25em; border-radius: 50%; background: var(--color-error); color: var(--color-surface); display: grid; place-items: center; font: 700 0.75em/1 var(--font-mono); margin-top: 0.15em; }
+.err:not(:empty) { animation: rise var(--dur-base) var(--ease-out) both; --rise: -4px; }
+.check { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: 0.9375rem; }
+.check input { width: 24px; height: 24px; margin: 1px 0 0; accent-color: var(--color-text); }
+.check input[aria-invalid="true"] { outline: 2px solid var(--color-error); outline-offset: 2px; }
+.submit { justify-self: start; min-width: 13rem; }
+.submit .swap > * { display: inline-flex; align-items: center; justify-content: center; gap: 0.6em; transition: opacity var(--dur-base) ease, filter var(--dur-base) ease, transform var(--dur-base) var(--ease-out); }
+.submit .l-send { opacity: 0; filter: blur(3px); transform: translateY(6px); }
+.submit[data-state="sending"] .l-idle { opacity: 0; filter: blur(3px); transform: translateY(-6px); }
+.submit[data-state="sending"] .l-send { opacity: 1; filter: none; transform: none; }
+.spinner { width: 1.05em; height: 1.05em; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; }
+.submit[data-state="sending"] .spinner { animation: spin 600ms linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.success { display: grid; align-content: center; justify-items: start; gap: 0.9rem; height: 100%; }
+.success[hidden] { display: none; }
+.success h3 { font: 700 clamp(1.875rem, 3.4vw, 2.75rem)/1.02 var(--font-display); letter-spacing: -0.03em; }
+.success h3:focus-visible { outline-offset: 6px; }
+.success p { font-size: 1.1875rem; color: var(--color-text-muted); }
+.tick { width: 72px; height: 72px; color: var(--color-success); margin-bottom: 0.5rem; }
+.tick circle { stroke-dasharray: 202; animation: stroke 520ms var(--ease-in-out) 120ms both; }
+.tick path { stroke-dasharray: 44; animation: stroke 300ms var(--ease-out) 540ms both; }
+@keyframes stroke { from { stroke-dashoffset: var(--len, 202); } to { stroke-dashoffset: 0; } }
+.tick path { --len: 44; }
+
+.agenda p { color: var(--color-text-muted); }
+.cal { margin-top: 1.5rem; border: 1.5px dashed var(--color-border-strong); border-radius: var(--radius-m); padding: 18px; }
+.cal-head { display: flex; justify-content: space-between; align-items: center; color: var(--color-text-muted); margin-bottom: 14px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal-grid i { aspect-ratio: 1; border-radius: 10px; background: var(--color-border); opacity: 0.55; }
+.cal-grid i.on { background: var(--color-primary); opacity: 1; }
+.cal-note { margin-top: 14px; color: var(--color-text-muted); }
+
+/* =====================================================================
+   11. FOOTER + BRAND SYSTEM
+   ===================================================================== */
+.footer { padding-block: clamp(48px, 7vw, 96px) calc(32px + env(safe-area-inset-bottom)); }
+.footer .logo { font-size: clamp(3.5rem, 15vw, 13rem); letter-spacing: -0.055em; }
+.footer-row { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; margin-top: clamp(32px, 5vw, 64px); padding-top: 1.5rem; border-top: 1.5px solid var(--color-border); }
+.footer-row a { color: var(--color-text); padding-block: 0.6em; display: inline-block; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: center; }
+.copy { color: var(--color-text-muted); font-size: 0.9375rem; margin-top: 1.25rem; }
+
+.brand { border-top: 1.5px solid var(--color-border); padding-block: clamp(56px, 7vw, 104px); }
+.brand .h2 { font-size: clamp(1.875rem, 3.4vw, 2.75rem); max-width: none; }
+.brand-intro { color: var(--color-text-muted); margin-top: 0.75rem; max-width: 60ch; }
+.brand h3 { margin: clamp(40px, 5vw, 64px) 0 1.1rem; color: var(--color-text-muted); padding-top: 1rem; border-top: 1.5px solid var(--color-text); }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.sw { border: 1.5px solid var(--color-border); border-radius: var(--radius-m); overflow: hidden; background: var(--color-surface); font-size: 0.8125rem; line-height: 1.35; }
+.sw i { display: block; height: 76px; background: var(--c); border-bottom: 1.5px solid var(--color-border); }
+.sw div { padding: 10px 12px 12px; }
+.sw b { display: block; font-size: 0.9375rem; }
+.sw code { font: 500 0.75rem var(--font-mono); color: var(--color-text-muted); }
+.sw span { display: block; color: var(--color-text-muted); margin-top: 4px; }
+.types { display: grid; gap: 10px; }
+@media (min-width: 900px) { .types { grid-template-columns: 1.4fr 1fr 1fr; } }
+.type { border: 1.5px solid var(--color-border); border-radius: var(--radius-m); padding: 20px; background: var(--color-surface); min-width: 0; }
+.type .mono { color: var(--color-text-muted); display: block; margin-bottom: 14px; }
+.type .s1 { font: 700 clamp(2.25rem, 4.6vw, 3.75rem)/0.98 var(--font-display); letter-spacing: -0.035em; }
+.type .s2 { font: 400 1.0625rem/1.5 var(--font-body); }
+.type .s3 { font: 500 0.875rem/1.6 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+.logos { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.logo-tile { border-radius: var(--radius-m); padding: 40px 24px; display: grid; place-items: center; border: 1.5px solid var(--color-border); }
+.logo-tile .logo { font-size: 2.25rem; }
+.states { display: grid; gap: 10px; }
+@media (min-width: 900px) { .states { grid-template-columns: 1fr 1fr; } }
+.state-box { border: 1.5px solid var(--color-border); border-radius: var(--radius-m); padding: 20px; background: var(--color-surface); display: flex; flex-wrap: wrap; gap: 18px 14px; align-items: flex-end; min-width: 0; }
+.state-box figure { display: grid; gap: 8px; justify-items: start; }
+.state-box figcaption { font: 500 0.6875rem var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-text-muted); }
+.state-box .field { width: min(100%, 210px); }
+.motion-table { display: grid; gap: 0; }
+.mt { display: grid; grid-template-columns: 1fr; gap: 6px 20px; padding-block: 14px; border-bottom: 1.5px solid var(--color-border); font-size: 0.9375rem; align-items: center; }
+@media (min-width: 760px) { .mt { grid-template-columns: 12.5rem 16rem 1fr 9rem; } }
+.mt code { font: 500 0.8125rem var(--font-mono); }
+.mt .val { color: var(--color-text-muted); font: 500 0.8125rem var(--font-mono); }
+.mt-track { height: 14px; border-radius: 999px; background: var(--color-background-alt); }
+.mt-run { transition: transform var(--t, 300ms) var(--e, ease); }
+.mt-run::before { content: ""; display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--color-primary); }
+.is-played .mt-run { transform: translateX(calc(100% - 14px)); }
+.motion-head { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.motion-head p { color: var(--color-text-muted); font-size: 0.9375rem; max-width: 56ch; }
+
+/* =====================================================================
+   12. REDUCED MOTION — no movement; opacity/instant only
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .h1 .w, .hero-copy .lede, .cta-block, .err:not(:empty) { animation-name: fade; animation-duration: 240ms; animation-delay: 0ms; }
+  .h1 .mark::before { animation: fade 240ms ease both; }
+  .js .reveal { transform: none; }
+  .js .reveal.in { transition: opacity 240ms ease; }
+  .slot, .js .board:not(.is-flow) .slot, .flow::before, .js .board:not(.is-flow) .flow::before, .result, .js .board:not(.is-flow) .result, .num { transition: none; }
+  .btn, .btn svg, .tab, .round, .chip, .lang button, .menu-btn, .menu-icon::before, .menu-icon::after { transition-property: background-color, color, border-color, opacity; }
+  .btn:active, .btn.is-active, button.tab:active, .round:active, .lang button:active, .js .menu-btn:active { transform: none; opacity: 0.8; }
+  .tabs-active { transition: none; }
+  .js .menu, .js .menu.is-open { transform: none; }
+  .swap > *, .submit .swap > * { transform: none !important; filter: none !important; }
+  .tick circle, .tick path { animation: none; }
+  .mt-run { transition: none; }
+  .progress { display: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="header">
+  <div class="wrap header-bar">
+    <a class="logo" href="#top" aria-label="confia.ing — inicio">confia<span class="dot" aria-hidden="true">.</span>ing</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-icon" aria-hidden="true"></span>Menú</button>
+    <nav class="menu" id="menu" aria-label="Principal">
+      <ul class="menu-links">
+        <li><a href="#donde">Dónde empezamos</a></li>
+        <li><a href="#como">Cómo lo hacemos realidad</a></li>
+      </ul>
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" aria-pressed="true" lang="es" aria-label="Español">ES</button>
+        <button type="button" aria-pressed="false" lang="en" aria-label="English">EN</button>
+      </div>
+      <a class="btn btn-primary btn-small" href="#agenda">Agenda 30 minutos</a>
+    </nav>
+  </div>
+  <div class="progress" aria-hidden="true"></div>
+</header>
+
+<main id="contenido" tabindex="-1">
+  <span id="top"></span>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <p class="mono eyebrow">Transformación de IA para empresas que ya usan tecnología</p>
+      <h1 class="h1" id="hero-title">
+        <span class="w" style="--d:0ms">Encuentra</span> <span class="w" style="--d:40ms">dónde</span> <span class="w" style="--d:75ms">la</span> <span class="w" style="--d:105ms">IA</span> <span class="w" style="--d:130ms">puede</span> <span class="w" style="--d:152ms">generar</span> <span class="w mark" style="--d:172ms">resultados</span> <span class="w" style="--d:188ms">en</span> <span class="w" style="--d:200ms">tu</span> <span class="w" style="--d:210ms">empresa.</span>
+      </h1>
+
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="lede">Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo desde el diagnóstico hasta soluciones que pueda operar y escalar.</p>
+          <div class="cta-block">
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#agenda">Agenda una conversación de 30 minutos
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+            </div>
+            <p class="cta-note">Una conversación exploratoria, sin costo ni compromiso.</p>
+          </div>
+          <ul class="pillars mono" aria-label="Tres pilares">
+            <li>Estrategia</li><li>Capacitación</li><li>Automatización</li>
+          </ul>
+        </div>
+
+        <figure class="board theme-dark" id="board">
+          <div class="board-top">
+            <span class="mono">Tu operación</span>
+            <span class="state swap mono" aria-hidden="true"><span class="s-a">A mano</span><span class="s-b">En flujo</span></span>
+          </div>
+          <ol class="flow" aria-hidden="true">
+            <li class="row"><span class="num" style="--d:0ms">1</span><span class="slot" style="--sx:190px;--sy:34px;--sr:-11deg;--d:0ms"><span class="chip" data-drag>Revisar</span></span></li>
+            <li class="row"><span class="num" style="--d:70ms">2</span><span class="slot" style="--sx:52px;--sy:96px;--sr:8deg;--d:70ms"><span class="chip" data-drag>Copiar</span></span></li>
+            <li class="row"><span class="num" style="--d:130ms">3</span><span class="slot" style="--sx:214px;--sy:-74px;--sr:13deg;--d:130ms"><span class="chip" data-drag>Clasificar</span></span></li>
+            <li class="row"><span class="num" style="--d:180ms">4</span><span class="slot" style="--sx:18px;--sy:-122px;--sr:-7deg;--d:180ms"><span class="chip" data-drag>Responder</span></span></li>
+            <li class="row"><span class="num" style="--d:220ms">+</span><span class="res">
+              <span class="slot" style="--sx:236px;--sy:-196px;--sr:16deg;--d:220ms"><span class="chip chip-ghost" data-drag>Datos</span></span>
+              <span class="slot" style="--sx:70px;--sy:-52px;--sr:-13deg;--d:250ms"><span class="chip chip-ghost" data-drag>Herramientas</span></span>
+              <span class="slot" style="--sx:-150px;--sy:-250px;--sr:9deg;--d:270ms"><span class="chip chip-ghost" data-drag>Personas</span></span></span></li>
+            <li class="row row-result"><span class="num" style="--d:300ms"></span><span class="result"><i></i>Resultado</span></li>
+          </ol>
+          <figcaption class="vh">Ilustración: tareas hechas a mano y dispersas —revisar, copiar, clasificar, responder— se ordenan en un flujo claro que termina en un resultado.</figcaption>
+          <div class="board-foot">
+            <span class="drag-hint">Arrastra una pieza: vuelve a su lugar.</span>
+            <button class="btn btn-secondary btn-small" type="button" id="board-toggle">Desordenar</button>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 1. DÓNDE EMPEZAMOS ============ -->
+  <section class="section" id="donde" aria-labelledby="donde-title">
+    <div class="wrap">
+      <div class="section-head reveal" data-reveal>
+        <p class="mono eyebrow">Dónde empezamos</p>
+        <h2 class="h2" id="donde-title">Empezamos por el trabajo, no por la tecnología.</h2>
+        <p class="lede">Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.</p>
+      </div>
+
+      <ol class="frictions" data-reveal aria-label="Cuatro fricciones reconocibles">
+        <li class="friction reveal" style="--d:0ms"><span class="mono n">01</span><h3>Tareas repetitivas que cuestan horas.</h3><p>Trabajo operativo y verificable que tu equipo hace a mano cada semana: revisar, copiar, clasificar, responder.</p></li>
+        <li class="friction reveal" style="--d:70ms"><span class="mono n">02</span><h3>Sistemas y datos que no se hablan.</h3><p>Información repartida entre herramientas, con personas haciendo de puente.</p></li>
+        <li class="friction reveal" style="--d:125ms"><span class="mono n">03</span><h3>IA sin estrategia.</h3><p>Licencias compradas y equipos improvisando, sin saber si eso mejora la productividad.</p></li>
+        <li class="friction reveal" style="--d:165ms"><span class="mono n">04</span><h3>Equipos de software que no saben por dónde empezar.</h3><p>Quieren integrar IA en su ciclo de desarrollo, pero no tienen un método para hacerlo en cada fase.</p></li>
+      </ol>
+
+      <div class="questions theme-dark reveal" data-reveal>
+        <h3 id="q-title">Preguntas que respondemos contigo</h3>
+        <ul aria-labelledby="q-title">
+          <li>¿En qué proceso tiene sentido usar IA?</li>
+          <li>¿Qué datos, herramientas y personas necesito?</li>
+          <li>¿Cómo justifico el costo y mido el impacto?</li>
+          <li>¿Cómo evito fugas de información y soluciones difíciles de mantener?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. CÓMO LO HACEMOS REALIDAD ============ -->
+  <section class="section theme-dark" id="como" aria-labelledby="como-title">
+    <div class="wrap">
+      <div class="section-head reveal" data-reveal>
+        <p class="mono eyebrow">Cómo lo hacemos realidad</p>
+        <h2 class="h2" id="como-title">Un recorrido que hacemos juntos.</h2>
+        <p class="lede">Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.</p>
+      </div>
+
+      <div class="journey reveal" data-reveal id="journey">
+        <div class="tabs-scroll">
+          <div class="tabs-inner">
+            <div class="tablist" role="tablist" aria-label="Etapas del recorrido">
+              <button class="tab" type="button" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true"><span class="tn" aria-hidden="true">01</span>Conversación inicial</button>
+              <button class="tab" type="button" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1"><span class="tn" aria-hidden="true">02</span>Diagnóstico</button>
+              <button class="tab" type="button" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1"><span class="tn" aria-hidden="true">03</span>Roadmap</button>
+              <button class="tab" type="button" role="tab" id="tab-4" aria-controls="panel-4" aria-selected="false" tabindex="-1"><span class="tn" aria-hidden="true">04</span>Piloto</button>
+              <button class="tab" type="button" role="tab" id="tab-5" aria-controls="panel-5" aria-selected="false" tabindex="-1"><span class="tn" aria-hidden="true">05</span>Escala y transferencia</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stages">
+          <div class="track">
+            <section class="stage" role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+              <span class="stage-num" aria-hidden="true">01</span>
+              <div class="stage-head"><h3>Conversación inicial</h3><span class="badge mono">30 minutos</span></div>
+              <dl class="stage-grid">
+                <div><dt class="mono">Qué hacemos</dt><dd>Exploramos tus procesos y dónde podría aplicarse IA. Es una conversación, no un diagnóstico ni un compromiso.</dd></div>
+                <div><dt class="mono">Qué recibes</dt><dd>Una primera lectura de oportunidades y una idea clara de si podemos ayudarte.</dd></div>
+                <div class="next"><dt class="mono">Siguiente paso</dt><dd>Decides si avanzamos a un diagnóstico.</dd></div>
+              </dl>
+            </section>
+            <section class="stage" role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0">
+              <span class="stage-num" aria-hidden="true">02</span>
+              <div class="stage-head"><h3>Diagnóstico</h3></div>
+              <dl class="stage-grid">
+                <div><dt class="mono">Qué hacemos</dt><dd>Evaluamos oportunidades, fricciones y qué tan preparada está tu empresa: datos, herramientas y personas.</dd></div>
+                <div><dt class="mono">Qué recibes</dt><dd>Oportunidades priorizadas y lo que hay que preparar. El alcance se acuerda contigo.</dd></div>
+                <div class="next"><dt class="mono">Siguiente paso</dt><dd>Elegimos juntos por dónde empezar.</dd></div>
+              </dl>
+            </section>
+            <section class="stage" role="tabpanel" id="panel-3" aria-labelledby="tab-3" tabindex="0">
+              <span class="stage-num" aria-hidden="true">03</span>
+              <div class="stage-head"><h3>Roadmap</h3></div>
+              <dl class="stage-grid">
+                <div><dt class="mono">Qué hacemos</dt><dd>Trazamos un plan de alto nivel: etapas, personas involucradas, costos y resultados esperados.</dd></div>
+                <div><dt class="mono">Qué recibes</dt><dd>El estado actual frente al estado deseado para los próximos meses.</dd></div>
+                <div class="next"><dt class="mono">Siguiente paso</dt><dd>Acordamos el primer piloto.</dd></div>
+              </dl>
+            </section>
+            <section class="stage" role="tabpanel" id="panel-4" aria-labelledby="tab-4" tabindex="0">
+              <span class="stage-num" aria-hidden="true">04</span>
+              <div class="stage-head"><h3>Piloto</h3></div>
+              <dl class="stage-grid">
+                <div><dt class="mono">Qué hacemos</dt><dd>Implementamos con demos, revisiones y ciclos de feedback.</dd></div>
+                <div><dt class="mono">Qué recibes</dt><dd>Una solución funcionando, con métricas y OKR del proyecto y del impacto en el negocio.</dd></div>
+                <div class="next"><dt class="mono">Siguiente paso</dt><dd>Si demuestra valor, lo escalamos.</dd></div>
+              </dl>
+            </section>
+            <section class="stage" role="tabpanel" id="panel-5" aria-labelledby="tab-5" tabindex="0">
+              <span class="stage-num" aria-hidden="true">05</span>
+              <div class="stage-head"><h3>Escala y transferencia</h3></div>
+              <dl class="stage-grid">
+                <div><dt class="mono">Qué hacemos</dt><dd>Diseñamos la solución para crecer, con monitoreo continuo.</dd></div>
+                <div><dt class="mono">Qué recibes</dt><dd>Capacitación y documentación para que tu equipo la opere. El soporte continuo es opcional.</dd></div>
+                <div class="next"><dt class="mono">Siguiente paso</dt><dd>Tu equipo queda a cargo.</dd></div>
+              </dl>
+            </section>
+          </div>
+        </div>
+
+        <div class="journey-ctrl">
+          <button class="round" type="button" id="j-prev" aria-label="Etapa anterior" aria-disabled="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M15 9H3m0 0 5-5M3 9l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="round" type="button" id="j-next" aria-label="Etapa siguiente"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span class="mono count" id="j-count" aria-hidden="true">01 / 05</span>
+          <span class="hint hint-touch">Desliza para cambiar de etapa</span>
+          <span class="hint hint-keys">Usa ← → dentro de las pestañas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LO QUE OFRECEMOS ============ -->
+  <section class="section" id="servicios" aria-labelledby="serv-title">
+    <div class="wrap">
+      <div class="section-head reveal" data-reveal>
+        <h2 class="h2" id="serv-title">Lo que ofrecemos</h2>
+      </div>
+      <ul class="services" data-reveal>
+        <li class="service service-main theme-signal reveal" style="--d:0ms">
+          <span class="tag tag-solid mono" style="align-self:flex-start">Servicio principal</span>
+          <div style="display:grid;gap:1.25rem">
+            <h3>Transformación de IA</h3>
+            <p>Estrategia, capacitación y automatización integradas para llevar la IA de la idea al resultado.</p>
+            <div class="tagrow mono" aria-hidden="true"><span class="tag">Estrategia</span><span class="tag">Capacitación</span><span class="tag">Automatización</span></div>
+          </div>
+        </li>
+        <li class="service reveal" style="--d:90ms"><span class="mono idx">02</span><h3>Capacitación en IA.</h3><p>Para líderes y perfiles no técnicos: usar IA con criterio en flujos de trabajo reales.</p></li>
+        <li class="service reveal" style="--d:140ms"><span class="mono idx">03</span><h3>AI-SDLC.</h3><p>Acompañamos a equipos de software a integrar IA en cada fase del ciclo de desarrollo.</p></li>
+        <li class="service reveal" style="--d:180ms"><span class="mono idx">04</span><h3>Software a la medida.</h3><p>Cuando la solución necesita construirse.</p></li>
+        <li class="service reveal" style="--d:210ms"><span class="mono idx">05</span><h3>Soluciones generativas y agentivas.</h3><p>Asesoría y construcción de agentes y sistemas basados en IA generativa.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ POR QUÉ CONFIAR ============ -->
+  <section class="section trust" id="confianza" aria-labelledby="trust-title">
+    <div class="wrap trust-grid">
+      <div class="reveal" data-reveal>
+        <p class="mono eyebrow">Por qué confiar</p>
+        <h2 class="h2" id="trust-title">Experiencia del equipo</h2>
+        <ul class="xp">
+          <li><span class="mono" aria-hidden="true">A</span>Más de cinco años en empresas SaaS de EE. UU. con clientes en todo el mundo.</li>
+          <li><span class="mono" aria-hidden="true">B</span>Sector salud: un sistema RAG agentivo para gestión documental de tratamientos médicos, con modelos locales y en la nube.</li>
+          <li><span class="mono" aria-hidden="true">C</span>Eficiencia en el uso de LLM: costos, modelos locales y enrutamiento de modelos.</li>
+          <li><span class="mono" aria-hidden="true">D</span>AI-SDLC: asesoría en todas las fases del ciclo de desarrollo.</li>
+        </ul>
+        <p class="xp-note">Experiencia previa de quienes integran el equipo.</p>
+      </div>
+      <div class="reveal" data-reveal style="--d:80ms">
+        <p class="mono eyebrow">Tres principios</p>
+        <ul class="principles">
+          <li>Mantenible</li><li>Seguro</li><li>Medible</li>
+        </ul>
+        <p class="security">Seguridad: consideramos riesgos como fuga de información y prompt injection, y los requisitos de datos personales y normativos que apliquen a tu contexto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CIERRE ============ -->
+  <section class="section closing theme-signal" id="cierre" aria-labelledby="cierre-title">
+    <div class="wrap">
+      <div class="reveal" data-reveal>
+        <h2 class="h2" id="cierre-title">Tu equipo ya trabaja duro. Hagamos que la IA trabaje con él.</h2>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#agenda">Agenda una conversación de 30 minutos
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="btn btn-secondary" href="#consulta">Cuéntanos dónde quieres aplicar IA</a>
+        </div>
+      </div>
+
+      <div class="contact">
+        <div class="card theme-light" id="consulta">
+          <form class="form" id="form" novalidate>
+            <h3 style="font:700 clamp(1.5rem,2.6vw,2.125rem)/1.08 var(--font-display);letter-spacing:-0.025em">Cuéntanos dónde quieres aplicar IA</h3>
+            <div class="two">
+              <div class="field"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" aria-describedby="e-nombre" enterkeyhint="next"><p class="err" id="e-nombre"></p></div>
+              <div class="field"><label for="f-empresa">Empresa</label><input id="f-empresa" name="empresa" type="text" autocomplete="organization" enterkeyhint="next"></div>
+            </div>
+            <fieldset aria-describedby="e-contacto">
+              <legend class="legend">¿Cómo te contactamos? <small>Correo o teléfono, al menos uno.</small></legend>
+              <div class="two sub">
+                <div class="field"><label for="f-correo">Correo</label><input id="f-correo" name="correo" type="email" inputmode="email" autocomplete="email" autocapitalize="none" aria-describedby="e-contacto" enterkeyhint="next"></div>
+                <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="e-contacto" enterkeyhint="next"></div>
+              </div>
+              <p class="err" id="e-contacto"></p>
+            </fieldset>
+            <div class="field"><label for="f-donde">¿Dónde quieres aplicar IA?</label><textarea id="f-donde" name="donde" rows="4"></textarea></div>
+            <div>
+              <label class="check"><input type="checkbox" id="f-acepto" name="acepto" aria-describedby="e-acepto"><span>Acepto el tratamiento de mis datos para responder mi solicitud, según la <a href="#privacidad">Política de privacidad</a>.</span></label>
+              <p class="err" id="e-acepto" style="margin-top:8px"></p>
+            </div>
+            <button class="btn btn-primary submit" type="submit" data-state="idle">
+              <span class="swap"><span class="l-idle">Enviar consulta</span><span class="l-send" aria-hidden="true"><span class="spinner"></span>Enviando…</span></span>
+            </button>
+          </form>
+          <div class="success" id="success" role="status" hidden>
+            <svg class="tick" viewBox="0 0 72 72" fill="none" aria-hidden="true"><circle cx="36" cy="36" r="32" stroke="currentColor" stroke-width="4" stroke-linecap="round" transform="rotate(-90 36 36)"/><path d="M23 37.5 32 46l17-19" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3 tabindex="-1">Recibimos tu consulta.</h3>
+            <p>Te contactaremos pronto.</p>
+            <button class="btn btn-secondary btn-small" type="button" id="again" style="margin-top:0.75rem">Enviar otra consulta</button>
+          </div>
+        </div>
+
+        <div class="card agenda theme-dark" id="agenda" tabindex="-1" aria-labelledby="agenda-title">
+          <h3 id="agenda-title">Agenda una conversación de 30 minutos</h3>
+          <p>Una conversación exploratoria, sin costo ni compromiso.</p>
+          <div class="cal" aria-hidden="true">
+            <div class="cal-head mono"><span>Calendario</span><span>30 min</span></div>
+            <div class="cal-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <p class="cal-note mono">Espacio reservado · aquí se cargará Calendly</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ PIE ============ -->
+<footer class="footer theme-dark">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="confia.ing — volver arriba">confia<span class="dot" aria-hidden="true">.</span>ing</a>
+    <div class="footer-row">
+      <a href="mailto:hola@confia.ing">hola@confia.ing</a>
+      <div class="footer-links">
+        <a href="#privacidad" id="privacidad">Privacidad</a>
+        <a href="#terminos" id="terminos">Términos</a>
+        <div class="lang" role="group" aria-label="Idioma">
+          <button type="button" aria-pressed="true" lang="es" aria-label="Español">ES</button>
+          <button type="button" aria-pressed="false" lang="en" aria-label="English">EN</button>
+        </div>
+      </div>
+    </div>
+    <p class="copy">© 2026 Confia.ing</p>
+  </div>
+</footer>
+
+<!-- ============ SISTEMA DE MARCA ============ -->
+<section class="brand theme-light" aria-labelledby="brand-title">
+  <div class="wrap">
+    <p class="mono eyebrow">Propuesta 2 · Movimiento y oficio</p>
+    <h2 class="h2" id="brand-title">Sistema de marca</h2>
+    <p class="brand-intro">Tinta, papel y una sola señal. El punto de «confia.ing» es el motivo: lo que llega a su sitio. El carácter lo pone el movimiento, que siempre responde a algo.</p>
+
+    <h3 class="mono">Paleta — primitivos y roles</h3>
+    <div class="swatches">
+      <div class="sw"><i style="--c:var(--ink-900)"></i><div><b>Tinta 900</b><code>#15120F</code><span>--color-text · --color-focus · fondo oscuro</span></div></div>
+      <div class="sw"><i style="--c:var(--ink-800)"></i><div><b>Tinta 800</b><code>#221E1A</code><span>--color-surface (oscuro)</span></div></div>
+      <div class="sw"><i style="--c:var(--ink-700)"></i><div><b>Tinta 700</b><code>#3A342E</code><span>--color-border (oscuro)</span></div></div>
+      <div class="sw"><i style="--c:var(--ink-500)"></i><div><b>Tinta 500</b><code>#5E564E</code><span>--color-text-muted · borde de controles</span></div></div>
+      <div class="sw"><i style="--c:var(--ink-300)"></i><div><b>Tinta 300</b><code>#B5ADA2</code><span>texto secundario sobre oscuro</span></div></div>
+      <div class="sw"><i style="--c:var(--paper-0)"></i><div><b>Blanco</b><code>#FFFFFF</code><span>--color-surface</span></div></div>
+      <div class="sw"><i style="--c:var(--paper-50)"></i><div><b>Papel 50</b><code>#FAF8F4</code><span>--color-background</span></div></div>
+      <div class="sw"><i style="--c:var(--paper-100)"></i><div><b>Papel 100</b><code>#F0EDE6</code><span>--color-background-alt</span></div></div>
+      <div class="sw"><i style="--c:var(--paper-200)"></i><div><b>Papel 200</b><code>#DCD6CB</code><span>--color-border</span></div></div>
+      <div class="sw"><i style="--c:var(--signal-500)"></i><div><b>Bermellón 500</b><code>#F2431D</code><span>--color-primary (texto en tinta)</span></div></div>
+      <div class="sw"><i style="--c:var(--signal-400)"></i><div><b>Bermellón 400</b><code>#FF6A45</code><span>hover primario · --color-link (oscuro)</span></div></div>
+      <div class="sw"><i style="--c:var(--signal-700)"></i><div><b>Bermellón 700</b><code>#B8290A</code><span>--color-link · acento de texto</span></div></div>
+      <div class="sw"><i style="--c:var(--sun-400)"></i><div><b>Sol 400</b><code>#FFC53D</code><span>--color-highlight · foco sobre oscuro</span></div></div>
+      <div class="sw"><i style="--c:var(--red-600)"></i><div><b>Rojo 600</b><code>#B3261E</code><span>--color-error</span></div></div>
+      <div class="sw"><i style="--c:var(--green-700)"></i><div><b>Verde 700</b><code>#1B6B45</code><span>--color-success</span></div></div>
+    </div>
+
+    <h3 class="mono">Tipografía</h3>
+    <div class="types">
+      <div class="type"><span class="mono">Bricolage Grotesque · 600–800 · titulares</span><p class="s1">Empezamos por el trabajo.</p></div>
+      <div class="type"><span class="mono">Instrument Sans · 400–600 · texto</span><p class="s2">Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo.</p></div>
+      <div class="type"><span class="mono">JetBrains Mono · 500 · etiquetas</span><p class="s3">01 / 05 · Siguiente paso · 30 minutos</p></div>
+    </div>
+
+    <h3 class="mono">Logotipo</h3>
+    <div class="logos">
+      <div class="logo-tile theme-light"><span class="logo">confia<span class="dot" aria-hidden="true">.</span>ing</span></div>
+      <div class="logo-tile theme-dark"><span class="logo">confia<span class="dot" aria-hidden="true">.</span>ing</span></div>
+      <div class="logo-tile theme-signal"><span class="logo">confia<span class="dot" aria-hidden="true">.</span>ing</span></div>
+    </div>
+
+    <h3 class="mono">Estados — botones, enlaces y campos</h3>
+    <div class="states">
+      <div class="state-box">
+        <figure><span class="btn btn-primary btn-small">Primario</span><figcaption>Reposo</figcaption></figure>
+        <figure><span class="btn btn-primary btn-small is-hover">Primario</span><figcaption>Hover</figcaption></figure>
+        <figure><span class="btn btn-primary btn-small is-active">Primario</span><figcaption>Presionado · 0.97</figcaption></figure>
+        <figure><span class="btn btn-primary btn-small is-focus">Primario</span><figcaption>Foco</figcaption></figure>
+        <figure><span class="btn btn-secondary btn-small">Secundario</span><figcaption>Reposo</figcaption></figure>
+        <figure><span class="btn btn-secondary btn-small is-hover">Secundario</span><figcaption>Hover</figcaption></figure>
+        <figure><span class="btn btn-secondary btn-small is-disabled">Secundario</span><figcaption>Inactivo</figcaption></figure>
+        <figure><a href="#brand-title">Enlace de texto</a><figcaption>Enlace</figcaption></figure>
+      </div>
+      <div class="state-box">
+        <figure class="field"><input type="text" value="Reposo" aria-label="Campo en reposo" readonly><figcaption>Reposo</figcaption></figure>
+        <figure class="field"><input class="is-focus" type="text" value="Foco" aria-label="Campo con foco" readonly><figcaption>Foco</figcaption></figure>
+        <figure class="field"><input type="text" value="correo@" aria-label="Campo con error" aria-invalid="true" readonly><p class="err">Revisa el correo.</p><figcaption>Error</figcaption></figure>
+      </div>
+    </div>
+
+    <h3 class="mono">Movimiento — tokens</h3>
+    <div id="motion-demo">
+      <div class="motion-head">
+        <p>Entra y sale con ease-out; lo que se mueve en pantalla, ease-in-out; lo que se arrastra, resortes que heredan la velocidad del gesto. Las acciones de teclado no se animan.</p>
+        <button class="btn btn-secondary btn-small" type="button" id="motion-play">Reproducir</button>
+      </div>
+      <div class="motion-table">
+        <div class="mt"><code>--dur-press</code><span class="val">120ms · ease-out</span><span>Respuesta al presionar (escala 0.97)</span><div class="mt-track"><div class="mt-run" style="--t:var(--dur-press);--e:var(--ease-out)"></div></div></div>
+        <div class="mt"><code>--dur-fast</code><span class="val">160ms · ease</span><span>Hover, color, salidas</span><div class="mt-track"><div class="mt-run" style="--t:var(--dur-fast);--e:ease"></div></div></div>
+        <div class="mt"><code>--dur-base</code><span class="val">220ms · ease-out</span><span>Menú móvil, errores, cambio de etiqueta</span><div class="mt-track"><div class="mt-run" style="--t:var(--dur-base);--e:var(--ease-out)"></div></div></div>
+        <div class="mt"><code>--dur-move</code><span class="val">280ms · ease-in-out</span><span>Indicador de pestañas (clip-path)</span><div class="mt-track"><div class="mt-run" style="--t:var(--dur-move);--e:var(--ease-in-out)"></div></div></div>
+        <div class="mt"><code>--dur-reveal</code><span class="val">520ms · ease-out</span><span>Entradas al hacer scroll, una por contenedor</span><div class="mt-track"><div class="mt-run" style="--t:var(--dur-reveal);--e:var(--ease-out)"></div></div></div>
+        <div class="mt"><code>--dur-hero</code><span class="val">700ms · ease-in-out</span><span>Titular y piezas que se ordenan en flujo</span><div class="mt-track"><div class="mt-run" style="--t:var(--dur-hero);--e:var(--ease-in-out)"></div></div></div>
+        <div class="mt"><code>--ease-out</code><span class="val">cubic-bezier(.23, 1, .32, 1)</span><span>Todo lo que entra o sale</span><span></span></div>
+        <div class="mt"><code>--ease-in-out</code><span class="val">cubic-bezier(.77, 0, .175, 1)</span><span>Movimiento dentro de la pantalla</span><span></span></div>
+        <div class="mt"><code>--ease-drawer</code><span class="val">cubic-bezier(.32, .72, 0, 1)</span><span>Reservado para hojas y paneles</span><span></span></div>
+        <div class="mt"><code>--spring-move</code><span class="val">respuesta .38 · amort. 1</span><span>Cambio de etapa con clic: sin rebote</span><span></span></div>
+        <div class="mt"><code>--spring-flick</code><span class="val">respuesta .36 · amort. .86</span><span>Cambio de etapa tras deslizar: hereda la velocidad</span><span></span></div>
+        <div class="mt"><code>--spring-toy</code><span class="val">respuesta .42 · amort. .62</span><span>Piezas del hero al soltarlas</span><span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var css = getComputedStyle(document.documentElement);
+  var token = function (name, fallback) { var v = parseFloat(css.getPropertyValue(name)); return isNaN(v) ? fallback : v; };
+  var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+
+  /* ---------- Spring: Apple-style response + damping ratio, velocity-aware, stoppable ---------- */
+  function spring(o) {
+    var k = Math.pow(2 * Math.PI / o.response, 2), c = 4 * Math.PI * o.damping / o.response;
+    var x = o.from, v = o.velocity || 0, last = performance.now(), id = 0;
+    function frame(now) {
+      var dt = Math.min((now - last) / 1000, 0.064); last = now;
+      var n = Math.max(1, Math.ceil(dt / 0.004)), h = dt / n;
+      for (var i = 0; i < n; i++) { v += (-k * (x - o.to) - c * v) * h; x += v * h; }
+      if (Math.abs(x - o.to) < 0.4 && Math.abs(v) < 6) { id = 0; o.update(o.to, 0); if (o.done) o.done(); return; }
+      o.update(x, v); id = requestAnimationFrame(frame);
+    }
+    id = requestAnimationFrame(frame);
+    return { stop: function () { if (id) cancelAnimationFrame(id); id = 0; }, get active() { return !!id; } };
+  }
+  /* Apple's momentum projection: where would this flick come to rest? */
+  function project(v) { var d = 0.994; return (v / 1000) * d / (1 - d); }
+  function rubber(over, dim) { return (over * dim * 0.55) / (dim + 0.55 * Math.abs(over)); }
+
+  /* ---------- Mobile menu ---------- */
+  (function () {
+    var btn = $('.menu-btn'), menu = $('#menu');
+    if (!btn || !menu) return;
+    function set(open, returnFocus) {
+      btn.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('is-open', open);
+      if (!open && returnFocus) btn.focus();
+    }
+    btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
+    menu.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') set(false, true); });
+    document.addEventListener('pointerdown', function (e) { if (btn.getAttribute('aria-expanded') === 'true' && !e.target.closest('.header')) set(false); });
+  })();
+
+  /* ---------- Scroll reveals ---------- */
+  (function () {
+    var groups = $$('[data-reveal]');
+    function show(g) { (g.classList.contains('reveal') ? [g] : $$('.reveal', g)).forEach(function (el) { el.classList.add('in'); }); }
+    if (!('IntersectionObserver' in window)) { groups.forEach(show); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { show(en.target); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    groups.forEach(function (g) { io.observe(g); });
+  })();
+
+  /* ---------- Hero board: assemble once in view; toggle; fling the pieces ---------- */
+  (function () {
+    var board = $('#board'), toggle = $('#board-toggle');
+    if (!board) return;
+    function setFlow(on) { board.classList.toggle('is-flow', on); toggle.textContent = on ? 'Desordenar' : 'Ordenar'; }
+    if (reduce.matches || !('IntersectionObserver' in window)) setFlow(true);
+    else {
+      var io = new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) { io.disconnect(); setTimeout(function () { setFlow(true); }, 450); }
+      }, { threshold: 0.35 });
+      io.observe(board);
+    }
+    toggle.addEventListener('click', function () { setFlow(!board.classList.contains('is-flow')); });
+
+    // Mouse / pen only: on touch the pieces must never trap the page scroll.
+    $$('[data-drag]', board).forEach(function (chip) {
+      var s = { x: 0, y: 0, vx: 0, vy: 0, ax: null, ay: null, drag: null };
+      function paint(scale) { chip.style.transform = 'translate(' + s.x.toFixed(1) + 'px,' + s.y.toFixed(1) + 'px) rotate(' + (s.x * 0.03).toFixed(2) + 'deg) scale(' + scale + ')'; }
+      function stop() { if (s.ax) s.ax.stop(); if (s.ay) s.ay.stop(); }
+      chip.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'touch' || e.button !== 0 || s.drag) return;
+        e.preventDefault(); stop();
+        chip.setPointerCapture(e.pointerId); chip.classList.add('is-held');
+        s.drag = { id: e.pointerId, ox: e.clientX - s.x, oy: e.clientY - s.y, hist: [] }; // respect the grab offset
+        paint(1.05);
+      });
+      chip.addEventListener('pointermove', function (e) {
+        if (!s.drag || e.pointerId !== s.drag.id) return;
+        s.x = e.clientX - s.drag.ox; s.y = e.clientY - s.drag.oy; paint(1.05);
+        var h = s.drag.hist; h.push({ t: e.timeStamp, x: e.clientX, y: e.clientY });
+        while (h.length > 2 && e.timeStamp - h[0].t > 90) h.shift();
+      });
+      function release(e) {
+        if (!s.drag || e.pointerId !== s.drag.id) return;
+        var h = s.drag.hist; s.drag = null; s.vx = s.vy = 0;
+        if (h.length > 1) { var a = h[0], b = h[h.length - 1], dt = b.t - a.t; if (dt > 0) { s.vx = (b.x - a.x) / dt * 1000; s.vy = (b.y - a.y) / dt * 1000; } }
+        if (reduce.matches) { s.x = s.y = 0; chip.style.transform = ''; chip.classList.remove('is-held'); return; }
+        var cfg = { response: token('--spring-toy-response', 0.42), damping: token('--spring-toy-damping', 0.62) }, pending = 2;
+        function done() { if (--pending === 0 && !s.drag) { chip.style.transform = ''; chip.classList.remove('is-held'); } }
+        // Independent X and Y springs, each starting from the pointer's release velocity.
+        s.ax = spring({ from: s.x, to: 0, velocity: s.vx, response: cfg.response, damping: cfg.damping, update: function (x) { s.x = x; paint(1); }, done: done });
+        s.ay = spring({ from: s.y, to: 0, velocity: s.vy, response: cfg.response, damping: cfg.damping, update: function (y) { s.y = y; paint(1); }, done: done });
+      }
+      chip.addEventListener('pointerup', release);
+      chip.addEventListener('pointercancel', release);
+    });
+  })();
+
+  /* ---------- Journey: tabs + clip-path indicator + swipeable, interruptible track ---------- */
+  (function () {
+    var root = $('#journey'); if (!root) return;
+    var tabs = $$('[role="tab"]', root), panels = $$('[role="tabpanel"]', root);
+    var scroller = $('.tabs-scroll', root), inner = $('.tabs-inner', root), list = $('.tablist', root);
+    var vp = $('.stages', root), track = $('.track', root);
+    var prev = $('#j-prev'), next = $('#j-next'), count = $('#j-count');
+    var n = tabs.length, index = 0, x = 0, vel = 0, anim = null, GAP = 14;
+
+    // Duplicate the list as the "active" skin; clip-path reveals only the active tab.
+    var skin = document.createElement('div'); skin.className = 'tabs-active no-anim'; skin.setAttribute('aria-hidden', 'true');
+    tabs.forEach(function (t) { var s = document.createElement('span'); s.className = 'tab'; s.innerHTML = t.innerHTML; skin.appendChild(s); });
+    inner.appendChild(skin);
+
+    function step() { return vp.clientWidth + GAP; }
+    function setX(v) { x = v; track.style.transform = 'translate3d(' + v.toFixed(2) + 'px,0,0)'; }
+    function stop() { if (anim) { anim.stop(); anim = null; } }
+    function moveSkin(animated) {
+      var t = tabs[index], l = t.offsetLeft, r = inner.offsetWidth - l - t.offsetWidth;
+      if (!animated) skin.classList.add('no-anim');
+      skin.style.clipPath = 'inset(6px ' + r + 'px 6px ' + l + 'px round 999px)';
+      if (!animated) { void skin.offsetWidth; skin.classList.remove('no-anim'); }
+    }
+    function select(i, o) {
+      o = o || {}; i = clamp(i, 0, n - 1);
+      var animated = o.animate !== false && !reduce.matches, changed = i !== index;
+      index = i;
+      tabs.forEach(function (t, j) {
+        var on = j === i; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; panels[j].inert = !on;
+      });
+      prev.setAttribute('aria-disabled', String(i === 0)); next.setAttribute('aria-disabled', String(i === n - 1));
+      count.textContent = '0' + (i + 1) + ' / 0' + n;
+      moveSkin(animated);
+      var t = tabs[i];
+      scroller.scrollTo({ left: t.offsetLeft - (scroller.clientWidth - t.offsetWidth) / 2, behavior: animated ? 'smooth' : 'auto' });
+      var target = -i * step();
+      stop();
+      if (!animated) {
+        // Keyboard and reduced motion: instant. A short fade only when motion is reduced.
+        vel = 0; setX(target);
+        if (changed && reduce.matches && o.animate !== false && panels[i].animate) panels[i].animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'ease' });
+      } else {
+        var flick = !!o.flick;
+        anim = spring({
+          from: x, to: target, velocity: o.velocity != null ? o.velocity : vel, // start from the live position and velocity
+          response: token(flick ? '--spring-flick-response' : '--spring-move-response', 0.38),
+          damping: token(flick ? '--spring-flick-damping' : '--spring-move-damping', 1),
+          update: function (v, s) { vel = s; setX(v); }, done: function () { anim = null; vel = 0; }
+        });
+      }
+      if (o.focus) tabs[i].focus();
+    }
+
+    tabs.forEach(function (t, i) { t.addEventListener('click', function () { select(i); }); });
+    list.addEventListener('keydown', function (e) {
+      var to = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = (index + 1) % n;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') to = (index - 1 + n) % n;
+      else if (e.key === 'Home') to = 0; else if (e.key === 'End') to = n - 1;
+      if (to === null) return;
+      e.preventDefault(); select(to, { animate: false, focus: true }); // keyboard actions never animate
+    });
+    prev.addEventListener('click', function (e) { if (index > 0) select(index - 1, { animate: e.detail !== 0 }); });
+    next.addEventListener('click', function (e) { if (index < n - 1) select(index + 1, { animate: e.detail !== 0 }); });
+
+    // Touch / pen swipe: 1:1 tracking, 10px hysteresis, rubber-band at the ends, momentum projection on release.
+    var drag = null;
+    vp.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' || !e.isPrimary || drag) return;
+      drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: x, active: false, caught: !!anim, hist: [] };
+      if (anim) stop(); // catch it mid-flight
+    });
+    vp.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+      if (!drag.active) {
+        if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+          drag.active = true; drag.sx = e.clientX; drag.ox = x; dx = 0;
+          try { vp.setPointerCapture(e.pointerId); } catch (_) {}
+          vp.classList.add('is-dragging');
+        } else return;
+      }
+      var nx = drag.ox + dx, min = -(n - 1) * step(), w = vp.clientWidth;
+      if (nx > 0) nx = rubber(nx, w); else if (nx < min) nx = min - rubber(min - nx, w);
+      setX(nx);
+      var h = drag.hist; h.push({ t: e.timeStamp, x: e.clientX });
+      while (h.length > 2 && e.timeStamp - h[0].t > 90) h.shift();
+    });
+    function end(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var d = drag; drag = null; vp.classList.remove('is-dragging');
+      if (!d.active) { if (d.caught) select(clamp(Math.round(-x / step()), 0, n - 1)); return; }
+      var v = 0, h = d.hist;
+      if (e.type === 'pointerup' && h.length > 1) { var a = h[0], b = h[h.length - 1], dt = b.t - a.t; if (dt > 0) v = (b.x - a.x) / dt * 1000; }
+      var landing = Math.round(-(x + project(v)) / step());
+      select(clamp(landing, index - 1, index + 1), { velocity: v, flick: true });
+    }
+    vp.addEventListener('pointerup', end);
+    vp.addEventListener('pointercancel', end);
+    // Focus moving into an off-screen panel (e.g. find-in-page) must not leave the track scrolled.
+    vp.addEventListener('scroll', function () { vp.scrollLeft = 0; });
+
+    function layout() { stop(); vel = 0; setX(-index * step()); moveSkin(false); }
+    if ('ResizeObserver' in window) new ResizeObserver(layout).observe(inner), new ResizeObserver(layout).observe(vp);
+    else window.addEventListener('resize', layout);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+    select(0, { animate: false });
+  })();
+
+  /* ---------- Agenda: move focus to the placeholder so keyboard users land there too ---------- */
+  $$('a[href="#agenda"]').forEach(function (a) {
+    a.addEventListener('click', function () { var p = $('#agenda'); if (p) setTimeout(function () { p.focus({ preventScroll: true }); }, 0); });
+  });
+
+  /* ---------- Language switch (visual only) ---------- */
+  $$('.lang').forEach(function (g) {
+    g.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && b.getAttribute('aria-pressed') === 'false') b.title = 'English — próximamente'; });
+  });
+
+  /* ---------- Form: client-side mock, no network ---------- */
+  (function () {
+    var form = $('#form'); if (!form) return;
+    var card = $('#consulta'), ok = $('#success'), btn = $('.submit', form), again = $('#again');
+    var f = { nombre: $('#f-nombre'), correo: $('#f-correo'), tel: $('#f-tel'), acepto: $('#f-acepto') };
+    var e = { nombre: $('#e-nombre'), contacto: $('#e-contacto'), acepto: $('#e-acepto') };
+    var touched = false, sending = false;
+    function mark(inputs, box, msg) {
+      inputs.forEach(function (i) { if (msg) i.setAttribute('aria-invalid', 'true'); else i.removeAttribute('aria-invalid'); });
+      if (box.textContent !== msg) box.textContent = msg;
+    }
+    function validate() {
+      var first = null;
+      var name = f.nombre.value.trim() ? '' : 'Escribe tu nombre.';
+      mark([f.nombre], e.nombre, name); if (name) first = first || f.nombre;
+      var mail = f.correo.value.trim(), tel = f.tel.value.trim(), digits = tel.replace(/\D/g, '').length, msg = '', bad = [];
+      if (!mail && !tel) { msg = 'Déjanos un correo o un teléfono para poder responderte.'; bad = [f.correo, f.tel]; }
+      else if (mail && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)) { msg = 'Revisa el correo: parece incompleto.'; bad = [f.correo]; }
+      else if (tel && digits < 7) { msg = 'Revisa el teléfono: faltan dígitos.'; bad = [f.tel]; }
+      mark([f.correo, f.tel], e.contacto, ''); mark(bad, e.contacto, msg); if (msg) first = first || bad[0];
+      var acc = f.acepto.checked ? '' : 'Necesitamos tu aceptación para responder tu solicitud.';
+      mark([f.acepto], e.acepto, acc); if (acc) first = first || f.acepto;
+      return first;
+    }
+    form.addEventListener('input', function () { if (touched) validate(); });
+    form.addEventListener('change', function () { if (touched) validate(); });
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault(); if (sending) return;
+      touched = true;
+      var first = validate(); if (first) { first.focus(); return; }
+      sending = true; btn.dataset.state = 'sending'; btn.setAttribute('aria-disabled', 'true'); btn.setAttribute('aria-label', 'Enviando…');
+      setTimeout(function () {
+        card.style.minHeight = card.offsetHeight + 'px'; // the container keeps its size; only the content swaps
+        var out = form.animate ? form.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 150, easing: 'ease' }).finished : Promise.resolve();
+        out.then(function () {
+          form.hidden = true; ok.hidden = false;
+          if (ok.animate) ok.animate(reduce.matches ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: 'scale(0.97)' }, { opacity: 1, transform: 'scale(1)' }],
+            { duration: 320, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' });
+          $('h3', ok).focus({ preventScroll: true });
+        });
+      }, 1100);
+    });
+    again.addEventListener('click', function () {
+      form.reset(); touched = false; sending = false; validateReset();
+      btn.dataset.state = 'idle'; btn.removeAttribute('aria-disabled'); btn.removeAttribute('aria-label');
+      ok.hidden = true; form.hidden = false; card.style.minHeight = '';
+      if (form.animate) form.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'ease' });
+      f.nombre.focus({ preventScroll: true });
+    });
+    function validateReset() { mark([f.nombre], e.nombre, ''); mark([f.correo, f.tel], e.contacto, ''); mark([f.acepto], e.acepto, ''); }
+  })();
+
+  /* ---------- Motion token demo ---------- */
+  (function () {
+    var demo = $('#motion-demo'), play = $('#motion-play'); if (!demo) return;
+    play.addEventListener('click', function () { var on = demo.classList.toggle('is-played'); play.textContent = on ? 'Volver' : 'Reproducir'; });
+  })();
+})();
+</script>
+</body>
+</html>
