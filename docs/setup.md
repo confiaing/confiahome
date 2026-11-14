@@ -24,7 +24,7 @@ Claude instala la CLI como dependencia del proyecto al iniciar la Fase 4. Despu�
 npx supabase login
 ```
 
-Se abre el navegador; inicia sesión con la cuenta dueña de `confiahomeDB` y autoriza. Luego Claude enlaza el proyecto con `npx supabase link --project-ref nojdfpoqmrjpxkaqskyv`; te pedirá la **contraseña de la base de datos** (la que definiste al crear el proyecto; se puede restablecer en *Project Settings → Database*). Escríbela tú en la terminal.
+Se abre el navegador; inicia sesión con la cuenta dueña de `confiahomeDB` y autoriza. Luego Claude enlaza el proyecto con `npx supabase link --project-ref nojdfpoqmrjpxkaqskyv`. Con la CLI 3.x no pide la contraseña de la base de datos: usa la sesión de `supabase login` y crea un rol de acceso temporal. (Hecho el 2026-11-14.)
 
 ## 3. Supabase: secret key
 

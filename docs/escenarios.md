@@ -83,6 +83,23 @@ flowchart LR
 **L1-6 · Guía de marca** — M
 - GIVEN `docs/brand/` WHEN se revisa THEN documenta paleta con HEX y roles, tipografías con licencia, versiones del logo y ejemplos en móvil y escritorio.
 
+**L1 · Escenarios añadidos al proponer el lote** — detalle en `openspec/changes/l1-marca-y-sistema-de-interfaz/specs/`
+- (L1-1, U) GIVEN los temas por banda WHEN se resuelve `--color-background` THEN es el fondo acordado en cada uno AND cada tema define todos los roles `--color-*`.
+- (L1-1, U) GIVEN el bloque de tema de Tailwind WHEN se inspecciona THEN la paleta por defecto está anulada.
+- (L1-2, U) GIVEN blanco sobre coral 500 WHEN se evalúa THEN el verificador informa «no cumple» con tema, roles y contraste.
+- (L1-3, E) GIVEN la home con la red limitada WHEN cargan las fuentes THEN CLS < 0,1 AND hay como máximo dos fuentes precargadas.
+- (L1-3, U) GIVEN la carpeta de fuentes WHEN se lista THEN hay una licencia OFL por familia.
+- (L1-4, U) GIVEN los SVG de `public/brand/` WHEN se analizan THEN no tienen texto ni recursos externos AND sus colores son de la paleta AND regenerarlos da un resultado idéntico.
+- (L1-4, E) GIVEN `/es` y `/en` WHEN se piden los iconos declarados y `/favicon.ico` THEN responden 200.
+- (L1-4, M) GIVEN el favicon a 16 px sobre claro y oscuro WHEN se revisa THEN arco y punto se distinguen.
+- (L1-5, I) GIVEN un botón WHEN se activa con Enter o Espacio THEN su acción se dispara una vez.
+- (L1-5, I) GIVEN un enlace externo WHEN se renderiza THEN lleva `rel="noopener noreferrer"` AND anuncia la nueva pestaña.
+- (L1-5, I) GIVEN una casilla con foco WHEN se pulsa Espacio THEN cambia de estado.
+- (L1-5, I) GIVEN un aviso de error WHEN se renderiza THEN tiene `role="alert"`; uno de éxito, `role="status"`.
+- (L1-5, I) GIVEN cada componente en cada estado WHEN se analiza con axe THEN no hay infracciones.
+- (L1-5, E) GIVEN movimiento reducido WHEN se pulsa un botón THEN no se desplaza.
+- (L1-6, U) GIVEN la tabla de paleta de la guía WHEN se compara con `tokens.css` THEN nombres y HEX coinciden.
+
 ## L2 — Idiomas y estructura
 
 **L2-1 · Llegar en mi idioma** — U, I

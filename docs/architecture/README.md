@@ -1,6 +1,6 @@
 # Arquitectura — Confia.ing Home
 
-**Estado:** Aceptada. Actualizada el 2026-11-14 con el diseño elegido (ADR-0009 y ADR-0010)
+**Estado:** Aceptada. Actualizada el 2026-11-14 con el diseño elegido (ADR-0009 y ADR-0010) y con las fuentes y archivos de marca ([ADR-0011](adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md))
 
 Stack elegido: **Next.js (App Router) sobre Cloudflare Workers con OpenNext**, **Supabase** como base de datos, todo en planes gratuitos. Las decisiones y sus alternativas están en [adr/](adr/).
 

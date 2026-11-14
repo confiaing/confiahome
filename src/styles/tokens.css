@@ -1,0 +1,300 @@
+/*
+ * ÚNICA fuente de color, tipografía y medidas de la interfaz (ADR-0007).
+ * Los componentes consumen roles (--color-*, --scene-*), nunca primitivos.
+ * Cada tema declara TODOS los roles de color y de escena: así un tema anidado no
+ * hereda los del tema que lo contiene. tests/unit/tokens.test.ts lo comprueba.
+ */
+
+:root {
+  /* Primitivos: los quince colores de la paleta. No se añaden derivados. */
+  --indigo-900: #1B1F4B;
+  --indigo-700: #2D3380;
+  --indigo-500: #4A4E78;
+  --indigo-300: #7A7E9E;
+  --indigo-100: #D9DBF0;
+  --coral-300: #FF8566;
+  --coral-500: #FF6B4A;
+  --coral-700: #B8371A;
+  --butter-300: #FFD979;
+  --sage-300: #BFD8C2;
+  --cream-50: #FBF5EA;
+  --sand-200: #F1E6D2;
+  --white: #FFFFFF;
+  --red-700: #B3261E;
+  --green-700: #1E6B45;
+
+  /* Roles de la escena: los leen el SVG ligero y la escena 3D (ADR-0009). */
+  --scene-top: var(--white);
+  --scene-side-a: var(--indigo-100);
+  --scene-side-b: var(--sand-200);
+  --scene-alt: var(--sage-300);
+  --scene-dark: var(--indigo-700);
+  --scene-accent: var(--coral-500);
+  --scene-accent-shade: var(--coral-700);
+  --scene-line: var(--indigo-900);
+  --scene-comp-a: var(--indigo-900);
+  --scene-comp-b: var(--coral-500);
+  --scene-bead: var(--butter-300);
+
+  /* Medidas */
+  --radius: 18px;
+  --radius-s: 10px;
+  --radius-band: clamp(28px, 4vw, 48px);
+  --gutter: clamp(20px, 5vw, 64px);
+  --header-h: 68px;
+}
+
+/* static: Tailwind emite todas las variables aunque ninguna utilidad las use. */
+@theme static {
+  /* Anula la paleta de Tailwind: bg-red-500 y similares no generan estilos. */
+  --color-*: initial;
+
+  --color-background: var(--cream-50);
+  --color-background-alt: var(--sand-200);
+  --color-surface: var(--white);
+  --color-surface-strong: var(--sand-200);
+  --color-surface-warm: var(--butter-300);
+  --color-surface-fresh: var(--sage-300);
+  --color-text: var(--indigo-900);
+  --color-text-muted: var(--indigo-500);
+  --color-primary: var(--coral-500);
+  --color-primary-hover: var(--coral-300);
+  --color-on-primary: var(--indigo-900);
+  --color-emphasis: var(--coral-700);
+  --color-link: var(--indigo-700);
+  --color-accent: var(--butter-300);
+  --color-focus: var(--indigo-700);
+  --color-border: var(--sand-200);
+  --color-border-strong: var(--indigo-300);
+  --color-error: var(--red-700);
+  --color-success: var(--green-700);
+
+  /* Las variables --font-<familia> las define next/font (src/styles/fonts.ts). */
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-display-italic: var(--font-fraunces-italic), "Iowan Old Style", Georgia, serif;
+  --font-body: var(--font-figtree), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+/*
+ * Los temas van en la capa base: fijan fondo y texto por defecto, pero una utilidad
+ * en el mismo elemento (theme-dark bg-surface) debe poder más que ellos.
+ */
+@layer base {
+  /* Base: crema. Sirve para volver al tema base dentro de una banda. */
+  .theme-light {
+    --color-background: var(--cream-50);
+    --color-background-alt: var(--sand-200);
+    --color-surface: var(--white);
+    --color-surface-strong: var(--sand-200);
+    --color-surface-warm: var(--butter-300);
+    --color-surface-fresh: var(--sage-300);
+    --color-text: var(--indigo-900);
+    --color-text-muted: var(--indigo-500);
+    --color-primary: var(--coral-500);
+    --color-primary-hover: var(--coral-300);
+    --color-on-primary: var(--indigo-900);
+    --color-emphasis: var(--coral-700);
+    --color-link: var(--indigo-700);
+    --color-accent: var(--butter-300);
+    --color-focus: var(--indigo-700);
+    --color-border: var(--sand-200);
+    --color-border-strong: var(--indigo-300);
+    --color-error: var(--red-700);
+    --color-success: var(--green-700);
+    --scene-top: var(--white);
+    --scene-side-a: var(--indigo-100);
+    --scene-side-b: var(--sand-200);
+    --scene-alt: var(--sage-300);
+    --scene-dark: var(--indigo-700);
+    --scene-accent: var(--coral-500);
+    --scene-accent-shade: var(--coral-700);
+    --scene-line: var(--indigo-900);
+    --scene-comp-a: var(--indigo-900);
+    --scene-comp-b: var(--coral-500);
+    --scene-bead: var(--butter-300);
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+
+  /* Índigo: tarjeta de la escena, terminal y pie. */
+  .theme-dark {
+    --color-background: var(--indigo-900);
+    --color-background-alt: var(--indigo-700);
+    --color-surface: var(--indigo-700);
+    --color-surface-strong: var(--indigo-700);
+    --color-surface-warm: var(--butter-300);
+    --color-surface-fresh: var(--sage-300);
+    --color-text: var(--cream-50);
+    --color-text-muted: var(--indigo-100);
+    --color-primary: var(--coral-500);
+    --color-primary-hover: var(--coral-300);
+    --color-on-primary: var(--indigo-900);
+    --color-emphasis: var(--coral-300);
+    --color-link: var(--butter-300);
+    --color-accent: var(--butter-300);
+    --color-focus: var(--butter-300);
+    --color-border: var(--indigo-500);
+    /* Índigo 100, no 300 como en la maqueta: sobre índigo 700 el 300 da 2,80:1. Decidido el 2026-11-14. */
+    --color-border-strong: var(--indigo-100);
+    --color-error: var(--coral-300);
+    --color-success: var(--sage-300);
+    --scene-top: var(--cream-50);
+    --scene-side-a: var(--indigo-300);
+    --scene-side-b: var(--indigo-100);
+    --scene-alt: var(--sage-300);
+    --scene-dark: var(--indigo-500);
+    --scene-accent: var(--coral-500);
+    --scene-accent-shade: var(--coral-700);
+    --scene-line: var(--indigo-900);
+    --scene-comp-a: var(--butter-300);
+    --scene-comp-b: var(--coral-500);
+    --scene-bead: var(--butter-300);
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+
+  /* Salvia: «Dónde empezamos». */
+  .theme-fresh {
+    --color-background: var(--sage-300);
+    --color-background-alt: var(--sand-200);
+    --color-surface: var(--white);
+    --color-surface-strong: var(--cream-50);
+    --color-surface-warm: var(--butter-300);
+    --color-surface-fresh: var(--sage-300);
+    --color-text: var(--indigo-900);
+    --color-text-muted: var(--indigo-500);
+    --color-primary: var(--coral-500);
+    --color-primary-hover: var(--coral-300);
+    --color-on-primary: var(--indigo-900);
+    --color-emphasis: var(--indigo-700);
+    --color-link: var(--indigo-700);
+    --color-accent: var(--butter-300);
+    --color-focus: var(--indigo-700);
+    --color-border: var(--indigo-300);
+    --color-border-strong: var(--indigo-500);
+    --color-error: var(--red-700);
+    --color-success: var(--green-700);
+    --scene-top: var(--white);
+    --scene-side-a: var(--indigo-100);
+    --scene-side-b: var(--sand-200);
+    --scene-alt: var(--sage-300);
+    --scene-dark: var(--indigo-700);
+    --scene-accent: var(--coral-500);
+    --scene-accent-shade: var(--coral-700);
+    --scene-line: var(--indigo-900);
+    --scene-comp-a: var(--indigo-900);
+    --scene-comp-b: var(--coral-500);
+    --scene-bead: var(--butter-300);
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+
+  /* Coral claro: «Lo que ofrecemos». */
+  .theme-coral {
+    --color-background: var(--coral-300);
+    --color-background-alt: var(--sand-200);
+    --color-surface: var(--white);
+    --color-surface-strong: var(--cream-50);
+    --color-surface-warm: var(--butter-300);
+    --color-surface-fresh: var(--sage-300);
+    --color-text: var(--indigo-900);
+    --color-text-muted: var(--indigo-900);
+    --color-primary: var(--indigo-900);
+    --color-primary-hover: var(--indigo-700);
+    --color-on-primary: var(--cream-50);
+    --color-emphasis: var(--indigo-900);
+    --color-link: var(--indigo-900);
+    --color-accent: var(--butter-300);
+    --color-focus: var(--indigo-900);
+    --color-border: var(--indigo-300);
+    --color-border-strong: var(--indigo-500);
+    --color-error: var(--red-700);
+    --color-success: var(--green-700);
+    --scene-top: var(--white);
+    --scene-side-a: var(--indigo-100);
+    --scene-side-b: var(--sand-200);
+    --scene-alt: var(--sage-300);
+    --scene-dark: var(--indigo-700);
+    --scene-accent: var(--coral-500);
+    --scene-accent-shade: var(--coral-700);
+    --scene-line: var(--indigo-900);
+    --scene-comp-a: var(--indigo-900);
+    --scene-comp-b: var(--coral-500);
+    --scene-bead: var(--butter-300);
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+
+  /* Mantequilla: tarjeta de preguntas. */
+  .theme-warm {
+    --color-background: var(--butter-300);
+    --color-background-alt: var(--sand-200);
+    --color-surface: var(--white);
+    --color-surface-strong: var(--cream-50);
+    --color-surface-warm: var(--butter-300);
+    --color-surface-fresh: var(--sage-300);
+    --color-text: var(--indigo-900);
+    --color-text-muted: var(--indigo-900);
+    --color-primary: var(--coral-500);
+    --color-primary-hover: var(--coral-300);
+    --color-on-primary: var(--indigo-900);
+    --color-emphasis: var(--indigo-700);
+    --color-link: var(--indigo-700);
+    --color-accent: var(--butter-300);
+    --color-focus: var(--indigo-700);
+    --color-border: var(--indigo-300);
+    --color-border-strong: var(--indigo-500);
+    --color-error: var(--red-700);
+    --color-success: var(--green-700);
+    --scene-top: var(--white);
+    --scene-side-a: var(--indigo-100);
+    --scene-side-b: var(--sand-200);
+    --scene-alt: var(--sage-300);
+    --scene-dark: var(--indigo-700);
+    --scene-accent: var(--coral-500);
+    --scene-accent-shade: var(--coral-700);
+    --scene-line: var(--indigo-900);
+    --scene-comp-a: var(--indigo-900);
+    --scene-comp-b: var(--coral-500);
+    --scene-bead: var(--butter-300);
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+
+  /* Índigo claro: cierre. */
+  .theme-calm {
+    --color-background: var(--indigo-100);
+    --color-background-alt: var(--sand-200);
+    --color-surface: var(--white);
+    --color-surface-strong: var(--cream-50);
+    --color-surface-warm: var(--butter-300);
+    --color-surface-fresh: var(--sage-300);
+    --color-text: var(--indigo-900);
+    --color-text-muted: var(--indigo-500);
+    --color-primary: var(--coral-500);
+    --color-primary-hover: var(--coral-300);
+    --color-on-primary: var(--indigo-900);
+    --color-emphasis: var(--indigo-700);
+    --color-link: var(--indigo-700);
+    --color-accent: var(--butter-300);
+    --color-focus: var(--indigo-700);
+    --color-border: var(--indigo-300);
+    --color-border-strong: var(--indigo-500);
+    --color-error: var(--red-700);
+    --color-success: var(--green-700);
+    --scene-top: var(--white);
+    --scene-side-a: var(--indigo-300);
+    --scene-side-b: var(--sand-200);
+    --scene-alt: var(--sage-300);
+    --scene-dark: var(--indigo-700);
+    --scene-accent: var(--coral-500);
+    --scene-accent-shade: var(--coral-700);
+    --scene-line: var(--indigo-900);
+    --scene-comp-a: var(--indigo-900);
+    --scene-comp-b: var(--coral-500);
+    --scene-bead: var(--butter-300);
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+}

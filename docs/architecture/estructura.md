@@ -32,8 +32,7 @@ confia.ing-home/
 │   └── scheduled.ts              Latido diario hacia Supabase
 │
 ├── public/
-│   ├── brand/                    Logo, favicon, imagen para redes
-│   └── fonts/                    Tipografías auto-alojadas
+│   └── brand/                    Logo, favicon, imagen para redes (generados: npm run brand:build)
 │
 ├── src/
 │   ├── app/                      Rutas de Next.js. Solo composición, sin lógica
@@ -55,7 +54,7 @@ confia.ing-home/
 │   │   ├── journey/              Recorrido de 5 etapas; scene/ con el canvas 3D y el SVG ligero
 │   │   ├── contact/              Formulario en modo terminal y modo clásico
 │   │   ├── scheduling/           Calendly a petición
-│   │   └── ui/                   Botón, enlace, tarjeta, campo, aviso
+│   │   └── ui/                   Botón, enlace, campo, casilla, tarjeta, aviso, logo
 │   │
 │   ├── domain/                   TypeScript puro. No importa Next, Supabase ni Cloudflare
 │   │   ├── contact/              Esquema, caso de uso, puertos
@@ -74,6 +73,8 @@ confia.ing-home/
 │   │   └── server/               Variables secretas, cabeceras y composición de dependencias
 │   └── styles/
 │       ├── tokens.css            ÚNICA fuente de color, tipografía y espaciado
+│       ├── fonts.ts              Declaración de las tipografías (next/font/local)
+│       ├── fonts/                Archivos .woff2 y licencias SIL OFL
 │       └── globals.css
 │
 └── tests/

@@ -25,7 +25,7 @@ Prioridad: **M** imprescindible para lanzar · **S** debería estar · **C** si 
 
 ## L0 — Cimientos ✅
 
-**Hecho el 2026-11-14**, salvo enlazar el proyecto de producción (L0-6), que requiere la contraseña de la base de datos. Evidencia en `openspec/changes/l0-cimientos/tasks.md`.
+**Hecho el 2026-11-14**, incluido el enlace con el proyecto de producción. Evidencia en `openspec/changes/l0-cimientos/tasks.md`.
 
 Sin funcionalidad visible; deja el proyecto listo para trabajar con SDD y TDD.
 
@@ -51,7 +51,9 @@ Antes de programar, dentro de la dirección visual elegida. Aprobado por el usua
 | F3-2 | Dirección de imagen corporativa | Presentada en el mismo archivo. Tratamiento de ilustración, iconografía y diagramas del recorrido; sin robots ni cerebros |
 | F3-3 | Aprobación del usuario | Hecho el 2026-11-14: «Cinco tramos» + punto naranja + «IA» resaltada en el nombre. Dirección de imagen presentada sin objeciones |
 
-## L1 — Marca y sistema de interfaz
+## L1 — Marca y sistema de interfaz ✅
+
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l1-marca-y-sistema-de-interfaz/tasks.md`. Guía en [docs/brand/](docs/brand/README.md).
 
 Aplica la propuesta visual y el concepto de logo elegidos. PRD §6.7.
 

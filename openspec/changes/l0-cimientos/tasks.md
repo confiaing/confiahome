@@ -49,14 +49,14 @@ Cada tarea de implementación va precedida por su prueba en rojo. Entre parénte
 
 - [x] 6.1 Instalar la CLI de Supabase como dependencia de desarrollo y ejecutar `npx supabase init`. Verificación: existe `supabase/config.toml`.
 - [x] 6.2 `npx supabase start` y anotar aquí que levantó (sin claves). Completar `.env.local` con la URL y la clave locales. Verificación: `npx supabase status` muestra los servicios activos (app-shell: Base de datos local).
-- [ ] 6.3 Pedir al fundador que ejecute `npx supabase link --project-ref nojdfpoqmrjpxkaqskyv` en su terminal. Verificación: `npx supabase migration list` responde sin pendientes. Script `test:contract` creado, sin pruebas todavía.
+- [x] 6.3 Pedir al fundador que ejecute `npx supabase link --project-ref nojdfpoqmrjpxkaqskyv` en su terminal. Verificación: `npx supabase migration list` responde sin pendientes. Script `test:contract` creado, sin pruebas todavía.
 
 ## 7. Cierre del lote
 
 - [x] 7.1 Puerta de cierre: `lint`, `typecheck`, `test`, `e2e`, `build` y carga de `/es` en `preview`. Verificación: salida de cada comando anotada aquí.
 - [x] 7.2 Revisión de código con `fullstack-dev-skills:code-reviewer` y hallazgos resueltos. Verificación: resumen anotado aquí.
 - [x] 7.3 Actualizar README (comandos reales, cómo ejecutar en local) y BACKLOG (L0 hecho). Verificación: diff de ambos archivos.
-- [ ] 7.4 Commit local del lote. Verificación: `git log -1` muestra el commit; sin `push`.
+- [x] 7.4 Commit local del lote. Verificación: `git log -1` muestra el commit; sin `push`.
 
 ## Evidencia y desviaciones
 
@@ -72,7 +72,7 @@ Cada tarea de implementación va precedida por su prueba en rojo. Entre parénte
 
 - **5.3 Corrección:** la primera medida (174,3 kB) incluía por error el polyfill `noModule`, que los navegadores modernos no descargan. La medida correcta es **134,8 kB**, el 67 % del límite de 200 kB.
 - **6.2 Supabase local:** `supabase start` terminó con código 0; API en `http://127.0.0.1:54321`, Studio en `:54323`. `imgproxy` y `pooler` quedan detenidos por defecto (no se usan). URL y clave locales escritas en `.env.development.local`.
-- **6.3 Pendiente del fundador:** `supabase link --project-ref nojdfpoqmrjpxkaqskyv` pide la contraseña de la base de datos.
+- **6.3 Enlace con producción:** hecho por el fundador el 2026-11-14. `supabase projects list` muestra `confiahomeDB` como `linked: true`; `supabase migration list --remote` responde sin migraciones. La CLI actual no pidió contraseña.
 - **7.1 Puerta de cierre (2026-11-14):** `lint` 0 · `typecheck` 0 · `test` 49 pruebas en 9 archivos · `e2e` 6 de 6 · `build:worker` 0 (sin secretos incrustados, 847,3 KiB de 3072) · `measure:js` 134,8 kB de 200 · `opennextjs-cloudflare preview`: `/es` 200 `lang="es"`, `/en` 200 `lang="en"`, `/fr` 404.
 - **7.2 Revisión de código** (revisor independiente, 15 hallazgos). Corregidos: reglas de lint que se saltaban con `import()`, `require`, rutas relativas, segmentos `..` y `./server` desde `lib/`; reglas ausentes en `app` y `worker`; colores numéricos (`0xff6b4a`), en mayúsculas y `color()`; falsos positivos con entidades HTML; diccionarios exentos de la regla de color; medición del JS que contaba el polyfill y daba 0 por válido; `reuseExistingServer`; bloqueo de `WebSocket`, `EventSource` y `XMLHttpRequest`; `scripts/` sin tipar; `engines`. **Hallazgo grave corregido:** OpenNext incrusta `.env` y `.env.local` en el Worker; el archivo de desarrollo pasó a `.env.development.local` (que no se incrusta), `wrangler.jsonc` fija `SERVICES=real` en producción y `build:worker` falla si detecta un secreto incrustado. No corregido, aceptado: los nombres de color (`"red"`) no se detectan; `node:http` no se bloquea en pruebas; `import "server-only"` no se añadió porque rompe Vitest.
 - **Cobertura de escenarios:** «Vista previa en Workers» y «Supabase local» se verifican a mano (evidencia arriba), no con una prueba automática.

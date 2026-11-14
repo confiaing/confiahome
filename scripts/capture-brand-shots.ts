@@ -1,0 +1,111 @@
+import { chromium } from "@playwright/test";
+import { fileURLToPath } from "node:url";
+
+// Capturas para docs/brand/: la página en móvil y escritorio, el logo en archivo
+// frente al logo en vivo, y el favicon a 16, 32 y 64 px.
+// Uso: con la app servida (npm run build && npx next start -p 3100),
+//      node scripts/capture-brand-shots.ts [http://127.0.0.1:3100]
+
+const BASE = process.argv[2] ?? "http://127.0.0.1:3100";
+const OUT = fileURLToPath(new URL("../docs/brand/img/", import.meta.url));
+
+const browser = await chromium.launch();
+
+for (const [name, width, height] of [
+  ["home-desktop", 1440, 900],
+  ["home-mobile", 390, 844],
+] as const) {
+  const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 2 });
+  await page.goto(`${BASE}/es`);
+  await page.evaluate(() => document.fonts.ready);
+  await page.screenshot({ path: `${OUT}${name}.png` });
+  await page.close();
+}
+
+const page = await browser.newPage({ viewport: { width: 1500, height: 700 }, deviceScaleFactor: 2 });
+await page.goto(`${BASE}/es`);
+await page.evaluate(() => document.fonts.ready);
+
+// Logo en vivo (componente) junto al archivo SVG, a 24 y 96 px, en claro y en oscuro.
+await page.evaluate(() => {
+  const live = document.querySelector('[role="img"]')!;
+  const main = document.querySelector("main")!;
+  main.replaceChildren();
+  main.className = "";
+  const row = (theme: string, file: string, size: number) => {
+    const box = document.createElement("div");
+    box.className = theme;
+    box.setAttribute("style", `display:flex; gap:40px; align-items:center; padding:20px 28px; font-size:${size}px`);
+    const copy = live.cloneNode(true) as HTMLElement;
+    copy.setAttribute("class", "inline-flex items-center gap-[0.42em] leading-none");
+    const image = document.createElement("img");
+    image.src = `/brand/${file}`;
+    image.alt = "";
+    // El archivo lleva 2 unidades de margen sobre un símbolo de 32: 36/32 de 1,3 em.
+    image.style.height = `${(1.3 * 36) / 32}em`;
+    box.append(copy, image);
+    main.append(box);
+  };
+  row("theme-light", "logo.svg", 24);
+  row("theme-light", "logo.svg", 96);
+  row("theme-dark", "logo-dark.svg", 24);
+  row("theme-dark", "logo-dark.svg", 96);
+});
+await page.evaluate(() => Promise.all([...document.images].map((image) => image.decode())));
+await page.locator("main").screenshot({ path: `${OUT}logo-live-vs-file.png` });
+
+// Variantes compacta y símbolo.
+await page.evaluate(() => {
+  const main = document.querySelector("main")!;
+  main.replaceChildren();
+  for (const [theme, files] of [
+    ["theme-light", ["logo-compact.svg", "symbol.svg"]],
+    ["theme-dark", ["logo-compact-dark.svg", "symbol-dark.svg"]],
+  ] as const) {
+    const box = document.createElement("div");
+    box.className = theme;
+    box.setAttribute("style", "display:flex; gap:56px; align-items:center; padding:28px");
+    for (const file of files) {
+      const image = document.createElement("img");
+      image.src = `/brand/${file}`;
+      image.alt = "";
+      image.style.height = "120px";
+      box.append(image);
+    }
+    main.append(box);
+  }
+});
+await page.evaluate(() => Promise.all([...document.images].map((image) => image.decode())));
+await page.locator("main").screenshot({ path: `${OUT}logo-variants.png` });
+
+// Favicon a tamaño real y ampliado ×8, sobre claro y oscuro.
+await page.evaluate(() => {
+  const main = document.querySelector("main")!;
+  main.replaceChildren();
+  for (const theme of ["theme-light", "theme-dark"]) {
+    const box = document.createElement("div");
+    box.className = theme;
+    box.setAttribute("style", "display:flex; gap:28px; align-items:center; padding:24px");
+    for (const size of [16, 32, 64]) {
+      const image = document.createElement("img");
+      image.src = "/brand/favicon.svg";
+      image.alt = "";
+      image.width = size;
+      image.height = size;
+      box.append(image);
+    }
+    const zoom = document.createElement("img");
+    zoom.src = "/brand/favicon-32.png";
+    zoom.alt = "";
+    zoom.width = 128;
+    zoom.height = 128;
+    zoom.style.imageRendering = "pixelated";
+    box.append(zoom);
+    main.append(box);
+  }
+});
+await page.evaluate(() => Promise.all([...document.images].map((image) => image.decode())));
+await page.locator("main").screenshot({ path: `${OUT}favicon-sizes.png` });
+
+await browser.close();
+console.log(`Capturas guardadas en ${OUT}`);

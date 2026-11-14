@@ -3,7 +3,7 @@
 Home pública de lanzamiento de **Confia.ing**, consultoría de transformación de IA para pymes. Bilingüe (ES/EN), con un recorrido interactivo del proceso de trabajo y dos vías de contacto: agendar 30 minutos o enviar una consulta.
 
 > Documento vivo. Se actualiza al cierre de cada fase y con cada decisión relevante.
-> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lote L0 hecho; siguiente, L1 — marca y sistema de interfaz)
+> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 y L1 hechos; siguiente, L2 — idiomas y estructura)
 
 ## Estado del proyecto
 
@@ -134,6 +134,7 @@ flowchart LR
 | [ADR-0008](docs/architecture/adr/0008-estrategia-de-pruebas.md) | Puertos y adaptadores; Vitest, Testing Library, Playwright |
 | [ADR-0009](docs/architecture/adr/0009-escena-3d-y-version-ligera.md) | Escena 3D con Three.js en carga diferida y versión ligera en SVG obligatoria |
 | [ADR-0010](docs/architecture/adr/0010-formulario-en-dos-modos.md) | Formulario en modo terminal y modo clásico sobre un mismo esquema |
+| [ADR-0011](docs/architecture/adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md) | Fuentes y archivos de marca guardados en el repositorio y generados por script |
 
 Detalle: [C4, componentes, datos y seguridad](docs/architecture/README.md) · [estructura de ficheros](docs/architecture/estructura.md).
 
@@ -214,6 +215,7 @@ npm run dev            # http://localhost:3000/es · servicios en memoria, sin b
 | `npm run e2e` | Playwright contra el build de producción |
 | `npm run build:worker` | Construye el Worker; falla si lleva secretos o supera 3 MiB |
 | `npm run measure:js` | JS inicial de `/es` frente al límite |
+| `npm run brand:build` | Regenera los archivos del logo y los iconos de `public/brand/` |
 | `npm run preview` | La app en el runtime real de Cloudflare Workers |
 | `supabase start` | Base de datos local en Docker |
 

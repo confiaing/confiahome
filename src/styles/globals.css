@@ -1,5 +1,58 @@
 /* Tailwind solo analiza src/: el resto del repositorio (docs, maquetas, pruebas) no genera estilos. */
 @import "tailwindcss" source(none);
+@import "./tokens.css";
 @source "../**/*.{ts,tsx}";
 
-/* Los tokens de diseño llegan en el lote L1 (src/styles/tokens.css). */
+@layer base {
+  html {
+    scroll-padding-top: calc(var(--header-h) + 16px);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Un enlace se distingue por algo más que el color: va subrayado salvo que se diga lo contrario. */
+  a {
+    color: var(--color-link);
+    text-decoration-line: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1.5px;
+  }
+
+  /* La cursiva de títulos es un archivo aparte que no se precarga (src/styles/fonts.ts). */
+  .font-display :where(em, i),
+  :where(em, i).font-display {
+    font-family: var(--font-display-italic);
+  }
+
+  /* Un solo anillo de foco para toda la interfaz; cada tema fija su color. */
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  /* Con movimiento reducido no hay desplazamientos ni escalados; el color cambia al instante. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
