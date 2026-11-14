@@ -1,4 +1,4 @@
-# Spec Delta
+# Tokens de diseño
 
 ## Purpose
 

@@ -89,6 +89,7 @@ Las bandas de color no llegan al borde de la ventana y tienen esquinas suaves (e
 
 - Los archivos y el texto de cada licencia están en [`src/styles/fonts/`](../../src/styles/fonts/). Se sirven desde el propio dominio; el sitio no pide nada a Google Fonts ([ADR-0011](../architecture/adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md)).
 - Se precargan Fraunces normal y Figtree. El resto llega después del primer pintado.
+- Mientras Fraunces carga se usa Times New Roman reescalada al 95 % (87,5 % en cursiva), para que los títulos no cambien de líneas y la página no salte.
 - En el código: `font-display`, `font-body` y `font-mono`. Los títulos grandes usan tamaño óptico 144; el logo, 72.
 - Subconjunto `latin`: cubre español e inglés.
 
@@ -144,14 +145,20 @@ Pendiente después de la v1: búsqueda de parecidos con marcas registradas antes
 
 ## En pantalla
 
-Página provisional con el marco del lote L2: cabecera, pie, tipografías, tokens y botón.
+La home, sección a sección (1440 px). Las capturas se rehacen con `node scripts/capture-brand-shots.ts` y la app servida en local.
 
-| Escritorio (1440 px) | Móvil (390 px) |
+| Sección | Captura |
 |---|---|
-| ![Página provisional en escritorio](img/home-desktop.png) | ![Página provisional en móvil](img/home-mobile.png) |
-| ![Página legal provisional](img/legal-desktop.png) | ![Menú abierto en móvil](img/menu-mobile.png) |
+| Hero · crema | ![Hero](img/home-hero-desktop.png) |
+| Dónde empezamos · banda salvia, tarjeta mantequilla | ![Dónde empezamos](img/home-start-desktop.png) |
+| Cómo lo hacemos realidad · crema | ![Las cinco etapas](img/home-journey-desktop.png) |
+| Lo que ofrecemos · banda coral claro, tarjeta índigo | ![Lo que ofrecemos](img/home-offer-desktop.png) |
+| Por qué confiar · crema | ![Por qué confiar](img/home-trust-desktop.png) |
+| Cierre · banda índigo claro | ![Cierre](img/home-closing-desktop.png) |
 
-Las capturas se rehacen con `node scripts/capture-brand-shots.ts` y la app servida en local.
+En móvil (390 px): [hero](img/home-hero-mobile.png) · [dónde empezamos](img/home-start-mobile.png) · [etapas](img/home-journey-mobile.png) · [servicios](img/home-offer-mobile.png) · [confianza](img/home-trust-mobile.png) · [cierre](img/home-closing-mobile.png) · [menú](img/menu-mobile.png).
+
+Otras páginas: [página legal](img/legal-desktop.png) · [404](img/not-found-mobile.png).
 
 ## Componentes base
 

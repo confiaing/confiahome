@@ -3,7 +3,7 @@
 Home pública de lanzamiento de **Confia.ing**, consultoría de transformación de IA para pymes. Bilingüe (ES/EN), con un recorrido interactivo del proceso de trabajo y dos vías de contacto: agendar 30 minutos o enviar una consulta.
 
 > Documento vivo. Se actualiza al cierre de cada fase y con cada decisión relevante.
-> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L2 hechos; siguiente, L3 — contenido de la home)
+> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L3 hechos; siguiente, L4 — recorrido interactivo)
 
 ## Estado del proyecto
 
@@ -217,6 +217,7 @@ npm run dev            # http://localhost:3000/es · servicios en memoria, sin b
 | `npm run build:worker` | Construye el Worker; falla si lleva secretos o supera 3 MiB |
 | `npm run measure:js` | JS inicial de `/es` frente al límite |
 | `npm run brand:build` | Regenera los archivos del logo y los iconos de `public/brand/` |
+| `npm run content:doc` | Regenera `docs/content/home.md`, el texto ES y EN lado a lado |
 | `npm run preview` | La app en el runtime real de Cloudflare Workers |
 | `supabase start` | Base de datos local en Docker |
 
@@ -254,6 +255,7 @@ Las claves van en `.env.development.local` (desarrollo) y `.env.prod` (producci�
 | [BACKLOG.md](BACKLOG.md) | Backlog por lotes |
 | [docs/escenarios.md](docs/escenarios.md) | Escenarios GIVEN/WHEN/THEN de cada ítem del backlog: la guía de las pruebas |
 | [docs/setup.md](docs/setup.md) | Guía de accesos: Supabase, Cloudflare, correo |
+| [docs/content/home.md](docs/content/home.md) | Texto de la home en español e inglés, para revisión editorial |
 | [docs/brand/README.md](docs/brand/README.md) | Ficha de marca: paleta, temas, tipografía, logo e imagen |
 | [docs/design/](docs/design/contenido-base.md) | Contenido base, propuestas visuales, diseño finalista y logo |
 | [CLAUDE.md](CLAUDE.md) | Guía de trabajo para agentes: rol, método, estructura y reglas rojas |

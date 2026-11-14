@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { HomePlaceholder } from "@/components/sections/home-placeholder";
+import { HomeContent } from "@/components/sections/home-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale } from "@/i18n/locales";
 import { pageAlternates } from "@/i18n/metadata";
@@ -20,5 +20,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return <HomePlaceholder copy={getDictionary(locale).placeholder} />;
+  return <HomeContent dictionary={getDictionary(locale)} />;
 }

@@ -16,7 +16,8 @@
     "e2e": "playwright test",
     "measure:js": "node scripts/measure-initial-js.ts",
     "build:worker": "opennextjs-cloudflare build && node scripts/check-worker-env.ts && node scripts/check-worker-size.ts",
-    "brand:build": "node scripts/build-brand-assets.ts"
+    "brand:build": "node scripts/build-brand-assets.ts",
+    "content:doc": "node scripts/build-content-doc.ts"
   },
   "dependencies": {
     "next": "^16.4.6",

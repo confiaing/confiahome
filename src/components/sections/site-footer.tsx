@@ -3,10 +3,9 @@ import { Logo } from "@/components/ui/logo";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/locales";
 import { pathFor } from "@/i18n/routes";
+import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/contact";
 
 type SiteFooterProps = { locale: Locale; dictionary: Dictionary; year: number };
-
-const EMAIL = "hola@confia.ing";
 
 export function SiteFooter({ locale, dictionary, year }: SiteFooterProps) {
   return (
@@ -17,11 +16,11 @@ export function SiteFooter({ locale, dictionary, year }: SiteFooterProps) {
             <Logo label={dictionary.nav.home} />
           </a>
           <a
-            href={`mailto:${EMAIL}`}
+            href={CONTACT_MAILTO}
             className="font-display text-[clamp(1.3rem,3vw,1.9rem)] italic"
           >
             <span className="sr-only">{dictionary.footer.emailLabel}: </span>
-            {EMAIL}
+            {CONTACT_EMAIL}
           </a>
         </div>
         <div className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-4.5 border-t border-border pt-6 text-[0.95rem]">

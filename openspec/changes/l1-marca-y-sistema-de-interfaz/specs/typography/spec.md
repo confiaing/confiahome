@@ -1,4 +1,4 @@
-# Spec Delta
+# Tipografía
 
 ## Purpose
 

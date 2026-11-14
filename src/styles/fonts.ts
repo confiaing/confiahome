@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 // Tipografías servidas desde el propio dominio (ADR-0011). Los archivos y sus
 // licencias SIL OFL están en ./fonts/. Solo el subconjunto «latin»: cubre español
 // e inglés, y tests/unit/fonts.test.ts lo comprueba glifo a glifo.
-// next/font añade un respaldo con métricas ajustadas para que el diseño no salte.
+// Figtree usa el respaldo de métricas ajustadas de next/font; Fraunces, uno propio.
 
 /** Títulos y cifras. Variable en peso y en tamaño óptico. */
 export const fraunces = localFont({
@@ -13,10 +13,15 @@ export const fraunces = localFont({
   variable: "--font-fraunces",
   display: "swap",
   preload: true,
-  adjustFontFallback: "Times New Roman",
+  // El respaldo de next/font sale un 36 % más ancho que Fraunces en títulos (calcula sobre
+  // la instancia por defecto de la fuente variable). El respaldo se define en globals.css.
+  adjustFontFallback: false,
 });
 
-/** Cursiva de énfasis en los títulos. Sin precarga: llega tras el primer pintado. */
+/**
+ * Cursiva de énfasis en los títulos. Sin precarga: llega tras el primer pintado y su
+ * respaldo ajustado (globals.css) evita que el título cambie de líneas al llegar.
+ */
 export const frauncesItalic = localFont({
   src: "./fonts/fraunces-latin-opsz-italic.woff2",
   weight: "100 900",
@@ -24,7 +29,7 @@ export const frauncesItalic = localFont({
   variable: "--font-fraunces-italic",
   display: "swap",
   preload: false,
-  adjustFontFallback: "Times New Roman",
+  adjustFontFallback: false,
 });
 
 /** Texto e interfaz. */

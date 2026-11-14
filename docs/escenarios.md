@@ -185,6 +185,26 @@ flowchart LR
 - GIVEN la home WHEN se recorren sus secciones en orden THEN alternan fondo crema y banda de color: salvia, crema, coral claro, crema, índigo claro.
 - GIVEN una banda de color WHEN se mide THEN no toca los bordes de la ventana AND tiene esquinas redondeadas.
 
+**L3 · Escenarios añadidos al proponer el lote** — detalle en `openspec/changes/l3-contenido-de-la-home/specs/`
+- (L3, I) GIVEN la home WHEN se listan sus secciones THEN son seis, en orden, cada una con su título AND hay un solo `h1` sin saltos de nivel.
+- (L3, E) GIVEN la cabecera WHEN se pulsan sus anclas THEN cada una deja el título de su sección visible bajo la cabecera fija.
+- (L3-1, I) GIVEN el hero WHEN se renderiza THEN lista los tres pilares en orden.
+- (L3-2, I) GIVEN «Dónde empezamos» WHEN se inspecciona THEN fricciones y preguntas son listas ordenadas de cuatro elementos.
+- (L3, I, E) GIVEN «Cómo lo hacemos realidad» WHEN se renderiza THEN muestra las cinco etapas con qué hacemos, qué recibes y el paso siguiente AND la primera dice que no es un diagnóstico AND están en el HTML servido.
+- (L3-3, E) GIVEN «Lo que ofrecemos» a 1280 px WHEN se miden las tarjetas THEN la del servicio principal tiene más área y mayor título.
+- (L3-4, I) GIVEN «Por qué confiar» WHEN se renderiza THEN la nota de atribución va después de las evidencias AND se listan los tres principios.
+- (L3-6, I, E) GIVEN el cierre WHEN se renderiza THEN el bloque de consulta muestra `hola@confia.ing` AND el de agenda enlaza al calendario AND la acción de consulta del hero lleva a su bloque.
+- (L3-8, E) GIVEN la home WHEN se leen los fondos THEN la tarjeta de preguntas es mantequilla y la del servicio principal índigo 900.
+- (L3, E) GIVEN la home a 375 px en ES y EN WHEN se mide THEN no hay desplazamiento horizontal AND LCP < 2,5 s, CLS < 0,1 y JS ≤ 200 kB AND con movimiento reducido nada se desplaza.
+- (L3-5, U) GIVEN todos los textos de ambos diccionarios WHEN se buscan palabras de certificación, cumplimiento o garantía THEN no aparece ninguna.
+- (L3-1, U) GIVEN las acciones de agenda y su nota WHEN se leen THEN no contienen «diagnóstico» ni «assessment».
+- (L3-4, U) GIVEN todos los textos WHEN se buscan porcentajes, monedas y multiplicadores THEN no hay ninguno AND los números presentes son los de una lista cerrada.
+- (L3-4, U) GIVEN todos los textos WHEN se buscan sellos y normas, clientes o prueba social, plazos de respuesta y cifras escritas con letra THEN no hay ninguno.
+- (L3, U) GIVEN los diccionarios WHEN se buscan asteriscos THEN solo aparecen, y por pares, en los títulos que los interpretan.
+- (L3-3, E) GIVEN «Lo que ofrecemos» a 639, 700, 1099, 1100 y 1280 px WHEN se cuentan las columnas de los servicios subordinados THEN son 1, 2, 2, 4 y 4.
+- (L3, E) GIVEN un texto en cursiva con la fuente de títulos WHEN se lee su familia THEN es el archivo cursivo de Fraunces, no la recta inclinada.
+- (L3, E) GIVEN la home a 320 y 375 px en ES y EN WHEN se mide cada texto THEN ninguno se sale de la ventana ni se recorta.
+
 ## L4 — Recorrido interactivo
 
 **L4-1 · Cinco etapas** — I

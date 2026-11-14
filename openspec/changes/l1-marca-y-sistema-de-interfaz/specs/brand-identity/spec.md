@@ -1,4 +1,4 @@
-# Spec Delta
+# Identidad de marca
 
 ## Purpose
 

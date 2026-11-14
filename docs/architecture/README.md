@@ -117,7 +117,7 @@ C4Component
 |---|---|---|---|
 | Páginas `[locale]` | `src/app/[locale]/` | Renderizar home y legales en el servidor, pre-generadas para `es` y `en`; metadatos SEO y `hreflang` | E2E |
 | Redirección raíz | `src/app/route.ts` | `/` → `/es` o `/en`: cookie de preferencia, luego `Accept-Language`, luego español | Integración |
-| Secciones | `src/components/sections/` | Header, Hero, Dónde empezamos, Recorrido, Pilares, Credibilidad, Cierre, Pie | Integración (Testing Library) |
+| Secciones | `src/components/sections/` | `home-content` compone hero, dónde empezamos, etapas, servicios, confianza y cierre; cada sección recibe su parte del diccionario | Integración (Testing Library) + E2E |
 | Recorrido | `src/components/journey/` | Cinco etapas navegables con teclado; todo el contenido presente en el HTML sin JS ni animación | Integración + axe |
 | Escena | `src/components/journey/scene/` | Un canvas WebGL que se muda entre hero, recorrido y cierre; SVG isométrico equivalente en modo ligero; control de modo en el pie | Integración (ligero) + E2E |
 | Modelo de escena | `src/domain/scene/` | Geometría del camino, estado por etapa y reglas para elegir modo completo o ligero | Unitario |

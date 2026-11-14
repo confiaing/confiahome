@@ -1,5 +1,5 @@
 // Diccionario español. Es la fuente del tipo `Dictionary`: toda clave que exista aquí
-// debe existir en en.ts, y ninguna más. Los textos de la home llegan en el lote L3.
+// debe existir en en.ts, y ninguna más. En los títulos, *asteriscos* marcan la palabra que se resalta (src/lib/emphasis.ts).
 export const es = {
   meta: {
     homeTitle: "Confia.ing · Transformación de IA para pymes",
@@ -36,10 +36,134 @@ export const es = {
     body: "Puede que el enlace esté roto o que la página ya no exista.",
     cta: "Volver al inicio",
   },
-  placeholder: {
-    eyebrow: "Próximamente",
-    title: "Sitio en construcción.",
-    note: "Mientras tanto, puedes escribirnos.",
-    cta: "Escribir a hola@confia.ing",
+  home: {
+    // Las dos vías de contacto, iguales en el hero y en el cierre.
+    actions: {
+      schedule: "Agenda una conversación de 30 minutos",
+      inquire: "Cuéntanos dónde quieres aplicar IA",
+      note: "Una conversación exploratoria, sin costo ni compromiso.",
+    },
+    hero: {
+      eyebrow: "Transformación de IA para empresas que ya usan tecnología",
+      title: "Encuentra dónde la IA puede generar *resultados* en tu empresa.",
+      lede: "Identificamos oportunidades reales, definimos cómo medir su impacto y acompañamos a tu equipo desde el diagnóstico hasta soluciones que pueda operar y escalar.",
+      pillarsLabel: "Pilares",
+      pillars: ["Estrategia", "Capacitación", "Automatización"],
+    },
+    start: {
+      eyebrow: "Dónde empezamos",
+      title: "Empezamos por el trabajo, no por la tecnología.",
+      lede: "Antes de hablar de modelos o herramientas, entendemos cómo trabaja tu empresa: qué tareas se repiten, dónde se pierde tiempo y qué quieres lograr.",
+      frictions: [
+        {
+          title: "Tareas repetitivas que cuestan horas.",
+          text: "Trabajo operativo y verificable que tu equipo hace a mano cada semana: revisar, copiar, clasificar, responder.",
+        },
+        {
+          title: "Sistemas y datos que no se hablan.",
+          text: "Información repartida entre herramientas, con personas haciendo de puente.",
+        },
+        {
+          title: "IA sin estrategia.",
+          text: "Licencias compradas y equipos improvisando, sin saber si eso mejora la productividad.",
+        },
+        {
+          title: "Equipos de software que no saben por dónde empezar.",
+          text: "Quieren integrar IA en su ciclo de desarrollo, pero no tienen un método para hacerlo en cada fase.",
+        },
+      ],
+      questionsTitle: "Preguntas que respondemos contigo",
+      questions: [
+        "¿En qué proceso tiene sentido usar IA?",
+        "¿Qué datos, herramientas y personas necesito?",
+        "¿Cómo justifico el costo y mido el impacto?",
+        "¿Cómo evito fugas de información y soluciones difíciles de mantener?",
+      ],
+    },
+    journey: {
+      eyebrow: "Cómo lo hacemos realidad",
+      title: "Un recorrido que hacemos *juntos*.",
+      lede: "Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.",
+      labels: { does: "Qué hacemos", gets: "Qué recibes", next: "Siguiente paso" },
+      stages: [
+        {
+          name: "Conversación inicial",
+          tag: "Etapa 1 · 30 minutos",
+          does: "Exploramos tus procesos y dónde podría aplicarse IA. Es una conversación, no un diagnóstico ni un compromiso.",
+          gets: "Una primera lectura de oportunidades y una idea clara de si podemos ayudarte.",
+          next: "Decides si avanzamos a un diagnóstico.",
+        },
+        {
+          name: "Diagnóstico",
+          tag: "Etapa 2",
+          does: "Evaluamos oportunidades, fricciones y qué tan preparada está tu empresa: datos, herramientas y personas.",
+          gets: "Oportunidades priorizadas y lo que hay que preparar. El alcance se acuerda contigo.",
+          next: "Elegimos juntos por dónde empezar.",
+        },
+        {
+          name: "Roadmap",
+          tag: "Etapa 3",
+          does: "Trazamos un plan de alto nivel: etapas, personas involucradas, costos y resultados esperados.",
+          gets: "El estado actual frente al estado deseado para los próximos meses.",
+          next: "Acordamos el primer piloto.",
+        },
+        {
+          name: "Piloto",
+          tag: "Etapa 4",
+          does: "Implementamos con demos, revisiones y ciclos de feedback.",
+          gets: "Una solución funcionando, con métricas y OKR del proyecto y del impacto en el negocio.",
+          next: "Si demuestra valor, lo escalamos.",
+        },
+        {
+          name: "Escala y transferencia",
+          tag: "Etapa 5",
+          does: "Diseñamos la solución para crecer, con monitoreo continuo.",
+          gets: "Capacitación y documentación para que tu equipo la opere. El soporte continuo es opcional.",
+          next: "Tu equipo queda a cargo.",
+        },
+      ],
+    },
+    offer: {
+      title: "Lo que ofrecemos",
+      main: {
+        title: "Transformación *de IA*",
+        text: "Estrategia, capacitación y automatización integradas para llevar la IA de la idea al resultado.",
+      },
+      rest: [
+        {
+          title: "Capacitación en IA.",
+          text: "Para líderes y perfiles no técnicos: usar IA con criterio en flujos de trabajo reales.",
+        },
+        {
+          title: "AI-SDLC.",
+          text: "Acompañamos a equipos de software a integrar IA en cada fase del ciclo de desarrollo.",
+        },
+        { title: "Software a la medida.", text: "Cuando la solución necesita construirse." },
+        {
+          title: "Soluciones generativas y agentivas.",
+          text: "Asesoría y construcción de agentes y sistemas basados en IA generativa.",
+        },
+      ],
+    },
+    trust: {
+      eyebrow: "Por qué confiar",
+      title: "Experiencia del equipo",
+      items: [
+        "Más de cinco años en empresas SaaS de EE. UU. con clientes en todo el mundo.",
+        "Sector salud: un sistema RAG agentivo para gestión documental de tratamientos médicos, con modelos locales y en la nube.",
+        "Eficiencia en el uso de LLM: costos, modelos locales y enrutamiento de modelos.",
+        "AI-SDLC: asesoría en todas las fases del ciclo de desarrollo.",
+      ],
+      note: "Experiencia previa de quienes integran el equipo.",
+      principlesTitle: "Tres principios",
+      principles: ["Mantenible", "Seguro", "Medible"],
+      securityLabel: "Seguridad:",
+      security:
+        "consideramos riesgos como fuga de información y prompt injection, y los requisitos de datos personales y normativos que apliquen a tu contexto.",
+    },
+    closing: {
+      title: "Tu equipo ya trabaja duro. Hagamos que la IA trabaje *con él*.",
+      inquiryText: "Escríbenos y cuéntanos qué proceso tienes en mente:",
+    },
   },
 };

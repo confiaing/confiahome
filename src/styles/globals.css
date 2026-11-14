@@ -3,6 +3,26 @@
 @import "./tokens.css";
 @source "../**/*.{ts,tsx}";
 
+/*
+ * Respaldo de Fraunces mientras carga: Times New Roman reescalada para ocupar el mismo
+ * ancho que Fraunces en los títulos grandes (tamaño óptico 144). Así un título no cambia
+ * de número de líneas al llegar la fuente y la página no salta. Los porcentajes salen de
+ * medir ambas fuentes con el mismo texto (openspec/changes/l3-contenido-de-la-home/tasks.md).
+ * Donde no hay Times New Roman (Android), se usa la serif del sistema sin ajustar.
+ */
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT");
+  size-adjust: 95%;
+}
+
+@font-face {
+  font-family: "Fraunces Italic Fallback";
+  font-style: italic;
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT");
+  size-adjust: 87.5%;
+}
+
 @layer base {
   html {
     scroll-padding-top: calc(var(--header-h) + 16px);
@@ -32,12 +52,6 @@
     text-decoration-line: underline;
     text-underline-offset: 0.2em;
     text-decoration-thickness: 1.5px;
-  }
-
-  /* La cursiva de títulos es un archivo aparte que no se precarga (src/styles/fonts.ts). */
-  .font-display :where(em, i),
-  :where(em, i).font-display {
-    font-family: var(--font-display-italic);
   }
 
   /* Un solo anillo de foco para toda la interfaz; cada tema fija su color. */
@@ -86,4 +100,14 @@
   #site-nav-toggle {
     display: none;
   }
+}
+
+/*
+ * La cursiva de títulos es un archivo aparte (src/styles/fonts.ts). Sin esta regla, un
+ * texto en font-display con `italic` usaría la recta inclinada por el navegador.
+ * Fuera de las capas: debe poder más que la utilidad font-display del mismo elemento.
+ */
+.font-display :where(em, i, .italic),
+:where(em, i, .italic).font-display {
+  font-family: var(--font-display-italic);
 }

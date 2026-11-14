@@ -1,7 +1,7 @@
 import { chromium } from "@playwright/test";
 import { fileURLToPath } from "node:url";
 
-// Capturas para docs/brand/: la página en móvil y escritorio, el logo en archivo
+// Capturas para docs/brand/: la home sección a sección, el logo en archivo
 // frente al logo en vivo, y el favicon a 16, 32 y 64 px.
 // Uso: con la app servida (npm run build && npx next start -p 3100),
 //      node scripts/capture-brand-shots.ts [http://127.0.0.1:3100]
@@ -11,15 +11,22 @@ const OUT = fileURLToPath(new URL("../docs/brand/img/", import.meta.url));
 
 const browser = await chromium.launch();
 
-for (const [name, width, height] of [
-  ["home-desktop", 1440, 900],
-  ["home-mobile", 390, 844],
+// La home, sección a sección, en escritorio y en móvil.
+for (const [suffix, width, height] of [
+  ["desktop", 1440, 900],
+  ["mobile", 390, 844],
 ] as const) {
-  const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 2 });
-  await page.goto(`${BASE}/es`);
-  await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({ path: `${OUT}${name}.png` });
-  await page.close();
+  const home = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+  await home.goto(`${BASE}/es`);
+  await home.evaluate(() => document.fonts.ready);
+  // La cabecera fija cruzaría las capturas de las secciones altas.
+  await home.addStyleTag({ content: "[data-site-header]{position:static!important}" });
+  const sections = home.locator("main > section");
+  const names = ["hero", "start", "journey", "offer", "trust", "closing"];
+  for (let index = 0; index < names.length; index += 1) {
+    await sections.nth(index).screenshot({ path: `${OUT}home-${names[index]}-${suffix}.png` });
+  }
+  await home.close();
 }
 
 // El marco: menú abierto en móvil, una página legal y la 404.

@@ -35,8 +35,9 @@ test("título, texto y etiqueta usan Fraunces, Figtree y DM Mono, ya cargadas", 
   const sample = "Capacitación · Diagnóstico · ¿Dónde?";
   const cases = [
     ["h1", /fraunces/i],
-    ["main p:not([data-eyebrow])", /figtree/i],
-    ["[data-eyebrow]", /dm.?mono/i],
+    ["#hero-title + p", /figtree/i], // el texto del hero
+    ["main#contenido p", /dm.?mono/i], // el antetítulo del hero
+
   ] as const;
 
   for (const [selector, family] of cases) {
@@ -54,11 +55,15 @@ test("título, texto y etiqueta usan Fraunces, Figtree y DM Mono, ya cargadas", 
 });
 
 // typography · Sin salto de diseño al cargar las fuentes
-test("se precargan como máximo dos fuentes", async ({ page }) => {
+test("solo se precargan las dos fuentes del primer pantallazo", async ({ page }) => {
   await page.goto("/es");
-  const preloads = await page.locator('link[rel="preload"][as="font"]').count();
-  expect(preloads).toBeGreaterThanOrEqual(1);
-  expect(preloads).toBeLessThanOrEqual(2);
+  const preloads = await page
+    .locator('link[rel="preload"][as="font"]')
+    .evaluateAll((links) => links.map((link) => (link as HTMLLinkElement).href.split("/").pop()!));
+  // Títulos y texto. La cursiva y DM Mono llegan después.
+  expect(preloads).toHaveLength(2);
+  expect(preloads.some((file) => file.startsWith("fraunces") && !file.includes("italic"))).toBe(true);
+  expect(preloads.some((file) => file.startsWith("figtree"))).toBe(true);
 });
 
 test("el diseño no salta al cargar las fuentes (CLS < 0,1 en móvil simulado)", async ({ browser, browserName }) => {
@@ -156,6 +161,7 @@ test("al pulsar, el botón se desplaza; con movimiento reducido, no", async ({ b
     const page = await context.newPage();
     await page.goto("/es");
     const cta = page.locator("main#contenido a").first();
+    await cta.scrollIntoViewIfNeeded();
     const box = (await cta.boundingBox())!;
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await page.mouse.down();

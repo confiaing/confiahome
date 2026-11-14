@@ -1,4 +1,4 @@
-# Spec Delta
+# Componentes base de interfaz
 
 ## Purpose
 

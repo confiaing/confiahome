@@ -83,7 +83,11 @@ PRD §6.1, §6.6, §9. CA: todo disponible en ES y EN con cambio manual.
 | L2-7 | Rutas legales provisionales | M | `/es/privacidad`, `/en/privacy`, `/es/terminos` y `/en/terms` existen con título y aviso de borrador; su contenido llega en L8 |
 | L2-6 | Página 404 bilingüe | S | Una sola página con el mensaje en español e inglés y un enlace a la home de cada idioma; completa sin JavaScript |
 
-## L3 — Contenido de la home
+## L3 — Contenido de la home ✅
+
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l3-contenido-de-la-home/tasks.md`. Pendiente del fundador: revisar la redacción inglesa en [docs/content/home.md](docs/content/home.md) (L3-7).
+
+Para lotes siguientes: el botón coral sobre índigo claro y el borde de las tarjetas de fricción sobre salvia no alcanzan 3:1 como elementos gráficos (el texto sí cumple); revisar en L9-3.
 
 PRD §5, §6.2, §6.3, §6.5, §7. CA: un visitante explica qué hace Confia.ing, para quién y cómo empezar.
 

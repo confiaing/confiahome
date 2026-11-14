@@ -96,6 +96,7 @@ rules:
     - Listar los ADR que aplican y si el cambio contradice alguno.
     - Máximo 500 palabras.
   specs:
+    - Estructura fija: «# Título» con un nombre representativo de la capacidad (nunca «Spec Delta»), «## Purpose», «### Requirement:» y «#### Scenario:» con líneas GIVEN, WHEN, THEN y, si hace falta, AND.
     - Un requisito por comportamiento observable, con SHALL/MUST.
     - Cada requisito lleva al menos un escenario GIVEN/WHEN/THEN. Los de nivel U, I y E los verifica una prueba automática; los de nivel C y M, una ejecución cuya evidencia se anota en tasks.md.
     - Cubrir ES y EN, teclado y movimiento reducido cuando el requisito toque la interfaz.

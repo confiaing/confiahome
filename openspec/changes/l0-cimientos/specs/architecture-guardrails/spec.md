@@ -1,4 +1,4 @@
-# Spec Delta
+# Guardas de arquitectura
 
 ## Purpose
 

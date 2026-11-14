@@ -71,10 +71,13 @@
 
   /* Ancho desde el que la navegación se muestra en línea: variantes nav: y max-nav:. */
   --breakpoint-nav: 56.25rem;
+  /* Segundo salto propio (1100 px). Siempre en rem: mezclados con px, Tailwind los ordena mal. */
+  --breakpoint-wide: 68.75rem;
 
   /* Las variables --font-<familia> las define next/font (src/styles/fonts.ts). */
-  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
-  --font-display-italic: var(--font-fraunces-italic), "Iowan Old Style", Georgia, serif;
+  /* "Fraunces Fallback" y su cursiva son Times New Roman reescalada (globals.css). */
+  --font-display: var(--font-fraunces), "Fraunces Fallback", "Iowan Old Style", Georgia, serif;
+  --font-display-italic: var(--font-fraunces-italic), "Fraunces Italic Fallback", "Iowan Old Style", Georgia, serif;
   --font-body: var(--font-figtree), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-dm-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 }

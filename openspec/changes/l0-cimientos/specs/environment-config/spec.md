@@ -1,4 +1,4 @@
-# Spec Delta
+# Configuración de entorno
 
 ## Purpose
 

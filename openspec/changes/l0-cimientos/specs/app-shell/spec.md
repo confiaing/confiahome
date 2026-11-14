@@ -1,4 +1,4 @@
-# Spec Delta
+# Armazón de la aplicación
 
 ## Purpose
 
