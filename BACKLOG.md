@@ -120,9 +120,11 @@ PRD §6.4, §9. CA: cinco etapas diferenciadas; utilizable con teclado y movimie
 | L4-9 | Control de versión ligera / completa | M | En el pie; cambia de modo al instante, lo recuerda y explica por qué se activó el modo ligero cuando fue automático |
 | L4-7 | Versión ligera (ADR-0009) | M | Sin WebGL, con conexión lenta, dispositivo limitado o movimiento reducido se sirve una versión estática coherente en colores, tipografía e imágenes; la librería 3D se descarga solo cuando aplica y después de que la página es legible |
 
-## L5 — Consulta por formulario (Flujo B)
+## L5 — Consulta por formulario (Flujo B) ✅
 
-PRD §8, §9, §11. ADR-0002, 0003, 0006.
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l5-consulta-por-formulario/tasks.md`. La migración está aplicada solo en la base local; en producción se aplica en L10, con confirmación del fundador. El mensaje es opcional; nombre, aceptación y un medio de contacto son obligatorios.
+
+PRD §8, §9, §11. ADR-0002, 0003, 0006, 0010, 0014.
 
 | ID | Historia | Prio | Criterios de aceptación |
 |---|---|---|---|

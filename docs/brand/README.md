@@ -193,3 +193,12 @@ En [`src/components/ui/`](../../src/components/ui/): `Button` y `ButtonLink` (pr
 ## Formulario
 
 Dos modos a elección del visitante: terminal (índigo, con tecleo animado) y clásico (con un panel `consulta.json` que se escribe en vivo). Ver [ADR-0010](../architecture/adr/0010-formulario-en-dos-modos.md).
+
+| | Terminal | Clásico |
+|---|---|---|
+| Escritorio | ![Modo terminal](img/contact-terminal-desktop.png) | ![Modo clásico](img/contact-classic-desktop.png) |
+| Móvil, con errores | ![Modo terminal con errores](img/contact-terminal-errors-mobile.png) | ![Modo clásico con errores](img/contact-classic-errors-mobile.png) |
+
+- El comando y el panel `consulta.json` son decorativos: no se anuncian a los lectores de pantalla.
+- Los errores van junto a su campo, en el color de error del tema, y nunca dependen solo del color: llevan texto.
+- La confirmación sustituye al formulario y no promete plazo.

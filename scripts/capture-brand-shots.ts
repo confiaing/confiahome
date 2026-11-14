@@ -65,6 +65,38 @@ for (const [suffix, width, height] of [
   await home.close();
 }
 
+// El formulario de consulta en sus dos modos: vacío, con errores y relleno.
+for (const [suffix, width, height] of [
+  ["desktop", 1440, 900],
+  ["mobile", 390, 844],
+] as const) {
+  const form = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+  await form.addInitScript(() => window.localStorage.setItem("confia-modo", "ligera"));
+  await form.goto(`${BASE}/es`);
+  await form.evaluate(() => document.fonts.ready);
+  // La cabecera fija cruzaría las capturas de la tarjeta.
+  await form.addStyleTag({ content: "[data-site-header]{position:static!important}" });
+  const card = form.locator("#consulta");
+  await card.locator('button[type="submit"]:enabled').waitFor();
+  for (const [mode, index] of [
+    ["terminal", 0],
+    ["classic", 1],
+  ] as const) {
+    await card.locator("[role=group] button").nth(index).click();
+    await card.locator("input[name=name]").fill("Ana Ruiz");
+    await card.locator("input[name=company]").fill("Acme");
+    await card.locator("textarea[name=message]").fill("Conciliar pagos a mano");
+    await form.waitForTimeout(1500);
+    await card.screenshot({ path: `${OUT}contact-${mode}-${suffix}.png` });
+    await card.locator('button[type="submit"]').click();
+    await form.waitForTimeout(400);
+    await card.screenshot({ path: `${OUT}contact-${mode}-errors-${suffix}.png` });
+    for (const name of ["name", "company"]) await card.locator(`input[name=${name}]`).fill("");
+    await card.locator("textarea[name=message]").fill("");
+  }
+  await form.close();
+}
+
 // El marco: menú abierto en móvil, una página legal y la 404.
 {
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });

@@ -10,5 +10,9 @@
   },
   // Producción usa servicios reales de forma explícita. En local, .dev.vars lo cambia a memory.
   "vars": { "SERVICES": "real" },
+  // Aviso al equipo de cada consulta (ADR-0003). Solo envía a direcciones verificadas en Email Routing.
+  "send_email": [{ "name": "SEND_EMAIL" }],
+  // Antispam: 5 consultas por minuto y origen (ADR-0006).
+  "ratelimits": [{ "name": "CONTACT_RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
   "observability": { "enabled": true }
 }

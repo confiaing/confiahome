@@ -124,6 +124,11 @@
   [data-journey] [role="tablist"] {
     display: none;
   }
+
+  /* El formulario de consulta no funciona sin scripts: se oculta y queda el correo, que va fuera de él. */
+  [data-contact-form] {
+    display: none;
+  }
 }
 
 /* Hidratado: si existe [data-ready] hay scripts, lo entienda o no el navegador como media query. */

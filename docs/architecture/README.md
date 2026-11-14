@@ -1,6 +1,6 @@
 # Arquitectura — Confia.ing Home
 
-**Estado:** Aceptada. Actualizada el 2026-11-14 con el diseño elegido (ADR-0009 y ADR-0010) y con las fuentes y archivos de marca ([ADR-0011](adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md)) y el cambio de idioma ([ADR-0012](adr/0012-cambio-de-idioma-en-el-servidor.md)) y las pestañas del recorrido ([ADR-0013](adr/0013-pestanas-que-degradan-a-enlaces.md))
+**Estado:** Aceptada. Actualizada el 2026-11-14 con el diseño elegido (ADR-0009 y ADR-0010) y con las fuentes y archivos de marca ([ADR-0011](adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md)) y el cambio de idioma ([ADR-0012](adr/0012-cambio-de-idioma-en-el-servidor.md)) y las pestañas del recorrido ([ADR-0013](adr/0013-pestanas-que-degradan-a-enlaces.md)) y el acceso a Supabase sin SDK ([ADR-0014](adr/0014-supabase-por-postgrest-sin-sdk.md))
 
 Stack elegido: **Next.js (App Router) sobre Cloudflare Workers con OpenNext**, **Supabase** como base de datos, todo en planes gratuitos. Las decisiones y sus alternativas están en [adr/](adr/).
 
@@ -130,7 +130,7 @@ C4Component
 | Cambio de idioma | `src/app/api/locale/route.ts` | Guarda la cookie `locale` y redirige a la página equivalente ([ADR-0012](adr/0012-cambio-de-idioma-en-el-servidor.md)) | Integración + E2E |
 | Marco | `src/components/sections/` (`skip-link`, `site-header`, `site-footer`) | Enlace de salto, cabecera con menú plegable y pie, compuestos en el layout | Integración + E2E |
 | Adaptadores | `src/adapters/` | Supabase, correo, Turnstile; únicos puntos que tocan servicios externos | Integración (contrato) |
-| API de contacto | `src/app/api/contact/route.ts` | Límite de frecuencia → Turnstile → validar → guardar → avisar | Integración |
+| API de contacto | `src/app/api/contact/route.ts` | Origen y tamaño → validar → campo trampa → límite de frecuencia → Turnstile → guardar → avisar | Integración |
 | API de eventos | `src/app/api/events/route.ts` | Validar contra la lista cerrada → guardar | Integración |
 | Latido | `worker/scheduled.ts` | Consulta diaria mínima a Supabase | Integración |
 | Tokens | `src/styles/tokens.css` | Única fuente de color, tipografía, espaciado y radios | Lint (sin colores literales bajo `src/`) |
@@ -149,10 +149,11 @@ sequenceDiagram
     V->>F: Completa y envía
     F->>F: Valida con Zod, muestra errores accesibles
     F->>A: JSON + token Turnstile
-    A->>A: Límite de frecuencia y campo trampa
+    A->>A: Origen, tipo y tamaño de la petición
+    A->>A: Valida con el mismo esquema Zod
+    A->>A: Campo trampa y límite de frecuencia
     A->>T: siteverify(token)
     T-->>A: válido
-    A->>A: Valida con el mismo esquema Zod
     A->>D: INSERT contact_requests
     D-->>A: id
     A-)M: Aviso a hola@confia.ing

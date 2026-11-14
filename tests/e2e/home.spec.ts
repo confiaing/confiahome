@@ -113,7 +113,7 @@ test("los textos en cursiva de títulos usan el archivo cursivo de Fraunces", as
       heroEmphasis: first("h1 em"),
       question: first("#donde-empezamos .theme-warm li"),
       nextStep: first("#como article dl > div:last-child dd"),
-      email: first("#consulta p:last-of-type"),
+      email: first("#consulta > p:last-of-type"),
       upright: first("h1"),
     };
   });

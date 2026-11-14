@@ -64,7 +64,7 @@ confia.ing-home/
 │   │   └── scene/                Modelo del camino y reglas de modo completo/ligero
 │   │
 │   ├── adapters/                 Único lugar que toca servicios externos
-│   │   ├── supabase/ · email/ · turnstile/
+│   │   ├── supabase/ · email/ · turnstile/ · ratelimit/
 │   │   └── memory/               Implementaciones en memoria para pruebas y local
 │   │
 │   ├── i18n/

@@ -57,6 +57,8 @@ npx wrangler whoami
 
 Mientras tanto, `.env.development.local` trae las claves de prueba oficiales, que siempre aprueban; sirven para desarrollar.
 
+La site key se incrusta en la página **al construir**: tiene que estar en el entorno del comando de build de producción (L10). Sin ella el formulario no muestra la verificación y, con los servicios reales, el servidor rechaza los envíos.
+
 ## 6. Cloudflare Web Analytics
 
 1. Panel de Cloudflare → **Analytics & Logs** → **Web Analytics** → **Add a site**.
@@ -70,6 +72,17 @@ Mientras tanto, `.env.development.local` trae las claves de prueba oficiales, qu
 3. Escribe esa dirección en `.env.prod` → `NOTIFY_TO`.
 
 Los avisos llegan a hola@confia.ing y quedan respaldados en ese buzón. Respondes al visitante desde Gmail como hola@confia.ing: el aviso lleva su correo en `Reply-To`, así que basta con pulsar Responder.
+
+## Qué queda pendiente para el lanzamiento (L10)
+
+El formulario de consulta (L5) está hecho y probado contra la base local y las claves de prueba. Para que funcione en producción faltan, con tu confirmación:
+
+| Qué | Cómo |
+|---|---|
+| Crear la tabla `contact_requests` en `confiahomeDB` | `npx supabase db push` (migración `20261114170000_contact_requests.sql`) |
+| Cargar los secretos en el Worker | `wrangler secret put` para `SUPABASE_SECRET_KEY` y `TURNSTILE_SECRET_KEY`; `SUPABASE_URL`, `NOTIFY_FROM`, `NOTIFY_TO` y `SERVICES=real` como variables |
+| Site key de Turnstile en el build | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` en el entorno al construir |
+| Remitente y destino del aviso | `NOTIFY_FROM` debe ser una dirección de `confia.ing`; `NOTIFY_TO`, la verificada en el paso 7 |
 
 ## Comprobación
 

@@ -179,7 +179,7 @@ describe.each(LOCALES)("home en %s", (locale) => {
     const heroLinks = screen.getAllByRole("link").map((link) => [link.getAttribute("href"), link.textContent]);
     unmount();
 
-    const view = render(<Closing home={home} agenda={dictionary.agenda} />);
+    const view = render(<Closing home={home} agenda={dictionary.agenda} contact={dictionary.contact} locale="es" />);
     const region = screen.getByRole("region", { name: stripEmphasis(home.closing.title) });
     expect(region).toHaveAttribute("data-band", "calm");
     const actions = within(region).getAllByRole("link").slice(0, 2);
@@ -189,6 +189,12 @@ describe.each(LOCALES)("home en %s", (locale) => {
     expect(within(inquiry).getByRole("heading", { level: 3, name: home.actions.inquire })).toBeInTheDocument();
     const mail = within(inquiry).getByRole("link", { name: "hola@confia.ing" });
     expect(mail).toHaveAttribute("href", "mailto:hola@confia.ing");
+    // contact-form · El formulario vive en el bloque de consulta (L5-1); el correo queda como alternativa
+    // y fuera del formulario, que es lo que se oculta sin JavaScript (L5-9).
+    const form = within(inquiry).getByRole("form", { name: dictionary.contact.terminalFormLabel });
+    expect(form.closest("[data-contact-form]")).not.toBeNull();
+    expect(mail.closest("[data-contact-form]")).toBeNull();
+    expect(within(inquiry).getByRole("link", { name: dictionary.contact.consentLink })).toHaveAttribute("href", "/es/privacidad");
 
     const agenda = view.container.querySelector("#agenda") as HTMLElement;
     expect(within(agenda).getByRole("heading", { level: 3, name: home.actions.schedule })).toBeInTheDocument();
@@ -201,7 +207,7 @@ describe.each(LOCALES)("home en %s", (locale) => {
 
   // home-page · Secciones de la home y su orden
   it("la página: seis regiones en orden, un h1 y sin saltos de nivel", async () => {
-    const { container } = render(<HomeContent dictionary={dictionary} />);
+    const { container } = render(<HomeContent dictionary={dictionary} locale="es" />);
     const main = screen.getByRole("main");
     expect(main).toHaveAttribute("id", "contenido");
 

@@ -20,5 +20,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return <HomeContent dictionary={getDictionary(locale)} />;
+  return <HomeContent dictionary={getDictionary(locale)} locale={locale} />;
 }

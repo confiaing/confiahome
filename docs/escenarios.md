@@ -320,6 +320,33 @@ flowchart LR
 - GIVEN `prefers-reduced-motion: reduce` WHEN el modo terminal entra en pantalla THEN el comando aparece completo, sin tecleo animado.
 - GIVEN el modo clásico WHEN el visitante escribe `<b>x</b>` en el mensaje THEN el panel JSON lo muestra como texto, sin interpretarlo como marcado.
 
+**L5 · Escenarios añadidos al proponer el lote** — detalle en `openspec/changes/l5-consulta-por-formulario/specs/`
+- (L5-1, U) GIVEN un teléfono con menos de siete dígitos, un nombre de solo espacios o un campo demasiado largo WHEN se valida THEN se rechaza con el error de ese campo AND lo aceptado se guarda sin espacios sobrantes.
+- (L5-5, I) GIVEN un cuerpo ilegible, excesivo o una petición `GET` WHEN llega a `/api/contact` THEN responde 400, 413 o 405 AND no se guarda nada.
+- (L5-5, I) GIVEN un cuerpo inválido con idioma `en` WHEN se envía THEN los errores llegan en inglés AND ninguna respuesta se puede guardar en caché.
+- (L5-6, C) GIVEN una consulta válida WHEN el adaptador de Supabase la guarda THEN la fila existe con estado «new», fecha y versión del consentimiento.
+- (L5-7, C) GIVEN las claves de prueba de Turnstile WHEN el adaptador verifica THEN acepta con la de «siempre pasa» y rechaza con la de «siempre falla».
+- (L5-8, I, U) GIVEN una consulta solo con teléfono WHEN se notifica THEN el aviso no lleva `Reply-To` AND ningún texto del visitante queda como cabecera del correo.
+- (L5-9, I) GIVEN un fallo del almacén o del aviso WHEN se registra THEN el registro no contiene nombre, correo, teléfono, mensaje ni IP.
+- (L5-1, I) GIVEN el formulario en cada modo y en cada idioma WHEN se buscan los campos por su etiqueta THEN existen los cinco AND la indicación «correo o teléfono» está asociada a ambos.
+- (L5-10, I) GIVEN el control de modo WHEN se cambia con teclado THEN la opción activa lo expone AND los elementos decorativos (comando, panel JSON) no se anuncian.
+- (L5-3, I) GIVEN un formulario con errores WHEN se pulsa enviar THEN no se hace ninguna petición AND los errores de una respuesta 422 se muestran igual que los locales.
+- (L5-4, I) GIVEN un envío en curso WHEN se pulsa enviar de nuevo THEN no hay segunda petición.
+- (L5-1, E) GIVEN la home en ES y EN, en cada modo WHEN se rellena y envía, también solo con teclado THEN se ve la confirmación en su idioma.
+- (L5-9, I, E) GIVEN una respuesta 429 o 403, o JavaScript desactivado WHEN ocurre THEN se muestra un mensaje propio del caso con el correo, o el correo en lugar del formulario.
+- (L5, E) GIVEN el formulario en cada modo y estado WHEN se analiza THEN axe no encuentra infracciones AND JS ≤ 200 kB, LCP < 2,5 s y CLS < 0,1.
+
+**L5 · Escenarios añadidos durante la implementación**
+- (L5-7, I) GIVEN la verificación antispam activa y sin token todavía WHEN se pulsa enviar THEN el formulario espera al token AND, si no llega, lo dice con el correo como alternativa sin hacer ninguna petición.
+- (L5-7, I) GIVEN un envío que falló, también por red WHEN se reintenta THEN se usa un token nuevo.
+- (L5-7, I) GIVEN el campo trampa WHEN se inspecciona THEN su nombre y su etiqueta no son reconocibles por un autorrelleno AND cada activación queda contada sin datos del visitante.
+- (L5-9, I) GIVEN el limitador o el verificador fallando WHEN llega una consulta THEN el primero la deja pasar y el segundo responde «no disponible» sin guardar nada.
+- (L5-1, U) GIVEN un texto con caracteres de control WHEN se valida THEN se retiran AND el mensaje conserva sus saltos de línea.
+- (L5-3, U) GIVEN un envío sin nombre, sin contacto y sin aceptación WHEN se valida THEN se informan los tres errores a la vez.
+- (L5-5, I) GIVEN una lista como cuerpo WHEN llega a `/api/contact` THEN responde 400.
+- (L5-1, I) GIVEN el HTML servido antes de que carguen los scripts WHEN se inspecciona THEN el botón de enviar está desactivado AND el formulario no envía por GET.
+- (L5-6, U) GIVEN una consulta WHEN el adaptador la guarda THEN el identificador lo genera el servidor AND la llamada tiene tiempo máximo.
+
 ## L6 — Agenda
 
 **L6-1 · Reservar** — I, E
