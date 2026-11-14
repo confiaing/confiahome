@@ -69,6 +69,9 @@
   --color-error: var(--red-700);
   --color-success: var(--green-700);
 
+  /* Ancho desde el que la navegación se muestra en línea: variantes nav: y max-nav:. */
+  --breakpoint-nav: 56.25rem;
+
   /* Las variables --font-<familia> las define next/font (src/styles/fonts.ts). */
   --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --font-display-italic: var(--font-fraunces-italic), "Iowan Old Style", Georgia, serif;

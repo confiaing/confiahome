@@ -16,6 +16,14 @@
     font-size: 1.0625rem;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    /* El pie queda al fondo de la ventana aunque la página sea corta. */
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  body > main {
+    flex: 1 0 auto;
   }
 
   /* Un enlace se distingue por algo más que el color: va subrayado salvo que se diga lo contrario. */
@@ -54,5 +62,28 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/*
+ * Navegadores con los scripts desactivados: no hay botón que abra el menú, así que en
+ * estrecho la navegación se muestra desplegada y la cabecera deja de quedarse fija.
+ * Fuera de las capas para poder más que las utilidades. El ancho es --breakpoint-nav.
+ */
+@media (scripting: none) and (max-width: 56.24rem) {
+  [data-site-header] {
+    position: static;
+  }
+
+  #site-nav {
+    display: flex;
+    position: static;
+    flex-basis: 100%;
+    padding-inline: 0;
+    border: 0;
+  }
+
+  #site-nav-toggle {
+    display: none;
   }
 }

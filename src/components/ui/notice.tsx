@@ -16,7 +16,13 @@ const ICON: Record<Tone, ReactNode> = {
   info: <path d="M12 11v6M12 7.4v.4" />,
 };
 
-type NoticeProps = { tone: Tone; children: ReactNode; className?: string };
+type NoticeProps = {
+  tone: Tone;
+  children: ReactNode;
+  /** `false` para un aviso fijo de la página, que no debe anunciarse como novedad. */
+  live?: boolean;
+  className?: string;
+};
 
 /**
  * Aviso de error (role="alert") o de éxito e información (role="status").
@@ -24,10 +30,10 @@ type NoticeProps = { tone: Tone; children: ReactNode; className?: string };
  * contenedor debe estar ya en la página y recibir el texto después: lo resuelve
  * quien lo usa (el formulario, en el lote L5).
  */
-export function Notice({ tone, children, className }: NoticeProps) {
+export function Notice({ tone, children, live = true, className }: NoticeProps) {
   return (
     <div
-      role={tone === "error" ? "alert" : "status"}
+      role={live ? (tone === "error" ? "alert" : "status") : undefined}
       className={cx(
         "flex items-start gap-3 rounded-(--radius-s) border-2 bg-surface px-4 py-3.5 font-semibold",
         TONE_CLASS[tone],

@@ -25,3 +25,9 @@ ES y EN completos desde el lanzamiento, SEO por idioma, detección inicial por n
 - Sin dependencia de i18n ni de middleware.
 - Los formatos de fecha o plurales, si aparecen, usan `Intl` nativo.
 - Un visitante que entra directo a `/en` nunca es redirigido: la URL manda sobre la detección.
+
+## Actualización del 2026-11-14 (lote L2)
+
+- La redirección de `/` es 307, no 302, y conserva la consulta de la URL.
+- Quién escribe la cookie y cómo se calcula la página equivalente: [ADR-0012](0012-cambio-de-idioma-en-el-servidor.md).
+- La página 404 es única y bilingüe: Next.js no entrega en el HTML una 404 por idioma cuando el layout raíz está bajo `[locale]`.

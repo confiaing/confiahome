@@ -46,6 +46,12 @@ describe("Notice", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Recibimos tu consulta.");
   });
 
+  it("un aviso fijo de la página no es una región viva", () => {
+    render(<Notice tone="info" live={false}>Borrador.</Notice>);
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(screen.getByText("Borrador.")).toBeInTheDocument();
+  });
+
   it("su icono es decorativo", () => {
     const { container } = render(<Notice tone="success">Recibimos tu consulta.</Notice>);
     expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");

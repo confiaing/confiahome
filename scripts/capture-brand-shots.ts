@@ -22,13 +22,32 @@ for (const [name, width, height] of [
   await page.close();
 }
 
+// El marco: menú abierto en móvil, una página legal y la 404.
+{
+  const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+  await mobile.goto(`${BASE}/es`);
+  await mobile.evaluate(() => document.fonts.ready);
+  await mobile.locator("#site-nav-toggle").click();
+  await mobile.screenshot({ path: `${OUT}menu-mobile.png` });
+  await mobile.goto(`${BASE}/en/no-existe`);
+  await mobile.evaluate(() => document.fonts.ready);
+  await mobile.screenshot({ path: `${OUT}not-found-mobile.png`, fullPage: true });
+  await mobile.close();
+
+  const desktop = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
+  await desktop.goto(`${BASE}/es/privacidad`);
+  await desktop.evaluate(() => document.fonts.ready);
+  await desktop.screenshot({ path: `${OUT}legal-desktop.png`, fullPage: true });
+  await desktop.close();
+}
+
 const page = await browser.newPage({ viewport: { width: 1500, height: 700 }, deviceScaleFactor: 2 });
 await page.goto(`${BASE}/es`);
 await page.evaluate(() => document.fonts.ready);
 
 // Logo en vivo (componente) junto al archivo SVG, a 24 y 96 px, en claro y en oscuro.
 await page.evaluate(() => {
-  const live = document.querySelector('[role="img"]')!;
+  const live = document.querySelector('header [role="img"]')!;
   const main = document.querySelector("main")!;
   main.replaceChildren();
   main.className = "";

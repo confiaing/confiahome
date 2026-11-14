@@ -3,7 +3,7 @@
 Home pública de lanzamiento de **Confia.ing**, consultoría de transformación de IA para pymes. Bilingüe (ES/EN), con un recorrido interactivo del proceso de trabajo y dos vías de contacto: agendar 30 minutos o enviar una consulta.
 
 > Documento vivo. Se actualiza al cierre de cada fase y con cada decisión relevante.
-> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 y L1 hechos; siguiente, L2 — idiomas y estructura)
+> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L2 hechos; siguiente, L3 — contenido de la home)
 
 ## Estado del proyecto
 
@@ -135,6 +135,7 @@ flowchart LR
 | [ADR-0009](docs/architecture/adr/0009-escena-3d-y-version-ligera.md) | Escena 3D con Three.js en carga diferida y versión ligera en SVG obligatoria |
 | [ADR-0010](docs/architecture/adr/0010-formulario-en-dos-modos.md) | Formulario en modo terminal y modo clásico sobre un mismo esquema |
 | [ADR-0011](docs/architecture/adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md) | Fuentes y archivos de marca guardados en el repositorio y generados por script |
+| [ADR-0012](docs/architecture/adr/0012-cambio-de-idioma-en-el-servidor.md) | El cambio de idioma pasa por un punto del servidor que guarda la cookie |
 
 Detalle: [C4, componentes, datos y seguridad](docs/architecture/README.md) · [estructura de ficheros](docs/architecture/estructura.md).
 

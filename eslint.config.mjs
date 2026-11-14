@@ -27,6 +27,9 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
+      // La navegación del sitio usa <a> a propósito: "/" y /api/locale son Route Handlers
+      // que redirigen y guardan una cookie, y <Link> los precargaría (ADR-0012).
+      "@next/next/no-html-link-for-pages": "off",
     },
   },
   ...architecture,

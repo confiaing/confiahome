@@ -144,11 +144,12 @@ Pendiente después de la v1: búsqueda de parecidos con marcas registradas antes
 
 ## En pantalla
 
-Página provisional del lote L1, con logo, tipografías, tokens y botón.
+Página provisional con el marco del lote L2: cabecera, pie, tipografías, tokens y botón.
 
 | Escritorio (1440 px) | Móvil (390 px) |
 |---|---|
 | ![Página provisional en escritorio](img/home-desktop.png) | ![Página provisional en móvil](img/home-mobile.png) |
+| ![Página legal provisional](img/legal-desktop.png) | ![Menú abierto en móvil](img/menu-mobile.png) |
 
 Las capturas se rehacen con `node scripts/capture-brand-shots.ts` y la app servida en local.
 

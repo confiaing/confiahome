@@ -130,6 +130,32 @@ flowchart LR
 **L2-6 · 404** — I
 - GIVEN una ruta inexistente bajo `/en/` WHEN se solicita THEN responde 404 con texto en inglés AND un enlace a `/en`.
 
+**L2 · Escenarios añadidos al proponer el lote** — detalle en `openspec/changes/l2-idiomas-y-estructura/specs/`
+- (L2-1, I) GIVEN `/` sin cookie ni `Accept-Language` WHEN responde THEN redirige a `/es`; con cookie `locale=fr` THEN la cookie se ignora.
+- (L2-1, I) GIVEN cualquier petición a `/` WHEN responde THEN es una redirección temporal que no se guarda en cachés compartidas.
+- (L2-1, U) GIVEN `Accept-Language` con pesos, variante regional (`es-CO`), comodín, `q=0` o mal formado WHEN se negocia THEN se elige el idioma admitido de mayor peso o español.
+- (L2-2, U) GIVEN una ruta de un idioma WHEN se pide su equivalente THEN home↔home, privacidad↔privacy, términos↔terms AND una ruta desconocida lleva a la home.
+- (L2-2, E) GIVEN JavaScript desactivado WHEN se elige EN THEN se llega a `/en` AND la cookie `locale` vale `en`.
+- (L2-2, I) GIVEN un cambio de idioma con origen externo o idioma no admitido WHEN responde THEN nunca redirige fuera del sitio AND no guarda cookie si el idioma no es válido.
+- (L2-2, I) GIVEN un cambio a `en` WHEN se inspecciona la cookie THEN vale `en` con `Path=/`, un año y `SameSite=Lax`.
+- (L2-2, I) GIVEN el selector WHEN se renderiza THEN el idioma activo está señalado AND el otro es un enlace con `hreflang` y `lang`.
+- (L2-1, E) GIVEN cualquier página WHEN se lee su cabecera HTML THEN declara canónica y alternos `es`, `en` y `x-default` hacia su equivalente.
+- (L2-3, U) GIVEN una clave presente solo en `en.ts` WHEN se comprueban los tipos THEN falla nombrándola AND los diccionarios reales no tienen textos vacíos.
+- (L2-3, E) GIVEN `/en` y `/en/privacy` WHEN se lee su texto THEN no aparece ninguna frase del diccionario español.
+- (L2-4, E) GIVEN el foco en «Saltar al contenido» WHEN se pulsa Enter THEN el foco pasa al contenido principal.
+- (L2-4, I) GIVEN la cabecera en una página legal WHEN se renderiza THEN las anclas apuntan a la home.
+- (L2-4, I) GIVEN la acción de agenda WHEN se renderiza THEN es un enlace directo al calendario, en otra pestaña y con aviso.
+- (L2-4, I, E) GIVEN el menú WHEN se abre, se cierra o se elige un enlace THEN `aria-expanded` lo refleja AND cerrado sus enlaces no reciben foco.
+- (L2-4, E) GIVEN JavaScript desactivado en 375 px WHEN carga la página THEN anclas, selector y agenda están visibles.
+- (L2-4, E) GIVEN cualquier página WHEN se inspecciona THEN hay un solo `banner`, `main` y `contentinfo` AND axe no encuentra infracciones.
+- (L2-4, E) GIVEN `/es` con el marco WHEN se mide THEN JS inicial ≤ 200 kB AND CLS < 0,1.
+- (L2-7, E) GIVEN una página legal WHEN se lee su cabecera THEN declara `noindex` AND su título nombra la página y la marca.
+- (L2-6, E) GIVEN cualquier ruta inexistente (`/en/x`, `/es/a/b/c`, `/es/privacy`, `/fr`) WHEN se solicita THEN responde 404 con una página bilingüe: cada mensaje con su `lang` y un enlace a su home AND declara `noindex`.
+- (L2-6, E) GIVEN una 404 WHEN se lee el HTML servido o se abre con los scripts desactivados THEN el mensaje y los enlaces están presentes.
+- (L2-1, I) GIVEN `/?utm_source=boletin` WHEN responde THEN redirige conservando la consulta.
+- (L2-2, I) GIVEN un cambio de idioma en un host que no es local WHEN se inspecciona la cookie THEN lleva `Secure`.
+- (L2-4, I, E) GIVEN el menú abierto WHEN el foco sale hacia la página o la ventana se ensancha THEN se cierra.
+
 ## L3 — Contenido de la home
 
 **L3-1 · Hero** — I

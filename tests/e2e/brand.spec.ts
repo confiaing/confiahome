@@ -108,7 +108,7 @@ for (const locale of LOCALES) {
 // brand-identity · Logo en la página
 test("el logo se ve con sus cinco tramos y su nombre accesible", async ({ page }) => {
   await page.goto("/es");
-  const logo = page.getByRole("img", { name: "Confia.ing" });
+  const logo = page.getByRole("banner").getByRole("img", { name: "Confia.ing, inicio" });
   await expect(logo).toBeVisible();
   await expect(logo.locator("[data-segment]")).toHaveCount(5);
 });
@@ -116,7 +116,7 @@ test("el logo se ve con sus cinco tramos y su nombre accesible", async ({ page }
 // design-tokens · Un cambio de rol se refleja sin tocar el componente (L1-1)
 test("cambiar --color-primary cambia el botón sin tocar su código", async ({ page }) => {
   await page.goto("/es");
-  const cta = page.locator("main a").first();
+  const cta = page.locator("main#contenido a").first();
   const before = toHex(await cta.evaluate((element) => getComputedStyle(element).backgroundColor));
   expect(before).toBe("#ff6b4a");
   await page.evaluate(() => document.body.style.setProperty("--color-primary", "var(--indigo-700)"));
@@ -128,9 +128,11 @@ test("cambiar --color-primary cambia el botón sin tocar su código", async ({ p
 // ui-components · Foco visible por teclado (L1-5)
 test("el botón muestra un anillo de foco con contraste suficiente", async ({ page, browserName }) => {
   await page.goto("/es");
-  // En WebKit, como en Safari, los enlaces se recorren con Opción + Tab.
+  // Se llega con teclado (en WebKit, como en Safari, los enlaces se recorren con Opción + Tab)
+  // y el foco pasa al botón: así el navegador lo trata como foco de teclado.
   await page.keyboard.press(browserName === "webkit" ? "Alt+Tab" : "Tab");
-  const cta = page.locator("main a").first();
+  await page.locator("main#contenido a").first().focus();
+  const cta = page.locator("main#contenido a").first();
   await expect(cta).toBeFocused();
   const style = await cta.evaluate((element) => {
     const computed = getComputedStyle(element);
@@ -153,7 +155,7 @@ test("al pulsar, el botón se desplaza; con movimiento reducido, no", async ({ b
     const context = await browser.newContext({ reducedMotion });
     const page = await context.newPage();
     await page.goto("/es");
-    const cta = page.locator("main a").first();
+    const cta = page.locator("main#contenido a").first();
     const box = (await cta.boundingBox())!;
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await page.mouse.down();
@@ -171,7 +173,7 @@ test("al pulsar, el botón se desplaza; con movimiento reducido, no", async ({ b
 test("los temas cambian los colores, se anidan y ceden ante una utilidad", async ({ page }) => {
   await page.goto("/es");
   const colors = await page.evaluate(() => {
-    const cta = document.querySelector("main a")!;
+    const cta = document.querySelector("main#contenido a")!;
     const host = document.createElement("div");
     host.innerHTML = `
       <div class="theme-dark" id="dark">

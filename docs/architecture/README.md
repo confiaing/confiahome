@@ -1,6 +1,6 @@
 # Arquitectura — Confia.ing Home
 
-**Estado:** Aceptada. Actualizada el 2026-11-14 con el diseño elegido (ADR-0009 y ADR-0010) y con las fuentes y archivos de marca ([ADR-0011](adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md))
+**Estado:** Aceptada. Actualizada el 2026-11-14 con el diseño elegido (ADR-0009 y ADR-0010) y con las fuentes y archivos de marca ([ADR-0011](adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md)) y el cambio de idioma ([ADR-0012](adr/0012-cambio-de-idioma-en-el-servidor.md))
 
 Stack elegido: **Next.js (App Router) sobre Cloudflare Workers con OpenNext**, **Supabase** como base de datos, todo en planes gratuitos. Las decisiones y sus alternativas están en [adr/](adr/).
 
@@ -126,7 +126,9 @@ C4Component
 | UI base | `src/components/ui/` | Botón, enlace, tarjeta, campo, aviso: solo usan tokens | Integración |
 | Dominio de contacto | `src/domain/contact/` | Esquema Zod (correo **o** teléfono, consentimiento), caso de uso `submitContact` | Unitario |
 | Dominio de analítica | `src/domain/analytics/` | Lista cerrada de eventos, normalización de dispositivo/canal, `trackEvent` | Unitario |
-| i18n | `src/i18n/` | Diccionarios tipados `es`/`en`, negociación de idioma | Unitario |
+| i18n | `src/i18n/` | Diccionarios tipados `es`/`en`, negociación de idioma, tabla de rutas localizadas y alternos `hreflang` | Unitario |
+| Cambio de idioma | `src/app/api/locale/route.ts` | Guarda la cookie `locale` y redirige a la página equivalente ([ADR-0012](adr/0012-cambio-de-idioma-en-el-servidor.md)) | Integración + E2E |
+| Marco | `src/components/sections/` (`skip-link`, `site-header`, `site-footer`) | Enlace de salto, cabecera con menú plegable y pie, compuestos en el layout | Integración + E2E |
 | Adaptadores | `src/adapters/` | Supabase, correo, Turnstile; únicos puntos que tocan servicios externos | Integración (contrato) |
 | API de contacto | `src/app/api/contact/route.ts` | Límite de frecuencia → Turnstile → validar → guardar → avisar | Integración |
 | API de eventos | `src/app/api/events/route.ts` | Validar contra la lista cerrada → guardar | Integración |

@@ -38,13 +38,14 @@ confia.ing-home/
 │   ├── app/                      Rutas de Next.js. Solo composición, sin lógica
 │   │   ├── route.ts              "/" → redirige a /es o /en
 │   │   ├── robots.ts · sitemap.ts
+│   │   ├── global-not-found.tsx  Única página 404: bilingüe y completa en el HTML
 │   │   ├── [locale]/
-│   │   │   ├── layout.tsx        ÚNICO layout raíz: <html lang>, metadatos, hreflang
-│   │   │   ├── not-found.tsx     404 en el idioma de la ruta
+│   │   │   ├── layout.tsx        ÚNICO layout raíz: <html lang>, enlace de salto, cabecera y pie
 │   │   │   ├── page.tsx          Home
 │   │   │   └── [legal]/          /es/privacidad · /en/privacy · /es/terminos · /en/terms
 │   │   │                         (pares válidos generados desde src/i18n/; el resto, 404)
 │   │   └── api/
+│   │       ├── locale/route.ts   GET: guarda el idioma elegido y lleva a la página equivalente
 │   │       ├── contact/route.ts  POST: consulta
 │   │       └── events/route.ts   POST: evento analítico
 │   │
@@ -54,7 +55,8 @@ confia.ing-home/
 │   │   ├── journey/              Recorrido de 5 etapas; scene/ con el canvas 3D y el SVG ligero
 │   │   ├── contact/              Formulario en modo terminal y modo clásico
 │   │   ├── scheduling/           Calendly a petición
-│   │   └── ui/                   Botón, enlace, campo, casilla, tarjeta, aviso, logo
+│   │   └── ui/                   Botón, enlace, campo, casilla, tarjeta, aviso, logo,
+│   │                             selector de idioma, enlace de agenda, menú plegable
 │   │
 │   ├── domain/                   TypeScript puro. No importa Next, Supabase ni Cloudflare
 │   │   ├── contact/              Esquema, caso de uso, puertos

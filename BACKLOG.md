@@ -67,7 +67,9 @@ Aplica la propuesta visual y el concepto de logo elegidos. PRD §6.7.
 | L1-8 | Componente de logo con el concepto elegido | M | El componente `Logo` de la implementación usa el símbolo de cinco tramos con punto y el nombre con «IA» resaltada. El archivo de diseño finalista no se modifica |
 | L1-6 | Guía breve de marca en `docs/brand/` (parte de la ficha ya existente) | S | Paleta con HEX/RGB y roles, tipografías y licencias, usos del logo, ejemplos móvil y escritorio |
 
-## L2 — Idiomas y estructura
+## L2 — Idiomas y estructura ✅
+
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l2-idiomas-y-estructura/tasks.md`.
 
 PRD §6.1, §6.6, §9. CA: todo disponible en ES y EN con cambio manual.
 
@@ -79,7 +81,7 @@ PRD §6.1, §6.6, §9. CA: todo disponible en ES y EN con cambio manual.
 | L2-4 | Header con anclas, selector y CTA de agenda | M | Navegación adaptable a móvil; menú operable con teclado; enlace «saltar al contenido» |
 | L2-5 | Pie con contacto, legales e idioma | M | hola@confia.ing visible; enlaces a privacidad y términos en el idioma activo |
 | L2-7 | Rutas legales provisionales | M | `/es/privacidad`, `/en/privacy`, `/es/terminos` y `/en/terms` existen con título y aviso de borrador; su contenido llega en L8 |
-| L2-6 | Página 404 bilingüe | S | Ofrece volver a la home en el idioma detectado |
+| L2-6 | Página 404 bilingüe | S | Una sola página con el mensaje en español e inglés y un enlace a la home de cada idioma; completa sin JavaScript |
 
 ## L3 — Contenido de la home
 
@@ -175,7 +177,7 @@ PRD §10. ADR-0001, 0008.
 | L9-2 | E2E de teclado y movimiento reducido | M | Toda la home es operable sin ratón |
 | L9-3 | Auditoría de accesibilidad automática | M | Sin infracciones de axe en home y legales |
 | L9-4 | Presupuesto de rendimiento | M | LCP < 2,5 s y CLS < 0,1 en ambos modos de escena, con el perfil de medición de `openspec/config.yaml`; JS inicial de `/es` ≤ 200 kB comprimido |
-| L9-5 | Cabeceras de seguridad y CSP | M | CSP sin `unsafe-inline` para scripts; HSTS; orígenes de terceros explícitos |
+| L9-5 | Cabeceras de seguridad y CSP | M | CSP sin `unsafe-inline` para scripts; HSTS; orígenes de terceros explícitos; `Referrer-Policy` compatible con el cambio de idioma (ADR-0012) |
 | L9-6 | Auditoría con el skill `security-audit` | M | Hallazgos altos y medios corregidos o aceptados por escrito |
 | L9-7 | Revisión de código de toda la v1 | M | Hallazgos resueltos |
 | L9-8 | Latido diario contra la pausa de Supabase | M | Cron verificado en el entorno de preview |
