@@ -48,7 +48,9 @@ export function findViolations(entries: Entry[]): Violation[] {
     if (DEADLINES.test(text)) flag("plazo prometido");
 
     // Cualquier otro número es sospechoso: se quitan los dos admitidos y no debe quedar ninguno.
-    const withoutAllowed = STAGE_TAG.test(key) ? text.replace(/\b[1-5]\b/, "").replace(THIRTY_MINUTES, "") : text.replace(THIRTY_MINUTES, "");
+    // «3D» es el nombre de la escena, no una cifra.
+    const plain = text.replace(THIRTY_MINUTES, "").replace(/\b3D\b/g, "");
+    const withoutAllowed = STAGE_TAG.test(key) ? plain.replace(/\b[1-5]\b/, "") : plain;
     if (/\d/.test(withoutAllowed)) flag("número fuera de la lista admitida");
 
     if (CALL_KEYS.test(key) && DIAGNOSIS.test(text)) flag("la llamada presentada como diagnóstico");

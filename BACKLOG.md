@@ -102,7 +102,9 @@ PRD §5, §6.2, §6.3, §6.5, §7. CA: un visitante explica qué hace Confia.ing
 | L3-8 | Ritmo de secciones del diseño elegido | M | Alternan fondo crema y banda de color con esquinas suaves: salvia en «Dónde empezamos», coral claro en «Lo que ofrecemos», índigo claro en el cierre; tarjeta mantequilla para las preguntas |
 | L3-7 | Redacción EN revisada | M | Traducción natural, no literal; mismos límites de claims |
 
-## L4 — Recorrido interactivo
+## L4 — Recorrido interactivo ✅
+
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l4-recorrido-interactivo/tasks.md`. De L4-6 (prioridad C) se hizo que la cámara acompañe el desplazamiento; que la etapa cambie sola al desplazarse quedó fuera, porque choca con las pestañas.
 
 PRD §6.4, §9. CA: cinco etapas diferenciadas; utilizable con teclado y movimiento reducido.
 

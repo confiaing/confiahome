@@ -54,6 +54,7 @@ más que el español. Los asteriscos marcan la palabra que el título resalta en
 | `eyebrow` | Cómo lo hacemos realidad | How we make it real |
 | `title` | Un recorrido que hacemos *juntos*. | A journey we take *together*. |
 | `lede` | Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir. | Five stages. At each one you know what we do, what you get, and what you decide before moving on. |
+| `tabsLabel` | Etapas del recorrido | Journey stages |
 | `labels.does` | Qué hacemos | What we do |
 | `labels.gets` | Qué recibes | What you get |
 | `labels.next` | Siguiente paso | Next step |

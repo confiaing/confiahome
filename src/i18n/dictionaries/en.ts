@@ -37,6 +37,23 @@ export const en: Dictionary = {
     body: "The link may be broken, or the page may no longer exist.",
     cta: "Back to home",
   },
+  scene: {
+    label: "Page version",
+    lite: "Light version",
+    full: "Full version",
+    status: {
+      full: "Full version: 3D scene.",
+      loading: "Loading the 3D scene…",
+      chosen: "Light version chosen: static illustrations, no 3D.",
+      noWebgl: "Light version: this browser doesn't offer WebGL.",
+      reducedMotion: "Automatic light version: reduced motion is on.",
+      saveData: "Automatic light version: data saver is on.",
+      slowConnection: "Automatic light version: slow connection.",
+      lowEndDevice: "Automatic light version: low-resource device.",
+      loadFailed: "The 3D scene couldn't load; showing the light version.",
+      contextLost: "The 3D scene stopped; showing the light version.",
+    },
+  },
   home: {
     actions: {
       schedule: "Book a 30-minute conversation",
@@ -84,6 +101,7 @@ export const en: Dictionary = {
       eyebrow: "How we make it real",
       title: "A journey we take *together*.",
       lede: "Five stages. At each one you know what we do, what you get, and what you decide before moving on.",
+      tabsLabel: "Journey stages",
       labels: { does: "What we do", gets: "What you get", next: "Next step" },
       stages: [
         {

@@ -216,6 +216,8 @@ for (const locale of ["es", "en"] as const) for (const width of [320, 375]) {
     const clipped = await page.evaluate(() => {
       const limit = document.documentElement.clientWidth + 0.5;
       return [...document.querySelectorAll("main h1, main h2, main h3, main p, main li, main a, main dt, main dd")]
+        // La fila de pestañas del recorrido se desplaza de lado a propósito.
+        .filter((element) => !element.closest('[role="tablist"]'))
         .filter((element) => element.getBoundingClientRect().right > limit || element.scrollWidth > element.clientWidth + 1)
         .map((element) => `${element.tagName}: ${element.textContent?.slice(0, 40)}`);
     });
@@ -261,10 +263,11 @@ test("al pasar el puntero se mueven tarjetas y flecha; con movimiento reducido, 
   }
 });
 
-test("LCP < 2,5 s y CLS < 0,1 en móvil simulado", async ({ browser, browserName }) => {
+for (const mode of ["completa", "ligera"] as const) test(`LCP < 2,5 s y CLS < 0,1 en móvil simulado, versión ${mode}`, async ({ browser, browserName }) => {
   test.skip(browserName !== "chromium", "las métricas y la limitación de red solo existen en Chromium");
   const context = await browser.newContext({ ...devices["Pixel 7"], baseURL: test.info().project.use.baseURL });
   const page = await context.newPage();
+  await page.addInitScript((value) => window.localStorage.setItem("confia-modo", value), mode);
   const client = await context.newCDPSession(page);
   await client.send("Network.enable");
   await client.send("Network.emulateNetworkConditions", {
@@ -288,11 +291,16 @@ test("LCP < 2,5 s y CLS < 0,1 en móvil simulado", async ({ browser, browserName
   });
   await page.goto("/es");
   await page.evaluate(() => document.fonts.ready);
+  // En versión completa se espera a que la escena esté lista: su llegada no debe mover nada.
+  await page.locator('[data-scene="hero"]').scrollIntoViewIfNeeded();
+  if (mode === "completa") await page.locator("canvas[data-scene-canvas]").waitFor({ state: "attached", timeout: 20_000 });
   await page.waitForTimeout(1000);
+  await expect(page.locator("html")).toHaveAttribute("data-mode", mode === "completa" ? "full" : "lite");
   const metrics = await page.evaluate(() => (window as unknown as { __metrics: { lcp: number; cls: number } }).__metrics);
   await context.close();
-  console.log(`Home /es en móvil simulado: LCP ${(metrics.lcp / 1000).toFixed(2)} s, CLS ${metrics.cls.toFixed(4)}`);
+  console.log(`Home /es en móvil simulado, versión ${mode}: LCP ${(metrics.lcp / 1000).toFixed(2)} s, CLS ${metrics.cls.toFixed(4)}`);
   expect(metrics.lcp).toBeGreaterThan(0);
   expect(metrics.lcp).toBeLessThan(2500);
   expect(metrics.cls).toBeLessThan(0.1);
 });
+

@@ -143,9 +143,28 @@ Se regeneran con `npm run brand:build`. En la web se usa el componente [`Logo`](
 
 Pendiente después de la v1: búsqueda de parecidos con marcas registradas antes de registrarlo.
 
+## La escena
+
+Un camino de cinco terrazas —una por etapa— hecho de bloques que pasan de dispersos a ordenados, recorrido por dos esferas: tú y nosotros. Aparece en el hero (el principio, casi todo en el aire), en el recorrido (construido hasta la etapa elegida) y en el cierre (completo).
+
+Tiene dos versiones, que salen del mismo modelo (`src/domain/scene/`) y toman sus colores de los roles `--scene-*` del tema que las contiene:
+
+| Versión | Qué es | Cuándo |
+|---|---|---|
+| Completa | Escena 3D (Three.js), en un lienzo que se muda a la sección visible | Equipos con WebGL y sin restricciones; se carga después de que la página es legible |
+| Ligera | Ilustración SVG isométrica, incluida en el HTML | Sin WebGL, con ahorro de datos, conexión lenta, equipo modesto, movimiento reducido, sin JavaScript, o si la escena falla |
+
+El visitante puede cambiar de versión en el pie de la home.
+
+| | Completa (3D) | Ligera (SVG) |
+|---|---|---|
+| Hero | ![Hero en 3D](img/scene-hero-desktop.png) | ![Hero en SVG](img/home-hero-desktop.png) |
+| Recorrido | ![Recorrido en 3D, etapa 3](img/scene-journey-3-desktop.png) | ![Recorrido en SVG, etapa 1](img/home-journey-desktop.png) |
+| Cierre | ![Cierre en 3D](img/scene-closing-desktop.png) | ![Cierre en SVG](img/home-closing-desktop.png) |
+
 ## En pantalla
 
-La home, sección a sección (1440 px). Las capturas se rehacen con `node scripts/capture-brand-shots.ts` y la app servida en local.
+La home, sección a sección (1440 px), en versión ligera. Las capturas se rehacen con `node scripts/capture-brand-shots.ts` y la app servida en local.
 
 | Sección | Captura |
 |---|---|

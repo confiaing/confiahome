@@ -1,3 +1,4 @@
+import { ModeSwitch } from "@/components/journey/scene/mode-switch";
 import { LanguageSwitch } from "@/components/ui/language-switch";
 import { Logo } from "@/components/ui/logo";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -38,6 +39,7 @@ export function SiteFooter({ locale, dictionary, year }: SiteFooterProps) {
           {/* Solo la marca: sin razón social hasta que el fundador la defina (README, decisiones). */}
           <p className="text-text-muted">© {year} Confia.ing</p>
         </div>
+        <ModeSwitch labels={dictionary.scene} />
       </div>
     </footer>
   );

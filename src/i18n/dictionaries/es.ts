@@ -36,6 +36,23 @@ export const es = {
     body: "Puede que el enlace esté roto o que la página ya no exista.",
     cta: "Volver al inicio",
   },
+  scene: {
+    label: "Versión de la página",
+    lite: "Versión ligera",
+    full: "Versión completa",
+    status: {
+      full: "Versión completa: escena 3D.",
+      loading: "Cargando la escena 3D…",
+      chosen: "Versión ligera elegida: ilustraciones estáticas, sin 3D.",
+      noWebgl: "Versión ligera: este navegador no ofrece WebGL.",
+      reducedMotion: "Versión ligera automática: movimiento reducido activado.",
+      saveData: "Versión ligera automática: ahorro de datos activado.",
+      slowConnection: "Versión ligera automática: conexión lenta.",
+      lowEndDevice: "Versión ligera automática: dispositivo de bajos recursos.",
+      loadFailed: "No se pudo cargar la escena 3D; se muestra la versión ligera.",
+      contextLost: "La escena 3D se detuvo; se muestra la versión ligera.",
+    },
+  },
   home: {
     // Las dos vías de contacto, iguales en el hero y en el cierre.
     actions: {
@@ -84,6 +101,7 @@ export const es = {
       eyebrow: "Cómo lo hacemos realidad",
       title: "Un recorrido que hacemos *juntos*.",
       lede: "Cinco etapas. En cada una sabes qué hacemos, qué recibes y qué decides antes de seguir.",
+      tabsLabel: "Etapas del recorrido",
       labels: { does: "Qué hacemos", gets: "Qué recibes", next: "Siguiente paso" },
       stages: [
         {

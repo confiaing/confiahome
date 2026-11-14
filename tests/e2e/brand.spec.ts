@@ -125,9 +125,8 @@ test("cambiar --color-primary cambia el botón sin tocar su código", async ({ p
   const before = toHex(await cta.evaluate((element) => getComputedStyle(element).backgroundColor));
   expect(before).toBe("#ff6b4a");
   await page.evaluate(() => document.body.style.setProperty("--color-primary", "var(--indigo-700)"));
-  await page.waitForTimeout(350);
-  const after = toHex(await cta.evaluate((element) => getComputedStyle(element).backgroundColor));
-  expect(after).toBe("#2d3380");
+  // El botón tiene transición de color: se espera a que termine en lugar de un tiempo fijo.
+  await expect.poll(async () => toHex(await cta.evaluate((element) => getComputedStyle(element).backgroundColor))).toBe("#2d3380");
 });
 
 // ui-components · Foco visible por teclado (L1-5)

@@ -3,7 +3,7 @@
 Home pública de lanzamiento de **Confia.ing**, consultoría de transformación de IA para pymes. Bilingüe (ES/EN), con un recorrido interactivo del proceso de trabajo y dos vías de contacto: agendar 30 minutos o enviar una consulta.
 
 > Documento vivo. Se actualiza al cierre de cada fase y con cada decisión relevante.
-> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L3 hechos; siguiente, L4 — recorrido interactivo)
+> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L4 hechos; siguiente, L5 — consulta por formulario)
 
 ## Estado del proyecto
 
@@ -136,6 +136,7 @@ flowchart LR
 | [ADR-0010](docs/architecture/adr/0010-formulario-en-dos-modos.md) | Formulario en modo terminal y modo clásico sobre un mismo esquema |
 | [ADR-0011](docs/architecture/adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md) | Fuentes y archivos de marca guardados en el repositorio y generados por script |
 | [ADR-0012](docs/architecture/adr/0012-cambio-de-idioma-en-el-servidor.md) | El cambio de idioma pasa por un punto del servidor que guarda la cookie |
+| [ADR-0013](docs/architecture/adr/0013-pestanas-que-degradan-a-enlaces.md) | Las pestañas del recorrido son enlaces: las etapas se leen sin JavaScript |
 
 Detalle: [C4, componentes, datos y seguridad](docs/architecture/README.md) · [estructura de ficheros](docs/architecture/estructura.md).
 

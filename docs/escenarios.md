@@ -244,6 +244,33 @@ flowchart LR
 - GIVEN el modo completo WHEN el visitante elige «Versión ligera» THEN la escena pasa a SVG al instante AND la preferencia se recuerda al recargar.
 - GIVEN un navegador sin WebGL WHEN elige «Versión completa» THEN permanece en ligera AND se explica el motivo.
 
+**L4 · Escenarios añadidos al proponer el lote** — detalle en `openspec/changes/l4-recorrido-interactivo/specs/`
+- (L4-1, I) GIVEN el recorrido recién cargado WHEN se inspecciona THEN la etapa 1 está seleccionada y solo su panel es visible.
+- (L4-2, I) GIVEN el foco en la pestaña 1 WHEN se pulsa Flecha izquierda o arriba THEN se selecciona la 5 AND Flecha abajo equivale a derecha.
+- (L4-2, E) GIVEN el foco antes del recorrido WHEN se pulsa Tab dos veces THEN pasa por la pestaña seleccionada y su panel, sin recorrer las otras.
+- (L4-2, I) GIVEN una pestaña WHEN se lee su nombre accesible THEN incluye el número y el nombre de la etapa.
+- (L4-3, E) GIVEN la dirección de la home con el ancla de la etapa 4 WHEN carga THEN se muestra la etapa 4.
+- (L4-5, E) GIVEN 375 px en ES y EN WHEN se recorren las pestañas THEN la seleccionada queda siempre a la vista.
+- (L4, E) GIVEN la home en móvil simulado WHEN termina de cargar THEN CLS < 0,1 y JS inicial ≤ 200 kB, en modo ligero y en modo completo.
+- (L4-8, U) GIVEN el modelo WHEN se genera dos veces THEN es idéntico AND antes de la etapa 1 todo está disperso y en la 5 todo construido.
+- (L4-7, E) GIVEN JavaScript desactivado WHEN carga la home THEN las tres ilustraciones son visibles.
+- (L4-7, E) GIVEN el modo ligero WHEN se selecciona la etapa 3 THEN la ilustración muestra construidos los tramos 1 a 3 y atenuados los 4 y 5.
+- (L4-7, I) GIVEN la ilustración WHEN se inspecciona THEN está oculta a las tecnologías de apoyo AND no lleva colores literales.
+- (L4-7, U) GIVEN una elección guardada WHEN se decide el modo THEN manda sobre lo automático, salvo «completa» sin WebGL.
+- (L4-8, E) GIVEN el HTML de `/es` WHEN se listan los scripts iniciales THEN ninguno contiene la librería 3D.
+- (L4-8, E) GIVEN la escena activa WHEN el visitante se desplaza por hero, recorrido y cierre THEN hay un único lienzo, en la ranura a la vista.
+- (L4-8, E) GIVEN la escena activa WHEN ninguna ranura está a la vista THEN se detiene el bucle de render.
+- (L4-8, E) GIVEN la escena activa WHEN se pierde el contexto WebGL THEN la página pasa a modo ligero y lo comunica.
+- (L4-9, I) GIVEN la versión ligera automática WHEN se lee el control en ES y EN THEN indica que es automática y por qué.
+- (L4-9, E) GIVEN una página legal WHEN se mira el pie THEN no aparece el control de versión.
+- (L4-9, E) GIVEN una elección de versión WHEN se inspecciona el almacenamiento THEN hay una sola entrada, «ligera» o «completa».
+- (L4-3, E) GIVEN el script de la página sin ejecutarse WHEN se recorren las pestañas con Tab y se pulsa Enter THEN se llega a cualquier etapa.
+- (L4-2, I, E) GIVEN el recorrido cargado WHEN cambia el ancla de la dirección THEN la etapa mostrada la sigue.
+- (L4-2, E) GIVEN una pestaña cortada por el borde de la ventana WHEN se elige THEN la página no se desplaza.
+- (L4-2, E) GIVEN el recorrido WHEN se lee la lista de pestañas THEN anuncia orientación vertical desde `lg` y horizontal en estrecho.
+- (L4-7, E) GIVEN el HTML de `/es` WHEN se cuentan los polígonos THEN son 36: cada forma se define una vez por ilustración.
+- (L4-8, C) GIVEN el build del Worker WHEN se inspecciona THEN no contiene Three.js.
+
 ## L5 — Consulta por formulario
 
 **L5-1 · Envío de consulta** — U, I, E

@@ -1,4 +1,5 @@
 import { Closing } from "@/components/sections/closing";
+import { SceneController } from "@/components/journey/scene/scene-controller";
 import { Hero } from "@/components/sections/hero";
 import { JourneyOverview } from "@/components/sections/journey-overview";
 import { Offer } from "@/components/sections/offer";
@@ -21,6 +22,7 @@ export function HomeContent({ dictionary }: { dictionary: Dictionary }) {
       <Offer offer={home.offer} />
       <Trust trust={home.trust} />
       <Closing home={home} agenda={agenda} />
+      <SceneController />
     </main>
   );
 }

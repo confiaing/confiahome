@@ -27,9 +27,18 @@ const colorSelectors = [
   { selector: `JSXText[value=/${inSelector(COLOR)}/i]`, message: COLOR_MESSAGE },
 ];
 
+// Three.js pesa: solo se importa en el módulo de la escena, que se carga con import()
+// dinámico cuando la página ya es legible (ADR-0009). Si otro archivo lo importara,
+// entraría en el JS inicial.
+const THREE_MODULE = "src/components/journey/scene/three-scene.ts";
+const THREE = {
+  regex: "^three(?:/|$)",
+  message: `three solo se importa desde ${THREE_MODULE}, que se carga de forma diferida.`,
+};
+
 /** Construye el bloque de una carpeta: sus imports prohibidos y, si procede, la regla de colores. */
-function folder({ files, ignores, forbidden = [], colors = true }) {
-  const patterns = [...forbidden, TRAVERSAL, ESCAPE];
+function folder({ files, ignores, forbidden = [], colors = true, three = false }) {
+  const patterns = [...forbidden, TRAVERSAL, ESCAPE, ...(three ? [] : [THREE])];
   const dynamic = patterns.flatMap(({ regex, message }) => [
     { selector: `ImportExpression[source.value=/${inSelector(regex)}/]`, message },
     {
@@ -75,6 +84,17 @@ export const architecture = [
         message: "Un componente no puede importar adaptadores, código de servidor ni rutas.",
       },
     ],
+  }),
+  // La única excepción a la regla de three: el módulo de la escena 3D.
+  folder({
+    files: [THREE_MODULE],
+    forbidden: [
+      {
+        regex: "^@/(?:adapters|lib/server|app)(?:/|$)",
+        message: "Un componente no puede importar adaptadores, código de servidor ni rutas.",
+      },
+    ],
+    three: true,
   }),
 
   // adapters → domain

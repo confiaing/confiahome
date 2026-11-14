@@ -111,3 +111,236 @@
 :where(em, i, .italic).font-display {
   font-family: var(--font-display-italic);
 }
+
+/*
+ * Recorrido de cinco etapas (ADR-0013). Fuera de las capas para poder más que las utilidades.
+ * - Sin scripts: no hay pestañas; se ven los cinco paneles, en orden.
+ * - Con scripts, antes de hidratar o si el script falla: se ve el panel que señala la
+ *   dirección (#etapa-3), o el primero. Las pestañas funcionan como enlaces.
+ * - Hidratado ([data-ready]): manda el componente, con [data-active].
+ * La forma de pestañas existe desde el primer pintado: hidratar no mueve nada.
+ */
+@media (scripting: none) {
+  [data-journey] [role="tablist"] {
+    display: none;
+  }
+}
+
+/* Hidratado: si existe [data-ready] hay scripts, lo entienda o no el navegador como media query. */
+[data-journey][data-ready] [role="tabpanel"] {
+  display: none;
+}
+
+[data-journey][data-ready] [role="tabpanel"][data-active] {
+  display: block;
+}
+
+@media (scripting: enabled) {
+  [data-journey]:not([data-ready]) [role="tabpanel"] {
+    display: none;
+  }
+
+  [data-journey]:not([data-ready]) [role="tabpanel"][data-first],
+  [data-journey]:not([data-ready]) [role="tabpanel"]:target {
+    display: block;
+  }
+
+  /* Si la dirección señala otra etapa, la primera deja de mostrarse. */
+  [data-journey]:not([data-ready]):has([role="tabpanel"]:target) [role="tabpanel"][data-first]:not(:target) {
+    display: none;
+  }
+}
+
+[data-journey] [role="tablist"]::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * Escena, versión ligera (src/components/journey/scene/scene-svg.tsx). El SVG solo
+ * trae geometría; aquí se pinta con los roles --scene-*, que cada tema redefine.
+ */
+[data-scene-svg] {
+  --face-top: var(--scene-top);
+  --face-left: var(--scene-side-a);
+  --face-right: var(--scene-side-b);
+  --face-line: var(--scene-line);
+  --face-line-width: 0.7;
+  --face-dash: none;
+  --face-opacity: 1;
+}
+
+[data-scene-svg] polygon {
+  stroke: var(--face-line);
+  stroke-width: var(--face-line-width);
+  stroke-dasharray: var(--face-dash);
+  stroke-linejoin: round;
+  opacity: var(--face-opacity);
+}
+
+[data-scene-svg] [data-face="top"] {
+  fill: var(--face-top);
+}
+
+[data-scene-svg] [data-face="left"] {
+  fill: var(--face-left);
+}
+
+[data-scene-svg] [data-face="right"] {
+  fill: var(--face-right);
+}
+
+/* El tono de cada bloque: se fija en su <use> y lo heredan las caras. */
+[data-scene-svg] [data-tone="alt"] {
+  --face-top: var(--scene-alt);
+}
+
+[data-scene-svg] [data-tone="dark"] {
+  --face-top: var(--scene-dark);
+  --face-left: var(--scene-dark);
+  --face-right: var(--scene-dark);
+}
+
+[data-scene-svg] [data-tone="accent"] {
+  --face-top: var(--scene-accent);
+  --face-left: var(--scene-accent-shade);
+  --face-right: var(--scene-accent-shade);
+}
+
+[data-scene-svg] circle {
+  stroke: var(--scene-line);
+  stroke-width: 0.7;
+}
+
+[data-scene-svg] [data-circle="comp-a"] {
+  fill: var(--scene-comp-a);
+}
+
+[data-scene-svg] [data-circle="comp-b"] {
+  fill: var(--scene-comp-b);
+}
+
+[data-scene-svg] [data-circle="bead"] {
+  fill: var(--scene-bead);
+  stroke-width: 0.5;
+}
+
+[data-scene-svg] text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--color-text);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--color-background);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+[data-scene-svg] [data-role] {
+  transition: opacity 0.5s;
+}
+
+[data-scene-svg] [data-role="fragment"] {
+  opacity: 0.9;
+}
+
+/*
+ * Versión completa: el lienzo 3D ocupa la ranura y la ilustración se desvanece bajo él.
+ * Sigue en el HTML: si la escena cae, reaparece sin pintar nada nuevo.
+ */
+[data-scene-canvas] {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-scene-svg] {
+  transition: opacity 0.6s;
+}
+
+[data-scene][data-has-canvas] [data-scene-svg] {
+  opacity: 0;
+}
+
+/*
+ * La ilustración del recorrido sigue a la etapa elegida solo con CSS: los tramos que
+ * aún no se han recorrido quedan en silueta, sus fragmentos flotan, y las dos esferas
+ * están en la terraza de la etapa. Reglas generadas para las cinco etapas.
+ */
+[data-journey][data-selected="1"] [data-role="segment"]:is([data-segment="1"],[data-segment="2"],[data-segment="3"],[data-segment="4"]) [data-tone] {
+  --face-top: none;
+  --face-left: none;
+  --face-right: none;
+  --face-line: var(--color-text);
+  --face-line-width: 0.6;
+  --face-dash: 2 2.5;
+  --face-opacity: 0.4;
+}
+[data-journey][data-selected="1"] [data-role="fragment"]:is([data-segment="0"]),
+[data-journey][data-selected="1"] [data-role="companions"]:is([data-segment="1"],[data-segment="2"],[data-segment="3"],[data-segment="4"]) {
+  opacity: 0;
+}
+[data-journey][data-selected="1"] [data-role="label"][data-segment="0"] text {
+  fill: var(--color-primary);
+  font-weight: 500;
+}
+[data-journey][data-selected="2"] [data-role="segment"]:is([data-segment="2"],[data-segment="3"],[data-segment="4"]) [data-tone] {
+  --face-top: none;
+  --face-left: none;
+  --face-right: none;
+  --face-line: var(--color-text);
+  --face-line-width: 0.6;
+  --face-dash: 2 2.5;
+  --face-opacity: 0.4;
+}
+[data-journey][data-selected="2"] [data-role="fragment"]:is([data-segment="0"],[data-segment="1"]),
+[data-journey][data-selected="2"] [data-role="companions"]:is([data-segment="0"],[data-segment="2"],[data-segment="3"],[data-segment="4"]) {
+  opacity: 0;
+}
+[data-journey][data-selected="2"] [data-role="label"][data-segment="1"] text {
+  fill: var(--color-primary);
+  font-weight: 500;
+}
+[data-journey][data-selected="3"] [data-role="segment"]:is([data-segment="3"],[data-segment="4"]) [data-tone] {
+  --face-top: none;
+  --face-left: none;
+  --face-right: none;
+  --face-line: var(--color-text);
+  --face-line-width: 0.6;
+  --face-dash: 2 2.5;
+  --face-opacity: 0.4;
+}
+[data-journey][data-selected="3"] [data-role="fragment"]:is([data-segment="0"],[data-segment="1"],[data-segment="2"]),
+[data-journey][data-selected="3"] [data-role="companions"]:is([data-segment="0"],[data-segment="1"],[data-segment="3"],[data-segment="4"]) {
+  opacity: 0;
+}
+[data-journey][data-selected="3"] [data-role="label"][data-segment="2"] text {
+  fill: var(--color-primary);
+  font-weight: 500;
+}
+[data-journey][data-selected="4"] [data-role="segment"]:is([data-segment="4"]) [data-tone] {
+  --face-top: none;
+  --face-left: none;
+  --face-right: none;
+  --face-line: var(--color-text);
+  --face-line-width: 0.6;
+  --face-dash: 2 2.5;
+  --face-opacity: 0.4;
+}
+[data-journey][data-selected="4"] [data-role="fragment"]:is([data-segment="0"],[data-segment="1"],[data-segment="2"],[data-segment="3"]),
+[data-journey][data-selected="4"] [data-role="companions"]:is([data-segment="0"],[data-segment="1"],[data-segment="2"],[data-segment="4"]) {
+  opacity: 0;
+}
+[data-journey][data-selected="4"] [data-role="label"][data-segment="3"] text {
+  fill: var(--color-primary);
+  font-weight: 500;
+}
+[data-journey][data-selected="5"] [data-role="fragment"]:is([data-segment="0"],[data-segment="1"],[data-segment="2"],[data-segment="3"],[data-segment="4"]),
+[data-journey][data-selected="5"] [data-role="companions"]:is([data-segment="0"],[data-segment="1"],[data-segment="2"],[data-segment="3"]) {
+  opacity: 0;
+}
+[data-journey][data-selected="5"] [data-role="label"][data-segment="4"] text {
+  fill: var(--color-primary);
+  font-weight: 500;
+}

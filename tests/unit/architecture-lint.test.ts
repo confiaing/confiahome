@@ -22,6 +22,24 @@ const importErrors = (messages: Messages) =>
 const colorErrors = (messages: Messages) => messages.filter(isColor);
 const lines = (messages: Messages) => [...new Set(messages.map((m) => m.line))].sort((a, b) => a - b);
 
+// scene-rendering · La escena 3D no retrasa la lectura: three no puede colarse en el JS inicial
+describe("three solo en el módulo de la escena", () => {
+  it.each([
+    "src/components/sections/fixture.ts",
+    "src/components/journey/scene/scene-controller.ts",
+    "src/app/fixture.ts",
+    "src/lib/fixture.ts",
+  ])("rechaza importarlo desde %s, también con import() dinámico", async (path) => {
+    const errors = importErrors(await lintAs("three-import.ts", path));
+    expect(lines(errors)).toEqual([1, 2, 4]);
+  });
+
+  it("lo admite en three-scene.ts", async () => {
+    const errors = importErrors(await lintAs("three-import.ts", "src/components/journey/scene/three-scene.ts"));
+    expect(errors).toEqual([]);
+  });
+});
+
 describe("dominio puro", () => {
   it("rechaza next, react, supabase, three y los adaptadores", async () => {
     const errors = importErrors(await lintAs("domain-forbidden.ts", "src/domain/contact/fixture.ts"));

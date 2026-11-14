@@ -3,6 +3,8 @@ export const WORKER_LIMIT_BYTES = 3 * 1024 * 1024;
 
 /** Límite propuesto para el JS inicial de /es, comprimido y sin contar Three.js. */
 export const INITIAL_JS_LIMIT_BYTES = 200 * 1000;
+/** Tope del trozo diferido de la escena 3D (Three.js), comprimido. No cuenta en el JS inicial. */
+export const DEFERRED_SCENE_LIMIT_BYTES = 200 * 1000;
 
 const kib = (bytes: number) => `${(bytes / 1024).toFixed(1)} KiB`;
 

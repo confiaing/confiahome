@@ -114,28 +114,21 @@ describe.each(LOCALES)("home en %s", (locale) => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
-  // home-page · Las cinco etapas, legibles sin interacción
-  it("cómo lo hacemos realidad: cinco etapas en orden, cada una con sus tres apartados", async () => {
+  // home-page · Las cinco etapas, legibles sin interacción (el detalle, en journey-tabs.test.tsx)
+  it("cómo lo hacemos realidad: la sección contiene las cinco etapas completas", async () => {
     const { container } = render(<JourneyOverview journey={home.journey} />);
     const region = screen.getByRole("region", { name: stripEmphasis(home.journey.title) });
     expect(region).toHaveAttribute("id", "como");
     expect(region).not.toHaveAttribute("data-band");
 
-    const list = within(region).getByRole("list");
-    expect(list.tagName).toBe("OL");
-    const stages = within(list).getAllByRole("article");
+    const stages = [...region.querySelectorAll("article")];
     expect(stages).toHaveLength(5);
     stages.forEach((stage, index) => {
       const copy = home.journey.stages[index]!;
-      expect(within(stage).getByRole("heading", { level: 3 })).toHaveTextContent(copy.name);
-      expect(within(stage).getByText(copy.tag)).toBeInTheDocument();
-      const terms = within(stage).getAllByRole("term").map((term) => term.textContent);
-      expect(terms).toEqual([home.journey.labels.does, home.journey.labels.gets, home.journey.labels.next]);
-      const definitions = within(stage).getAllByRole("definition").map((definition) => definition.textContent);
-      expect(definitions).toEqual([copy.does, copy.gets, copy.next]);
+      expect(stage.querySelector("h3")).toHaveTextContent(copy.name);
+      expect(stage).toHaveTextContent(copy.tag);
+      expect([...stage.querySelectorAll("dd")].map((definition) => definition.textContent)).toEqual([copy.does, copy.gets, copy.next]);
     });
-    expect(stages[0]).toHaveTextContent("30");
-    expect(stages[0]).toHaveTextContent(/no un diagnóstico|not an assessment/);
     expect(await axe(container)).toHaveNoViolations();
   });
 

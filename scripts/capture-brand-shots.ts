@@ -11,12 +11,48 @@ const OUT = fileURLToPath(new URL("../docs/brand/img/", import.meta.url));
 
 const browser = await chromium.launch();
 
+// La escena en versión completa (3D): hero, recorrido en tres etapas y cierre.
+for (const [suffix, width, height] of [
+  ["desktop", 1440, 900],
+  ["mobile", 390, 844],
+] as const) {
+  const full = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+  await full.goto(`${BASE}/es`);
+  await full.evaluate(() => document.fonts.ready);
+  const canvas = full.locator("canvas[data-scene-canvas]");
+  // El lienzo solo existe mientras hay una ranura a la vista; en móvil la del hero queda bajo el texto.
+  await full.locator('[data-scene="hero"]').scrollIntoViewIfNeeded();
+  try {
+    await canvas.waitFor({ state: "attached", timeout: 15_000 });
+  } catch {
+    console.warn(`Sin escena 3D a ${width} px (sin WebGL): se omiten sus capturas.`);
+    await full.close();
+    continue;
+  }
+  const settle = () => full.waitForTimeout(2600);
+  await settle();
+  await full.screenshot({ path: `${OUT}scene-hero-${suffix}.png` });
+  for (const stage of [1, 3, 5]) {
+    await full.locator(`#tab-etapa-${stage}`).click();
+    await full.locator('[data-scene="journey"]').scrollIntoViewIfNeeded();
+    await full.evaluate(() => document.querySelector("#como")!.scrollIntoView({ block: "start" }));
+    await settle();
+    await full.screenshot({ path: `${OUT}scene-journey-${stage}-${suffix}.png` });
+  }
+  await full.locator('[data-scene="closing"]').evaluate((slot) => slot.scrollIntoView({ block: "start" }));
+  await settle();
+  await full.screenshot({ path: `${OUT}scene-closing-${suffix}.png` });
+  await full.close();
+}
+
 // La home, sección a sección, en escritorio y en móvil.
 for (const [suffix, width, height] of [
   ["desktop", 1440, 900],
   ["mobile", 390, 844],
 ] as const) {
   const home = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+  // Versión ligera: las ilustraciones son estables y no dependen de WebGL.
+  await home.addInitScript(() => window.localStorage.setItem("confia-modo", "ligera"));
   await home.goto(`${BASE}/es`);
   await home.evaluate(() => document.fonts.ready);
   // La cabecera fija cruzaría las capturas de las secciones altas.

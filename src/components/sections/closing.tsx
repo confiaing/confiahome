@@ -1,4 +1,5 @@
 import { ContactActions } from "@/components/sections/contact-actions";
+import { SceneSlot } from "@/components/journey/scene/scene-slot";
 import { AgendaLink } from "@/components/ui/agenda-link";
 import { Card } from "@/components/ui/card";
 import { Emphasized } from "@/components/ui/emphasized";
@@ -20,7 +21,9 @@ export function Closing({ home, agenda }: ClosingProps) {
   const { closing, actions } = home;
   return (
     <Section labelledBy="closing-title" theme="calm" className="mb-[clamp(8px,1.6vw,24px)] pb-[clamp(64px,8vw,120px)]">
-      <div className="max-w-[1000px]">
+      {/* El final del camino: completo, con lo andado marcado. */}
+      <SceneSlot kind="closing" className="relative -mx-(--gutter) -mt-[clamp(40px,6vw,90px)] h-[clamp(230px,34vw,440px)]" />
+      <div className="mt-[clamp(8px,2vw,28px)] max-w-[1000px]">
         <h2 id="closing-title" className={cx(DISPLAY, "text-[clamp(2.4rem,6.6vw,5.4rem)]")}>
           <Emphasized text={closing.title} tone="plain" />
         </h2>
