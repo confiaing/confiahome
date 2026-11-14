@@ -95,11 +95,11 @@ docs/                   architecture/ · design/ · brand/ · legal/ · escenari
 
 | Carpeta | Puede importar |
 |---|---|
-| `app/` | `components`, `lib`, `lib/server`, `domain`, `i18n` |
+| `app/` | `components`, `lib`, `lib/server`, `domain`, `i18n`, `styles` |
 | `components/` | `domain`, `i18n`, `lib` (nunca `lib/server` ni `adapters`) |
 | `lib/server/`, `worker/` | `adapters`, `domain`, `i18n`, `lib` |
 | `adapters/` | `domain` |
-| `i18n/`, `lib/` | nada del proyecto |
+| `i18n/`, `lib/`, `styles/` | nada del proyecto |
 | `domain/` | solo `zod` y el propio `domain` |
 
 ## Convenciones
