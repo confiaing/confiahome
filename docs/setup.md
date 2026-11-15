@@ -81,6 +81,15 @@ El plan actual admite un solo tipo de evento y Calendly fija en él el idioma de
 
 Para tenerlo en español: en Calendly, menú de tres puntos del evento → **Change invitee language** → Spanish. Después, pon `NEXT_PUBLIC_CALENDLY_LOCALE=es` en el entorno del build; el aviso pasará a mostrarse en `/en`.
 
+## 9. Textos legales: datos del responsable y revisión
+
+La política de privacidad y los términos están publicados como borradores, con aviso y sin indexar. Para pasarlos a vigentes hacen falta dos cosas tuyas ([docs/legal/README.md](legal/README.md)):
+
+1. Los datos de quien trata los datos: razón social o nombre, número de identificación y domicilio.
+2. La revisión de un abogado, en español y en inglés. La lista de puntos abiertos para esa revisión está en la guía.
+
+No conviene pasarlos a vigentes antes de cerrar el lote L9, que añade el borrado automático que la política promete.
+
 ## Qué queda pendiente para el lanzamiento (L10)
 
 El formulario de consulta (L5) está hecho y probado contra la base local y las claves de prueba. Para que funcione en producción faltan, con tu confirmación:
@@ -88,6 +97,7 @@ El formulario de consulta (L5) está hecho y probado contra la base local y las 
 | Qué | Cómo |
 |---|---|
 | Crear las tablas `contact_requests` y `analytics_events` en `confiahomeDB` | `npx supabase db push` (migraciones `20261114170000` y `20261114210000`) |
+| Textos legales vigentes | Datos del responsable en `src/i18n/legal/status.ts`, revisión legal y `LEGAL_STATUS = "in-force"` |
 | Token de Web Analytics en el build | `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` en el entorno al construir |
 | Cargar los secretos en el Worker | `wrangler secret put` para `SUPABASE_SECRET_KEY` y `TURNSTILE_SECRET_KEY`; `SUPABASE_URL`, `NOTIFY_FROM`, `NOTIFY_TO` y `SERVICES=real` como variables |
 | Site key de Turnstile en el build | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` en el entorno al construir |

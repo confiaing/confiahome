@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
-import { buildSvgAssets, iconSvg } from "./lib/brand-assets.ts";
+import { buildSvgAssets, iconSvg, ogImagePng } from "./lib/brand-assets.ts";
 
 // Regenera public/brand/ y public/favicon.ico. Ejecutar con `npm run brand:build`
 // tras cambiar la paleta, la geometría del logo o las fuentes.
@@ -42,4 +42,9 @@ writeFileSync(`${BRAND}favicon-32.png`, favicon32);
 writeFileSync(`${BRAND}apple-touch-icon.png`, await png(iconSvg({ rounded: false }), 180));
 writeFileSync(`${PUBLIC}favicon.ico`, ico(favicon32, 32));
 
-console.log(`Archivos de marca generados: ${Object.keys(svgs).length} SVG, 2 PNG y favicon.ico`);
+// Imagen para compartir en redes, una por idioma (1200×630).
+for (const locale of ["es", "en"] as const) {
+  writeFileSync(`${BRAND}og-${locale}.png`, await ogImagePng(locale));
+}
+
+console.log(`Archivos de marca generados: ${Object.keys(svgs).length} SVG, 2 PNG, 2 imágenes para redes y favicon.ico`);

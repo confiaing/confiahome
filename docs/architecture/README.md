@@ -116,6 +116,8 @@ C4Component
 | Componente | Ubicación | Responsabilidad | Pruebas |
 |---|---|---|---|
 | Páginas `[locale]` | `src/app/[locale]/` | Renderizar home y legales en el servidor, pre-generadas para `es` y `en`; metadatos SEO y `hreflang` | E2E |
+| Textos legales | `src/i18n/legal/` | Política y términos como datos tipados en ES y EN; un interruptor de borrador gobierna aviso, indexación y mapa del sitio ([docs/legal/README.md](../legal/README.md)) | Unitario + integración + E2E |
+| Descubrimiento | `src/lib/server/seo/`, `src/app/{sitemap,robots}.ts`, `src/app/llms.txt/` | Metadatos y vista previa por idioma, mapa del sitio, reglas de rastreo (incluidos los rastreadores de IA), JSON-LD y resumen `llms.txt`; todo estático y generado de los diccionarios | Unitario + E2E |
 | Redirección raíz | `src/app/route.ts` | `/` → `/es` o `/en`: cookie de preferencia, luego `Accept-Language`, luego español | Integración |
 | Secciones | `src/components/sections/` | `home-content` compone hero, dónde empezamos, etapas, servicios, confianza y cierre; cada sección recibe su parte del diccionario | Integración (Testing Library) + E2E |
 | Recorrido | `src/components/journey/` | Cinco etapas navegables con teclado; todo el contenido presente en el HTML sin JS ni animación | Integración + axe |

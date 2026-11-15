@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import * as fontkit from "fontkit";
+import sharp from "sharp";
 import {
   FAVICON_ARC,
   FAVICON_DOT,
@@ -10,6 +11,8 @@ import {
   SYMBOL_STROKE_WIDTH,
   WORDMARK,
 } from "../../src/lib/brand-geometry.ts";
+import { getDictionary } from "../../src/i18n/dictionaries/index.ts";
+import { splitEmphasis } from "../../src/lib/emphasis.ts";
 
 // Genera los SVG de public/brand/ a partir de la geometría del logo, los colores de
 // tokens.css y las fuentes del proyecto. El nombre se convierte en trazados para que
@@ -205,3 +208,90 @@ export function buildSvgAssets(): Record<string, string> {
     "favicon.svg": iconSvg({ rounded: true }),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Imagen para compartir en redes (Open Graph): 1200×630, una por idioma.
+// ---------------------------------------------------------------------------
+export const OG_WIDTH = 1200;
+export const OG_HEIGHT = 630;
+const OG_MARGIN = 80;
+const OG_LOGO_SCALE = 2.1;
+
+type Word = { text: string; emphasis: boolean };
+
+/**
+ * La frase del hero en su idioma, con el logo arriba, sobre el fondo de la página.
+ * El texto va convertido en trazados, como en los logos: no depende de fuentes instaladas.
+ * La palabra que el título resalta va en cursiva y en el color de énfasis, igual que en la home.
+ */
+export function ogImageSvg(locale: "es" | "en"): string {
+  const resolve = tokenResolver();
+  const colors = palette().light;
+  const background = resolve("color-background");
+
+  const upright = openFont("fraunces-latin-opsz-normal.woff2", { wght: 500, opsz: 144 });
+  const italic = openFont("fraunces-latin-opsz-italic.woff2", { wght: 500, opsz: 144 });
+  const words: Word[] = splitEmphasis(getDictionary(locale).home.hero.title).flatMap((run) =>
+    run.text.split(/\s+/).filter(Boolean).map((text) => ({ text, emphasis: run.emphasis })),
+  );
+  const toRun = (word: Word, size: number): Run => ({
+    text: word.text,
+    font: word.emphasis ? italic : upright,
+    size,
+    tracking: -0.02,
+    fill: word.emphasis ? "accentText" : "main",
+  });
+
+  // Se busca el mayor tamaño con el que la frase cabe en tres líneas o menos.
+  const maxWidth = OG_WIDTH - OG_MARGIN * 2;
+  let size = 84;
+  let lines: Word[][] = [];
+  for (; size >= 48; size -= 4) {
+    const space = size * 0.26;
+    lines = [[]];
+    let width = 0;
+    for (const word of words) {
+      const advance = outline([toRun(word, size)], 0, 0).width;
+      const needed = lines.at(-1)!.length === 0 ? advance : width + space + advance;
+      if (needed > maxWidth && lines.at(-1)!.length > 0) {
+        lines.push([word]);
+        width = advance;
+      } else {
+        lines.at(-1)!.push(word);
+        width = needed;
+      }
+    }
+    if (lines.length <= 3) break;
+  }
+
+  const lineHeight = size * 1.12;
+  const firstBaseline = OG_HEIGHT - OG_MARGIN - (lines.length - 1) * lineHeight - size * 0.12;
+  let body = "";
+  lines.forEach((line, index) => {
+    let x = OG_MARGIN;
+    for (const word of line) {
+      const { outlines, width } = outline([toRun(word, size)], x, firstBaseline + index * lineHeight);
+      body += paths(outlines, colors);
+      x += width + size * 0.26;
+    }
+  });
+
+  // El logo horizontal, a escala, en la esquina superior.
+  const { runs, ascent, descent } = wordmarkRuns(EM);
+  const baseline = SYMBOL_SIZE / 2 + (ascent - descent) / 2;
+  const mark = outline(runs, SYMBOL_SIZE + WORDMARK.gapEm * EM, baseline);
+  const logo = `<g transform="translate(${OG_MARGIN} ${OG_MARGIN - 8}) scale(${OG_LOGO_SCALE})">${symbolMarkup(colors)}${paths(mark.outlines, colors)}</g>`;
+
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${OG_WIDTH} ${OG_HEIGHT}" width="${OG_WIDTH}" height="${OG_HEIGHT}" role="img">` +
+    `<title>${TITLE}</title><rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="${background}"/>` +
+    `<rect x="${OG_MARGIN}" y="${num(firstBaseline - size - 34)}" width="72" height="8" rx="4" fill="${colors.accent}"/>` +
+    `${logo}${body}</svg>\n`
+  );
+}
+
+/** El PNG que se publica: mismo dibujo, con paleta para que pese poco. */
+export function ogImagePng(locale: "es" | "en"): Promise<Buffer> {
+  return sharp(Buffer.from(ogImageSvg(locale))).resize(OG_WIDTH, OG_HEIGHT).png({ compressionLevel: 9, palette: true }).toBuffer();
+}
+

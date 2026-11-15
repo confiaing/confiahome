@@ -4,6 +4,10 @@ import type { Dictionary } from "./types.ts";
 export const en: Dictionary = {
   meta: {
     homeTitle: "Confia.ing · AI transformation for small and mid-sized businesses",
+    homeDescription: "AI transformation consulting for small and mid-sized businesses: we find opportunities, train your team and build solutions it can run.",
+    ogAlt: "Confia.ing: AI transformation for small and mid-sized businesses",
+    privacyDescription: "What data Confia.ing processes when you visit the site or send an inquiry, what it is used for and how to exercise your rights.",
+    termsDescription: "Terms of use of the Confia.ing site and the scope of the information it publishes about its services.",
   },
   skipLink: "Skip to content",
   nav: {
@@ -47,6 +51,12 @@ export const en: Dictionary = {
     termsTitle: "Terms and conditions",
     draft: "This text is a draft pending legal review. It is not yet the final version.",
     contact: "If you have questions, write to us at",
+    version: "Version",
+    pending: {
+      name: "[pending: legal name]",
+      id: "[pending: identification number]",
+      address: "[pending: registered address]",
+    },
   },
   notFound: {
     title: "We couldn't find this page",

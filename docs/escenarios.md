@@ -405,15 +405,26 @@ El calendario se carga en el bloque «Agenda», no en un diálogo, y es uno solo
 **L8-3 · Metadatos** — I
 - GIVEN `/es` WHEN se leen sus metadatos THEN tiene título y descripción en español, `canonical` propio y `hreflang` para `es`, `en` y `x-default`.
 
-**L8-4 · Sitemap y robots** — I
-- GIVEN `/sitemap.xml` WHEN se solicita THEN lista las seis rutas públicas con sus alternativas de idioma.
-- GIVEN `/robots.txt` WHEN se solicita THEN permite el rastreo AND referencia el sitemap.
+**L8-4 · Sitemap y robots** — U, E
+- GIVEN las páginas legales en borrador WHEN se solicita `/sitemap.xml` THEN lista `/es` y `/en` con sus alternativas de idioma AND no lista las legales.
+- GIVEN las páginas legales vigentes WHEN se genera el mapa THEN lista las seis rutas públicas.
+- GIVEN `/robots.txt` WHEN se solicita THEN permite el rastreo salvo `/api/` AND referencia el sitemap.
 
-**L8-5 · Datos estructurados** — I
-- GIVEN la home WHEN se extrae su JSON-LD THEN es una `Organization` válida con nombre, URL y correo, sin datos no aprobados.
+**L8-5 · Datos estructurados** — U, E
+- GIVEN la home WHEN se extrae su JSON-LD THEN describe la organización, el sitio y los servicios de la página, sin datos no aprobados (valoraciones, precios, dirección, teléfono).
 
-**L8-6 · Imagen para redes** — I
+**L8-6 · Imagen para redes** — U, E
 - GIVEN `/es` y `/en` WHEN se leen sus metadatos THEN cada una declara `og:image` con una imagen existente de 1200×630 en su idioma.
+
+**L8-7 · Legible para agentes** — U, E
+- GIVEN `/robots.txt` WHEN se lee THEN permite por nombre a los rastreadores de IA conocidos.
+- GIVEN `/llms.txt` WHEN se solicita THEN resume en texto plano qué es Confia.ing, sus servicios, las cinco etapas y cómo contactar, en ambos idiomas y solo con textos de la página.
+
+**L8 · Escenarios añadidos** — detalle en `openspec/changes/l8-legal-y-seo/specs/`
+- (L8-1, U) GIVEN los textos legales en ambos idiomas WHEN se comparan THEN tienen las mismas secciones, párrafos y listas AND la versión de la política es la que se guarda con cada consulta.
+- (L8-1, U) GIVEN la política WHEN se compara con el sistema THEN nombra los campos del formulario, los plazos de conservación definidos y los proveedores que intervienen.
+- (L8-1, I) GIVEN la política sin datos del responsable WHEN se renderiza THEN cada dato ausente se muestra marcado como pendiente.
+- (L8-1, U) GIVEN el estado legal WHEN cambia a vigente THEN desaparece el aviso, las páginas se indexan y entran en el mapa del sitio.
 
 ## L9 — Calidad y seguridad
 

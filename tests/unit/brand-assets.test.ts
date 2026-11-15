@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { buildSvgAssets } from "../../scripts/lib/brand-assets.ts";
+import { buildSvgAssets, ogImagePng, ogImageSvg } from "../../scripts/lib/brand-assets.ts";
 import { PALETTE } from "../support/palette";
 import { hexValues } from "../support/tokens";
 
@@ -62,3 +62,54 @@ describe("archivos de marca", () => {
     }
   });
 });
+
+// search-and-agent-discovery · Vista previa al compartir (L8-6)
+describe("imagen para redes", () => {
+  const LOCALES = ["es", "en"] as const;
+
+  it.each(LOCALES)("og-%s.png existe, mide 1200×630 y pesa menos de 300 kB", (locale) => {
+    const png = readFileSync(`${PUBLIC}brand/og-${locale}.png`);
+    expect(png.subarray(1, 4).toString("latin1")).toBe("PNG");
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
+    expect(png.byteLength).toBeLessThan(300_000);
+  });
+
+  it.each(LOCALES)("el dibujo en %s mide 1200×630, es autónomo y solo usa colores de la paleta", (locale) => {
+    const svg = ogImageSvg(locale);
+    expect(svg).toMatch(/viewBox="0 0 1200 630"/);
+    expect(svg).not.toMatch(/<text|<tspan|font-family|<image|<use|href=|url\(|@import|<style|<script/);
+    const colors = hexValues(svg);
+    expect(colors.length).toBeGreaterThan(2);
+    for (const color of colors) expect(Object.values(PALETTE)).toContain(color);
+    expect(colors).toContain(PALETTE["--cream-50"]);
+    expect(colors).toContain(PALETTE["--indigo-900"]);
+  });
+
+  it("cada idioma tiene su propia frase", () => {
+    expect(ogImageSvg("es")).not.toBe(ogImageSvg("en"));
+  });
+
+  it.each(LOCALES)("regenerar og-%s.png da el archivo guardado", async (locale) => {
+    const built = await ogImagePng(locale);
+    expect(built.equals(readFileSync(`${PUBLIC}brand/og-${locale}.png`))).toBe(true);
+  });
+
+  it("la frase cabe dentro de la imagen con margen", () => {
+    for (const locale of LOCALES) {
+      // Los trazados de la frase van después del logo, en coordenadas del lienzo.
+      const phrase = ogImageSvg(locale).split("</g>").at(-1)!;
+      const xs = [...phrase.matchAll(/ d="([^"]+)"/g)].flatMap((match) =>
+        [...match[1]!.matchAll(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g)].map((pair) => [Number(pair[1]), Number(pair[2])]),
+      );
+      expect(xs.length).toBeGreaterThan(100);
+      // Dentro del lienzo, con margen, y por debajo del logo.
+      for (const [x, y] of xs) {
+        expect(x).toBeGreaterThanOrEqual(60);
+        expect(x).toBeLessThanOrEqual(1140);
+        expect(y).toBeGreaterThanOrEqual(200);
+        expect(y).toBeLessThanOrEqual(600);
+      }
+    }
+  });
+});
+

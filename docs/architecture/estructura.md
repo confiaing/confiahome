@@ -37,7 +37,7 @@ confia.ing-home/
 ├── src/
 │   ├── app/                      Rutas de Next.js. Solo composición, sin lógica
 │   │   ├── route.ts              "/" → redirige a /es o /en
-│   │   ├── robots.ts · sitemap.ts
+│   │   ├── robots.ts · sitemap.ts · llms.txt/
 │   │   ├── global-not-found.tsx  Única página 404: bilingüe y completa en el HTML
 │   │   ├── [locale]/
 │   │   │   ├── layout.tsx        ÚNICO layout raíz: <html lang>, enlace de salto, cabecera y pie

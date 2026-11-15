@@ -2,7 +2,6 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
-import { LegalPlaceholder } from "@/components/sections/legal-placeholder";
 import { NotFoundContent } from "@/components/sections/not-found-content";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { SiteHeader } from "@/components/sections/site-header";
@@ -187,22 +186,6 @@ describe("SiteFooter", () => {
     expect(within(footer).getByText("© 2026 Confia.ing")).toBeInTheDocument();
     expect(within(footer).getByRole("link", { name: dictionary.nav.home })).toHaveAttribute("href", `/${locale}`);
     expect(footer.className).toContain("theme-dark");
-    expect(await axe(container)).toHaveNoViolations();
-  });
-});
-
-// legal-pages · Aviso de borrador (L2-7)
-describe("LegalPlaceholder", () => {
-  it.each([
-    [es, "Política de privacidad", /borrador pendiente de revisión legal/],
-    [en, "Privacy policy", /draft pending legal review/],
-  ] as const)("muestra título, aviso de borrador y contacto", async (dictionary, title, draft) => {
-    const { container } = render(<LegalPlaceholder title={dictionary.legal.privacyTitle} labels={dictionary.legal} />);
-    expect(screen.getByRole("main")).toHaveAttribute("id", "contenido");
-    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    expect(screen.getByRole("heading", { level: 1, name: title })).toBeInTheDocument();
-    expect(screen.getByText(draft)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "hola@confia.ing" })).toHaveAttribute("href", "mailto:hola@confia.ing");
     expect(await axe(container)).toHaveNoViolations();
   });
 });

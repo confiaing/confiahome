@@ -18,7 +18,7 @@ export function forgetVisit(): void {
 }
 
 /** El visitante pidió no ser rastreado (Global Privacy Control o Do Not Track). */
-function optedOut(): boolean {
+export function optedOut(): boolean {
   const flags = navigator as Navigator & { globalPrivacyControl?: boolean };
   return flags.globalPrivacyControl === true || navigator.doNotTrack === "1";
 }

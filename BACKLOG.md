@@ -166,7 +166,9 @@ PRD §3, §9. ADR-0005. CA: eventos medibles sin contenido sensible.
 | L7-4 | Instrumentación de CTA, calendario y formulario | M | Cada evento lleva idioma, dispositivo, ruta, host de referencia y UTM |
 | L7-5 | Consultas SQL de conversión | S | Guardadas en `docs/`: conversión por idioma, dispositivo y canal |
 
-## L8 — Legal y SEO
+## L8 — Legal y SEO ✅
+
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l8-legal-y-seo/tasks.md`. Los textos legales son borradores sin revisión de un abogado y sin los datos del responsable, que se muestran como pendientes ([docs/legal/README.md](docs/legal/README.md)). Mientras sean borrador no se indexan ni entran en el mapa del sitio, que por eso lista dos direcciones y no seis. Se añadió L8-7 a petición del fundador.
 
 PRD §8, §10.
 
@@ -175,9 +177,10 @@ PRD §8, §10.
 | L8-1 | Borrador de Política de privacidad ES/EN | M | Base Ley 1581 de 2012: finalidad, datos, retención, derechos, canal de atención, proveedores; marcado «pendiente de revisión legal» |
 | L8-2 | Borrador de Términos ES/EN | M | Marcado «pendiente de revisión legal» |
 | L8-3 | Metadatos por idioma | M | Título, descripción, `lang`, `hreflang`, canónica y `x-default` |
-| L8-4 | `sitemap.xml` y `robots.txt` | M | Incluyen todas las rutas de ambos idiomas |
+| L8-4 | `sitemap.xml` y `robots.txt` | M | El mapa lista las páginas indexables de ambos idiomas (las legales, cuando dejen de ser borrador); `robots.txt` permite el rastreo salvo `/api/` |
 | L8-6 | Imagen para compartir en redes (Open Graph) por idioma | S | Vista previa correcta al pegar el enlace |
-| L8-5 | Datos estructurados de organización | S | JSON-LD válido |
+| L8-5 | Datos estructurados de organización | S | JSON-LD válido: organización, sitio y los servicios que la página describe |
+| L8-7 | Legible para agentes de IA | C | `robots.txt` permite por nombre a los rastreadores de IA; `/llms.txt` resume el sitio con los textos de la página |
 
 ## L9 — Calidad y seguridad
 

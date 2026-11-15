@@ -3,6 +3,10 @@
 export const es = {
   meta: {
     homeTitle: "Confia.ing · Transformación de IA para pymes",
+    homeDescription: "Consultoría de transformación de IA para pymes: identificamos oportunidades, capacitamos a tu equipo y construimos soluciones que pueda operar.",
+    ogAlt: "Confia.ing: transformación de IA para pymes",
+    privacyDescription: "Qué datos trata Confia.ing cuando visitas el sitio o envías una consulta, para qué los usa y cómo ejercer tus derechos.",
+    termsDescription: "Condiciones de uso del sitio de Confia.ing y alcance de la información que publica sobre sus servicios.",
   },
   skipLink: "Saltar al contenido",
   nav: {
@@ -46,6 +50,12 @@ export const es = {
     termsTitle: "Términos y condiciones",
     draft: "Este texto es un borrador pendiente de revisión legal. Todavía no es la versión vigente.",
     contact: "Si tienes preguntas, escríbenos a",
+    version: "Versión",
+    pending: {
+      name: "[pendiente: razón social]",
+      id: "[pendiente: número de identificación]",
+      address: "[pendiente: domicilio]",
+    },
   },
   notFound: {
     title: "No encontramos esta página",

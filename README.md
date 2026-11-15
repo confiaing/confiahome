@@ -3,7 +3,7 @@
 Home pública de lanzamiento de **Confia.ing**, consultoría de transformación de IA para pymes. Bilingüe (ES/EN), con un recorrido interactivo del proceso de trabajo y dos vías de contacto: agendar 30 minutos o enviar una consulta.
 
 > Documento vivo. Se actualiza al cierre de cada fase y con cada decisión relevante.
-> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L7 hechos; siguiente, L8 — legal y SEO)
+> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L8 hechos; siguiente, L9 — calidad y seguridad)
 
 ## Estado del proyecto
 
