@@ -2,6 +2,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import { createSupabaseContactRepository } from "@/adapters/supabase/contact-repository";
 import { CONSENT_VERSION } from "@/domain/contact/consent";
 import type { ContactRecord } from "@/domain/contact/ports";
+import { CONTACT_LIMITS, parseContact } from "@/domain/contact/schema";
 
 const URL_ = process.env.CONTRACT_SUPABASE_URL!;
 const SECRET = process.env.CONTRACT_SUPABASE_SECRET_KEY!;
@@ -80,6 +81,40 @@ describe("tabla contact_requests", () => {
   ])("la base rechaza: %s", async (_name, extra) => {
     const response = await insert(SECRET, row(extra));
     expect(response.status).toBe(400);
+  });
+
+  it.each([
+    ["etiqueta de campaña con espacios", { utm_source: "campaña de otoño" }],
+    ["etiqueta de campaña con un correo", { utm_medium: "ana@empresa.com" }],
+    ["etiqueta de campaña de más de 40 caracteres", { utm_campaign: "x".repeat(41) }],
+    ["procedencia que no es un host", { referrer_host: "texto libre\r\ncon líneas" }],
+  ])("la base rechaza por sí misma: %s", async (_name, extra) => {
+    expect((await insert(SECRET, row(extra))).status).toBe(400);
+  });
+
+  it("todo lo que el formulario admite cabe en la base: cada campo en su máximo", async () => {
+    const parsed = parseContact({
+      name: "n".repeat(CONTACT_LIMITS.name),
+      company: MARK,
+      email: `${"e".repeat(CONTACT_LIMITS.email - 12)}@example.com`,
+      phone: "3".repeat(CONTACT_LIMITS.phone),
+      message: "m".repeat(CONTACT_LIMITS.message),
+      consent: true,
+      locale: "en",
+      formMode: "classic",
+      utmSource: "Aa0._~-".repeat(6).slice(0, 40),
+      utmMedium: "x".repeat(40),
+      utmCampaign: "y".repeat(40),
+      referrerHost: `${"a".repeat(63)}.${"b".repeat(63)}.${"c".repeat(63)}.${"d".repeat(57)}.com`,
+    });
+    if (!parsed.ok) throw new Error("el dominio debería aceptar los máximos");
+    const saved = await createSupabaseContactRepository({ url: URL_, secretKey: SECRET }).save({
+      name: parsed.data.name, company: parsed.data.company, email: parsed.data.email, phone: parsed.data.phone, message: parsed.data.message,
+      locale: parsed.data.locale, consentAt: new Date().toISOString(), consentVersion: CONSENT_VERSION,
+      utmSource: parsed.data.utmSource, utmMedium: parsed.data.utmMedium, utmCampaign: parsed.data.utmCampaign, referrerHost: parsed.data.referrerHost,
+    });
+    expect(saved.id).toMatch(/^[0-9a-f-]{36}$/);
+    expect(parsed.data.referrerHost).toHaveLength(253);
   });
 
   it("no existe ninguna columna para la IP", async () => {

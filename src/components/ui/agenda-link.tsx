@@ -26,7 +26,10 @@ export function AgendaLink({ labels, size, arrow = false, className }: AgendaLin
       className={cx("group", className)}
     >
       {labels.cta}
-      <span className="sr-only"> ({labels.newTab})</span>
+      <span data-new-tab-note className="sr-only">
+        {" "}
+        ({labels.newTab})
+      </span>
       {arrow ? (
         <span aria-hidden="true" className="transition-transform duration-200 motion-safe:group-hover:translate-x-1">
           →

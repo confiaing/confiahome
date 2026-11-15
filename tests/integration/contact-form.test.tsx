@@ -385,6 +385,15 @@ describe("con verificación antispam", () => {
     expect(reset).toHaveBeenCalledTimes(1);
   });
 
+  it("con la verificación caída, enviar lo dice al momento: no hace esperar para repetir el mismo aviso", async () => {
+    const { t, user, options } = mount();
+    act(() => options()["error-callback"]());
+    await complete(t, user);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent(t.failures.verification);
+    expect(screen.getByRole("button", { name: t.submit })).toBeEnabled();
+  });
+
   it("si la verificación falla, lo avisa con el correo como alternativa", () => {
     const { t, options } = mount();
     act(() => options()["error-callback"]());
@@ -469,5 +478,42 @@ describe("avisos para la analítica", () => {
     stop();
     expect(seen).toEqual([]);
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+});
+
+// legal-pages · La política describe lo que el sitio hace: con «No rastrear» no se guarda de dónde llegó la visita
+describe("procedencia de la visita en la consulta", () => {
+  const setPrivacy = (flags: { gpc?: boolean; dnt?: string | null }) => {
+    Object.defineProperty(navigator, "globalPrivacyControl", { configurable: true, value: flags.gpc });
+    Object.defineProperty(navigator, "doNotTrack", { configurable: true, value: flags.dnt ?? null });
+  };
+  const send = async () => {
+    fetchMock.mockResolvedValue(respond(201));
+    const { user, fill, submit } = setup("classic");
+    await fill({ name: "Ana", email: "ana@empresa.com", consent: true });
+    await user.click(submit());
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    return sentBody();
+  };
+  beforeEach(() => {
+    window.history.replaceState(null, "", "/es?utm_source=linkedin&utm_campaign=q4");
+    Object.defineProperty(document, "referrer", { configurable: true, value: "https://www.google.com/" });
+  });
+  afterEach(() => {
+    setPrivacy({});
+    window.history.replaceState(null, "", "/es");
+    Object.defineProperty(document, "referrer", { configurable: true, value: "" });
+  });
+
+  it("sin la señal, acompaña a la consulta", async () => {
+    setPrivacy({});
+    expect(await send()).toMatchObject({ utmSource: "linkedin", utmCampaign: "q4", referrerHost: "www.google.com" });
+  });
+
+  it.each([{ gpc: true }, { dnt: "1" }])("con %j no se envía", async (flags) => {
+    setPrivacy(flags);
+    const body = await send();
+    for (const key of ["utmSource", "utmMedium", "utmCampaign", "referrerHost"]) expect(body).not.toHaveProperty(key);
+    expect(body).toMatchObject({ name: "Ana", email: "ana@empresa.com" });
   });
 });

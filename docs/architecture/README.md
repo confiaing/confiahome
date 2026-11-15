@@ -215,12 +215,14 @@ Las tablas no se relacionan: los eventos son anónimos a propósito. No se guard
 | Lectura o escritura pública de datos personales | RLS activado en ambas tablas, **sin** políticas para `anon`/`authenticated`. Solo la secret key del servidor puede operar. |
 | Spam y abuso del formulario | Turnstile verificado en servidor, campo trampa, límite de frecuencia por IP (no se persiste la IP), tamaño máximo de cuerpo |
 | Inyección y XSS | Zod en servidor, consultas parametrizadas del cliente Supabase, React escapa por defecto, el correo de aviso va en texto plano |
-| Cabeceras | CSP con orígenes explícitos (Calendly, Turnstile, Cloudflare Insights), HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `frame-ancestors 'none'` |
+| Cabeceras | Las pone la entrada del Worker ([ADR-0016](adr/0016-entrada-propia-del-worker-cabeceras-y-tarea-diaria.md)): CSP con código de un solo uso por respuesta y orígenes explícitos (Calendly, Turnstile, Cloudflare Insights), sin scripts ni estilos en línea libres; HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `frame-ancestors 'none'`. Los estáticos, desde `public/_headers` |
 | CSRF en las API | Comprobación de `Origin` y solo `Content-Type: application/json` |
 | Terceros | Calendly se carga solo tras la acción del visitante |
-| Proyecto Supabase pausado | Tarea programada diaria ([ADR-0002](adr/0002-acceso-a-supabase-solo-servidor.md)) |
+| Proyecto Supabase pausado | Tarea programada diaria del Worker: latido ([ADR-0016](adr/0016-entrada-propia-del-worker-cabeceras-y-tarea-diaria.md)) |
+| Datos conservados más de lo declarado | La misma tarea borra consultas de más de 24 meses y eventos de más de 13 |
+| IP en registros de la plataforma | Registros de invocación desactivados; los propios no llevan datos del visitante |
 
-Antes de publicar la v1 se ejecuta la auditoría con el skill `security-audit` de Cloudflare.
+La auditoría de la v1 y la revisión de código de conjunto están en [docs/security/audit-v1.md](../security/audit-v1.md).
 
 ## Límites del plan gratuito a vigilar
 

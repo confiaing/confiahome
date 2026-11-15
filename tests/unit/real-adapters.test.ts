@@ -1,7 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { createEmailNotifier } from "@/adapters/email/notifier";
 import { createBindingRateLimiter } from "@/adapters/ratelimit/limiter";
 import { createSupabaseContactRepository } from "@/adapters/supabase/contact-repository";
+import { createSupabaseHealthCheck } from "@/adapters/supabase/health";
+import { createSupabasePurger } from "@/adapters/supabase/purger";
 import { createTurnstileVerifier } from "@/adapters/turnstile/verifier";
 import type { ContactRecord } from "@/domain/contact/ports";
 
@@ -154,3 +156,96 @@ describe("límite de frecuencia", () => {
     expect(keys).toEqual(["contact:203.0.113.7", "contact:203.0.113.7"]);
   });
 });
+
+// scheduled-maintenance · El borrado no puede tocar nada sin una fecha válida
+describe("borrado por conservación", () => {
+  it("borra solo por fecha de creación, en la tabla indicada, y devuelve la cuenta", async () => {
+    const { fetch, calls } = fakeFetch(() => new Response(null, { status: 204, headers: { "content-range": "*/3" } }));
+    const purger = createSupabasePurger({ url: "http://127.0.0.1:54321/", secretKey: "sb_secret_prueba", table: "analytics_events", fetch });
+    expect(await purger.purgeOlderThan(new Date("2025-10-15T03:10:00.000Z"))).toBe(3);
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.init.method).toBe("DELETE");
+    const url = new URL(calls[0]!.url);
+    expect(url.pathname).toBe("/rest/v1/analytics_events");
+    expect([...url.searchParams.entries()]).toEqual([["created_at", "lt.2025-10-15T03:10:00.000Z"]]);
+    expect(calls[0]!.init.headers).toMatchObject({ Prefer: "return=minimal, count=exact" });
+    expect(calls[0]!.init.signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it.each([new Date("no es una fecha"), new Date(Number.NaN), "2025-01-01" as unknown as Date, undefined as unknown as Date, null as unknown as Date])(
+    "sin una fecha válida no envía ninguna petición: %s",
+    async (cutoff) => {
+      const { fetch, calls } = fakeFetch(() => new Response(null, { status: 204 }));
+      const purger = createSupabasePurger({ url: "http://x", secretKey: "k", table: "contact_requests", fetch });
+      await expect(purger.purgeOlderThan(cutoff)).rejects.toThrow();
+      expect(calls).toHaveLength(0);
+    },
+  );
+
+  it("una fecha de corte en el futuro tampoco se envía: borraría todo", async () => {
+    const { fetch, calls } = fakeFetch(() => new Response(null, { status: 204 }));
+    const purger = createSupabasePurger({ url: "http://x", secretKey: "k", table: "contact_requests", fetch });
+    await expect(purger.purgeOlderThan(new Date(Date.now() + 86_400_000))).rejects.toThrow();
+    expect(calls).toHaveLength(0);
+  });
+
+  it("si la base rechaza el borrado, falla sin repetir la clave", async () => {
+    const { fetch } = fakeFetch(() => Response.json({ message: "no" }, { status: 403 }));
+    const error = await createSupabasePurger({ url: "http://x", secretKey: "sb_secret_prueba", table: "contact_requests", fetch })
+      .purgeOlderThan(new Date("2024-01-01T00:00:00.000Z"))
+      .catch((reason: unknown) => reason as Error);
+    expect((error as Error).name).toBe("SupabaseError");
+    expect((error as Error).message).not.toContain("sb_secret_prueba");
+  });
+
+  it("sin cuenta en la respuesta, devuelve cero en vez de inventarla", async () => {
+    const { fetch } = fakeFetch(() => new Response(null, { status: 204 }));
+    expect(await createSupabasePurger({ url: "http://x", secretKey: "k", table: "contact_requests", fetch }).purgeOlderThan(new Date("2024-01-01T00:00:00.000Z"))).toBe(0);
+  });
+});
+
+// scheduled-maintenance · Latido diario
+describe("latido", () => {
+  it("hace una consulta mínima a la tabla sin datos personales, sin leer filas", async () => {
+    const { fetch, calls } = fakeFetch(() => new Response(null, { status: 200 }));
+    expect(await createSupabaseHealthCheck({ url: "http://127.0.0.1:54321", secretKey: "k", fetch }).ping()).toEqual({ ok: true, backend: "real" });
+    expect(calls[0]!.init.method).toBe("HEAD");
+    expect(calls[0]!.url).toBe("http://127.0.0.1:54321/rest/v1/analytics_events?select=id&limit=1");
+  });
+
+  it("si la base no responde bien, no está disponible; si la red falla, lanza", async () => {
+    const down = fakeFetch(() => new Response(null, { status: 503 }));
+    expect(await createSupabaseHealthCheck({ url: "http://x", secretKey: "k", fetch: down.fetch }).ping()).toEqual({ ok: false, backend: "real" });
+    const broken = (async () => {
+      throw new TypeError("red");
+    }) as unknown as typeof fetch;
+    await expect(createSupabaseHealthCheck({ url: "http://x", secretKey: "k", fetch: broken }).ping()).rejects.toThrow();
+  });
+});
+
+// contact-submission · Aviso al equipo: un correo que no sale no retiene la respuesta al visitante
+describe("aviso por correo con tiempo máximo", () => {
+  it("si el envío se cuelga, falla a los 8 s en vez de esperar sin fin", async () => {
+    vi.useFakeTimers();
+    try {
+      const notifier = createEmailNotifier({
+        from: "web@confia.ing",
+        to: "equipo@example.com",
+        binding: { send: () => new Promise(() => {}) },
+        createMessage: async (from, to, raw) => ({ from, to, raw }),
+        now: () => new Date("2026-11-14T15:00:00.000Z"),
+        newId: () => "id",
+      });
+      const outcome = notifier.notify({ ...record, id: "1" }).then(
+        () => "enviado",
+        (error: Error) => error.name,
+      );
+      await vi.advanceTimersByTimeAsync(7_900);
+      await vi.advanceTimersByTimeAsync(200);
+      expect(await outcome).toBe("EmailTimeoutError");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
+

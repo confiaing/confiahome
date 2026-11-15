@@ -1,3 +1,5 @@
+import { host, tag } from "../attribution.ts";
+
 // Eventos anónimos de la home (ADR-0005). Aquí se decide qué puede llegar a la base:
 // ocho nombres y unos pocos datos de contexto, cada uno de una lista cerrada o con un
 // formato estricto. Lo que el navegador envíe de más no pasa: el evento se construye
@@ -46,31 +48,6 @@ export type ResolvePath = (raw: string) => string | null;
 
 const oneOf = <T extends string>(list: readonly T[], value: unknown): T | null =>
   typeof value === "string" && (list as readonly string[]).includes(value) ? (value as T) : null;
-
-// Una etiqueta de campaña: letras, números y . _ ~ -, hasta 40. Un correo o una frase no
-// encajan. Un código corto sí cabría: los enlaces de campaña nunca deben llevar un valor
-// por destinatario (docs/analytics.md).
-export const TAG_PATTERN = /^[A-Za-z0-9._~-]{1,40}$/;
-const TAG = TAG_PATTERN;
-const tag = (value: unknown) => (typeof value === "string" && TAG.test(value) ? value : null);
-
-const HOST = /^(?=.{1,255}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
-
-/** De un host o una dirección completa, solo el nombre de host público. */
-function host(value: unknown): string | null {
-  if (typeof value !== "string" || value === "" || value.length > 2048) return null;
-  let name = value.trim().toLowerCase();
-  if (name.includes("/") || name.includes(":")) {
-    try {
-      const url = new URL(name);
-      if (url.protocol !== "http:" && url.protocol !== "https:") return null;
-      name = url.hostname;
-    } catch {
-      return null;
-    }
-  }
-  return HOST.test(name) ? name : null;
-}
 
 export function normalizeEvent(input: unknown, resolvePath: ResolvePath): NormalizeResult {
   if (typeof input !== "object" || input === null || Array.isArray(input)) return { ok: false };

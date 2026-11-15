@@ -1,7 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "confiahome",
-  "main": ".open-next/worker.js",
+  // Entrada propia: envuelve a la de OpenNext (.open-next/worker.js) para añadir las cabeceras
+  // de seguridad y la tarea programada (ADR-0016).
+  "main": "worker/index.ts",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
@@ -18,5 +20,8 @@
     // Eventos anónimos de analítica: holgado para una visita real, corto para un abuso.
     { "name": "EVENTS_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 20, "period": 60 } }
   ],
-  "observability": { "enabled": true }
+  // Tarea diaria (08:17 UTC): latido contra la pausa de Supabase y borrado por conservación.
+  "triggers": { "crons": ["17 8 * * *"] },
+  // Registros propios, sí. Los automáticos de cada petición, no: pueden guardar la IP y el agente del visitante.
+  "observability": { "enabled": true, "logs": { "invocation_logs": false } }
 }

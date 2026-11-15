@@ -24,7 +24,7 @@ No hay IP, agente de usuario, identificador de visitante ni nada escrito por el 
 
 - **No hay recorridos por persona.** Sin identificador no se puede saber que quien reservó es quien vio la página. Las conversiones son proporciones entre eventos del mismo día o segmento.
 - **Quien activa «No rastrear»** (Global Privacy Control o Do Not Track) no envía eventos propios ni carga el contador de visitas de Cloudflare: esa visita no se cuenta en ningún sitio, que es lo que promete la política de privacidad. Los robots conocidos se descartan.
-- **El canal es el de la llegada.** La campaña y la procedencia se recuerdan mientras la página sigue abierta y sobreviven al cambio de idioma. Se pierden si el visitante recarga sin los parámetros o vuelve otro día: esa visita cuenta como «directo».
+- **El canal es el de la página en la que ocurre el evento.** Las etiquetas de campaña sobreviven al cambio de idioma, pero se pierden al pasar a otra página del sitio (por ejemplo, ir a Privacidad y volver): lo que ocurra después cuenta como «directo». No se guardan en el navegador para evitarlo: sería almacenar algo sobre la visita.
 - **«Calendario abierto» cuenta la petición**, no que el calendario llegara a verse: si Calendly está bloqueado en ese navegador, también suma.
 - **Días y fechas en hora de Colombia.** Las consultas agrupan por día de `America/Bogota`; cámbialo si el negocio pasa a otra zona.
 - **Un mismo visitante puede sumar varias vistas** si recarga o cambia de página.

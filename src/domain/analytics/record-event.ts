@@ -1,4 +1,4 @@
-import type { Logger, RateLimiter } from "../contact/ports.ts";
+import type { Logger, RateLimiter } from "../ports.ts";
 import { normalizeEvent, type ResolvePath } from "./events.ts";
 import type { EventRepository } from "./ports.ts";
 

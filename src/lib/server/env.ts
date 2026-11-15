@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { EnvError, readServiceMode, type EnvSource } from "./service-mode";
+
+export { EnvError };
 
 /**
  * Configuración del servidor. Se valida en el primer uso, no al importar,
@@ -7,8 +10,6 @@ import { z } from "zod";
  * SERVICES=memory  adaptadores en memoria, sin red (por defecto).
  * SERVICES=real    Supabase, Turnstile y correo; exige todos los secretos.
  */
-const SERVICE_MODES = ["memory", "real"] as const;
-
 const REQUIRED_WHEN_REAL = [
   "SUPABASE_URL",
   "SUPABASE_SECRET_KEY",
@@ -38,26 +39,15 @@ export type ServerEnv =
       notifyTo: string;
     };
 
-type EnvSource = Record<string, string | undefined>;
-
-export class EnvError extends Error {
-  override readonly name = "EnvError";
-}
-
 export function loadServerEnv(source: EnvSource = process.env): ServerEnv {
-  const mode = source.SERVICES?.trim() || "memory";
-  if (!(SERVICE_MODES as readonly string[]).includes(mode)) {
-    // No se incluye el valor recibido: un mensaje de error nunca repite contenido del entorno.
-    throw new EnvError(`SERVICES no es válido. Valores admitidos: ${SERVICE_MODES.join(", ")}.`);
-  }
-  if (mode === "memory") return { services: "memory" };
+  if (readServiceMode(source) === "memory") return { services: "memory" };
 
   const parsed = realSchema.safeParse(source);
   if (!parsed.success) {
     const missing = REQUIRED_WHEN_REAL.filter((key) => parsed.error.issues.some((issue) => issue.path[0] === key));
     throw new EnvError(
       `Faltan variables de entorno para SERVICES=real: ${missing.join(", ")}. ` +
-        "Defínelas en .env.local (desarrollo) o con `wrangler secret put` (producción).",
+        "Defínelas en .env.development.local (desarrollo) o con `wrangler secret put` (producción).",
     );
   }
   return {

@@ -182,9 +182,11 @@ PRD §8, §10.
 | L8-5 | Datos estructurados de organización | S | JSON-LD válido: organización, sitio y los servicios que la página describe |
 | L8-7 | Legible para agentes de IA | C | `robots.txt` permite por nombre a los rastreadores de IA; `/llms.txt` resume el sitio con los textos de la página |
 
-## L9 — Calidad y seguridad
+## L9 — Calidad y seguridad ✅
 
-PRD §10. ADR-0001, 0008.
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l9-calidad-y-seguridad/tasks.md`; auditoría y revisión en [docs/security/audit-v1.md](docs/security/audit-v1.md). La CSP usa un código de un solo uso puesto por el Worker, no huellas ([ADR-0016](docs/architecture/adr/0016-entrada-propia-del-worker-cabeceras-y-tarea-diaria.md)). La tarea diaria añade el borrado por conservación además del latido. Comando nuevo: `npm run e2e:preview`.
+
+PRD §10. ADR-0001, 0008, 0016.
 
 | ID | Tarea | Prio | Hecho cuando |
 |---|---|---|---|

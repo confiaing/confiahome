@@ -1,4 +1,4 @@
-import { TAG_PATTERN } from "@/domain/analytics/events";
+import { tag } from "@/domain/attribution";
 import { isLocale } from "@/i18n/locales";
 import { LOCALE_COOKIE, LOCALE_COOKIE_MAX_AGE } from "@/i18n/negotiate";
 import { equivalentPath } from "@/i18n/routes";
@@ -31,14 +31,14 @@ function campaignQuery(from: URL | null): string {
   if (!from) return "";
   const kept = new URLSearchParams();
   for (const name of CAMPAIGN_PARAMS) {
-    const value = from.searchParams.get(name);
-    if (value && TAG_PATTERN.test(value)) kept.set(name, value);
+    const value = tag(from.searchParams.get(name));
+    if (value) kept.set(name, value);
   }
   const query = kept.toString();
   return query ? `?${query}` : "";
 }
 
-function redirect(request: Request, path: string, cookie?: string): Response {
+function redirect(path: string, cookie?: string): Response {
   const headers = new Headers({
     // Relativo: la ruta sale siempre de la tabla de rutas; de la petición, solo etiquetas de campaña saneadas.
     Location: path,
@@ -51,7 +51,7 @@ function redirect(request: Request, path: string, cookie?: string): Response {
 export function GET(request: Request): Response {
   const url = new URL(request.url);
   const to = url.searchParams.get("to") ?? "";
-  if (!isLocale(to)) return redirect(request, "/");
+  if (!isLocale(to)) return redirect("/");
 
   // Secure siempre, salvo en la máquina de desarrollo: tras el proxy de Cloudflare el
   // protocolo de request.url no es fiable, así que no se decide por él.
@@ -59,5 +59,5 @@ export function GET(request: Request): Response {
   const secure = local ? "" : "; Secure";
   const cookie = `${LOCALE_COOKIE}=${to}; Path=/; Max-Age=${LOCALE_COOKIE_MAX_AGE}; SameSite=Lax; HttpOnly${secure}`;
   const from = originPage(request);
-  return redirect(request, equivalentPath(from?.pathname ?? "", to) + campaignQuery(from), cookie);
+  return redirect(equivalentPath(from?.pathname ?? "", to) + campaignQuery(from), cookie);
 }

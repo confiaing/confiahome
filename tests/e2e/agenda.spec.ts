@@ -1,34 +1,12 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { getDictionary } from "../../src/i18n/dictionaries/index.ts";
+import { fakeCalendly } from "./support/calendly.ts";
 
 const CALENDAR = "https://calendly.com/confiaing/30min";
 const isCalendly = (url: string) => /^https:\/\/([a-z0-9-]+\.)*calendly\.com\//.test(url);
 const card = (page: Page) => page.locator("#agenda");
 const frame = (page: Page) => card(page).locator("iframe");
-
-// Un Calendly de mentira servido en sus direcciones reales: el origen de sus mensajes es
-// el verdadero (https://calendly.com) y ninguna prueba sale a la red.
-const WIDGET = `window.Calendly = { initInlineWidget: function (o) {
-  var f = document.createElement("iframe");
-  f.src = o.url + "?embed_domain=" + location.hostname + "&embed_type=Inline";
-  f.title = "Select a Date & Time - Calendly";
-  f.width = "100%"; f.height = "100%"; f.frameBorder = "0";
-  o.parentElement.appendChild(f);
-} };`;
-const bookingPage = (delay: number) => `<!doctype html><html lang="en"><title>Calendly</title><body>
-<h1>30 Minute Meeting</h1><button id="book">Schedule Event</button>
-<script>
-  var say = function (event) { parent.postMessage({ event: event, payload: {} }, "*"); };
-  setTimeout(function () { say("calendly.page_height"); say("calendly.event_type_viewed"); }, ${delay});
-  document.getElementById("book").addEventListener("click", function () { say("calendly.event_scheduled"); });
-</script></body></html>`;
-
-/** `delay`: cuánto tarda el calendario en dar su primera señal, como el real (varios segundos). */
-async function fakeCalendly(page: Page, delay = 0) {
-  await page.route("https://assets.calendly.com/**", (route) => route.fulfill({ contentType: "text/javascript", body: WIDGET }));
-  await page.route("https://calendly.com/**", (route) => route.fulfill({ contentType: "text/html", body: bookingPage(delay) }));
-}
 
 async function ready(page: Page, locale: "es" | "en" = "es") {
   const t = getDictionary(locale).agenda;

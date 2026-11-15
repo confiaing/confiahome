@@ -3,10 +3,8 @@ import { createContainer } from "@/lib/server/container";
 
 // environment-config · Selección de servicios
 describe("composición de dependencias", () => {
-  it("con memory entrega los adaptadores en memoria", async () => {
-    const container = createContainer({ services: "memory" });
-    expect(container.backend).toBe("memory");
-    await expect(container.health.ping()).resolves.toEqual({ ok: true, backend: "memory" });
+  it("solo expone lo que usan las rutas: contacto y analítica", () => {
+    expect(Object.keys(createContainer({ services: "memory" })).sort()).toEqual(["analytics", "contact"]);
   });
 
   const REAL = {
@@ -20,11 +18,12 @@ describe("composición de dependencias", () => {
 
   it("con real entrega los adaptadores reales de contacto", () => {
     const container = createContainer(REAL);
-    expect(container.backend).toBe("real");
-    for (const dependency of ["repository", "notifier", "verifier", "limiter", "logger"] as const) {
-      expect(container.contact[dependency]).toBeDefined();
-    }
+    expect(Object.keys(container.contact).sort()).toEqual(["limiter", "logger", "notifier", "now", "repository", "verifier"]);
+    expect(Object.keys(container.analytics).sort()).toEqual(["limiter", "logger", "repository", "resolvePath"]);
     expect(container.contact.now()).toBeInstanceOf(Date);
+    // Las rutas del sitio se reconocen igual en ambos modos.
+    expect(container.analytics.resolvePath("/en/privacy/")).toBe("/en/privacy");
+    expect(container.analytics.resolvePath("/otra")).toBeNull();
   });
 
   it("con memory, el contacto usa los adaptadores en memoria y no toca la red", async () => {

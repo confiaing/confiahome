@@ -136,6 +136,8 @@ test("con Global Privacy Control no se envía ningún evento", async ({ page }) 
     if (new URL(request.url()).pathname === "/api/events") requests.push(request.method());
   });
   await page.goto("/es");
+  // Se espera a que la página esté activa: sin esto, «no envió nada» también sería verdad por no haber cargado.
+  await page.waitForFunction(() => document.querySelector("[data-agenda-panel]")?.hasAttribute("data-hydrated"));
   await hero(page).locator('a[data-cta="contact"]').click();
   await page.waitForTimeout(600);
   expect(requests).toEqual([]);

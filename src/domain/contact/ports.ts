@@ -35,14 +35,5 @@ export interface SpamVerifier {
   verify(token: string, remoteIp: string | null): Promise<boolean>;
 }
 
-export interface RateLimiter {
-  /** ¿Se admite otro envío de este origen? */
-  allow(key: string): Promise<boolean>;
-}
-
-export interface Logger {
-  /** Registra un fallo. `context` nunca lleva datos del visitante. */
-  error(code: string, context?: Record<string, string | number | boolean>): void;
-  /** Deja constancia de algo que no es un fallo. Mismas reglas para `context`. */
-  info(code: string, context?: Record<string, string | number | boolean>): void;
-}
+// Compartidos con analítica y mantenimiento: viven en ../ports.ts.
+export type { Logger, RateLimiter } from "../ports.ts";

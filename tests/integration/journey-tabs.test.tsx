@@ -163,6 +163,29 @@ describe("dirección y escena", () => {
     expect(selected()).toEqual(only(0));
   });
 
+  // Un enlace a otra sección («Cuéntanos…», el menú, saltar al contenido) no es una orden de volver a la etapa 1.
+  it("tras elegir una etapa, un ancla ajena no la cambia", async () => {
+    const { user, tabs, selected, only } = setup();
+    await user.click(tabs[2]!);
+    act(() => {
+      window.location.hash = "#consulta";
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    });
+    expect(selected()).toEqual(only(2));
+    expect(getSceneState().stage).toBe(3);
+  });
+
+  it("si se llegó con el ancla de una etapa, un ancla ajena posterior tampoco la cambia", () => {
+    window.history.replaceState(null, "", "/es#etapa-4");
+    const { selected, only } = setup();
+    expect(selected()).toEqual(only(3));
+    act(() => {
+      window.location.hash = "#agenda";
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    });
+    expect(selected()).toEqual(only(3));
+  });
+
   it("elegir una etapa actualiza el ancla sin añadir entradas al historial", async () => {
     const { user, tabs } = setup();
     const entries = window.history.length;

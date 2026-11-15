@@ -56,8 +56,21 @@ export function JourneyTabs({ journey, scene }: JourneyTabsProps) {
   const [chosen, setChosen] = useState<number | null>(null);
   const selected = chosen ?? fromHash ?? 0;
 
-  // Si la dirección cambia (Atrás, o un enlace a #etapa-n), manda la dirección.
-  useEffect(() => onHashChange(() => setChosen(null)), []);
+  // Si la dirección pasa a señalar una etapa (Atrás, o un enlace a #etapa-n), manda la
+  // dirección. Un ancla de otra sección («Cuéntanos…», el menú) no es una orden de cambiar
+  // de etapa: se conserva la que estaba.
+  const current = useRef(0);
+  useEffect(() => {
+    current.current = selected;
+  }, [selected]);
+  useEffect(
+    () =>
+      onHashChange(() => {
+        if (stageFromHash(stages.length) !== null) setChosen(null);
+        else setChosen((chosen) => chosen ?? current.current);
+      }),
+    [stages.length],
+  );
 
   useEffect(() => {
     setSceneState({ stage: selected + 1 });

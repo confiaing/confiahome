@@ -68,8 +68,13 @@ export function Turnstile({ siteKey, resetKey = 0, onToken, onError }: Turnstile
         script.async = true;
         document.head.append(script);
       }
+      const pending = script;
       script.addEventListener("load", mount);
-      script.addEventListener("error", fail);
+      script.addEventListener("error", () => {
+        // Se retira: un montaje posterior puede volver a pedirlo.
+        pending.remove();
+        fail();
+      });
     };
 
     let observer: IntersectionObserver | undefined;

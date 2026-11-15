@@ -1,26 +1,22 @@
 import { deviceFor } from "@/domain/analytics/device";
 import type { EventName } from "@/domain/analytics/events";
 import { readAttribution, type Attribution } from "@/lib/attribution";
+import { optedOut } from "@/lib/privacy";
 
 const ENDPOINT = "/api/events";
 
 type Extra = { formMode?: "terminal" | "classic" };
 
-// La campaña y la procedencia son las de la llegada. Se recuerdan en memoria mientras la
-// página siga abierta —no en el almacenamiento del navegador— para que una reserva hecha
-// tras visitar otra página del sitio siga contando para su canal.
+// La campaña y la procedencia son las de la llegada a esta página. Se leen una vez y se
+// reutilizan en todos sus eventos. No se guardan en el navegador: al pasar a otra página
+// del sitio se pierden (los enlaces internos recargan la página), salvo al cambiar de
+// idioma, que conserva las etiquetas de campaña (api/locale).
 let arrival: Attribution | null = null;
 const attribution = () => (arrival ??= readAttribution(window.location, document.referrer));
 
 /** Solo para pruebas: olvida la llegada recordada. */
 export function forgetVisit(): void {
   arrival = null;
-}
-
-/** El visitante pidió no ser rastreado (Global Privacy Control o Do Not Track). */
-export function optedOut(): boolean {
-  const flags = navigator as Navigator & { globalPrivacyControl?: boolean };
-  return flags.globalPrivacyControl === true || navigator.doNotTrack === "1";
 }
 
 /**

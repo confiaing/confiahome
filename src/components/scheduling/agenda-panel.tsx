@@ -105,6 +105,13 @@ export function AgendaPanel({ labels, calendarUrl, showLanguageNote, titleId }: 
     start();
   }, [focusTitle, start]);
 
+  // Con el bloque activo, las acciones de agenda ya no abren otra pestaña: se señala en la
+  // página para retirar ese aviso de los enlaces (globals.css).
+  useEffect(() => {
+    document.documentElement.setAttribute("data-agenda-inline", "");
+    return () => document.documentElement.removeAttribute("data-agenda-inline");
+  }, []);
+
   // Las acciones de agenda de toda la página: en vez de salir a Calendly, traen aquí.
   useEffect(() => {
     const onClick = (event: MouseEvent) => {

@@ -36,13 +36,16 @@ const MODE_OPTION = "inline-flex min-h-11 items-center justify-center rounded-fu
 export function ContactForm({ labels, locale, privacyHref, siteKey }: ContactFormProps) {
   const token = useRef("");
   const waiting = useRef<((value: string) => void)[]>([]);
+  // La verificación no cargó o falló: no tiene sentido esperar a un token que no va a llegar.
+  const verificationDown = useRef(false);
   const receiveToken = (value: string) => {
     token.current = value;
+    if (value) verificationDown.current = false;
     if (value) for (const resolve of waiting.current.splice(0)) resolve(value);
   };
   // El widget antispam se carga al acercarse el formulario y puede tardar: quien envía antes espera.
   const getToken = () =>
-    !siteKey || token.current
+    !siteKey || token.current || verificationDown.current
       ? Promise.resolve(token.current)
       : new Promise<string>((resolve) => {
           waiting.current.push(resolve);
@@ -136,7 +139,11 @@ export function ContactForm({ labels, locale, privacyHref, siteKey }: ContactFor
               ) : null}
             </div>
 
-            <Turnstile siteKey={siteKey} resetKey={form.attempts} onToken={receiveToken} onError={() => form.setFailure("verification")} />
+            <Turnstile siteKey={siteKey} resetKey={form.attempts} onToken={receiveToken} onError={() => {
+                verificationDown.current = true;
+                for (const resolve of waiting.current.splice(0)) resolve("");
+                form.setFailure("verification");
+              }} />
 
             <div>
               <Button type="submit" disabled={sending || !hydrated} aria-busy={sending || undefined}>

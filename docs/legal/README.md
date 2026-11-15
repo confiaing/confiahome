@@ -31,7 +31,7 @@ Con `LEGAL_STATUS = "draft"`:
 
 El interruptor tiene guarda: `publicationBlockers()` y su prueba impiden dejar el estado en «vigente» mientras falten los datos del responsable o los textos sigan diciendo «borrador».
 
-**No pasar a vigente antes del lote L9:** la política promete una conservación máxima que aún no se cumple sola.
+El borrado automático que la política promete existe desde el lote L9 (tarea diaria del Worker); empieza a actuar cuando el sitio esté desplegado.
 
 ## Puntos para el abogado
 
@@ -49,5 +49,6 @@ Lista de lo que la revisión del código y del texto dejó abierto. No es asesor
 
 ## Dependencias con otros lotes
 
-- La política dice que las consultas se conservan como máximo 24 meses y los eventos anónimos 13. El borrado automático que lo cumple llega en el lote L9; hasta entonces el borrado es manual.
+- La política dice que las consultas se conservan como máximo 24 meses y los eventos anónimos 13. Lo cumple la tarea diaria del Worker (lote L9). La copia de cada consulta en el buzón de correo se borra a mano.
+- Con Global Privacy Control o Do Not Track no se registra el uso, no se carga el contador de visitas y la consulta no guarda de dónde llegó la visita.
 - La política nombra a los proveedores que intervienen hoy. Si se añade o cambia alguno, el texto se actualiza en el mismo cambio.

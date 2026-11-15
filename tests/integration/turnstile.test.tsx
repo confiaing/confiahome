@@ -79,6 +79,8 @@ describe("Turnstile", () => {
     approach();
     act(() => void script()!.dispatchEvent(new Event("error")));
     expect(onError).toHaveBeenCalledTimes(1);
+    // El script fallido se retira: un montaje posterior puede volver a pedirlo.
+    expect(script()).toBeNull();
   });
 
   it("un token solo vale una vez: al cambiar resetKey pide uno nuevo y olvida el anterior", () => {

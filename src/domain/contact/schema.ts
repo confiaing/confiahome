@@ -1,4 +1,5 @@
 import * as z from "zod/mini";
+import { host, tag } from "../attribution.ts";
 import { CONTACT_ERROR_CODES, CONTACT_FIELDS, type ContactErrorCode, type ContactErrors, type ContactField } from "./errors.ts";
 
 // Esquema único de una consulta. Lo usan el formulario (navegador) y la API (servidor):
@@ -87,12 +88,23 @@ const orNull = (value: string | undefined) => (value ? value : null);
 const CONTROL = /\p{Cc}/gu;
 const CONTROL_KEEPING_BREAKS = /[^\P{Cc}\n\r\t]/gu;
 const SINGLE_LINE = ["name", "company", "email", "phone"] as const;
+const CAMPAIGN_TAGS = ["utmSource", "utmMedium", "utmCampaign"] as const;
 
 /** Copia de la entrada sin caracteres de control en los textos del visitante. */
 function sanitize(input: Record<string, unknown>): Record<string, unknown> {
   const clean = { ...input };
   for (const key of SINGLE_LINE) if (typeof clean[key] === "string") clean[key] = clean[key].replace(CONTROL, "");
   if (typeof clean.message === "string") clean.message = clean.message.replace(CONTROL_KEEPING_BREAKS, "");
+  // Las etiquetas de campaña vienen de la dirección de la página, no del visitante: lo que
+  // no sea una etiqueta limpia se descarta, sin rechazar por ello la consulta.
+  for (const key of CAMPAIGN_TAGS) if (tag(clean[key]) === null) delete clean[key];
+  // Lo mismo con la procedencia: solo un nombre de host, o nada.
+  const referrer = host(clean.referrerHost);
+  if (referrer === null) delete clean.referrerHost;
+  else clean.referrerHost = referrer;
+  // El campo trampa cuenta por estar relleno, no por lo que lleve: se recorta para que
+  // un robot que lo llena de texto reciba la misma respuesta fingida que cualquier otro.
+  if (typeof clean.website === "string") clean.website = clean.website.slice(0, 200);
   return clean;
 }
 

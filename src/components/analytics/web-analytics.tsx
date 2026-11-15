@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { optedOut } from "@/components/analytics/track";
+import { optedOut } from "@/lib/privacy";
 
 type WebAnalyticsProps = {
   /** Token público del sitio en Cloudflare Web Analytics. Sin él no se pide nada. */

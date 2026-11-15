@@ -3,7 +3,7 @@
 Home pública de lanzamiento de **Confia.ing**, consultoría de transformación de IA para pymes. Bilingüe (ES/EN), con un recorrido interactivo del proceso de trabajo y dos vías de contacto: agendar 30 minutos o enviar una consulta.
 
 > Documento vivo. Se actualiza al cierre de cada fase y con cada decisión relevante.
-> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L8 hechos; siguiente, L9 — calidad y seguridad)
+> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L9 hechos; siguiente, L10 — lanzamiento)
 
 ## Estado del proyecto
 
@@ -139,6 +139,7 @@ flowchart LR
 | [ADR-0013](docs/architecture/adr/0013-pestanas-que-degradan-a-enlaces.md) | Las pestañas del recorrido son enlaces: las etapas se leen sin JavaScript |
 | [ADR-0014](docs/architecture/adr/0014-supabase-por-postgrest-sin-sdk.md) | Supabase se usa por PostgREST con `fetch`, sin SDK: el Worker no crece |
 | [ADR-0015](docs/architecture/adr/0015-agenda-en-su-bloque-con-el-widget-de-calendly.md) | La agenda se carga en su bloque, con el widget de Calendly y solo a petición |
+| [ADR-0016](docs/architecture/adr/0016-entrada-propia-del-worker-cabeceras-y-tarea-diaria.md) | Entrada propia del Worker: cabeceras de seguridad con CSP por código de un solo uso, y tarea diaria |
 
 Detalle: [C4, componentes, datos y seguridad](docs/architecture/README.md) · [estructura de ficheros](docs/architecture/estructura.md).
 

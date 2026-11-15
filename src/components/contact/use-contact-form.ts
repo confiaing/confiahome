@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { CONTACT_FIELDS, type ContactErrors, type ContactField } from "@/domain/contact/errors";
 import { parseContact } from "@/domain/contact/schema";
 import { readAttribution } from "@/lib/attribution";
+import { optedOut } from "@/lib/privacy";
 
 export type FormMode = "terminal" | "classic";
 export type FormValues = { name: string; company: string; email: string; phone: string; message: string; consent: boolean };
@@ -87,7 +88,7 @@ export function useContactForm({ locale, needsToken, getToken }: Options) {
     event.preventDefault();
     if (sending.current || phase === "sent") return;
 
-    const draft = { ...values, locale, formMode: mode, website, turnstileToken: "", ...readAttribution(window.location, document.referrer) };
+    const draft = { ...values, locale, formMode: mode, website, turnstileToken: "", ...(optedOut() ? {} : readAttribution(window.location, document.referrer)) };
     const parsed = parseContact(draft);
     if (!parsed.ok) {
       showErrors(parsed.errors);

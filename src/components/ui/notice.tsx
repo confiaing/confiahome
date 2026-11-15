@@ -28,7 +28,7 @@ type NoticeProps = {
  * Aviso de error (role="alert") o de éxito e información (role="status").
  * Para que un lector de pantalla anuncie un aviso que aparece tras una acción, su
  * contenedor debe estar ya en la página y recibir el texto después: lo resuelve
- * quien lo usa (el formulario, en el lote L5).
+ * quien lo usa (el formulario de consulta y el bloque de agenda).
  */
 export function Notice({ tone, children, live = true, className }: NoticeProps) {
   return (

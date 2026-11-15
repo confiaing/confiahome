@@ -360,3 +360,9 @@
 [data-agenda-panel]:not([data-hydrated]) :is([data-agenda-open], [data-agenda-inline]) {
   display: none;
 }
+
+/* Con el calendario cargándose en la propia página, «se abre en una pestaña nueva» deja de ser cierto. */
+html[data-agenda-inline] a[data-agenda] [data-new-tab-note] {
+  display: none;
+}
+

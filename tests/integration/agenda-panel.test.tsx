@@ -154,6 +154,14 @@ describe("acciones de agenda de la página", () => {
     expect(document.getElementById("agenda-title")).toHaveFocus();
   });
 
+  // El enlace dice «se abre en una pestaña nueva»; con el bloque activo ya no es verdad y no debe anunciarse.
+  it("mientras el bloque está activo, la página lo señala para retirar el aviso de pestaña nueva", () => {
+    const { view } = setup();
+    expect(document.documentElement).toHaveAttribute("data-agenda-inline");
+    view.unmount();
+    expect(document.documentElement).not.toHaveAttribute("data-agenda-inline");
+  });
+
   it("al desmontar deja de interceptar", () => {
     const { view } = setup();
     const link = document.createElement("a");

@@ -161,3 +161,63 @@ describe("caracteres de control", () => {
     expect(parsed).toEqual({ ok: false, malformed: true, errors: {} });
   });
 });
+
+// release-quality · Datos de entrada acotados: las etiquetas de campaña de la consulta
+describe("etiquetas de campaña de la consulta", () => {
+  const dataOf = (input: unknown) => {
+    const parsed = parseContact(input);
+    if (!parsed.ok) throw new Error("se esperaba una consulta válida");
+    return parsed.data;
+  };
+  const withContact = { ...base, email: "ana@empresa.com" };
+
+  it("una etiqueta limpia se conserva", () => {
+    expect(dataOf({ ...withContact, utmSource: "linkedin", utmMedium: "paid_social", utmCampaign: "q4-2026.v1" })).toMatchObject({
+      utmSource: "linkedin",
+      utmMedium: "paid_social",
+      utmCampaign: "q4-2026.v1",
+    });
+  });
+
+  it.each(["campaña de otoño", "ana@empresa.com", "<script>", "x".repeat(41), "x".repeat(500), "", 7, null, {}])(
+    "una etiqueta que no lo es (%j) se guarda como ausente y la consulta se acepta",
+    (value) => {
+      expect(dataOf({ ...withContact, utmSource: value, utmMedium: value, utmCampaign: value })).toMatchObject({
+        utmSource: null,
+        utmMedium: null,
+        utmCampaign: null,
+      });
+    },
+  );
+});
+
+// release-quality · Datos de entrada acotados: la procedencia de la consulta y el campo trampa
+describe("procedencia y campo trampa", () => {
+  const dataOf = (input: unknown) => {
+    const parsed = parseContact(input);
+    if (!parsed.ok) throw new Error("se esperaba una consulta válida");
+    return parsed.data;
+  };
+  const withContact = { ...base, email: "ana@empresa.com" };
+
+  it.each([
+    ["www.google.com", "www.google.com"],
+    ["https://News.Example.com/x?y=1", "news.example.com"],
+  ])("de la procedencia %s queda el host %s", (value, host) => {
+    expect(dataOf({ ...withContact, referrerHost: value }).referrerHost).toBe(host);
+  });
+
+  it.each(["x\r\nIdentificador: falso", "texto libre con espacios", "ana@empresa.com", "a\u0000b.com", "android-app://com.example", "<b>", "x".repeat(300), 7, {}])(
+    "una procedencia que no es un host (%j) se guarda como ausente y la consulta se acepta",
+    (value) => {
+      expect(dataOf({ ...withContact, referrerHost: value }).referrerHost).toBeNull();
+    },
+  );
+
+  it("un campo trampa muy largo sigue siendo un campo trampa, no una petición mal formada", () => {
+    const data = dataOf({ ...withContact, website: "x".repeat(5000) });
+    expect(data.website).not.toBe("");
+    expect(data.website.length).toBeLessThanOrEqual(200);
+  });
+});
+

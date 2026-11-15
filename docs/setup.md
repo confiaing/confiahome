@@ -88,7 +88,7 @@ La política de privacidad y los términos están publicados como borradores, co
 1. Los datos de quien trata los datos: razón social o nombre, número de identificación y domicilio.
 2. La revisión de un abogado, en español y en inglés. La lista de puntos abiertos para esa revisión está en la guía.
 
-No conviene pasarlos a vigentes antes de cerrar el lote L9, que añade el borrado automático que la política promete.
+El borrado automático que la política promete ya existe (tarea diaria del Worker).
 
 ## Qué queda pendiente para el lanzamiento (L10)
 
@@ -98,6 +98,10 @@ El formulario de consulta (L5) está hecho y probado contra la base local y las 
 |---|---|
 | Crear las tablas `contact_requests` y `analytics_events` en `confiahomeDB` | `npx supabase db push` (migraciones `20261114170000` y `20261114210000`) |
 | Textos legales vigentes | Datos del responsable en `src/i18n/legal/status.ts`, revisión legal y `LEGAL_STATUS = "in-force"` |
+| Desplegar el Worker construido con `npm run build:worker` | Ese comando vacía las variables de desarrollo incrustadas y avisa si falta la site key de Turnstile; no desplegar un build hecho de otra forma |
+| Restringir el widget de Turnstile al dominio | En el panel de Turnstile: solo `confia.ing` |
+| Regla de frecuencia para `/api/events` | En Cloudflare, como segunda barrera frente a un abuso desde muchas IP |
+| Confirmar HTTPS en todo el dominio | Para decidir si HSTS incluye subdominios |
 | Token de Web Analytics en el build | `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` en el entorno al construir |
 | Cargar los secretos en el Worker | `wrangler secret put` para `SUPABASE_SECRET_KEY` y `TURNSTILE_SECRET_KEY`; `SUPABASE_URL`, `NOTIFY_FROM`, `NOTIFY_TO` y `SERVICES=real` como variables |
 | Site key de Turnstile en el build | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` en el entorno al construir |
