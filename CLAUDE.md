@@ -8,7 +8,7 @@ Eres el ingeniero a cargo de la home pública de **Confia.ing**, una consultorí
 
 - **Qué hace la página:** explica el servicio a CEO y CTO y los lleva a una de dos acciones: agendar 30 minutos (Calendly) o enviar una consulta (formulario).
 - **Qué la distingue:** un recorrido interactivo de cinco etapas con una escena 3D, bilingüe ES/EN, con una versión ligera para equipos o conexiones limitadas.
-- **Estado:** fases 1 a 3 cerradas. Fase 4 en curso: implementación por lotes.
+- **Estado:** fases 1 a 3 cerradas. Fase 4 en curso: implementación por lotes (L0 a L9 hechos; falta L10, lanzamiento).
 
 **Si dos fuentes se contradicen, gana la más reciente y específica**, en este orden: lo que diga el fundador en la conversación → [ADRs](docs/architecture/adr/) y decisiones del [README](README.md) → [diseño finalista](docs/design/ronda5-cercano-3d-finalista.html) y [logo](docs/design/logo-conceptos.html) → [BACKLOG](BACKLOG.md) y [escenarios](docs/escenarios.md) → [PRD](PRD-confia-ing-home-details.md). El PRD fija la intención; lo que dejó abierto lo resuelven los documentos anteriores. Una contradicción que no se resuelva así se pregunta.
 
@@ -38,6 +38,7 @@ npm run lint           # ESLint, incluidas las reglas de arquitectura
 npm run typecheck      # tsc --noEmit
 npm test               # Vitest: unitario + integración, sin red
 npm run e2e            # Playwright contra el build de producción, servicios en memoria
+npm run e2e:preview    # Playwright contra el runtime de Workers: cabeceras, CSP y tarea diaria
 npm run test:contract  # adaptadores contra Supabase local (requiere Docker)
 npm run build          # next build (OpenNext lo invoca por dentro; no lo redefinas)
 npm run build:worker   # build del Worker; falla si supera 3 MiB comprimido
@@ -45,7 +46,7 @@ npm run measure:js     # JS inicial de /es, comprimido
 npx supabase start     # base de datos local
 ```
 
-**Puerta de cierre de lote (única):** `lint`, `typecheck`, `test`, `e2e`, `build:worker`, `measure:js` y una carga de `/es` en `preview`, todo en verde y con la salida a la vista.
+**Puerta de cierre de lote (única):** `lint`, `typecheck`, `test`, `e2e`, `e2e:preview`, `build:worker` y `measure:js`, todo en verde y con la salida a la vista. `e2e:preview` carga el sitio en Workers: sustituye a la carga manual de `/es` en `preview`.
 
 ### Entornos y servicios
 
@@ -135,7 +136,7 @@ Romper una invalida el trabajo aunque las pruebas pasen. Si una tarea parece exi
 
 - **Tamaño del Worker:** 3 MiB comprimido en el plan gratuito. Next.js lo acerca al tope; se mide en cada build. Three.js va al navegador, no al Worker.
 - **Supabase se pausa** tras 7 días sin actividad. El latido diario de `worker/` existe para eso.
-- **`next dev` no es Workers.** Comprueba con `npm run preview` antes de dar algo por bueno.
+- **`next dev` no es Workers.** Comprueba con `npm run preview` antes de dar algo por bueno. Las cabeceras de seguridad y la tarea diaria solo existen en la entrada del Worker (`worker/index.ts`): `npm run e2e` no las ve, `npm run e2e:preview` sí.
 - **Sin middleware:** su soporte en OpenNext no está confirmado. El idioma se resuelve en el Route Handler de `/`.
 - **Un solo layout raíz** en `[locale]/`. No crees `app/layout.tsx`: dos layouts no pueden poner `<html lang>`.
 - **Pruebas que deben fallar el lint o el tipado** viven en `tests/fixtures/`, fuera del alcance normal de ESLint y `tsc`, y se comprueban desde una prueba.

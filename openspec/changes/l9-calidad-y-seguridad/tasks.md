@@ -46,7 +46,7 @@ Cada tarea de implementación va precedida por su prueba en rojo. Entre parénte
 
 - [x] 7.1 Escribir el ADR-0016. Verificación: enlazado desde README y arquitectura.
 - [x] 7.2 Puerta de cierre: `lint`, `typecheck`, `test`, `test:contract`, `e2e`, `e2e:preview`, `build:worker`, `measure:js`. Verificación: todo en verde; cifras anotadas aquí.
-- [ ] 7.3 Actualizar README, BACKLOG, CLAUDE.md (comandos y puerta de cierre, con aprobación del fundador), `docs/architecture/`, `docs/setup.md`, `docs/legal/README.md` y `.env.example`. Verificación: enlaces comprobados.
+- [x] 7.3 Actualizar README, BACKLOG, CLAUDE.md (comandos y puerta de cierre, con aprobación del fundador), `docs/architecture/`, `docs/setup.md`, `docs/legal/README.md` y `.env.example`. Verificación: enlaces comprobados.
 - [x] 7.4 Commit local del lote, sin `push`. Verificación: `git status` limpio y `git log -1` muestra el commit.
 
 ## Evidencia
@@ -81,9 +81,7 @@ Cada tarea de implementación va precedida por su prueba en rojo. Entre parénte
 
 Encontrado al escribir la prueba que pedía la auditoría: Next.js copia la ruta y los parámetros pedidos en un script de datos. Va codificado y dentro de una cadena; no encontré forma de ejecutarlo. Corregí el ADR, que afirmaba que el HTML no llevaba nada de la petición.
 
-**Pendiente de este lote**
-
-- 7.3, la parte de `CLAUDE.md`: añadir `npm run e2e:preview` a los comandos y a la puerta de cierre. Espera el visto bueno del fundador.
+**`CLAUDE.md` (7.3).** Con el visto bueno del fundador, `npm run e2e:preview` entra en los comandos y en la puerta de cierre, donde sustituye a la carga manual de `/es` en `preview`.
 
 **Desviaciones de TDD**
 

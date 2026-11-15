@@ -34,7 +34,7 @@ Las revisiones de código sí dieron hallazgos de severidad media, todos de corr
 | Etiquetas de campaña y procedencia validadas de dos formas | **Corregido:** un módulo del dominio para ambos casos |
 | La atribución «recordada» no sobrevive a un cambio de página | **Aceptado como límite:** documentado en `docs/analytics.md`; guardarla en el navegador sería almacenar algo sobre la visita |
 | El verificador en memoria acepta un token vacío y el real no: un build de producción sin la clave pública de Turnstile rechazaría todas las consultas | **Aceptado, pendiente de L10.** `build:worker` avisa si falta la clave; el despliegue debe exigirla |
-| La entrada del Worker solo se prueba con `e2e:preview`, que no estaba en la puerta de cierre | **Pendiente de tu visto bueno** para añadirlo a `CLAUDE.md` |
+| La entrada del Worker solo se prueba con `e2e:preview`, que no estaba en la puerta de cierre | **Corregido:** añadido a la puerta de cierre de `CLAUDE.md` con el visto bueno del fundador |
 
 Corregidos además, de severidad baja: un campo trampa muy largo delataba la trampa; el aviso por correo no tenía tiempo máximo; los puertos compartidos estaban en la carpeta de contacto; faltaba una prueba de que los máximos del formulario caben en la base; el lector de pantalla oía «se abre en una pestaña nueva» en enlaces que ya no la abren; varias pruebas que no podían fallar.
 
