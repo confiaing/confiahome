@@ -152,7 +152,9 @@ PRD §9, §11.
 | L6-3 | Confirmación y próximos pasos | M | Al completarse la reserva se muestra qué ocurrirá en la conversación |
 | L6-4 | Accesibilidad del bloque de agenda | M | El foco va al título del bloque; estados anunciados; marco con título; movimiento reducido |
 
-## L7 — Analítica
+## L7 — Analítica ✅
+
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l7-analitica/tasks.md`. La migración está aplicada solo en la base local; en producción se aplica en L10. Consultas en [docs/analytics.md](docs/analytics.md). Decidido al proponer: no se mide a quien activa «No rastrear», los robots conocidos se descartan y hay un límite de 20 eventos por minuto y origen.
 
 PRD §3, §9. ADR-0005. CA: eventos medibles sin contenido sensible.
 

@@ -125,4 +125,27 @@ describe("GET /api/locale", () => {
     expect(target(response)).toEqual({ origin: ORIGIN, path: "/" });
     expect(response.headers.get("set-cookie")).toBeNull();
   });
+
+  // analytics-instrumentation · La campaña de la visita sobrevive al cambio de idioma
+  it("conserva las etiquetas de campaña de la página de origen", async () => {
+    const response = await switchLocale(
+      request("/api/locale?to=en", { referer: `${ORIGIN}/es?utm_source=linkedin&utm_medium=social&utm_campaign=q4-2026&otro=1&email=ana@empresa.com` }),
+    );
+    expect(target(response)).toEqual({ origin: ORIGIN, path: "/en?utm_source=linkedin&utm_medium=social&utm_campaign=q4-2026" });
+  });
+
+  it.each([
+    ["con espacios o símbolos", "utm_source=campa%C3%B1a%20de%20oto%C3%B1o&utm_medium=%3Cscript%3E"],
+    ["con un correo", "utm_source=ana%40empresa.com"],
+    ["demasiado larga", `utm_campaign=${"x".repeat(41)}`],
+    ["vacía", "utm_source="],
+  ])("una etiqueta %s no se conserva", async (_name, query) => {
+    const response = await switchLocale(request("/api/locale?to=en", { referer: `${ORIGIN}/es?${query}` }));
+    expect(target(response).path).toBe("/en");
+  });
+
+  it("no toma etiquetas de una página de otro sitio", async () => {
+    const response = await switchLocale(request("/api/locale?to=en", { referer: "https://otro.example/es?utm_source=linkedin" }));
+    expect(target(response).path).toBe("/en");
+  });
 });

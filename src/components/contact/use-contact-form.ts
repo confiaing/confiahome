@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { CONTACT_FIELDS, type ContactErrors, type ContactField } from "@/domain/contact/errors";
 import { parseContact } from "@/domain/contact/schema";
+import { readAttribution } from "@/lib/attribution";
 
 export type FormMode = "terminal" | "classic";
 export type FormValues = { name: string; company: string; email: string; phone: string; message: string; consent: boolean };
@@ -23,19 +24,9 @@ const EMPTY: FormValues = { name: "", company: "", email: "", phone: "", message
 
 const FAILURE_BY_STATUS: Record<number, FormFailure> = { 403: "spam", 429: "rateLimited" };
 
-/** De dónde llegó la visita: parámetros utm_* y sitio de procedencia. No identifica a la persona. */
-function attribution() {
-  const params = new URLSearchParams(window.location.search);
-  let referrerHost: string | undefined;
-  try {
-    const host = document.referrer ? new URL(document.referrer).host : "";
-    referrerHost = host && host !== window.location.host ? host : undefined;
-  } catch {
-    referrerHost = undefined;
-  }
-  const pick = (name: string) => params.get(name)?.slice(0, 120) || undefined;
-  return { utmSource: pick("utm_source"), utmMedium: pick("utm_medium"), utmCampaign: pick("utm_campaign"), referrerHost };
-}
+/** Avisos para el resto de la página (la analítica). Solo el modo: nada de lo escrito. */
+const announce = (name: "started" | "submitted", mode: FormMode) =>
+  document.dispatchEvent(new CustomEvent(`confia:form-${name}`, { detail: { mode } }));
 
 type Options = {
   locale: "es" | "en";
@@ -61,6 +52,7 @@ export function useContactForm({ locale, needsToken, getToken }: Options) {
   // Envíos que llegaron al servidor sin éxito: el token antispam de cada uno ya no sirve.
   const [attempts, setAttempts] = useState(0);
   const sending = useRef(false);
+  const started = useRef(false);
 
   useEffect(() => {
     if (focusRequest === 0) return;
@@ -76,6 +68,10 @@ export function useContactForm({ locale, needsToken, getToken }: Options) {
   };
 
   const change = <Field extends keyof FormValues>(field: Field, value: FormValues[Field]) => {
+    if (!started.current) {
+      started.current = true;
+      announce("started", mode);
+    }
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => {
       if (!current[field] && !(current.email === "contact-required" && (field === "email" || field === "phone"))) return current;
@@ -91,7 +87,7 @@ export function useContactForm({ locale, needsToken, getToken }: Options) {
     event.preventDefault();
     if (sending.current || phase === "sent") return;
 
-    const draft = { ...values, locale, formMode: mode, website, turnstileToken: "", ...attribution() };
+    const draft = { ...values, locale, formMode: mode, website, turnstileToken: "", ...readAttribution(window.location, document.referrer) };
     const parsed = parseContact(draft);
     if (!parsed.ok) {
       showErrors(parsed.errors);
@@ -116,6 +112,7 @@ export function useContactForm({ locale, needsToken, getToken }: Options) {
         signal: AbortSignal.timeout(SEND_TIMEOUT_MS),
       });
       if (response.status === 201) {
+        announce("submitted", mode);
         setPhase("sent");
         return;
       }

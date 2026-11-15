@@ -55,6 +55,7 @@ confia.ing-home/
 │   │   ├── journey/              Recorrido de 5 etapas; scene/ con el canvas 3D y el SVG ligero
 │   │   ├── contact/              Formulario en modo terminal y modo clásico
 │   │   ├── scheduling/           Calendly a petición
+│   │   ├── analytics/            Envío de eventos anónimos y script de visitas
 │   │   └── ui/                   Botón, enlace, campo, casilla, tarjeta, aviso, logo,
 │   │                             selector de idioma, enlace de agenda, menú plegable
 │   │

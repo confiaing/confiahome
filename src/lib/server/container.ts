@@ -1,3 +1,4 @@
+import { createMemoryEventRepository } from "@/adapters/memory/analytics";
 import {
   createMemoryContactRepository,
   createMemoryNotifier,
@@ -8,9 +9,12 @@ import { createEmailNotifier, type EmailBinding } from "@/adapters/email/notifie
 import { createMemoryHealthCheck } from "@/adapters/memory/health";
 import { createBindingRateLimiter, type RateLimitBinding } from "@/adapters/ratelimit/limiter";
 import { createSupabaseContactRepository } from "@/adapters/supabase/contact-repository";
+import { createSupabaseEventRepository } from "@/adapters/supabase/event-repository";
 import { createTurnstileVerifier } from "@/adapters/turnstile/verifier";
+import type { RecordEventDeps } from "@/domain/analytics/record-event";
 import type { SubmitContactDeps } from "@/domain/contact/submit-contact";
 import type { Backend, HealthCheck } from "@/domain/ports";
+import { matchRoute, pathFor } from "@/i18n/routes";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { type ServerEnv, loadServerEnv } from "./env";
 import { consoleLogger } from "./logger";
@@ -21,7 +25,15 @@ export type Container = {
   health: HealthCheck;
   /** Lo que necesita el caso de uso de contacto. */
   contact: SubmitContactDeps;
+  /** Lo que necesita el registro de eventos anónimos. */
+  analytics: RecordEventDeps;
 };
+
+/** Una ruta recibida del navegador, reducida a una página del sitio; null si no lo es. */
+function resolvePath(raw: string): string | null {
+  const match = matchRoute(raw);
+  return match ? pathFor(match.locale, match.routeId) : null;
+}
 
 export function createContainer(env: ServerEnv): Container {
   if (env.services === "memory") {
@@ -36,6 +48,12 @@ export function createContainer(env: ServerEnv): Container {
         limiter: createMemoryRateLimiter(10_000),
         logger: consoleLogger,
         now: () => new Date(),
+      },
+      analytics: {
+        repository: createMemoryEventRepository(),
+        limiter: createMemoryRateLimiter(10_000),
+        logger: consoleLogger,
+        resolvePath,
       },
     };
   }
@@ -59,10 +77,16 @@ export function createContainer(env: ServerEnv): Container {
       logger: consoleLogger,
       now: () => new Date(),
     },
+    analytics: {
+      repository: createSupabaseEventRepository({ url: env.supabaseUrl, secretKey: env.supabaseSecretKey }),
+      limiter: createBindingRateLimiter(bindings.EVENTS_RATE_LIMITER ?? missingBinding("EVENTS_RATE_LIMITER"), "events"),
+      logger: consoleLogger,
+      resolvePath,
+    },
   };
 }
 
-type WorkerBindings = { SEND_EMAIL?: EmailBinding; CONTACT_RATE_LIMITER?: RateLimitBinding };
+type WorkerBindings = { SEND_EMAIL?: EmailBinding; CONTACT_RATE_LIMITER?: RateLimitBinding; EVENTS_RATE_LIMITER?: RateLimitBinding };
 
 /** Bindings del Worker (wrangler.jsonc). Fuera de Workers no existen. */
 function workerBindings(): WorkerBindings {

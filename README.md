@@ -3,7 +3,7 @@
 Home pública de lanzamiento de **Confia.ing**, consultoría de transformación de IA para pymes. Bilingüe (ES/EN), con un recorrido interactivo del proceso de trabajo y dos vías de contacto: agendar 30 minutos o enviar una consulta.
 
 > Documento vivo. Se actualiza al cierre de cada fase y con cada decisión relevante.
-> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L6 hechos; siguiente, L7 — analítica)
+> **Última actualización:** 2026-11-14 · **Fase actual:** 4 — Implementación (lotes L0 a L7 hechos; siguiente, L8 — legal y SEO)
 
 ## Estado del proyecto
 
@@ -95,7 +95,7 @@ Resueltas en la entrevista del 2026-11-13. La numeración «PRD §15» remite a 
 - **Alcance de páginas:** home, privacidad y términos, cada una en ES y EN. Sin páginas por servicio en la v1.
 - **Calendly se carga solo al pedirlo** (clic en el CTA), para no penalizar rendimiento ni cargar terceros sin acción del visitante. Si falla, se ofrece el formulario y el enlace directo.
 - **«Reunión agendada» se mide** con el evento que emite el Calendly embebido; no requiere plan de pago.
-- **Eventos analíticos:** vista de página, clic en cada CTA, apertura del calendario, reunión agendada, formulario iniciado, formulario enviado, cambio de idioma. Con idioma, tipo de dispositivo y canal (referrer/UTM). Nunca el contenido del mensaje ni datos personales.
+- **Eventos analíticos:** vista de página, clic en cada CTA, apertura del calendario, reunión agendada, formulario iniciado, formulario enviado, cambio de idioma. Con idioma, tipo de dispositivo y canal (referrer/UTM). Nunca el contenido del mensaje ni datos personales. Quien activa «No rastrear» (Global Privacy Control o Do Not Track) no se mide. Cómo consultarlos: [docs/analytics.md](docs/analytics.md).
 - **Antispam:** Cloudflare Turnstile más campo trampa en el formulario.
 - **Textos (copy):** Claude propone toda la redacción ES/EN, incluida la frase de cierre (§15.10), para tu aprobación en la Fase 3.
 - **Identidad visual (§15.13, §15.14):** se propone en la Fase 3 dentro de las tres alternativas de diseño; logo en SVG, paleta en tokens centralizados, tipografías de licencia abierta.

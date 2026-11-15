@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
+import { AnalyticsTracker } from "@/components/analytics/analytics-tracker";
+import { WebAnalytics } from "@/components/analytics/web-analytics";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { SiteHeader } from "@/components/sections/site-header";
 import { SkipLink } from "@/components/sections/skip-link";
@@ -48,6 +50,9 @@ export default async function LocaleLayout({ children, params }: Props) {
         <SiteHeader locale={locale} dictionary={dictionary} />
         {children}
         <SiteFooter locale={locale} dictionary={dictionary} year={new Date().getFullYear()} />
+        {/* Medición sin cookies (ADR-0005): eventos propios y, si hay token, visitas. */}
+        <AnalyticsTracker />
+        <WebAnalytics token={publicEnv.analyticsToken} />
       </body>
     </html>
   );

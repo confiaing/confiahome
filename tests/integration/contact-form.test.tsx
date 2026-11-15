@@ -410,3 +410,64 @@ describe("antes de hidratar", () => {
     expect(submit()).toBeEnabled();
   });
 });
+
+// analytics-instrumentation · Formulario iniciado una sola vez; Formulario enviado sin contenido; Envío rechazado
+describe("avisos para la analítica", () => {
+  const listen = () => {
+    const seen: { type: string; detail: unknown }[] = [];
+    const record = (event: Event) => seen.push({ type: event.type, detail: (event as CustomEvent).detail });
+    document.addEventListener("confia:form-started", record);
+    document.addEventListener("confia:form-submitted", record);
+    return {
+      seen,
+      stop: () => {
+        document.removeEventListener("confia:form-started", record);
+        document.removeEventListener("confia:form-submitted", record);
+      },
+    };
+  };
+
+  it("avisa de «iniciado» una sola vez, con el modo en uso, y de «enviado» solo cuando el servidor acepta", async () => {
+    fetchMock.mockResolvedValueOnce(respond(503)).mockResolvedValue(respond(201));
+    const { seen, stop } = listen();
+    const { user, fill, submit, switchTo } = setup("terminal");
+    expect(seen).toEqual([]);
+    await fill({ name: "Ana" });
+    await switchTo("classic");
+    await fill({ email: "ana@empresa.com", message: "Conciliar pagos", consent: true });
+    expect(seen).toEqual([{ type: "confia:form-started", detail: { mode: "terminal" } }]);
+
+    await user.click(submit());
+    await screen.findByRole("alert");
+    expect(seen).toHaveLength(1);
+
+    await user.click(submit());
+    await screen.findByText(getDictionary("es").contact.success);
+    stop();
+    expect(seen).toEqual([
+      { type: "confia:form-started", detail: { mode: "terminal" } },
+      { type: "confia:form-submitted", detail: { mode: "classic" } },
+    ]);
+    expect(JSON.stringify(seen)).not.toMatch(/Ana|ana@|Conciliar/);
+  });
+
+  it.each([403, 422, 429, 503])("un envío que el servidor rechaza con %i no avisa de «enviado»", async (status) => {
+    fetchMock.mockResolvedValue(respond(status, { codes: {} }));
+    const { seen, stop } = listen();
+    const { user, fill, submit } = setup("classic");
+    await fill({ name: "Ana", email: "ana@empresa.com", consent: true });
+    await user.click(submit());
+    await screen.findByRole("alert");
+    stop();
+    expect(seen.map((event) => event.type)).toEqual(["confia:form-started"]);
+  });
+
+  it("un envío con errores no avisa de «enviado»", async () => {
+    const { seen, stop } = listen();
+    const { user, submit } = setup("terminal");
+    await user.click(submit());
+    stop();
+    expect(seen).toEqual([]);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+});

@@ -15,7 +15,7 @@ export function ContactActions({ actions, agenda }: ContactActionsProps) {
   return (
     <div className="flex flex-wrap gap-3">
       <AgendaLink labels={{ cta: actions.schedule, newTab: agenda.newTab }} arrow className="max-[479px]:w-full" />
-      <ButtonLink href="#consulta" variant="secondary" className="max-[479px]:w-full">
+      <ButtonLink href="#consulta" data-cta="contact" variant="secondary" className="max-[479px]:w-full">
         {actions.inquire}
       </ButtonLink>
     </div>

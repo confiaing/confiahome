@@ -65,6 +65,8 @@ La site key se incrusta en la página **al construir**: tiene que estar en el en
 2. Hostname: `confia.ing`. Elige la instalación manual con fragmento de JavaScript (no la automática, para que el script quede declarado en nuestra política de seguridad).
 3. Del fragmento, copia solo el valor de `token` y pégalo en `.env.prod` → `NEXT_PUBLIC_CF_ANALYTICS_TOKEN`.
 
+El token se incrusta en la página al construir. Sin él no se carga el script de Cloudflare; los eventos propios (clics, reservas, consultas) funcionan igual y se guardan en Supabase.
+
 ## 7. Correo de avisos
 
 1. Panel de Cloudflare → dominio `confia.ing` → **Email** → **Email Routing** → **Destination addresses**.
@@ -85,7 +87,8 @@ El formulario de consulta (L5) está hecho y probado contra la base local y las 
 
 | Qué | Cómo |
 |---|---|
-| Crear la tabla `contact_requests` en `confiahomeDB` | `npx supabase db push` (migración `20261114170000_contact_requests.sql`) |
+| Crear las tablas `contact_requests` y `analytics_events` en `confiahomeDB` | `npx supabase db push` (migraciones `20261114170000` y `20261114210000`) |
+| Token de Web Analytics en el build | `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` en el entorno al construir |
 | Cargar los secretos en el Worker | `wrangler secret put` para `SUPABASE_SECRET_KEY` y `TURNSTILE_SECRET_KEY`; `SUPABASE_URL`, `NOTIFY_FROM`, `NOTIFY_TO` y `SERVICES=real` como variables |
 | Site key de Turnstile en el build | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` en el entorno al construir |
 | Remitente y destino del aviso | `NOTIFY_FROM` debe ser una dirección de `confia.ing`; `NOTIFY_TO`, la verificada en el paso 7 |

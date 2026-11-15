@@ -9,7 +9,7 @@ import {
 } from "@/adapters/memory/contact";
 import { POST } from "@/app/api/contact/route";
 import { getDictionary } from "@/i18n/dictionaries";
-import { overrideContainer } from "@/lib/server/container";
+import { createContainer, overrideContainer } from "@/lib/server/container";
 
 const ORIGIN = "https://confia.ing";
 const valid = {
@@ -27,8 +27,7 @@ function setup(options: { repositoryFails?: boolean; limit?: number } = {}) {
   const notifier = createMemoryNotifier();
   const logger = createMemoryLogger();
   overrideContainer({
-    backend: "memory",
-    health: { ping: async () => ({ ok: true, backend: "memory" }) },
+    ...createContainer({ services: "memory" }),
     contact: {
       repository,
       notifier,

@@ -125,7 +125,9 @@ C4Component
 | Agenda | `src/components/scheduling/`, `src/lib/calendly.ts` | Carga el widget de Calendly en el bloque «Agenda» al hacer clic ([ADR-0015](adr/0015-agenda-en-su-bloque-con-el-widget-de-calendly.md)); escucha sus mensajes; si falla, ofrece formulario y enlace directo | Unitario + integración + E2E con Calendly simulado |
 | UI base | `src/components/ui/` | Botón, enlace, tarjeta, campo, aviso: solo usan tokens | Integración |
 | Dominio de contacto | `src/domain/contact/` | Esquema Zod (correo **o** teléfono, consentimiento), caso de uso `submitContact` | Unitario |
-| Dominio de analítica | `src/domain/analytics/` | Lista cerrada de eventos, normalización de dispositivo/canal, `trackEvent` | Unitario |
+| Dominio de analítica | `src/domain/analytics/` | Lista cerrada de ocho eventos, saneado campo a campo (`normalizeEvent`), tipo de dispositivo, caso de uso `recordEvent` | Unitario + integración |
+| Medición en la página | `src/components/analytics/`, `src/lib/attribution.ts` | Un componente escucha clics marcados y los avisos de agenda y formulario, y envía eventos con `sendBeacon`; respeta «No rastrear»; script de Cloudflare solo con token. Consultas en [docs/analytics.md](../analytics.md) | Integración + E2E |
+| API de eventos | `src/app/api/events/route.ts` | Origen y tamaño → sanear → robots → límite de frecuencia → guardar. Responde 204 | Integración + contrato |
 | i18n | `src/i18n/` | Diccionarios tipados `es`/`en`, negociación de idioma, tabla de rutas localizadas y alternos `hreflang` | Unitario |
 | Cambio de idioma | `src/app/api/locale/route.ts` | Guarda la cookie `locale` y redirige a la página equivalente ([ADR-0012](adr/0012-cambio-de-idioma-en-el-servidor.md)) | Integración + E2E |
 | Marco | `src/components/sections/` (`skip-link`, `site-header`, `site-footer`) | Enlace de salto, cabecera con menú plegable y pie, compuestos en el layout | Integración + E2E |

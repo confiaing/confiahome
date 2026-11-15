@@ -42,6 +42,7 @@ export function LanguageSwitch({ locale, label, className }: LanguageSwitchProps
             hrefLang={option}
             lang={option}
             rel="nofollow"
+            data-locale-switch=""
             className={cx(PILL, "text-text hover:bg-surface-strong")}
           >
             {content}
