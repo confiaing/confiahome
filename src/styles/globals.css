@@ -129,6 +129,8 @@
   [data-contact-form] {
     display: none;
   }
+
+
 }
 
 /* Hidratado: si existe [data-ready] hay scripts, lo entienda o no el navegador como media query. */
@@ -348,4 +350,13 @@
 [data-journey][data-selected="5"] [data-role="label"][data-segment="4"] text {
   fill: var(--color-primary);
   font-weight: 500;
+}
+
+/*
+ * El calendario dentro de la página necesita que su componente esté activo. Hasta entonces
+ * —scripts desactivados, o que no llegan a ejecutarse— no se ofrece el botón ni se promete
+ * que se abre aquí: queda el enlace directo a Calendly.
+ */
+[data-agenda-panel]:not([data-hydrated]) :is([data-agenda-open], [data-agenda-inline]) {
+  display: none;
 }

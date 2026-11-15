@@ -5,6 +5,7 @@
 export const PUBLIC_ENV_KEYS = [
   "NEXT_PUBLIC_SITE_URL",
   "NEXT_PUBLIC_CALENDLY_URL",
+  "NEXT_PUBLIC_CALENDLY_LOCALE",
   "NEXT_PUBLIC_TURNSTILE_SITE_KEY",
   "NEXT_PUBLIC_CF_ANALYTICS_TOKEN",
 ] as const;
@@ -14,6 +15,8 @@ type PublicEnvSource = Partial<Record<(typeof PUBLIC_ENV_KEYS)[number], string |
 export type PublicEnv = {
   siteUrl: string;
   calendlyUrl: string;
+  /** Idioma del calendario: lo fija Calendly en el evento, no la página. */
+  calendlyLocale: "es" | "en";
   turnstileSiteKey: string | null;
   analyticsToken: string | null;
 };
@@ -28,6 +31,8 @@ export function readPublicEnv(source: PublicEnvSource): PublicEnv {
   return {
     siteUrl: present(source.NEXT_PUBLIC_SITE_URL) ?? DEFAULT_SITE_URL,
     calendlyUrl: present(source.NEXT_PUBLIC_CALENDLY_URL) ?? "https://calendly.com/confiaing/30min",
+    // Hoy el evento está en inglés (comprobado el 2026-11-14). Solo «es» lo cambia.
+    calendlyLocale: present(source.NEXT_PUBLIC_CALENDLY_LOCALE)?.toLowerCase() === "es" ? "es" : "en",
     turnstileSiteKey: present(source.NEXT_PUBLIC_TURNSTILE_SITE_KEY),
     analyticsToken: present(source.NEXT_PUBLIC_CF_ANALYTICS_TOKEN),
   };
@@ -37,6 +42,7 @@ export function readPublicEnv(source: PublicEnvSource): PublicEnv {
 export const publicEnv: PublicEnv = readPublicEnv({
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   NEXT_PUBLIC_CALENDLY_URL: process.env.NEXT_PUBLIC_CALENDLY_URL,
+  NEXT_PUBLIC_CALENDLY_LOCALE: process.env.NEXT_PUBLIC_CALENDLY_LOCALE,
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
   NEXT_PUBLIC_CF_ANALYTICS_TOKEN: process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN,
 });

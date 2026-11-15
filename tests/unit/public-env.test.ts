@@ -20,4 +20,16 @@ describe("configuración pública", () => {
     expect(env.siteUrl).toBe("https://confia.ing");
     expect(env.analyticsToken).toBe("abc");
   });
+
+  // scheduling · Idioma del calendario: lo fija Calendly en el evento; hoy está en inglés.
+  it.each([
+    [undefined, "en"],
+    ["", "en"],
+    ["es", "es"],
+    [" ES ", "es"],
+    ["en", "en"],
+    ["fr", "en"],
+  ])("idioma del calendario %j → %s", (value, expected) => {
+    expect(readPublicEnv({ NEXT_PUBLIC_CALENDLY_LOCALE: value }).calendlyLocale).toBe(expected);
+  });
 });

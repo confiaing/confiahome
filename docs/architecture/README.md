@@ -1,6 +1,6 @@
 # Arquitectura — Confia.ing Home
 
-**Estado:** Aceptada. Actualizada el 2026-11-14 con el diseño elegido (ADR-0009 y ADR-0010) y con las fuentes y archivos de marca ([ADR-0011](adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md)) y el cambio de idioma ([ADR-0012](adr/0012-cambio-de-idioma-en-el-servidor.md)) y las pestañas del recorrido ([ADR-0013](adr/0013-pestanas-que-degradan-a-enlaces.md)) y el acceso a Supabase sin SDK ([ADR-0014](adr/0014-supabase-por-postgrest-sin-sdk.md))
+**Estado:** Aceptada. Actualizada el 2026-11-14 con el diseño elegido (ADR-0009 y ADR-0010) y con las fuentes y archivos de marca ([ADR-0011](adr/0011-fuentes-y-archivos-de-marca-en-el-repositorio.md)) y el cambio de idioma ([ADR-0012](adr/0012-cambio-de-idioma-en-el-servidor.md)) y las pestañas del recorrido ([ADR-0013](adr/0013-pestanas-que-degradan-a-enlaces.md)) y el acceso a Supabase sin SDK ([ADR-0014](adr/0014-supabase-por-postgrest-sin-sdk.md)) y la agenda en su bloque ([ADR-0015](adr/0015-agenda-en-su-bloque-con-el-widget-de-calendly.md))
 
 Stack elegido: **Next.js (App Router) sobre Cloudflare Workers con OpenNext**, **Supabase** como base de datos, todo en planes gratuitos. Las decisiones y sus alternativas están en [adr/](adr/).
 
@@ -122,7 +122,7 @@ C4Component
 | Escena | `src/components/journey/scene/` | Un canvas WebGL que se muda entre hero, recorrido y cierre; SVG isométrico equivalente en modo ligero; control de modo en el pie | Integración (ligero) + E2E |
 | Modelo de escena | `src/domain/scene/` | Geometría del camino, estado por etapa y reglas para elegir modo completo o ligero | Unitario |
 | Formulario | `src/components/contact/` | Modo terminal y modo clásico sobre los mismos campos y esquema ([ADR-0010](adr/0010-formulario-en-dos-modos.md)); validación accesible, Turnstile, estados de envío/éxito/error | Integración parametrizada por modo + E2E |
-| Agenda | `src/components/scheduling/` | Carga Calendly al hacer clic; escucha `calendly.event_scheduled`; si falla, ofrece formulario y enlace directo | Integración + E2E |
+| Agenda | `src/components/scheduling/`, `src/lib/calendly.ts` | Carga el widget de Calendly en el bloque «Agenda» al hacer clic ([ADR-0015](adr/0015-agenda-en-su-bloque-con-el-widget-de-calendly.md)); escucha sus mensajes; si falla, ofrece formulario y enlace directo | Unitario + integración + E2E con Calendly simulado |
 | UI base | `src/components/ui/` | Botón, enlace, tarjeta, campo, aviso: solo usan tokens | Integración |
 | Dominio de contacto | `src/domain/contact/` | Esquema Zod (correo **o** teléfono, consentimiento), caso de uso `submitContact` | Unitario |
 | Dominio de analítica | `src/domain/analytics/` | Lista cerrada de eventos, normalización de dispositivo/canal, `trackEvent` | Unitario |

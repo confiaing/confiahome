@@ -184,4 +184,4 @@ La migración se aplica solo en local. Para revertir el lote: revertir el commit
 - **Esquema.** Retira caracteres de control antes de validar, rechaza lo que no sea un objeto e informa de la falta de medio de contacto aunque haya otros errores.
 - **Tiempos máximos.** 8 s para Turnstile y Supabase; 20 s para el envío desde el navegador.
 - **Límite del cuerpo.** 16 kB.
-- **Mensaje.** Opcional, como en la propuesta; pendiente de confirmación del fundador.
+- **Mensaje.** Opcional; confirmado por el fundador el 2026-11-14.

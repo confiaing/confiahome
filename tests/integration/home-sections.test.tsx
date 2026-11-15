@@ -199,6 +199,14 @@ describe.each(LOCALES)("home en %s", (locale) => {
     const agenda = view.container.querySelector("#agenda") as HTMLElement;
     expect(within(agenda).getByRole("heading", { level: 3, name: home.actions.schedule })).toBeInTheDocument();
     expect(within(agenda).getByText(home.actions.note)).toBeInTheDocument();
+    // scheduling · El calendario vive en este bloque y nada de Calendly se pide hasta que se abre.
+    expect(agenda.querySelector("[data-agenda-panel]")).not.toBeNull();
+    expect(within(agenda).getByRole("heading", { level: 3 })).toHaveAttribute("id", "agenda-title");
+    expect(within(agenda).getByRole("button", { name: dictionary.agenda.open })).toHaveAttribute("data-agenda-open");
+    expect(within(agenda).getByText(dictionary.agenda.provider)).toHaveAttribute("data-agenda-inline");
+    expect(agenda.querySelector("iframe, script")).toBeNull();
+    // El evento de Calendly está en inglés: en español se avisa.
+    expect(within(agenda).getByText(dictionary.agenda.languageNote)).toBeInTheDocument();
     const direct = within(agenda).getByRole("link");
     expect(direct).toHaveAttribute("href", CALENDLY);
     expect(direct).toHaveAccessibleName(new RegExp(dictionary.agenda.newTab));

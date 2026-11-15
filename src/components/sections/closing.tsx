@@ -1,7 +1,7 @@
 import { ContactForm } from "@/components/contact/contact-form";
 import { ContactActions } from "@/components/sections/contact-actions";
 import { SceneSlot } from "@/components/journey/scene/scene-slot";
-import { AgendaLink } from "@/components/ui/agenda-link";
+import { AgendaPanel } from "@/components/scheduling/agenda-panel";
 import { Card } from "@/components/ui/card";
 import { Emphasized } from "@/components/ui/emphasized";
 import { Section } from "@/components/ui/section";
@@ -46,13 +46,18 @@ export function Closing({ home, agenda, contact, locale }: ClosingProps) {
             <TextLink href={CONTACT_MAILTO}>{CONTACT_EMAIL}</TextLink>
           </p>
         </Card>
-        {/* Vía A. El lote L6 carga aquí el calendario; el enlace directo se queda como alternativa. */}
+        {/* Vía A. El calendario se carga aquí al pedirlo (ADR-0015); sin JavaScript queda el enlace directo. */}
         <Card id="agenda" theme="light" className={ANCHOR}>
-          <h3 className={BLOCK_TITLE}>{actions.schedule}</h3>
+          <h3 id="agenda-title" tabIndex={-1} className={cx(BLOCK_TITLE, "focus-visible:outline-none")}>
+            {actions.schedule}
+          </h3>
           <p className="mt-4 text-text-muted">{actions.note}</p>
-          <div className="mt-6">
-            <AgendaLink labels={agenda} />
-          </div>
+          <AgendaPanel
+            labels={agenda}
+            calendarUrl={publicEnv.calendlyUrl}
+            showLanguageNote={publicEnv.calendlyLocale !== locale}
+            titleId="agenda-title"
+          />
         </Card>
       </div>
     </Section>

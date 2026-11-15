@@ -18,6 +18,22 @@ export const es = {
   agenda: {
     cta: "Agenda 30 minutos",
     newTab: "se abre en una pestaña nueva",
+    open: "Ver horarios aquí",
+    provider: "El calendario es de Calendly y se abre aquí mismo, sin salir de la página.",
+    languageNote: "El calendario se muestra en inglés.",
+    loading: "Cargando el calendario…",
+    frameTitle: "Calendario para reservar la conversación de 30 minutos",
+    unavailable: "El calendario no está respondiendo.",
+    openDirect: "Abrir el calendario en Calendly",
+    useForm: "Escribirnos por el formulario",
+    retry: "Intentar de nuevo",
+    confirmedTitle: "Tu conversación está reservada.",
+    confirmedIntro: "Calendly te envía la invitación con el enlace de la reunión. En la conversación:",
+    confirmedSteps: [
+      "Nos cuentas cómo trabaja hoy tu equipo y qué te gustaría mejorar.",
+      "Vemos juntos dónde podría ayudar la IA y dónde no.",
+      "Acordamos si tiene sentido un siguiente paso, y cuál.",
+    ],
   },
   footer: {
     legalLabel: "Legal",

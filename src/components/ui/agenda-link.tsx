@@ -12,7 +12,8 @@ type AgendaLinkProps = {
 
 /**
  * Acción «Agenda 30 minutos». Es el enlace directo al calendario, que funciona sin
- * JavaScript; el lote L6 lo mejora (data-agenda) para abrirlo dentro de la página.
+ * JavaScript. Con él, `AgendaPanel` intercepta el clic (data-agenda) y carga el calendario
+ * dentro de la página (ADR-0015).
  */
 export function AgendaLink({ labels, size, arrow = false, className }: AgendaLinkProps) {
   return (

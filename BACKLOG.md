@@ -139,16 +139,18 @@ PRD §8, §9, §11. ADR-0002, 0003, 0006, 0010, 0014.
 | L5-10 | Dos modos: terminal y clásico (ADR-0010) | M | El visitante elige; ambos usan los mismos campos, esquema y errores; cambiar de modo conserva lo escrito; el tecleo animado se desactiva con movimiento reducido |
 | L5-9 | Degradación | M | Si el envío falla, se muestra un error claro y la alternativa hola@confia.ing |
 
-## L6 — Agenda (Flujo A)
+## L6 — Agenda (Flujo A) ✅
+
+**Hecho el 2026-11-14.** Evidencia en `openspec/changes/l6-agenda-con-calendly/tasks.md`. Dos cambios respecto a lo escrito al planificar ([ADR-0015](docs/architecture/adr/0015-agenda-en-su-bloque-con-el-widget-de-calendly.md)): el calendario se carga en el bloque «Agenda», no en un diálogo; y hay un solo calendario, en inglés, porque el plan de Calendly admite un solo evento.
 
 PRD §9, §11.
 
 | ID | Historia | Prio | Criterios de aceptación |
 |---|---|---|---|
-| L6-1 | Como visitante, reservo 30 minutos sin salir de la página | M | Calendly se carga al pulsar el CTA, en el idioma activo; nada de Calendly se descarga antes |
+| L6-1 | Como visitante, reservo 30 minutos sin salir de la página | M | Calendly se carga al pulsar el CTA; nada de Calendly se descarga antes; si su idioma no es el activo, se avisa |
 | L6-2 | Alternativa si el calendario no carga | M | Tras un tiempo de espera se ofrece el formulario y el enlace directo a Calendly |
 | L6-3 | Confirmación y próximos pasos | M | Al completarse la reserva se muestra qué ocurrirá en la conversación |
-| L6-4 | Accesibilidad del diálogo | M | Foco atrapado y devuelto al cerrar; se cierra con Escape; título anunciado |
+| L6-4 | Accesibilidad del bloque de agenda | M | El foco va al título del bloque; estados anunciados; marco con título; movimiento reducido |
 
 ## L7 — Analítica
 

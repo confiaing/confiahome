@@ -202,3 +202,16 @@ Dos modos a elección del visitante: terminal (índigo, con tecleo animado) y cl
 - El comando y el panel `consulta.json` son decorativos: no se anuncian a los lectores de pantalla.
 - Los errores van junto a su campo, en el color de error del tema, y nunca dependen solo del color: llevan texto.
 - La confirmación sustituye al formulario y no promete plazo.
+
+## Agenda
+
+El calendario de Calendly se carga dentro del bloque «Agenda» cuando el visitante lo pide ([ADR-0015](../architecture/adr/0015-agenda-en-su-bloque-con-el-widget-de-calendly.md)). Antes, el bloque dice de quién es el calendario y en qué idioma está.
+
+| | En reposo | Con el calendario |
+|---|---|---|
+| Escritorio | ![Bloque de agenda](img/agenda-idle-desktop.png) | ![Calendario cargado](img/agenda-ready-desktop.png) |
+| Móvil | ![Bloque de agenda](img/agenda-idle-mobile.png) | ![Calendario cargado](img/agenda-ready-mobile.png) |
+
+- El interior del marco es de Calendly: tipografía, colores y su aviso de cookies no son nuestros.
+- La confirmación de la reserva usa el color de éxito y texto; nunca solo color.
+

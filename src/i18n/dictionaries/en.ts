@@ -19,6 +19,22 @@ export const en: Dictionary = {
   agenda: {
     cta: "Book 30 minutes",
     newTab: "opens in a new tab",
+    open: "See available slots here",
+    provider: "The calendar is provided by Calendly and opens right here, without leaving the page.",
+    languageNote: "The calendar is shown in Spanish.",
+    loading: "Loading the calendar…",
+    frameTitle: "Calendar to book the 30-minute conversation",
+    unavailable: "The calendar is not responding.",
+    openDirect: "Open the calendar on Calendly",
+    useForm: "Write to us through the form",
+    retry: "Try again",
+    confirmedTitle: "Your conversation is booked.",
+    confirmedIntro: "Calendly sends you the invitation with the meeting link. In the conversation:",
+    confirmedSteps: [
+      "You tell us how your team works today and what you would like to improve.",
+      "Together we look at where AI could help, and where it would not.",
+      "We agree on whether a next step makes sense, and which one.",
+    ],
   },
   footer: {
     legalLabel: "Legal",

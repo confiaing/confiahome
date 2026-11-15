@@ -349,19 +349,30 @@ flowchart LR
 
 ## L6 — Agenda
 
-**L6-1 · Reservar** — I, E
-- GIVEN la home recién cargada WHEN se inspeccionan las peticiones THEN ninguna va a `calendly.com`.
-- GIVEN el visitante en `/en` WHEN pulsa el CTA de agenda THEN se abre el calendario de Calendly en inglés.
+El calendario se carga en el bloque «Agenda», no en un diálogo, y es uno solo ([ADR-0015](architecture/adr/0015-agenda-en-su-bloque-con-el-widget-de-calendly.md)). Detalle en `openspec/changes/l6-agenda-con-calendly/specs/`.
 
-**L6-2 · Alternativa** — I
-- GIVEN que el calendario no carga en el tiempo de espera WHEN vence THEN se muestra un mensaje con un enlace directo a Calendly AND un acceso al formulario.
+**L6-1 · Reservar** — U, I, E
+- GIVEN la home recién cargada y recorrida WHEN se inspeccionan las peticiones THEN ninguna va a `calendly.com` ni a sus subdominios.
+- GIVEN la home con scripts WHEN se activa una acción de agenda (cabecera, hero, cierre o el botón del bloque) THEN el calendario se carga en el bloque «Agenda», en la misma pestaña, una sola vez.
+- GIVEN una acción de agenda WHEN se activa con una tecla modificadora THEN el navegador abre el enlace directo AND la página no carga nada.
+- GIVEN un calendario en un idioma distinto del activo WHEN se llega al bloque THEN una línea lo avisa.
+- GIVEN una dirección que no es de Calendly WHEN se intenta cargar THEN no se carga nada AND se muestra la alternativa.
+- GIVEN la home sin scripts WHEN se inspeccionan las acciones THEN son enlaces directos a Calendly AND el bloque no ofrece el botón.
 
-**L6-3 · Confirmación** — I
-- GIVEN el calendario abierto WHEN llega el mensaje `calendly.event_scheduled` THEN se muestra la confirmación con los próximos pasos.
+**L6-2 · Alternativa** — I, E
+- GIVEN que Calendly no da señales en 20 s, o su script no carga WHEN ocurre THEN se muestra un mensaje con el enlace directo a Calendly AND un acceso al formulario.
+- GIVEN la alternativa mostrada WHEN el calendario llega tarde o se reintenta THEN se muestra el calendario AND se retira el mensaje.
 
-**L6-4 · Diálogo accesible** — I, E
-- GIVEN el diálogo abierto WHEN se pulsa Tab repetidamente THEN el foco no sale del diálogo.
-- GIVEN el diálogo abierto WHEN se pulsa Escape THEN se cierra AND el foco vuelve al CTA que lo abrió.
+**L6-3 · Confirmación** — U, I, E
+- GIVEN el calendario abierto WHEN llega `calendly.event_scheduled` desde `https://calendly.com` THEN se muestra la confirmación con los próximos pasos, con foco y anunciada.
+- GIVEN un mensaje igual desde otro origen WHEN llega THEN no se muestra nada.
+- GIVEN los textos de la agenda WHEN pasan las guardas de contenido THEN no hablan de diagnóstico, plazos ni garantías.
+
+**L6-4 · Bloque accesible** — I, E
+- GIVEN una acción de agenda activada con teclado WHEN se abre el bloque THEN el foco está en su título AND Tab entra en su contenido.
+- GIVEN el calendario cargado WHEN se inspecciona su marco THEN tiene título en el idioma activo.
+- GIVEN movimiento reducido WHEN se activa una acción THEN se llega al bloque sin desplazamiento animado.
+- GIVEN el bloque en reposo, con calendario, con reserva y sin servicio WHEN se analiza THEN axe no encuentra infracciones.
 
 ## L7 — Analítica
 

@@ -73,6 +73,12 @@ La site key se incrusta en la página **al construir**: tiene que estar en el en
 
 Los avisos llegan a hola@confia.ing y quedan respaldados en ese buzón. Respondes al visitante desde Gmail como hola@confia.ing: el aviso lleva su correo en `Reply-To`, así que basta con pulsar Responder.
 
+## 8. Calendly: idioma del evento
+
+El plan actual admite un solo tipo de evento y Calendly fija en él el idioma de la página de reserva. Hoy está en inglés, así que en `/es` el bloque de agenda avisa: «El calendario se muestra en inglés».
+
+Para tenerlo en español: en Calendly, menú de tres puntos del evento → **Change invitee language** → Spanish. Después, pon `NEXT_PUBLIC_CALENDLY_LOCALE=es` en el entorno del build; el aviso pasará a mostrarse en `/en`.
+
 ## Qué queda pendiente para el lanzamiento (L10)
 
 El formulario de consulta (L5) está hecho y probado contra la base local y las claves de prueba. Para que funcione en producción faltan, con tu confirmación:
