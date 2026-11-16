@@ -1,6 +1,6 @@
 # Tareas — L12 Protección en GitHub
 
-Empieza cuando L11 esté archivado (mañana, tras la tarea 3.3 de L11).
+Propuesta aprobada por el fundador el 2026-11-16. Empieza cuando L11 esté archivado (mañana, tras la tarea 3.3 de L11).
 
 ## 1. Rama y pruebas primero
 
