@@ -46,8 +46,9 @@ El skill de revisión de código que eligió el fundador MUST estar en `.claude/
 
 #### Scenario: Skill presente (U)
 - **GIVEN** el repositorio
-- **WHEN** se busca `.claude/skills/code-reviewer/SKILL.md`
-- **THEN** existe y declara `name: code-reviewer`
+- **WHEN** se busca `.claude/skills/aitmpl-code-reviewer/SKILL.md`
+- **THEN** existe y declara `name: aitmpl-code-reviewer`, un nombre que no comparte con ningún skill de los plugins instalados
+- **AND** su procedencia (repositorio, commit y huellas) está anotada junto a él
 
 #### Scenario: Contenido revisado antes de instalar (M)
 - **GIVEN** el skill descargado de aitmpl.com

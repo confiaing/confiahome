@@ -276,7 +276,7 @@ Un skill es un paquete de instrucciones que el agente carga para un tipo de tare
 | Especificación | `openspec-propose`, `openspec-apply-change`, `openspec-verify-change` | Propuesta, specs, diseño y tareas antes de cada lote |
 | Código | `mattpocock-skills:tdd`, `mattpocock-skills:codebase-design`, `architecture` | Arquitectura hexagonal, módulos con fronteras claras, ADRs con alternativas reales |
 | Interfaz | `emil-design-eng`, `animate`, `mobile-native`, `3d-web-experience` | Detalle de interacción, movimiento con propósito, ajustes para móvil y la escena 3D |
-| Revisión | `fullstack-dev-skills:code-reviewer` (plugin de Jeffallan, v1.1.0), `security-audit` (de Cloudflare) | Revisión de cada lote y auditoría de seguridad antes del lanzamiento ([informe](docs/security/audit-v1.md)). El fundador pidió el skill [`code-reviewer` de aitmpl.com](https://www.aitmpl.com/component/skills/development/code-reviewer) (claude-code-templates, v2.0.0); no se instaló y se usó en su lugar el de mismo nombre que ya estaba disponible. Se corrige en la v1.1 |
+| Revisión | `fullstack-dev-skills:code-reviewer` (plugin de Jeffallan) en la v1; [`aitmpl-code-reviewer`](.claude/skills/aitmpl-code-reviewer/SOURCE.md) desde la v1.1; `security-audit` (de Cloudflare) | Revisión de cada lote y auditoría de seguridad antes del lanzamiento ([informe](docs/security/audit-v1.md)). El fundador pidió el skill [`code-reviewer` de aitmpl.com](https://www.aitmpl.com/component/skills/development/code-reviewer) desde L0, pero no se instaló hasta L11: en la v1 se usó otro con el mismo nombre. Ahora está en el repositorio con nombre propio, porque `code-reviewer` a secas carga el del plugin |
 
 ### Buenas prácticas de AI-SDLC
 
@@ -294,7 +294,7 @@ Un skill es un paquete de instrucciones que el agente carga para un tipo de tare
 
 ### Revisión de código antes de subir cambios
 
-Decidido el 2026-11-16 (decisión D1 de la v1.1): no hay revisión automática de código en GitHub. Quien cambie el repositorio con Claude Code ejecuta **`/code-review` en local antes de cada `push`**, sin coste ni secretos en GitHub.
+Decidido el 2026-11-16 (decisión D1 de la v1.1): no hay revisión automática de código en GitHub. Quien cambie el repositorio con Claude Code ejecuta **`/code-review` en local antes de cada `push`**, sin coste ni secretos en GitHub. Al cerrar cada lote, además, el skill `aitmpl-code-reviewer` (versionado en `.claude/skills/`) revisa el lote completo en un subagente independiente.
 
 1. Terminar el cambio con la puerta de cierre en verde.
 2. Ejecutar `/code-review` en Claude Code sobre el cambio.

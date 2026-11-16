@@ -10,14 +10,14 @@ context: |
   Dominio: home pública de Confia.ing, consultoría de transformación de IA para pymes.
   Audiencia: CEO y CTO. Dos conversiones: agendar 30 minutos (Calendly) o enviar una
   consulta (formulario). Bilingüe ES/EN. Fuente de requisitos: PRD-confia-ing-home-details.md.
-  Plan por lotes: BACKLOG.md (L0 a L10). Cada lote es un cambio de OpenSpec.
+  Plan por lotes: BACKLOG.md (v1: L0 a L10; v1.1: L11 a L16). Cada lote es un cambio de OpenSpec.
   Escenarios de aceptación por ítem: docs/escenarios.md (GIVEN/WHEN/THEN y nivel de prueba).
 
   Stack: Next.js (App Router) + React + TypeScript estricto, desplegado en Cloudflare
   Workers con @opennextjs/cloudflare. Tailwind CSS v4. Supabase Postgres. Zod. Three.js
   solo para la escena del recorrido. npm. Todo en planes gratuitos.
 
-  Arquitectura (docs/architecture/, ADR-0001 a 0010):
+  Arquitectura (docs/architecture/, ADR-0001 a 0017):
   - src/domain/ es TypeScript puro: MAY importar solo `zod` y el propio dominio.
     Depende de interfaces (puertos).
   - src/adapters/ es el único lugar que MAY hablar con servicios externos; importa solo domain.
@@ -96,7 +96,7 @@ rules:
     - Listar los ADR que aplican y si el cambio contradice alguno.
     - Máximo 500 palabras.
   specs:
-    - Estructura fija: «# Título» con un nombre representativo de la capacidad (nunca «Spec Delta»), «## Purpose», «### Requirement:» y «#### Scenario:» con líneas GIVEN, WHEN, THEN y, si hace falta, AND.
+    - "Estructura fija: «# Título» con un nombre representativo de la capacidad (nunca «Spec Delta»), «## Purpose», «### Requirement:» y «#### Scenario:» con líneas GIVEN, WHEN, THEN y, si hace falta, AND."
     - Un requisito por comportamiento observable, con SHALL/MUST.
     - Cada requisito lleva al menos un escenario GIVEN/WHEN/THEN. Los de nivel U, I y E los verifica una prueba automática; los de nivel C y M, una ejecución cuya evidencia se anota en tasks.md.
     - Cubrir ES y EN, teclado y movimiento reducido cuando el requisito toque la interfaz.
@@ -115,7 +115,7 @@ operations:
   apply:
     guidance:
       - Trabajar un lote completo antes de empezar el siguiente.
-      - Un commit local al cerrar cada lote. MUST NOT hacerse push ni desplegar hasta que el fundador lo pida; la v1 se sube completa al final.
+      - Un commit al cerrar cada lote, con /code-review hecho y sus hallazgos resueltos. MUST NOT hacerse push ni desplegar sin la orden expresa del fundador.
       - Ante un requisito ambiguo, detenerse y preguntar en lugar de suponer.
   archive:
     guidance:

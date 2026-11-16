@@ -29,7 +29,7 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 
 ## 4. Ajustes en Cloudflare
 
-- [ ] 4.1 Con el fundador, en el panel: widget de Turnstile restringido a `confia.ing`; regla de frecuencia para `/api/events`; revisar que los registros no guardan invocaciones. Verificación: confirmado por el fundador y anotado aquí.
+- 4.1 **Trasladada a L13 (2026-11-16), no hecha en L10.** Con el fundador, en el panel: widget de Turnstile restringido a `confia.ing`; regla de frecuencia para `/api/events`; revisar que los registros no guardan invocaciones. Verificación: confirmado por el fundador y anotado aquí.
 
 ## 5. GitHub (L10-4)
 
@@ -38,15 +38,15 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 - [x] 5.3 Escribir el ADR-0017. Verificación: enlazado desde README y arquitectura.
 - [x] 5.4 **[orden]** `git push -u origin main`. Verificación: `main` en GitHub coincide con el local.
 - [x] 5.5 Primera ejecución de la CI en verde; corregir lo que solo falle allí. Verificación: enlace a la ejecución anotado aquí.
-- [ ] 5.6 **[orden]** Protección de `main` exigiendo la CI. Verificación: consulta de la protección anotada aquí.
+- 5.6 **Trasladada a L12 (2026-11-16), no hecha en L10.** Protección de `main` exigiendo la CI. Verificación: consulta de la protección anotada aquí.
 
 ## 6. Cierre de la v1 (L10-5)
 
 - [x] 6.1 `docs/operations.md` y README final (production-release: Vuelta atrás documentada; repository-and-ci: README de un proyecto desplegado). Verificación: enlaces comprobados por una prueba.
 - [x] 6.2 Revisión de código del lote con `fullstack-dev-skills:code-reviewer` en un subagente independiente. Verificación: hallazgos y resolución anotados aquí.
 - [x] 6.3 Actualizar BACKLOG (L10 ✅ y lo que queda «después de la v1»), `docs/setup.md`, `docs/legal/README.md` y `CLAUDE.md` (estado; con aprobación del fundador). Verificación: enlaces comprobados.
-- [ ] 6.4 **[orden]** Archivar los once cambios de OpenSpec, en orden. Verificación: `openspec/specs/` contiene las especificaciones vigentes y `openspec list` no muestra cambios abiertos.
-- [ ] 6.5 Commit final y, con **[orden]**, envío a GitHub. Verificación: CI en verde sobre el último commit.
+- 6.4 **Trasladada a L11 (2026-11-16): la hace su tarea 3.** Archivar los once cambios de OpenSpec, en orden. Verificación: `openspec/specs/` contiene las especificaciones vigentes y `openspec list` no muestra cambios abiertos.
+- [x] 6.5 Commit final y, con **[orden]**, envío a GitHub. Verificación: CI en verde sobre el último commit. *Hecho: `89c5d65` subido con la orden del fundador; CI en verde en los cuatro trabajos (ejecución 43904896392, 2026-11-16).*
 
 ## Evidencia
 

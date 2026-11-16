@@ -36,6 +36,16 @@ Revisión hecha al preparar esta propuesta: 161 exigencias leídas por su nombre
 | R10 | repository-and-ci · Comprobaciones en cada cambio (L10) | Dice que la puerta y la CI son iguales; la CI añade el contrato | MODIFIED: la puerta más el contrato |
 | R11 | production-release · Verificación tras el despliegue (L10) | El escenario «Datos de prueba retirados» no se cumple: el fundador conservó la fila | MODIFIED: «retirados, o conservados por decisión del fundador y anotados» |
 
+Añadidos por la tarea 2.2 (contraste de las ~139 restantes):
+
+| # | Capacidad · exigencia (lote) | Problema | Delta |
+|---|---|---|---|
+| R12 | home-page · Las cinco etapas, legibles sin interacción (L3) | Pide «una lista ordenada»; desde L4 son pestañas con un panel por etapa | MODIFIED: cinco paneles en orden, cada uno con su nombre como título |
+| R13 | content-claims · Sin clientes, cifras… (L3) | «3D», nombre de la escena, es una cifra admitida que el texto no recoge | MODIFIED: se añade «3D» a las cifras admitidas |
+| R14 | site-navigation · salto, cabecera y marco (L2) | Dicen «cada página», pero la 404 tiene su propio marco, más simple | MODIFIED ×3: el marco común es el de la home y las páginas legales |
+| R15 | translations · Todo texto visible sale de los diccionarios (L2) | Sus escenarios hablan de la página provisional, que ya no existe; la 404 muestra «404» literal | REMOVED y ADDED «Los textos visibles salen de los diccionarios», sobre las páginas reales |
+| R16 | ui-components · Accesibilidad y movimiento (L1) | Un escenario mide «la home provisional» | MODIFIED: mide la home |
+
 Se archivan sin cambios, como objetivos de lotes posteriores:
 
 - «Rama principal protegida» (L10), que cumple L12.
@@ -57,9 +67,9 @@ Antes de archivar L10, sus tareas 4.1 y 5.6 dejan de ser casillas: pasan a una n
 
 ### 3. Skill de revisión en el repositorio
 
-Se descarga el `SKILL.md` (y su segundo archivo) de `davila7/claude-code-templates`, ruta `cli-tool/components/skills/development/code-reviewer`. Se usa `curl` a GitHub en lugar de `npx claude-code-templates`, para no ejecutar código de terceros. El contenido se lee antes de copiarlo a `.claude/skills/code-reviewer/`.
+Se descarga el `SKILL.md` (y su segundo archivo) de `davila7/claude-code-templates`, ruta `cli-tool/components/skills/development/code-reviewer`. Se usa `curl` a GitHub en lugar de `npx claude-code-templates`, para no ejecutar código de terceros. El contenido se lee antes de copiarlo a `.claude/skills/aitmpl-code-reviewer/`.
 
-Convive con `fullstack-dev-skills:code-reviewer` del plugin. `CLAUDE.md` nombra el de aitmpl como el de revisión.
+Convive con `fullstack-dev-skills:code-reviewer` del plugin. Al probarlo se vio que el nombre `code-reviewer` cargaba el del plugin, así que se instala como `aitmpl-code-reviewer`: el único cambio sobre el original, anotado en `SOURCE.md`. `CLAUDE.md` lo nombra como el skill de revisión.
 
 ### 4. Pruebas de la guía y de la configuración
 
@@ -82,7 +92,7 @@ Nivel: unitario (U). Las comprobaciones manuales (M) dejan su evidencia en `task
 | Specs archivadas | `openspec/specs/`, `openspec/changes/archive/` |
 | Guía del agente | `CLAUDE.md` |
 | Configuración de OpenSpec | `openspec/config.yaml` |
-| Skill de revisión | `.claude/skills/code-reviewer/` |
+| Skill de revisión | `.claude/skills/aitmpl-code-reviewer/` |
 | Pruebas | `tests/unit/development-workflow.test.ts` |
 
 No se toca `src/`, `worker/` ni `supabase/`. No se necesita un ADR nuevo: la revisión local ya es la decisión D1, registrada en el ADR-0017.

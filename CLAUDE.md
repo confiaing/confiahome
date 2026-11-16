@@ -8,7 +8,7 @@ Eres el ingeniero a cargo de la home pública de **Confia.ing**, una consultorí
 
 - **Qué hace la página:** explica el servicio a CEO y CTO y los lleva a una de dos acciones: agendar 30 minutos (Calendly) o enviar una consulta (formulario).
 - **Qué la distingue:** un recorrido interactivo de cinco etapas con una escena 3D, bilingüe ES/EN, con una versión ligera para equipos o conexiones limitadas.
-- **Estado:** fases 1 a 3 cerradas. Fase 4 en curso: implementación por lotes (L0 a L9 hechos; falta L10, lanzamiento).
+- **Estado:** v1 en producción en <https://confia.ing> desde el 2026-11-16 (lotes L0 a L10). En curso la v1.1: lotes L11 a L16, con su plan y sus decisiones en «v1.1 — Plan» del [BACKLOG](BACKLOG.md).
 
 **Si dos fuentes se contradicen, gana la más reciente y específica**, en este orden: lo que diga el fundador en la conversación → [ADRs](docs/architecture/adr/) y decisiones del [README](README.md) → [diseño finalista](docs/design/ronda5-cercano-3d-finalista.html) y [logo](docs/design/logo-conceptos.html) → [BACKLOG](BACKLOG.md) y [escenarios](docs/escenarios.md) → [PRD](PRD-confia-ing-home-details.md). El PRD fija la intención; lo que dejó abierto lo resuelven los documentos anteriores. Una contradicción que no se resuelva así se pregunta.
 
@@ -18,14 +18,14 @@ Next.js (App Router) · React · TypeScript estricto · Tailwind CSS v4 · Three
 
 ## Cómo trabajas
 
-1. **Un lote cada vez.** L0 a L10. Cada lote es un cambio de OpenSpec y se termina antes de abrir el siguiente.
+1. **Un lote cada vez.** L0 a L10 (v1) y L11 a L16 (v1.1). Cada lote es un cambio de OpenSpec y se termina antes de abrir el siguiente. Desde L12, cada lote va en su propia rama y entra en `main` por pull request con la CI en verde.
 2. **Especificación antes que código (SDD).** `/opsx:propose` crea propuesta, specs, diseño y tareas en `openspec/changes/<lote>/`. El fundador aprueba la propuesta. Luego `/opsx:apply`, `/opsx:verify`, `/opsx:archive`.
 3. **Prueba antes que implementación (TDD).** Cada ítem tiene escenarios GIVEN/WHEN/THEN en [docs/escenarios.md](docs/escenarios.md). Los de nivel U, I y E son pruebas automáticas que escribes y ves fallar primero. Los de nivel C (contrato) y M (manual) se ejecutan y su evidencia se anota en el `tasks.md` del cambio.
 4. **Verifica antes de afirmar.** «Hecho» significa que ejecutaste los comandos y viste la salida. Lo que no pudiste comprobar, lo dices.
 5. **Pregunta ante la ambigüedad** cuando dos lecturas cambian lo que se construye.
 6. **Mantén los documentos vivos.** Al cerrar un lote actualizas README y BACKLOG. Una decisión con alternativas reales es un ADR nuevo.
 7. **Commits:** uno local al cerrar cada lote, con la puerta de cierre en verde. Nunca `push` ni despliegue sin que el fundador lo pida.
-8. **`/code-review` en local antes de cada `push`.** No hay revisión automática en GitHub (decisión D1, en el [README](README.md#revisión-de-código-antes-de-subir-cambios)). Los hallazgos se corrigen o se anotan como aceptados en el `tasks.md` del lote.
+8. **`/code-review` en local antes de cada `push`.** No hay revisión automática en GitHub (decisión D1, en el [README](README.md#revisión-de-código-antes-de-subir-cambios)). Además, al cerrar cada lote, `aitmpl-code-reviewer` revisa el lote entero en un subagente independiente. Los hallazgos se corrigen o se anotan como aceptados en el `tasks.md` del lote.
 9. **Responde en español.** Código, identificadores y nombres de archivo en inglés.
 
 ### Comandos
@@ -65,7 +65,7 @@ Ninguna prueba ni `npm run dev` toca la base de datos de producción. `.env` y `
 - **Proceso:** `superpowers:test-driven-development`, `superpowers:verification-before-completion`, `superpowers:systematic-debugging`. Si un skill pide algo que estas reglas prohíben (por ejemplo, subir cambios), mandan estas reglas.
 - **Código:** `mattpocock-skills:tdd`, `mattpocock-skills:codebase-design`, `architecture`.
 - **Interfaz:** `emil-design-eng`, `animate`, `mobile-native`, `3d-web-experience`.
-- **Revisión:** `fullstack-dev-skills:code-reviewer` al cerrar cada lote; `security-audit` antes del lanzamiento.
+- **Revisión:** `aitmpl-code-reviewer` (en `.claude/skills/`, versionado con el repositorio) al cerrar cada lote; `/code-review` antes de cada `push`; `security-audit` antes de cada lanzamiento. No uses `code-reviewer` a secas: ese nombre carga el skill de un plugin, no el elegido.
 
 ## Estructura: dónde va cada cosa
 
@@ -129,7 +129,7 @@ Romper una invalida el trabajo aunque las pruebas pasen. Si una tarea parece exi
 | Presentar la llamada de 30 minutos como un diagnóstico | Promete un entregable que no se incluye. |
 | Dejar contenido informativo que solo exista con JavaScript, animación o WebGL | Excluye a quien usa lector de pantalla o un equipo modesto. Formulario y agenda sí necesitan JavaScript: sin él se muestran el correo y el enlace directo a Calendly. |
 | Guardar IP, identificador de visitante o el texto del mensaje en la analítica | Se eligió no usar cookies ni banner; rastrear personas lo vuelve un incumplimiento legal. |
-| Hacer `push` o desplegar sin que el fundador lo pida | La v1 se sube completa al final. Un push anticipado publica trabajo a medias en un repositorio público. |
+| Hacer `push` o desplegar sin que el fundador lo pida | El repositorio es público y `main` es lo que está en producción. Un push sin revisar publica trabajo a medias; un despliegue sin verificar puede tumbar el formulario en vivo. |
 | Dar por superada una comprobación que no se ejecutó, o silenciarla con una exclusión | El fundador decide con tus informes. Un «verde» falso llega a producción. |
 | Editar a mano `openspec/specs/` o los archivos de `docs/design/` | Las specs solo cambian al archivar un cambio aprobado. Los diseños son la referencia contra la que se compara la implementación. |
 
