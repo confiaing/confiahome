@@ -161,9 +161,17 @@ Segunda CI (commit `98fcb70`): **los cuatro trabajos en verde.**
 
 De paso: `Permissions-Policy` nombraba `browsing-topics`, que Chrome no reconoce.
 
-Local con ambos arreglos: `test` 1031 · `e2e:preview` 35. **Sin desplegar:** el despliegue necesita la orden del fundador. Que el arreglo del punto 2 elimina los 500 solo se podrá confirmar en producción.
+Local con ambos arreglos: `test` 1031 · `e2e:preview` 35.
 
-Estado: sitio en vivo en `https://confia.ing`, con los dos fallos anteriores todavía presentes. Falta redesplegar con la redirección, la consulta real de prueba y la subida a GitHub.
+**Desplegado con la orden del fundador y medido en producción.**
+
+- `/es` 40 de 40 en 200, `/en` 30 de 30, las cuatro legales 16 de 16 (antes: entre 2 y 4 errores 500 de cada 16).
+- `x-nextjs-cache: HIT`: las páginas ya no se renderizan por visita.
+- La petición condicional responde 304 **sin** política de contenido.
+- `verify:site`: 21 de 21.
+- En Chromium y WebKit reales: carga y dos recargas con estilos, fuentes y página activa.
+
+Estado: sitio en vivo en `https://confia.ing`, sin fallos conocidos. Falta redesplegar con la redirección, la consulta real de prueba y la subida a GitHub.
 
 ## Workflow follow-up
 
