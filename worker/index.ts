@@ -7,7 +7,7 @@ import openNext from "../.open-next/worker.js";
 import { runMaintenance } from "@/domain/maintenance/run-maintenance";
 import { consoleLogger } from "@/lib/server/logger";
 import { createMaintenanceDeps } from "@/lib/server/maintenance";
-import { newNonce, securityHeaders } from "@/lib/server/security/headers";
+import { httpsRedirect, newNonce, securityHeaders } from "@/lib/server/security/headers";
 
 // @ts-expect-error: clases que OpenNext exige exportar desde la entrada
 export { DOQueueHandler, DOShardedTagCache, BucketCachePurge } from "../.open-next/worker.js";
@@ -29,6 +29,10 @@ function withHeaders(response: Response, extra: Record<string, string>): Respons
 
 const worker = {
   async fetch(request: Request, env: Env, ctx: Context): Promise<Response> {
+    // Nada se sirve sin cifrar: una petición por HTTP se envía a la misma dirección por HTTPS.
+    const secure = httpsRedirect(request.url, request.headers.get("cf-visitor"));
+    if (secure) return new Response(null, { status: 301, headers: { Location: secure, ...securityHeaders({ html: false }) } });
+
     const response: Response = await (openNext as { fetch(request: Request, env: Env, ctx: Context): Promise<Response> }).fetch(request, env, ctx);
     if (!isHtml(response)) return withHeaders(response, securityHeaders({ html: false }));
 

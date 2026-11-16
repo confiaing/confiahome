@@ -4,6 +4,9 @@
   // Entrada propia: envuelve a la de OpenNext (.open-next/worker.js) para añadir las cabeceras
   // de seguridad y la tarea programada (ADR-0016).
   "main": "worker/index.ts",
+  // Única entrada pública: el dominio. La dirección workers.dev queda desactivada.
+  "routes": [{ "pattern": "confia.ing", "custom_domain": true }],
+  "workers_dev": false,
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {

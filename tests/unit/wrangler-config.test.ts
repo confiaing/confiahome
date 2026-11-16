@@ -15,6 +15,8 @@ const config = JSON.parse(
   observability?: { enabled?: boolean; logs?: { enabled?: boolean; invocation_logs?: boolean } };
   ratelimits: { name: string; simple: { limit: number; period: number } }[];
   vars: Record<string, string>;
+  routes?: { pattern: string; custom_domain?: boolean }[];
+  workers_dev?: boolean;
   send_email: Record<string, string>[];
 };
 
@@ -51,6 +53,12 @@ describe("configuración del Worker", () => {
     expect(text).not.toMatch(/sb_secret_|0x4AAAA|@gmail\.com/);
     // El buzón de destino es una dirección personal: no se publica en el repositorio.
     for (const binding of config.send_email) expect(binding).not.toHaveProperty("destination_address");
+  });
+
+  // production-release · El sitio tiene una sola entrada pública
+  it("se sirve solo en confia.ing: sin dirección workers.dev ni otros dominios", () => {
+    expect(config.routes).toEqual([{ pattern: "confia.ing", custom_domain: true }]);
+    expect(config.workers_dev).toBe(false);
   });
 
   it("los límites de frecuencia son los documentados", () => {

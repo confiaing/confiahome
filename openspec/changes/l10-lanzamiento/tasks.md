@@ -19,10 +19,10 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 
 ## 3. Secretos y despliegue (L10-1, L10-3)
 
-- [ ] 3.1 **[orden]** El fundador carga los secretos en su terminal con los comandos preparados. Verificación: `wrangler secret list` muestra los nombres esperados.
+- [x] 3.1 **[orden]** El fundador carga los secretos en su terminal con los comandos preparados. Verificación: `wrangler secret list` muestra los nombres esperados.
 - [x] 3.2 `npm run release` con el entorno de producción cargado desde `.env.prod` sin mostrarlo. Verificación: comprobación previa y build en verde.
-- [ ] 3.3 **[orden]** `npx wrangler deploy` a la dirección `workers.dev`. Verificación: `verify-production` en verde contra esa dirección.
-- [ ] 3.4 **[orden]** Adjuntar `confia.ing` y volver a desplegar. Verificación: `verify-production` en verde contra `https://confia.ing`.
+- [x] 3.3 **[orden]** `npx wrangler deploy` a la dirección `workers.dev`. Verificación: `verify-production` en verde contra esa dirección.
+- [x] 3.4 **[orden]** Adjuntar `confia.ing` y volver a desplegar. Verificación: `verify-production` en verde contra `https://confia.ing`.
 - [ ] 3.5 **[orden]** Consulta real de prueba y apertura de la agenda en producción, en ES y EN (Flujo B real; Flujo A real). Verificación: confirmación vista, fila en la base, aviso recibido por el fundador, calendario cargado sin infracciones.
 - [ ] 3.6 **[orden]** Borrar de producción las filas de prueba. Verificación: cuentas antes y después anotadas aquí.
 - [ ] 3.7 Comprobar que el disparo diario está programado; al día siguiente, el registro del latido. Verificación: anotado aquí, o dicho que queda pendiente.
@@ -114,7 +114,21 @@ Corregido de paso: `release` buscaba la clave pública en los scripts del navega
 
 **Carga de secretos.** `npm run secrets:put` (`scripts/put-secrets.ts`) pasa los cuatro valores de `.env.prod` a `wrangler secret bulk` por la entrada estándar, sin mostrarlos. Lo ejecuta el fundador.
 
-Hasta aquí: la base de producción tiene sus tablas, vacías. Nada desplegado ni subido.
+**Despliegue (3.1, 3.3, 3.4), con la orden del fundador.**
+
+- Primer `npx wrangler deploy`: Worker subido con sus bindings y el disparo diario. La dirección `workers.dev` no respondió: la cuenta no tiene ese subdominio registrado. Con el fundador se decidió ir directo al dominio, que no servía ninguna web.
+- El fundador ejecutó `npm run secrets:put`; `wrangler secret list` muestra los cuatro nombres esperados.
+- `wrangler.jsonc`: `routes` con `confia.ing` como dominio propio y `workers_dev: false`. Segundo despliegue: versión `8ed8adc8`. `https://confia.ing/es` respondió 200 a los 15 s.
+- `npm run verify:site -- https://confia.ing`: **21 de 21 en verde**, incluida la consulta sin verificación antispam, que producción rechaza.
+- Carga en Chromium de `/es` y `/en`, sin enviar ni reservar: la agenda carga el Calendly real, el contador de visitas se carga, ninguna cookie de `confia.ing`, ninguna infracción de la política de contenido en nuestro documento. El marco de Turnstile carga (sus mensajes de consola aparecen); no se pudo localizar con un selector, así que **que entregue un token válido lo confirmará la consulta real de prueba**.
+- Los archivos estáticos llevan HSTS, `nosniff` y su política.
+
+**Encontrado al verificar.**
+
+- `http://confia.ing` respondía 200 sin redirigir a HTTPS: la zona no tiene activado «Always Use HTTPS». Corregido en el Worker: redirige con 301 cuando Cloudflare indica que el visitante llegó por HTTP (cabecera `cf-visitor`). Un primer intento, que miraba la dirección de la petición, provocaba un bucle en el preview local, que reescribe el host; lo detectó `e2e:preview`. **Pendiente de redesplegar.** Conviene además activar «Always Use HTTPS» en el panel.
+- `www.confia.ing` no existe en el DNS. Queda para la v1.1 decidir si redirige al dominio.
+
+Estado: sitio en vivo en `https://confia.ing`. Falta redesplegar con la redirección, la consulta real de prueba y la subida a GitHub.
 
 ## Workflow follow-up
 

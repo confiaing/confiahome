@@ -60,3 +60,22 @@ export function securityHeaders(options: Options): Record<string, string> {
     "Cross-Origin-Opener-Policy": "same-origin",
   };
 }
+
+/**
+ * La misma dirección por HTTPS si el visitante llegó por HTTP, o null si no hay que
+ * redirigir. HSTS solo protege a partir de la primera visita por HTTPS; esto cubre esa
+ * primera visita. Se decide por la cabecera `cf-visitor`, que pone la red de Cloudflare:
+ * en local no existe (y el preview reescribe el host), así que allí nunca se redirige.
+ */
+export function httpsRedirect(requestUrl: string, cfVisitor: string | null): string | null {
+  let scheme: unknown;
+  try {
+    scheme = (JSON.parse(cfVisitor ?? "") as { scheme?: unknown }).scheme;
+  } catch {
+    return null;
+  }
+  if (scheme !== "http" || !URL.canParse(requestUrl)) return null;
+  const url = new URL(requestUrl);
+  url.protocol = "https:";
+  return url.href;
+}

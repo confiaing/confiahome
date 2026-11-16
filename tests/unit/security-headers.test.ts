@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { contentSecurityPolicy, newNonce, securityHeaders } from "@/lib/server/security/headers";
+import { contentSecurityPolicy, httpsRedirect, newNonce, securityHeaders } from "@/lib/server/security/headers";
 
 const NONCE = "dGVzdC1ub25jZS0xMjM0NTY=";
 const directives = (policy: string) =>
@@ -97,5 +97,29 @@ describe("cabeceras", () => {
 
   it("ninguna cabecera anuncia la tecnología del servidor", () => {
     for (const headers of [html, other]) expect(Object.keys(headers).map((name) => name.toLowerCase())).not.toContain("x-powered-by");
+  });
+});
+
+// security-headers · HTTPS persistente: la primera visita por HTTP también acaba en HTTPS
+describe("redirección a HTTPS", () => {
+  const HTTP = '{"scheme":"http"}';
+  const HTTPS = '{"scheme":"https"}';
+
+  it.each([
+    ["http://confia.ing/es", "https://confia.ing/es"],
+    ["http://confia.ing/es/privacidad?utm_source=x", "https://confia.ing/es/privacidad?utm_source=x"],
+    ["https://confia.ing/", "https://confia.ing/"],
+  ])("si Cloudflare dice que el visitante llegó por HTTP, %s lleva a %s", (from, to) => {
+    expect(httpsRedirect(from, HTTP)).toBe(to);
+  });
+
+  it("si llegó por HTTPS no se redirige", () => {
+    expect(httpsRedirect("https://confia.ing/es", HTTPS)).toBeNull();
+  });
+
+  // En local no hay red de Cloudflare delante: el preview sirve por HTTP y reescribe el
+  // host al del dominio, así que la dirección de la petición no sirve para decidir.
+  it.each([null, "", "no es json", "{}", '{"scheme":"ws"}'])("sin la señal de Cloudflare (%j) nunca se redirige", (visitor) => {
+    expect(httpsRedirect("http://confia.ing/es", visitor)).toBeNull();
   });
 });
