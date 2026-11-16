@@ -6,6 +6,7 @@ import { cx } from "@/lib/cx";
 import { LiveJson } from "./live-json";
 import { TypedCommand } from "./typed-command";
 import { FIELD_ID, type FormValues } from "./use-contact-form";
+import { useTypedExamples } from "./use-typed-examples";
 
 type Labels = Dictionary["contact"];
 type TextField = "name" | "company" | "email" | "phone" | "message";
@@ -107,11 +108,15 @@ const TERMINAL_CONTROL =
   "placeholder:text-text-muted focus-visible:border-solid focus-visible:outline-2 focus-visible:outline-offset-2 " +
   "disabled:opacity-45 aria-invalid:border-solid aria-invalid:border-error";
 
-function TerminalRow({ name, label, error, children }: { name: TextField; label: string; error?: string; children: ReactNode }) {
+type TerminalRowProps = { name: TextField; label: string; error?: string; stacked?: boolean; children: ReactNode };
+
+/** Una línea de la terminal. `stacked`: la pregunta va encima de su respuesta, a todo el ancho. */
+function TerminalRow({ name, label, error, stacked = false, children }: TerminalRowProps) {
   return (
-    <div>
-      <div className="grid items-baseline gap-x-3 gap-y-1 sm:grid-cols-[minmax(7.5rem,auto)_1fr]">
-        <label htmlFor={FIELD_ID[name]} className="font-mono text-[0.9rem] text-text-muted lowercase">
+    <div data-term-row data-stacked={stacked ? "" : undefined}>
+      <div className={cx("grid items-baseline gap-x-3 gap-y-1", !stacked && "sm:grid-cols-[minmax(7.5rem,auto)_1fr]")}>
+        {/* Las etiquetas cortas van en minúscula, como en una terminal; la pregunta, tal como se escribe («IA» nunca en minúscula). */}
+        <label htmlFor={FIELD_ID[name]} className={cx("font-mono text-[0.9rem] text-text-muted", !stacked && "lowercase")}>
           <span aria-hidden="true" className="text-emphasis">
             ›{" "}
           </span>
@@ -129,6 +134,7 @@ function TerminalRow({ name, label, error, children }: { name: TextField; label:
 }
 
 export function TerminalFields({ labels, values, errors, disabled, onChange }: FieldsProps) {
+  const examples = useTypedExamples<HTMLTextAreaElement>(labels.examples, labels.examplePrefix);
   const control = (name: TextField) => {
     const error = errorText(labels, errors[name]);
     const described = [describedBy(name, errors), error ? errorId(name) : null].filter(Boolean).join(" ") || undefined;
@@ -142,9 +148,15 @@ export function TerminalFields({ labels, values, errors, disabled, onChange }: F
       className: cx(TERMINAL_CONTROL, name === "message" && "resize-y"),
     };
     return (
-      <TerminalRow key={name} name={name} label={labels.fields[name]} error={error}>
+      <TerminalRow key={name} name={name} label={labels.fields[name]} error={error} stacked={name === "message"}>
         {name === "message" ? (
-          <textarea {...shared} rows={3} placeholder={labels.examples[0]} onChange={(event) => onChange(name, event.target.value)} />
+          <textarea
+            {...shared}
+            ref={examples.target}
+            rows={4}
+            placeholder={examples.placeholder}
+            onChange={(event) => onChange(name, event.target.value)}
+          />
         ) : (
           <input {...shared} {...INPUT[name]} onChange={(event) => onChange(name, event.target.value)} />
         )}

@@ -517,3 +517,61 @@ describe("procedencia de la visita en la consulta", () => {
     expect(body).toMatchObject({ name: "Ana", email: "ana@empresa.com" });
   });
 });
+
+// contact-form · Detalles del modo terminal: la pregunta va sobre su respuesta y enseña ejemplos
+describe("pregunta abierta del modo terminal", () => {
+  it("la pregunta y su respuesta no comparten fila", () => {
+    const { t, field } = setup("terminal");
+    const row = field("message").closest("[data-term-row]")!;
+    expect(row).toHaveAttribute("data-stacked");
+    // La pregunta se lee tal como está escrita: «IA» no se pasa a minúscula.
+    expect(row.querySelector("label")!.className).not.toMatch(/\blowercase\b/);
+    expect(field("name").closest("[data-term-row]")!.querySelector("label")!.className).toMatch(/\blowercase\b/);
+    expect(screen.getByText(t.fields.message, { exact: false }).closest("[data-term-row]")).toBe(row);
+    // Los campos cortos sí van en una fila con su etiqueta.
+    expect(field("name").closest("[data-term-row]")).not.toHaveAttribute("data-stacked");
+  });
+
+  it("sin animación (movimiento reducido, o sin observador) muestra el primer ejemplo completo", () => {
+    const { t, field } = setup("terminal");
+    expect(field("message")).toHaveAttribute("placeholder", `${t.examplePrefix} ${t.examples[0]}`);
+  });
+
+  it("al entrar en pantalla va escribiendo los cuatro ejemplos, uno tras otro, y vuelve a empezar", async () => {
+    vi.useFakeTimers();
+    let intersect: IntersectionObserverCallback = () => {};
+    vi.stubGlobal(
+      "IntersectionObserver",
+      class {
+        constructor(callback: IntersectionObserverCallback) {
+          intersect = callback;
+        }
+        observe() {}
+        disconnect() {}
+      },
+    );
+    try {
+      const { t, field } = setup("terminal");
+      const full = (index: number) => `${t.examplePrefix} ${t.examples[index]}`;
+      act(() => intersect([{ isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver));
+      // A medias, con el cursor.
+      await act(() => vi.advanceTimersByTimeAsync(42 * 12));
+      const partial = field("message").getAttribute("placeholder")!;
+      expect(partial.endsWith("▌")).toBe(true);
+      expect(full(0).startsWith(partial.slice(0, -1))).toBe(true);
+      expect(partial.length).toBeLessThan(full(0).length);
+      // Completo, sin cursor.
+      await act(() => vi.advanceTimersByTimeAsync(42 * full(0).length));
+      expect(field("message")).toHaveAttribute("placeholder", full(0));
+      const seen = new Set([full(0)]);
+      for (let step = 0; step < 6; step += 1) {
+        await act(() => vi.advanceTimersByTimeAsync(2600 + 42 * 70));
+        seen.add(field("message").getAttribute("placeholder")!);
+      }
+      for (const index of [0, 1, 2, 3]) expect(seen.has(full(index)), full(index)).toBe(true);
+    } finally {
+      vi.useRealTimers();
+      vi.unstubAllGlobals();
+    }
+  });
+});

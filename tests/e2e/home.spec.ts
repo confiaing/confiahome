@@ -304,3 +304,24 @@ for (const mode of ["completa", "ligera"] as const) test(`LCP < 2,5 s y CLS < 0,
   expect(metrics.cls).toBeLessThan(0.1);
 });
 
+// home-page · Cierre: el título se parte por frases, igual en cualquier ancho
+for (const width of [375, 768, 1280, 1440, 1920]) {
+  test(`a ${width} px el título del cierre va frase por frase y no se desborda`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/es");
+    await page.evaluate(() => document.fonts.ready);
+    const lines = await page.locator("#closing-title > span").evaluateAll((spans) =>
+      spans.map((span) => {
+        const box = span.getBoundingClientRect();
+        return { lines: Math.round(box.height / parseFloat(getComputedStyle(span).lineHeight)), right: box.right, top: box.top };
+      }),
+    );
+    expect(lines).toHaveLength(2);
+    expect(lines[1]!.top).toBeGreaterThan(lines[0]!.top);
+    // En pantallas de ordenador, cada frase cabe en una línea.
+    if (width >= 1280) expect(lines.map((line) => line.lines)).toEqual([1, 1]);
+    for (const line of lines) expect(line.right).toBeLessThanOrEqual(width);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
+  });
+}
+

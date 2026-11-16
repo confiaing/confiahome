@@ -82,6 +82,7 @@ export const en: Dictionary = {
       message: "Where do you want to apply AI?",
     },
     contactHint: "Email or phone, at least one.",
+    examplePrefix: "e.g.",
     examples: [
       "sort and answer support tickets",
       "reconcile invoices with the accounting system",

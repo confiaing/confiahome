@@ -172,3 +172,31 @@ for (const viewport of [
     });
   }
 }
+
+// contact-form · Modo terminal: la pregunta abierta va sobre su respuesta, con ejemplos que se escriben solos
+test("terminal: la pregunta abierta está encima de su respuesta y los ejemplos van cambiando", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  const t = await open(page, "es", "terminal");
+  const area = field(page, t, "message");
+  await area.scrollIntoViewIfNeeded();
+  const label = card(page).locator(`label[for="${await area.getAttribute("id")}"]`);
+  const [labelBox, areaBox] = [(await label.boundingBox())!, (await area.boundingBox())!];
+  expect(labelBox.y + labelBox.height).toBeLessThanOrEqual(areaBox.y + 1);
+  expect(areaBox.width).toBeGreaterThan(400);
+
+  const full = t.examples.map((example) => `${t.examplePrefix} ${example}`);
+  await expect.poll(() => area.getAttribute("placeholder"), { timeout: 15_000 }).toBe(full[0]);
+  await expect.poll(() => area.getAttribute("placeholder"), { timeout: 15_000 }).toBe(full[1]);
+});
+
+test.describe("con movimiento reducido", () => {
+  test.use({ reducedMotion: "reduce" });
+  test("terminal: el ejemplo de la pregunta abierta está fijo", async ({ page }) => {
+    const t = await open(page, "es", "terminal");
+    const area = field(page, t, "message");
+    await area.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1200);
+    await expect(area).toHaveAttribute("placeholder", `${t.examplePrefix} ${t.examples[0]}`);
+  });
+});
+

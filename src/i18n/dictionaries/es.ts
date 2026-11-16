@@ -81,6 +81,7 @@ export const es = {
       message: "¿Dónde quieres aplicar IA?",
     },
     contactHint: "Correo o teléfono, al menos uno.",
+    examplePrefix: "p. ej.",
     examples: [
       "clasificar y responder tickets de soporte",
       "conciliar facturas con el sistema contable",

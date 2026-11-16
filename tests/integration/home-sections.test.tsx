@@ -181,6 +181,10 @@ describe.each(LOCALES)("home en %s", (locale) => {
 
     const view = render(<Closing home={home} agenda={dictionary.agenda} contact={dictionary.contact} locale="es" />);
     const region = screen.getByRole("region", { name: stripEmphasis(home.closing.title) });
+    // Cada frase del título es un bloque: se parte por frases en cualquier ancho, no donde caiga.
+    const sentences = [...region.querySelectorAll("#closing-title > span")].map((span) => span.textContent);
+    expect(sentences).toEqual(stripEmphasis(home.closing.title).split(/(?<=\.)\s+/));
+    expect(sentences).toHaveLength(2);
     expect(region).toHaveAttribute("data-band", "calm");
     const actions = within(region).getAllByRole("link").slice(0, 2);
     expect(actions.map((link) => [link.getAttribute("href"), link.textContent])).toEqual(heroLinks);

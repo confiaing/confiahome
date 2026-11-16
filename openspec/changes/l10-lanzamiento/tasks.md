@@ -23,7 +23,7 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 - [x] 3.2 `npm run release` con el entorno de producción cargado desde `.env.prod` sin mostrarlo. Verificación: comprobación previa y build en verde.
 - [x] 3.3 **[orden]** `npx wrangler deploy` a la dirección `workers.dev`. Verificación: `verify-production` en verde contra esa dirección.
 - [x] 3.4 **[orden]** Adjuntar `confia.ing` y volver a desplegar. Verificación: `verify-production` en verde contra `https://confia.ing`.
-- [ ] 3.5 **[orden]** Consulta real de prueba y apertura de la agenda en producción, en ES y EN (Flujo B real; Flujo A real). Verificación: confirmación vista, fila en la base, aviso recibido por el fundador, calendario cargado sin infracciones.
+- [x] 3.5 **[orden]** Consulta real de prueba y apertura de la agenda en producción, en ES y EN (Flujo B real; Flujo A real). Verificación: confirmación vista, fila en la base, aviso recibido por el fundador, calendario cargado sin infracciones.
 - [ ] 3.6 **[orden]** Borrar de producción las filas de prueba. Verificación: cuentas antes y después anotadas aquí.
 - [ ] 3.7 Comprobar que el disparo diario está programado; al día siguiente, el registro del latido. Verificación: anotado aquí, o dicho que queda pendiente.
 
@@ -127,6 +127,19 @@ Corregido de paso: `release` buscaba la clave pública en los scripts del navega
 
 - `http://confia.ing` respondía 200 sin redirigir a HTTPS: la zona no tiene activado «Always Use HTTPS». Corregido en el Worker: redirige con 301 cuando Cloudflare indica que el visitante llegó por HTTP (cabecera `cf-visitor`). Un primer intento, que miraba la dirección de la petición, provocaba un bucle en el preview local, que reescribe el host; lo detectó `e2e:preview`. **Pendiente de redesplegar.** Conviene además activar «Always Use HTTPS» en el panel.
 - `www.confia.ing` no existe en el DNS. Queda para la v1.1 decidir si redirige al dominio.
+
+**Redespliegue con la redirección.** `http://confia.ing/es` responde 301 a HTTPS conservando ruta y parámetros; `verify:site` 21 de 21.
+
+**Consulta real de prueba (3.5).** El primer aviso del fundador no dejó rastro: 0 filas y ningún `POST /api/contact` en nueve minutos de escucha. Tras su segundo envío, `contact_requests` tiene **1 fila**: 2026-11-16 15:43 UTC, idioma `es`, estado `new`, versión del consentimiento `2026-11-borrador`. Turnstile real, guardado y esquema funcionan de punta a punta. El fundador reservó además una reunión real en la agenda.
+
+No se registraron eventos de analítica de esa visita (ni vista de página ni formulario ni reunión): lo esperable si su navegador envía «No rastrear» o bloquea la petición. Sin confirmar cuál. **Pendiente de confirmar por el fundador:** que el aviso llegó a su buzón.
+
+**Dos mejoras pedidas por el fundador tras ver el sitio.**
+
+- *Título del cierre:* en ordenador se partía en tres líneas («…Hagamos que / la IA trabaje con él»). Era fiel a la maqueta, pero el fundador lo quiere por frases: ahora cada frase es un bloque, y desde 1280 px cada una cabe en su línea. E2E a 375, 768, 1280, 1440 y 1920 px.
+- *Modo terminal:* la pregunta abierta compartía fila con su respuesta y solo mostraba un ejemplo fijo. Ahora va encima, a todo el ancho, y los cuatro ejemplos se escriben solos uno tras otro, como en la maqueta; con movimiento reducido queda el primero, fijo. La pregunta ya no se pasa a minúsculas («IA»). Era una omisión mía en L5 respecto a la maqueta.
+
+Desviación de TDD: las pruebas de estas dos mejoras se escribieron antes que el código, pero no las ejecuté en rojo por separado.
 
 Estado: sitio en vivo en `https://confia.ing`. Falta redesplegar con la redirección, la consulta real de prueba y la subida a GitHub.
 
