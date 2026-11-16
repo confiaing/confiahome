@@ -276,7 +276,7 @@ Un skill es un paquete de instrucciones que el agente carga para un tipo de tare
 | Especificación | `openspec-propose`, `openspec-apply-change`, `openspec-verify-change` | Propuesta, specs, diseño y tareas antes de cada lote |
 | Código | `mattpocock-skills:tdd`, `mattpocock-skills:codebase-design`, `architecture` | Arquitectura hexagonal, módulos con fronteras claras, ADRs con alternativas reales |
 | Interfaz | `emil-design-eng`, `animate`, `mobile-native`, `3d-web-experience` | Detalle de interacción, movimiento con propósito, ajustes para móvil y la escena 3D |
-| Revisión | `fullstack-dev-skills:code-reviewer`, `security-audit` (de Cloudflare) | Revisión de cada lote y auditoría de seguridad antes del lanzamiento ([informe](docs/security/audit-v1.md)) |
+| Revisión | `fullstack-dev-skills:code-reviewer` (plugin de Jeffallan, v1.1.0), `security-audit` (de Cloudflare) | Revisión de cada lote y auditoría de seguridad antes del lanzamiento ([informe](docs/security/audit-v1.md)). El fundador pidió el skill [`code-reviewer` de aitmpl.com](https://www.aitmpl.com/component/skills/development/code-reviewer) (claude-code-templates, v2.0.0); no se instaló y se usó en su lugar el de mismo nombre que ya estaba disponible. Se corrige en la v1.1 |
 
 ### Buenas prácticas de AI-SDLC
 
