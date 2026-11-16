@@ -211,10 +211,33 @@ PRD §10. ADR-0001, 0008, 0016.
 | L10-4 | Subida de la v1 a GitHub | M | Código completo en `main` de `confiaing/confiahome` |
 | L10-5 | README final | M | Refleja lo desplegado y cómo operarlo |
 
+## v1.1 — Plan (iniciado el 2026-11-16)
+
+Seis lotes, L11 a L16, con el mismo método que la v1: propuesta de OpenSpec aprobada, pruebas primero, revisión independiente y puerta de cierre. Desde L12, cada lote entra en `main` por pull request con la CI en verde, no por push directo.
+
+**Hallazgo que condiciona el orden.** La cuenta de GitHub es personal y en el plan Free. Según la documentación de GitHub, en un repositorio privado de ese plan no hay ramas protegidas ni entornos; además, al pasar a privado, las reglas y los secretos de entorno ya configurados dejan de aplicarse. Las Actions de un repositorio privado consumen un saldo mensual incluido (unos 12 USD); en uno público son gratis. Por eso «pasar a privado» va al final y exige una decisión (D3).
+
+| Lote | Contenido | Quién | Depende de |
+|---|---|---|---|
+| **L11 — Base de la v1.1** | Archivar los cambios L0 a L10 en OpenSpec (llena `openspec/specs/`, la verdad vigente contra la que se especifica lo nuevo). Actualizar `CLAUDE.md`: estado, trabajo por rama y pull request | Agente | — |
+| **L12 — Protección en GitHub** | Protección de `main` que exija los cuatro trabajos de la CI. `dependabot.yml` para npm y Actions, semanal y agrupado. `npm audit` semanal. `verify-production.yml`: `verify:site` diario contra producción, sin secretos. Revisión automática de código en cada PR según D1 | Agente; el fundador activa la protección si el token no tiene permiso de administración | L11 |
+| **L13 — Cloudflare y dominio** | «Always Use HTTPS» en la zona. Regla de frecuencia para `/api/events` (S-03; el plan gratuito permite una). Turnstile restringido al dominio (S-07). `www.confia.ing` según D2. `verify:site` amplía sus comprobaciones: HTTP a HTTPS y `www` | Fundador en el panel; el agente da los pasos exactos, amplía el verificador y mide | L12 (el verificador diario ya vigila) |
+| **L14 — Despliegue desde GitHub** | `deploy.yml` del [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md): solo a demanda, entorno `production` con aprobación, token de Cloudflare de alcance mínimo, `release:check`, build, despliegue, `verify:site`. Vuelta atrás documentada | Agente; el fundador crea el token y el entorno | L12; condicionado por D3 |
+| **L15 — Deuda de la auditoría** | Los hallazgos bajos aceptados en [audit-v1.md](docs/security/audit-v1.md): comprobación de hidratación en un solo sitio, casilla del formulario, estado legal fuera de `i18n/`, recuento del borrado, claves de diccionario sin uso. Más las verificaciones pendientes: Safari y Firefox reales, lector de pantalla, Android | Agente; el fundador prueba en sus dispositivos | L11 |
+| **L16 — README y repositorio** | Reescribir el README como proyecto en producción; el registro de fases pasa a `docs/historia.md`. Repositorio a privado según D3 | Agente; el fundador cambia la visibilidad | Todos los anteriores |
+
+**Decisiones del fundador**
+
+- **D1 — Revisión automática en cada PR** (antes de L12). Opciones: la acción de Claude Code para GitHub (necesita una clave de la API de Anthropic como secreto y tiene coste por uso); la revisión de Copilot (necesita una suscripción de Copilot); o ninguna automática, con `/code-review` del agente antes de pedir la fusión, sin coste ni secretos.
+- **D2 — `www.confia.ing`** (antes de L13). Redirigir a `confia.ing` o dejarlo sin uso.
+- **D3 — Repositorio privado** (antes de L14). Opciones: GitHub Pro (unos 4 USD al mes) para conservar ramas protegidas y entornos; seguir público; o privado en Free, sin protección de `main` ni aprobación en el despliegue.
+
+**En paralelo, del fundador:** datos del responsable y revisión legal; búsqueda de parecidos del logo; borrar la copia `confiahome-historial-previo-20261116.bundle`; comprobar mañana tras las 08:17 UTC el registro `maintenance.done` de la tarea diaria.
+
 ## Después de la v1
 
 - Búsqueda de parecidos del logo con marcas registradas antes de registrarlo.
-- **v1.1 (acordado el 2026-11-16):**
+- **v1.1 (acordado el 2026-11-16; repartido en lotes en «v1.1 — Plan»):**
   - Despliegue continuo desde GitHub: diseñado en el [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md), sin implementar.
   - Protección de la rama `main` exigiendo la CI, y revisión automática de código en cada pull request.
   - Comprobación diaria de producción (`verify:site` contra `https://confia.ing`) en GitHub Actions, sin secretos. Opcional, por decidir: prueba de punta a punta del formulario en producción. Ambas en el [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md).
