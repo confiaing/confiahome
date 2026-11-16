@@ -302,6 +302,18 @@ Decidido el 2026-11-16 (decisión D1 de la v1.1): no hay revisión automática d
 4. Repetir la puerta de cierre si hubo correcciones.
 5. Solo entonces hacer `push` o abrir el pull request, con la orden del fundador. La CI de GitHub repite la puerta de cierre, pero no sustituye a la revisión.
 
+**Profundidad según el riesgo** (decidido el 2026-11-16):
+
+| Tipo de cambio | Ejemplos | Revisión |
+|---|---|---|
+| Documentación, especificaciones o configuración sin efecto en el sitio | README, BACKLOG, ADR, OpenSpec | `/code-review low` |
+| Código acotado, de riesgo bajo | Un componente, textos, estilos, scripts de marca | `/code-review medium` |
+| Código con riesgo | `worker/`, cabeceras y CSP, `src/app/api/`, formulario, Supabase y migraciones, Turnstile, CI y despliegue | `/code-review high`; si el cambio es grande, se recomienda `/ultrareview` |
+| Antes de cada despliegue a producción | Lo que se va a desplegar | Se recomienda `/ultrareview` |
+
+`/ultrareview` (equivale a `/code-review ultra`) revisa en la nube con varios agentes y se cobra aparte: solo lo lanza el fundador. El agente lo recomienda cuando toca, y en el informe de cada lote dice qué nivel usó. Los niveles `max` y `ultra` nunca se usan sin que el fundador lo pida.
+
+
 ## Documentos
 
 | Documento | Contenido |
