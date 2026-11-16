@@ -13,7 +13,7 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 
 ## 2. Base de datos de producción (L10-2)
 
-- [ ] 2.1 **[orden]** `npx supabase db push --dry-run` contra `confiahomeDB`. Verificación: salida mostrada al fundador; si hay tablas inesperadas, se detiene.
+- [x] 2.1 **[orden]** `npx supabase db push --dry-run` contra `confiahomeDB`. Verificación: salida mostrada al fundador; si hay tablas inesperadas, se detiene.
 - [ ] 2.2 **[orden]** `npx supabase db push`. Verificación: sin errores; tres migraciones aplicadas.
 - [ ] 2.3 Comprobar con la publishable key que ambas tablas no devuelven filas y rechazan inserciones (La base de producción queda como la local). Verificación: resultado anotado aquí.
 
@@ -33,9 +33,9 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 
 ## 5. GitHub (L10-4)
 
-- [ ] 5.1 Revisión de lo que se publica: archivos versionados, historial completo, claves y datos personales (repository-and-ci: Lo que se sube). Verificación: resultado anotado aquí.
-- [ ] 5.2 Pruebas en rojo y `.github/workflows/ci.yml` con la puerta de cierre; prueba que compara sus comandos con los de `CLAUDE.md` (Comprobaciones automáticas en cada cambio). Verificación: `npm test` en verde.
-- [ ] 5.3 Escribir el ADR-0017. Verificación: enlazado desde README y arquitectura.
+- [x] 5.1 Revisión de lo que se publica: archivos versionados, historial completo, claves y datos personales (repository-and-ci: Lo que se sube). Verificación: resultado anotado aquí.
+- [x] 5.2 Pruebas en rojo y `.github/workflows/ci.yml` con la puerta de cierre; prueba que compara sus comandos con los de `CLAUDE.md` (Comprobaciones automáticas en cada cambio). Verificación: `npm test` en verde.
+- [x] 5.3 Escribir el ADR-0017. Verificación: enlazado desde README y arquitectura.
 - [ ] 5.4 **[orden]** `git push -u origin main`. Verificación: `main` en GitHub coincide con el local.
 - [ ] 5.5 Primera ejecución de la CI en verde; corregir lo que solo falle allí. Verificación: enlace a la ejecución anotado aquí.
 - [ ] 5.6 **[orden]** Protección de `main` exigiendo la CI. Verificación: consulta de la protección anotada aquí.
@@ -84,7 +84,24 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 - `SUPABASE_URL` y `NOTIFY_TO` se cargan con `wrangler secret put`, no como variables de `wrangler.jsonc`: el preview local lee ese archivo y no debe poder apuntar a la base de producción, y la dirección de aviso es un buzón personal que no debe publicarse. Por lo mismo no se fija `destination_address` en el binding de correo.
 - El dominio se declara en `wrangler.jsonc` en la tarea 3.4, no antes.
 
-Nada de esto está en un commit todavía, y nada ha salido de esta máquina.
+### 2026-11-16
+
+**Decisiones del fundador.** Recorte a la v1.1: despliegue continuo desde GitHub, protección de `main`, revisión automática por PR, archivo de OpenSpec, reescritura del README y regla de frecuencia en Cloudflare (tareas 4.1, 5.6, 6.4 y parte de 6.1). Historial: reescribirlo para retirar una dirección personal.
+
+**`.env.prod` (1.2).** `npm run release:check` pasa: claves reales de Turnstile, dirección de aviso y token de Web Analytics presentes.
+
+**Revisión del delta (5.1, 6.2).** Agente independiente con `security-audit` y revisión de calidad sobre lo cambiado desde la auditoría de L9:
+
+- *Media-alta, corregido.* Una dirección personal `@gmail.com` (el buzón de reenvío) estaba en el README desde el commit de L0. Mi búsqueda de L9 solo miraba otra dirección y no la vio. Retirada del archivo y del historial: reescritura de los 13 commits con `git filter-branch`, copia de seguridad previa en `../confiahome-historial-previo-20261116.bundle` (fuera del repositorio; contiene la dirección: no publicarla). En `main` quedan cero coincidencias fuera de los datos de ejemplo de las pruebas. Los identificadores de los commits cambiaron.
+- *Bajas, corregidas:* comentario al final de línea en `.env.prod` tomado como parte del valor; `verify:site` no exigía `includeSubDomains`; nombres de archivo desalineados en estos documentos.
+- *Baja, aceptada:* el identificador del proyecto de Supabase aparece en la documentación; no es un secreto.
+- Sin hallazgos en `release.ts` (no imprime ni pasa secretos), `verify-site.ts` (no crea datos) ni `wrangler.jsonc`.
+
+**CI (5.2, 5.3).** `.github/workflows/ci.yml` con cuatro trabajos (calidad, contrato, E2E, E2E contra Workers), sin secretos ni despliegue; `tests/unit/ci-workflow.test.ts` lo ata a la puerta de cierre de `CLAUDE.md`; ADR-0017 con el despliegue continuo diseñado para la v1.1; `docs/operations.md`. Escritos por un agente y revisados. **La CI no se ha ejecutado todavía:** lo hará al subir.
+
+**Simulacro de migración (2.1).** `npx supabase db push --remote --dry-run` contra `confiahomeDB`: aplicaría exactamente las tres migraciones del repositorio (`20261114170000`, `20261114210000`, `20261115040000`); ninguna está aplicada. No se aplicó nada. Sin la opción `--remote` el comando apunta a la base local.
+
+`npm test`: 1013 en verde tras la reescritura. Nada se ha subido ni desplegado.
 
 ## Workflow follow-up
 
