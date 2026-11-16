@@ -14,13 +14,13 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 ## 2. Base de datos de producción (L10-2)
 
 - [x] 2.1 **[orden]** `npx supabase db push --dry-run` contra `confiahomeDB`. Verificación: salida mostrada al fundador; si hay tablas inesperadas, se detiene.
-- [ ] 2.2 **[orden]** `npx supabase db push`. Verificación: sin errores; tres migraciones aplicadas.
-- [ ] 2.3 Comprobar con la publishable key que ambas tablas no devuelven filas y rechazan inserciones (La base de producción queda como la local). Verificación: resultado anotado aquí.
+- [x] 2.2 **[orden]** `npx supabase db push`. Verificación: sin errores; tres migraciones aplicadas.
+- [x] 2.3 Comprobar con la publishable key que ambas tablas no devuelven filas y rechazan inserciones (La base de producción queda como la local). Verificación: resultado anotado aquí.
 
 ## 3. Secretos y despliegue (L10-1, L10-3)
 
 - [ ] 3.1 **[orden]** El fundador carga los secretos en su terminal con los comandos preparados. Verificación: `wrangler secret list` muestra los nombres esperados.
-- [ ] 3.2 `npm run release` con el entorno de producción cargado desde `.env.prod` sin mostrarlo. Verificación: comprobación previa y build en verde.
+- [x] 3.2 `npm run release` con el entorno de producción cargado desde `.env.prod` sin mostrarlo. Verificación: comprobación previa y build en verde.
 - [ ] 3.3 **[orden]** `npx wrangler deploy` a la dirección `workers.dev`. Verificación: `verify-production` en verde contra esa dirección.
 - [ ] 3.4 **[orden]** Adjuntar `confia.ing` y volver a desplegar. Verificación: `verify-production` en verde contra `https://confia.ing`.
 - [ ] 3.5 **[orden]** Consulta real de prueba y apertura de la agenda en producción, en ES y EN (Flujo B real; Flujo A real). Verificación: confirmación vista, fila en la base, aviso recibido por el fundador, calendario cargado sin infracciones.
@@ -101,7 +101,20 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 
 **Simulacro de migración (2.1).** `npx supabase db push --remote --dry-run` contra `confiahomeDB`: aplicaría exactamente las tres migraciones del repositorio (`20261114170000`, `20261114210000`, `20261115040000`); ninguna está aplicada. No se aplicó nada. Sin la opción `--remote` el comando apunta a la base local.
 
-`npm test`: 1013 en verde tras la reescritura. Nada se ha subido ni desplegado.
+`npm test`: 1013 en verde tras la reescritura.
+
+**Migración de producción (2.2, 2.3), con la orden del fundador.** `npx supabase db push --remote --yes` aplicó las tres migraciones a `confiahomeDB`; el simulacro posterior dice «Remote database is up to date». La CLI exige `--yes` para escribir en producción y sin `--remote` apunta a la base local. Comprobado después:
+
+- Con la publishable key: leer e insertar en `contact_requests` y en `analytics_events` responde 401 con el código `42501` (permiso denegado). Sin clave, 401.
+- Con la clave del servidor (solo una cuenta, sin leer filas): ambas tablas responden y tienen 0 filas.
+
+**Build de producción (3.2).** `npm run release`: entorno comprobado, Worker de 1186,8 KiB, sin variables incrustadas en ninguno de los tres bloques. El HTML generado lleva la dirección pública y la clave pública real de Turnstile; ni `localhost` ni la clave de pruebas.
+
+Corregido de paso: `release` buscaba la clave pública en los scripts del navegador y está en el HTML (llega al formulario como dato de la página).
+
+**Carga de secretos.** `npm run secrets:put` (`scripts/put-secrets.ts`) pasa los cuatro valores de `.env.prod` a `wrangler secret bulk` por la entrada estándar, sin mostrarlos. Lo ejecuta el fundador.
+
+Hasta aquí: la base de producción tiene sus tablas, vacías. Nada desplegado ni subido.
 
 ## Workflow follow-up
 

@@ -20,6 +20,7 @@
     "release:check": "node scripts/release.ts --check",
     "release": "node scripts/release.ts",
     "verify:site": "node scripts/verify-production.ts",
+    "secrets:put": "node scripts/put-secrets.ts",
     "brand:build": "node scripts/build-brand-assets.ts",
     "content:doc": "node scripts/build-content-doc.ts"
   },

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseEnvFile, publicBuildEnv, releaseProblems, type LegalState } from "../../scripts/lib/release";
+import { parseEnvFile, publicBuildEnv, releaseProblems, workerSecrets, type LegalState } from "../../scripts/lib/release";
 
 const GOOD = {
   SERVICES: "real",
@@ -89,5 +89,21 @@ describe("lectura del archivo de entorno", () => {
       NEXT_PUBLIC_TURNSTILE_SITE_KEY: GOOD.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
       NEXT_PUBLIC_CF_ANALYTICS_TOKEN: "t",
     });
+  });
+
+  // production-release · Secretos solo en el Worker
+  it("los secretos del Worker son exactamente cuatro, y ninguno es una variable pública", () => {
+    expect(Object.keys(workerSecrets({ ...GOOD, NEXT_PUBLIC_CF_ANALYTICS_TOKEN: "t" })).sort()).toEqual(["NOTIFY_TO", "SUPABASE_SECRET_KEY", "SUPABASE_URL", "TURNSTILE_SECRET_KEY"]);
+  });
+
+  it("si falta alguno, falla nombrándolo y sin mostrar los demás", () => {
+    let message = "";
+    try {
+      workerSecrets({ ...GOOD, NOTIFY_TO: " " });
+    } catch (error) {
+      message = (error as Error).message;
+    }
+    expect(message).toContain("NOTIFY_TO");
+    expect(message).not.toContain(GOOD.SUPABASE_SECRET_KEY);
   });
 });

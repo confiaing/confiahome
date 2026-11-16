@@ -86,3 +86,13 @@ export function parseEnvFile(text: string): Record<string, string> {
 export function publicBuildEnv(env: Env): Record<string, string> {
   return Object.fromEntries(Object.entries(env).filter((entry): entry is [string, string] => entry[0].startsWith("NEXT_PUBLIC_") && present(entry[1]) !== ""));
 }
+
+/** Lo que el Worker recibe con `wrangler secret`: claves, y los dos datos propios de producción que no van en wrangler.jsonc. */
+export const WORKER_SECRETS = ["SUPABASE_SECRET_KEY", "TURNSTILE_SECRET_KEY", "SUPABASE_URL", "NOTIFY_TO"] as const;
+
+export function workerSecrets(env: Env): Record<string, string> {
+  const missing = WORKER_SECRETS.filter((name) => present(env[name]) === "");
+  if (missing.length > 0) throw new Error(`Faltan en el entorno de producción: ${missing.join(", ")}.`);
+  return Object.fromEntries(WORKER_SECRETS.map((name) => [name, present(env[name])]));
+}
+
