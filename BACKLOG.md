@@ -217,6 +217,7 @@ PRD §10. ADR-0001, 0008, 0016.
 - **v1.1 (acordado el 2026-11-16):**
   - Despliegue continuo desde GitHub: diseñado en el [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md), sin implementar.
   - Protección de la rama `main` exigiendo la CI, y revisión automática de código en cada pull request.
+  - Comprobación diaria de producción (`verify:site` contra `https://confia.ing`) en GitHub Actions, sin secretos. Opcional, por decidir: prueba de punta a punta del formulario en producción. Ambas en el [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md).
   - Archivar los cambios de OpenSpec (`openspec/specs/` sigue vacío).
   - Reescribir el README como proyecto en producción.
   - Regla de frecuencia para `/api/events` en Cloudflare y «Always Use HTTPS» en la zona.

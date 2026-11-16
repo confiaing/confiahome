@@ -43,9 +43,20 @@ Sin implementar. Un `deploy.yml` con estas piezas:
 - **Vuelta atrás:** `npx wrangler rollback`, también manual.
 - **Pendiente de decidir entonces:** cómo se cargan los secretos del Worker (`SUPABASE_SECRET_KEY` y los demás); hoy se cargan una vez con `wrangler secret put` y no cambian al desplegar.
 
+## Comprobación continua de producción para la v1.1
+
+Añadido el 2026-11-16, tras revisar cómo se verifica que el sitio sigue funcionando después de cada cambio. Sin implementar.
+
+La CI prueba el código con servicios en memoria, y `verify:site` solo corre cuando alguien despliega. Un fallo que aparezca más tarde en producción (un secreto caducado, Supabase pausado, un servicio externo caído) no lo detecta nadie. Se cubre así:
+
+- **Protección de `main` primero.** Ningún pull request se funde con alguno de los cuatro trabajos en rojo.
+- **`verify-production.yml`:** una vez al día (`schedule`) y a demanda (`workflow_dispatch`), ejecuta `npm run verify:site -- https://confia.ing`. Solo lee: sin secretos y con permisos de solo lectura. Si falla, la ejecución queda en rojo y GitHub avisa por correo a quien tenga activadas las notificaciones de Actions.
+- **Opcional, por decidir:** una prueba de punta a punta del formulario en producción que envíe una consulta marcada como prueba y la borre después. Exige guardar secretos en un entorno protegido de GitHub y escribe en la base real; solo se hará con una decisión expresa del fundador y su propio ADR.
+
 ## Pendiente para la v1.1
 
 - El workflow `deploy.yml` descrito arriba.
+- El workflow `verify-production.yml` descrito arriba.
 - Protección de la rama `main` que exija los cuatro trabajos de la CI.
 - Revisión automática de código en cada pull request.
 - `npm audit` programado cada semana.
