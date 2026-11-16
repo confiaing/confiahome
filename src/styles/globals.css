@@ -12,14 +12,16 @@
  */
 @font-face {
   font-family: "Fraunces Fallback";
-  src: local("Times New Roman"), local("TimesNewRomanPSMT");
+  /* Liberation Serif, Tinos y Nimbus Roman tienen las mismas medidas que Times New Roman:
+     son lo que hay en Linux, donde Times no está. */
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Tinos"), local("Nimbus Roman");
   size-adjust: 95%;
 }
 
 @font-face {
   font-family: "Fraunces Italic Fallback";
   font-style: italic;
-  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT");
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic"), local("Tinos Italic"), local("Nimbus Roman Italic");
   size-adjust: 87.5%;
 }
 

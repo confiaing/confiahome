@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { buildSvgAssets, ogImagePng, ogImageSvg } from "../../scripts/lib/brand-assets.ts";
 import { PALETTE } from "../support/palette";
@@ -89,9 +90,24 @@ describe("imagen para redes", () => {
     expect(ogImageSvg("es")).not.toBe(ogImageSvg("en"));
   });
 
-  it.each(LOCALES)("regenerar og-%s.png da el archivo guardado", async (locale) => {
-    const built = await ogImagePng(locale);
-    expect(built.equals(readFileSync(`${PUBLIC}brand/og-${locale}.png`))).toBe(true);
+  // Se comparan los píxeles, no los bytes: cada sistema comprime y suaviza los bordes a su
+  // manera, y el archivo de macOS no es idéntico al que genera Linux.
+  it.each(LOCALES)("regenerar og-%s.png da la misma imagen que la guardada", async (locale) => {
+    const pixels = (input: Buffer) => sharp(input).removeAlpha().raw().toBuffer();
+    const [built, stored] = await Promise.all([pixels(await ogImagePng(locale)), pixels(readFileSync(`${PUBLIC}brand/og-${locale}.png`))]);
+    expect(built.length).toBe(stored.length);
+    let different = 0;
+    for (let index = 0; index < built.length; index += 1) if (Math.abs(built[index]! - stored[index]!) > 24) different += 1;
+    // Menos del 0,5 % de los valores puede diferir de forma apreciable (bordes de las letras).
+    expect(different / built.length).toBeLessThan(0.005);
+  });
+
+  it("una imagen distinta no pasa por la guardada", async () => {
+    const pixels = (input: Buffer) => sharp(input).removeAlpha().raw().toBuffer();
+    const [es, en] = await Promise.all([pixels(await ogImagePng("es")), pixels(await ogImagePng("en"))]);
+    let different = 0;
+    for (let index = 0; index < es.length; index += 1) if (Math.abs(es[index]! - en[index]!) > 24) different += 1;
+    expect(different / es.length).toBeGreaterThan(0.005);
   });
 
   it("la frase cabe dentro de la imagen con margen", () => {
