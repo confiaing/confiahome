@@ -86,3 +86,34 @@
 - [ ] 5.2 Puerta de cierre (parcial el 2026-11-16: `lint`, `typecheck`, `e2e` 369 pasan, `e2e:preview` 35 pasan, `build:worker` 1190 KiB de 3072, `measure:js` 164,6 kB de 200; `test` 1069 pasan y 3 fallan a la espera de archivar L10): `lint`, `typecheck`, `test`, `e2e`, `e2e:preview`, `build:worker`, `measure:js`. Verificación: salida a la vista.
 - [ ] 5.3 BACKLOG: L11 marcado como hecho. Archivar L11. Verificación: `openspec list` sin cambios abiertos.
 - [ ] 5.4 Commit local. El `push`, solo con la orden del fundador.
+
+## Para reanudar (pausa del 2026-11-16, 18:56 UTC)
+
+**Estado.** L11 lleva 11 de 15 tareas. L12 está aprobada y sin empezar.
+
+- `main` local va 4 commits por delante de GitHub. Son la regla de revisión según el riesgo y la propuesta de L12 con sus dos decisiones.
+- Árbol de trabajo limpio, sin procesos abiertos, `.dev.vars` en `SERVICES=memory`.
+- La última CI subida (`229f156`) está en rojo solo por las 3 pruebas que esperan a archivar L10. `contract`, `e2e` y `e2e-preview` están en verde.
+- Decisiones tomadas hoy:
+  - D1: `/code-review` antes de cada `push`, con la profundidad según el riesgo, y `aitmpl-code-reviewer` al cerrar cada lote;
+  - D2: `www` redirige a `confia.ing`, en L13;
+  - R1 a R16: aprobados;
+  - L12: protección también para administradores.
+- Pendiente: D3, el repositorio privado, antes de L14.
+
+**Pasos, después de las 08:17 UTC del 17 de noviembre:**
+
+1. **Tarea 3.3: comprobar el registro diario.**
+   - Abrir los registros del Worker `confiahome` en el panel de Cloudflare (Workers → confiahome → Logs) y buscar `maintenance.done` de hacia las 08:17 UTC.
+   - Debe traer `heartbeat`, `contactsPurged` y `eventsPurged`; un `-1` es un borrado fallido. Guía en `docs/operations.md`, «Tarea diaria».
+   - `npx wrangler tail` solo muestra registros en vivo: no sirve para uno pasado.
+   - Si no aparece, diagnosticar antes de archivar.
+2. **Anotar la evidencia en la 3.3 de aquí y en la 3.7 de L10.** Después, `openspec archive l10-lanzamiento -y`.
+3. **Puerta de cierre completa (5.2):** `lint`, `typecheck`, `test`, `e2e`, `e2e:preview`, `build:worker` y `measure:js`. Las 3 pruebas de `development-workflow.test.ts` deben pasar ya.
+4. **5.3:** BACKLOG con L11 ✅, `openspec archive l11-base-v1-1 -y` y comprobar que `openspec list` solo muestra L12.
+5. **5.4:**
+   - commit local;
+   - `/code-review low`, porque el cambio es de documentación y especificaciones;
+   - push a `main` con la orden del fundador. Todavía no hay protección; este es el último push directo;
+   - confirmar la CI en verde.
+6. **Empezar L12** con `/opsx:apply l12-proteccion-en-github`: rama `lote/l12-proteccion-en-github`, siguiendo su `tasks.md`.
