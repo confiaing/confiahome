@@ -199,7 +199,9 @@ PRD §10. ADR-0001, 0008, 0016.
 | L9-7 | Revisión de código de toda la v1 | M | Hallazgos resueltos |
 | L9-8 | Latido diario contra la pausa de Supabase | M | Cron verificado en el entorno de preview |
 
-## L10 — Lanzamiento
+## L10 — Lanzamiento ✅
+
+**Hecho el 2026-11-16.** El sitio está en `https://confia.ing`. Evidencia en `openspec/changes/l10-lanzamiento/tasks.md`; cómo operarlo, en [docs/operations.md](docs/operations.md). Se lanzó con los textos legales en borrador, por decisión del fundador. Parte del alcance pasó a la v1.1 (abajo).
 
 | ID | Tarea | Prio | Hecho cuando |
 |---|---|---|---|
@@ -212,7 +214,17 @@ PRD §10. ADR-0001, 0008, 0016.
 ## Después de la v1
 
 - Búsqueda de parecidos del logo con marcas registradas antes de registrarlo.
-- CI con GitHub Actions, protección de rama y revisión por PR.
+- **v1.1 (acordado el 2026-11-16):**
+  - Despliegue continuo desde GitHub: diseñado en el [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md), sin implementar.
+  - Protección de la rama `main` exigiendo la CI, y revisión automática de código en cada pull request.
+  - Archivar los cambios de OpenSpec (`openspec/specs/` sigue vacío).
+  - Reescribir el README como proyecto en producción.
+  - Regla de frecuencia para `/api/events` en Cloudflare y «Always Use HTTPS» en la zona.
+  - Decidir si `www.confia.ing` redirige al dominio.
+  - Pasar el repositorio a privado.
+  - `npm audit` programado y Dependabot.
+  - Hallazgos bajos aceptados en [docs/security/audit-v1.md](docs/security/audit-v1.md).
+- Datos del responsable en los textos legales y paso a «vigente» ([docs/legal/README.md](docs/legal/README.md)).
 - Validación legal de privacidad y términos por un abogado (bloquea la promoción activa del sitio, no el despliegue técnico).
 - Bios del equipo, casos de éxito y logos autorizados.
 - Páginas por servicio.

@@ -24,7 +24,7 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 - [x] 3.3 **[orden]** `npx wrangler deploy` a la dirección `workers.dev`. Verificación: `verify-production` en verde contra esa dirección.
 - [x] 3.4 **[orden]** Adjuntar `confia.ing` y volver a desplegar. Verificación: `verify-production` en verde contra `https://confia.ing`.
 - [x] 3.5 **[orden]** Consulta real de prueba y apertura de la agenda en producción, en ES y EN (Flujo B real; Flujo A real). Verificación: confirmación vista, fila en la base, aviso recibido por el fundador, calendario cargado sin infracciones.
-- [ ] 3.6 **[orden]** Borrar de producción las filas de prueba. Verificación: cuentas antes y después anotadas aquí.
+- [x] 3.6 **[orden]** Borrar de producción las filas de prueba (el fundador decidió conservar la fila). Verificación: cuentas antes y después anotadas aquí.
 - [ ] 3.7 Comprobar que el disparo diario está programado; al día siguiente, el registro del latido. Verificación: anotado aquí, o dicho que queda pendiente.
 
 ## 4. Ajustes en Cloudflare
@@ -42,9 +42,9 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 
 ## 6. Cierre de la v1 (L10-5)
 
-- [ ] 6.1 `docs/operations.md` y README final (production-release: Vuelta atrás documentada; repository-and-ci: README de un proyecto desplegado). Verificación: enlaces comprobados por una prueba.
-- [ ] 6.2 Revisión de código del lote con `fullstack-dev-skills:code-reviewer` en un subagente independiente. Verificación: hallazgos y resolución anotados aquí.
-- [ ] 6.3 Actualizar BACKLOG (L10 ✅ y lo que queda «después de la v1»), `docs/setup.md`, `docs/legal/README.md` y `CLAUDE.md` (estado; con aprobación del fundador). Verificación: enlaces comprobados.
+- [x] 6.1 `docs/operations.md` y README final (production-release: Vuelta atrás documentada; repository-and-ci: README de un proyecto desplegado). Verificación: enlaces comprobados por una prueba.
+- [x] 6.2 Revisión de código del lote con `fullstack-dev-skills:code-reviewer` en un subagente independiente. Verificación: hallazgos y resolución anotados aquí.
+- [x] 6.3 Actualizar BACKLOG (L10 ✅ y lo que queda «después de la v1»), `docs/setup.md`, `docs/legal/README.md` y `CLAUDE.md` (estado; con aprobación del fundador). Verificación: enlaces comprobados.
 - [ ] 6.4 **[orden]** Archivar los once cambios de OpenSpec, en orden. Verificación: `openspec/specs/` contiene las especificaciones vigentes y `openspec list` no muestra cambios abiertos.
 - [ ] 6.5 Commit final y, con **[orden]**, envío a GitHub. Verificación: CI en verde sobre el último commit.
 
@@ -140,6 +140,12 @@ No se registraron eventos de analítica de esa visita (ni vista de página ni fo
 - *Modo terminal:* la pregunta abierta compartía fila con su respuesta y solo mostraba un ejemplo fijo. Ahora va encima, a todo el ancho, y los cuatro ejemplos se escriben solos uno tras otro, como en la maqueta; con movimiento reducido queda el primero, fijo. La pregunta ya no se pasa a minúsculas («IA»). Era una omisión mía en L5 respecto a la maqueta.
 
 Desviación de TDD: las pruebas de estas dos mejoras se escribieron antes que el código, pero no las ejecuté en rojo por separado.
+
+**Confirmado por el fundador:** el aviso de la consulta llegó a su buzón. Decidió **conservar** la fila de prueba («J Inc») como primera consulta de la tabla.
+
+**Arreglos desplegados.** `npm run release` + `wrangler deploy`; `verify:site` 21 de 21. Puerta local antes de subir: `test` 1028 · `e2e` 369 (23 omitidas) · `e2e:preview` 31.
+
+**Pasa a la v1.1** (lista en BACKLOG): tareas 4.1, 5.6 y 6.4, y la reescritura completa del README de 6.1 (hoy solo se actualizó su estado). La 3.7 se comprueba al día siguiente: registro `maintenance.done` tras las 08:17 UTC.
 
 Estado: sitio en vivo en `https://confia.ing`. Falta redesplegar con la redirección, la consulta real de prueba y la subida a GitHub.
 
