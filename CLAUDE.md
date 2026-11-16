@@ -25,7 +25,8 @@ Next.js (App Router) · React · TypeScript estricto · Tailwind CSS v4 · Three
 5. **Pregunta ante la ambigüedad** cuando dos lecturas cambian lo que se construye.
 6. **Mantén los documentos vivos.** Al cerrar un lote actualizas README y BACKLOG. Una decisión con alternativas reales es un ADR nuevo.
 7. **Commits:** uno local al cerrar cada lote, con la puerta de cierre en verde. Nunca `push` ni despliegue sin que el fundador lo pida.
-8. **Responde en español.** Código, identificadores y nombres de archivo en inglés.
+8. **`/code-review` en local antes de cada `push`.** No hay revisión automática en GitHub (decisión D1, en el [README](README.md#revisión-de-código-antes-de-subir-cambios)). Los hallazgos se corrigen o se anotan como aceptados en el `tasks.md` del lote.
+9. **Responde en español.** Código, identificadores y nombres de archivo en inglés.
 
 ### Comandos
 

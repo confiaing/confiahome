@@ -220,7 +220,7 @@ Seis lotes, L11 a L16, con el mismo método que la v1: propuesta de OpenSpec apr
 | Lote | Contenido | Quién | Depende de |
 |---|---|---|---|
 | **L11 — Base de la v1.1** | Archivar los cambios L0 a L10 en OpenSpec (llena `openspec/specs/`, la verdad vigente contra la que se especifica lo nuevo). Actualizar `CLAUDE.md`: estado, trabajo por rama y pull request | Agente | — |
-| **L12 — Protección en GitHub** | Protección de `main` que exija los cuatro trabajos de la CI. `dependabot.yml` para npm y Actions, semanal y agrupado. `npm audit` semanal. `verify-production.yml`: `verify:site` diario contra producción, sin secretos. Revisión automática de código en cada PR según D1 | Agente; el fundador activa la protección si el token no tiene permiso de administración | L11 |
+| **L12 — Protección en GitHub** | Protección de `main` que exija los cuatro trabajos de la CI. `dependabot.yml` para npm y Actions, semanal y agrupado. `npm audit` semanal. `verify-production.yml`: `verify:site` diario contra producción, sin secretos | Agente; el fundador activa la protección si el token no tiene permiso de administración | L11 |
 | **L13 — Cloudflare y dominio** | «Always Use HTTPS» en la zona. Regla de frecuencia para `/api/events` (S-03; el plan gratuito permite una). Turnstile restringido al dominio (S-07). `www.confia.ing` según D2. `verify:site` amplía sus comprobaciones: HTTP a HTTPS y `www` | Fundador en el panel; el agente da los pasos exactos, amplía el verificador y mide | L12 (el verificador diario ya vigila) |
 | **L14 — Despliegue desde GitHub** | `deploy.yml` del [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md): solo a demanda, entorno `production` con aprobación, token de Cloudflare de alcance mínimo, `release:check`, build, despliegue, `verify:site`. Vuelta atrás documentada | Agente; el fundador crea el token y el entorno | L12; condicionado por D3 |
 | **L15 — Deuda de la auditoría** | Los hallazgos bajos aceptados en [audit-v1.md](docs/security/audit-v1.md): comprobación de hidratación en un solo sitio, casilla del formulario, estado legal fuera de `i18n/`, recuento del borrado, claves de diccionario sin uso. Más las verificaciones pendientes: Safari y Firefox reales, lector de pantalla, Android | Agente; el fundador prueba en sus dispositivos | L11 |
@@ -228,7 +228,7 @@ Seis lotes, L11 a L16, con el mismo método que la v1: propuesta de OpenSpec apr
 
 **Decisiones del fundador**
 
-- **D1 — Revisión automática en cada PR** (antes de L12). Opciones: la acción de Claude Code para GitHub (necesita una clave de la API de Anthropic como secreto y tiene coste por uso); la revisión de Copilot (necesita una suscripción de Copilot); o ninguna automática, con `/code-review` del agente antes de pedir la fusión, sin coste ni secretos.
+- **D1 — Revisión de código** ✅ decidida el 2026-11-16: sin revisión automática en GitHub; `/code-review` en local antes de cada `push` ([README](README.md#revisión-de-código-antes-de-subir-cambios), `CLAUDE.md`). L12 ya no incluye revisión automática.
 - **D2 — `www.confia.ing`** (antes de L13). Redirigir a `confia.ing` o dejarlo sin uso.
 - **D3 — Repositorio privado** (antes de L14). Opciones: GitHub Pro (unos 4 USD al mes) para conservar ramas protegidas y entornos; seguir público; o privado en Free, sin protección de `main` ni aprobación en el despliegue.
 
@@ -239,7 +239,7 @@ Seis lotes, L11 a L16, con el mismo método que la v1: propuesta de OpenSpec apr
 - Búsqueda de parecidos del logo con marcas registradas antes de registrarlo.
 - **v1.1 (acordado el 2026-11-16; repartido en lotes en «v1.1 — Plan»):**
   - Despliegue continuo desde GitHub: diseñado en el [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md), sin implementar.
-  - Protección de la rama `main` exigiendo la CI, y revisión automática de código en cada pull request.
+  - Protección de la rama `main` exigiendo la CI. La revisión de código es local, con `/code-review` antes de cada `push` (D1).
   - Comprobación diaria de producción (`verify:site` contra `https://confia.ing`) en GitHub Actions, sin secretos. Opcional, por decidir: prueba de punta a punta del formulario en producción. Ambas en el [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md).
   - Archivar los cambios de OpenSpec (`openspec/specs/` sigue vacío).
   - Reescribir el README como proyecto en producción.

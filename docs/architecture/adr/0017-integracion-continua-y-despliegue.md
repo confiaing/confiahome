@@ -58,6 +58,6 @@ La CI prueba el código con servicios en memoria, y `verify:site` solo corre cua
 - El workflow `deploy.yml` descrito arriba.
 - El workflow `verify-production.yml` descrito arriba.
 - Protección de la rama `main` que exija los cuatro trabajos de la CI.
-- Revisión automática de código en cada pull request.
+- ~~Revisión automática de código en cada pull request.~~ Descartada el 2026-11-16 (decisión D1): `/code-review` en local antes de cada `push`.
 - `npm audit` programado cada semana.
 - Dependabot para dependencias y acciones.

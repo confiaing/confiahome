@@ -292,6 +292,16 @@ Un skill es un paquete de instrucciones que el agente carga para un tipo de tare
 10. **Producción medida, no supuesta.** Tras cada despliegue, un verificador de solo lectura (`npm run verify:site`) y pruebas en navegadores reales. Así se detectaron y corrigieron dos fallos que no aparecían en local.
 11. **Gestión del contexto y del cupo.** Pausas seguras con una nota «Para reanudar» en el `tasks.md` del lote, para compactar el contexto o cambiar de modelo sin perder el estado.
 
+### Revisión de código antes de subir cambios
+
+Decidido el 2026-11-16 (decisión D1 de la v1.1): no hay revisión automática de código en GitHub. Quien cambie el repositorio con Claude Code ejecuta **`/code-review` en local antes de cada `push`**, sin coste ni secretos en GitHub.
+
+1. Terminar el cambio con la puerta de cierre en verde.
+2. Ejecutar `/code-review` en Claude Code sobre el cambio.
+3. Corregir los hallazgos, o anotar en el `tasks.md` del lote por qué se aceptan.
+4. Repetir la puerta de cierre si hubo correcciones.
+5. Solo entonces hacer `push` o abrir el pull request, con la orden del fundador. La CI de GitHub repite la puerta de cierre, pero no sustituye a la revisión.
+
 ## Documentos
 
 | Documento | Contenido |
