@@ -177,3 +177,13 @@ Estado: sitio en vivo en `https://confia.ing`, sin fallos conocidos. Falta redes
 
 - Tras la revisión legal: datos del responsable, `LEGAL_STATUS = "in-force"`, nuevo despliegue.
 - Al día siguiente del lanzamiento: comprobar el registro de la tarea diaria.
+
+### Para reanudar (pausa del 2026-11-16, cambio de modelo)
+
+Todo está en commits y subido a GitHub salvo esta nota. Sin procesos abiertos; `.dev.vars` en `SERVICES=memory`.
+
+- **Producción:** `https://confia.ing` en vivo, sin fallos conocidos. Desplegar siempre con `npm run release` + `npx wrangler deploy`, con la orden del fundador, y verificar con `npm run verify:site -- https://confia.ing`.
+- **Por comprobar:** la CI del último push (`gh run list --limit 1`), y mañana tras las 08:17 UTC el registro `maintenance.done` de la tarea diaria (tarea 3.7).
+- **Pendiente del fundador:** activar «Always Use HTTPS» en Cloudflare; datos del responsable y revisión legal; borrar la copia `../confiahome-historial-previo-20261116.bundle` (contiene un correo personal; no subirla).
+- **v1.1:** lista en BACKLOG, «Después de la v1».
+- **Sin verificar:** salto de diseño al cargar fuentes en Android; lectores de pantalla; Safari y Firefox reales.
