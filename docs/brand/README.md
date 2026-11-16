@@ -124,6 +124,7 @@ En [`public/brand/`](../../public/brand/). El nombre está convertido en trazado
 | `logo.svg` · `logo-dark.svg` | Versión principal, en horizontal. Fondo claro y fondo oscuro. |
 | `logo-compact.svg` · `logo-compact-dark.svg` | Símbolo sobre el nombre, para espacios cuadrados o estrechos. |
 | `symbol.svg` · `symbol-dark.svg` | Solo el símbolo, cuando el nombre ya está escrito al lado o no cabe. |
+| `symbol.png` · `symbol-dark.png` | El símbolo a 1024 px con fondo transparente, para perfiles, documentos y presentaciones. |
 | `favicon.svg` | Favicon reducido sobre ficha crema. |
 | `favicon-32.png` · `apple-touch-icon.png` | Favicon de 32 px e icono de 180 px para iOS. |
 | `../favicon.ico` | Para navegadores que lo piden por defecto. |

@@ -49,6 +49,16 @@ describe("archivos de marca", () => {
     expect(size("brand/apple-touch-icon.png")).toEqual([180, 180]);
   });
 
+  it.each(["symbol.png", "symbol-dark.png"])("%s mide 1024 px, con fondo transparente y el símbolo opaco", async (name) => {
+    const { data, info } = await sharp(readFileSync(`${PUBLIC}brand/${name}`)).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    expect([info.width, info.height]).toEqual([1024, 1024]);
+    const alpha = (x: number, y: number) => data[(y * info.width + x) * info.channels + 3];
+    // Esquina y centro de la «c» quedan vacíos; el punto coral, a la derecha del centro, no.
+    expect(alpha(0, 0)).toBe(0);
+    expect(alpha(512, 512)).toBe(0);
+    expect(alpha(Math.round((26.6 / 32) * 1024), 512)).toBe(255);
+  });
+
   it("favicon.ico es un icono con una imagen de 32 px", () => {
     const ico = readFileSync(`${PUBLIC}favicon.ico`);
     expect([ico.readUInt16LE(0), ico.readUInt16LE(2), ico.readUInt16LE(4)]).toEqual([0, 1, 1]);

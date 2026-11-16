@@ -42,9 +42,20 @@ writeFileSync(`${BRAND}favicon-32.png`, favicon32);
 writeFileSync(`${BRAND}apple-touch-icon.png`, await png(iconSvg({ rounded: false }), 180));
 writeFileSync(`${PUBLIC}favicon.ico`, ico(favicon32, 32));
 
+// El símbolo en PNG grande y sin fondo, para perfiles, documentos y presentaciones.
+// Su viewBox mide 32: la densidad se ajusta para que sharp lo dibuje nítido a 1024 px.
+const SYMBOL_PNG = 1024;
+for (const name of ["symbol", "symbol-dark"]) {
+  const image = await sharp(Buffer.from(svgs[`${name}.svg`]!), { density: (72 * SYMBOL_PNG) / 32 })
+    .resize(SYMBOL_PNG, SYMBOL_PNG)
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+  writeFileSync(`${BRAND}${name}.png`, image);
+}
+
 // Imagen para compartir en redes, una por idioma (1200×630).
 for (const locale of ["es", "en"] as const) {
   writeFileSync(`${BRAND}og-${locale}.png`, await ogImagePng(locale));
 }
 
-console.log(`Archivos de marca generados: ${Object.keys(svgs).length} SVG, 2 PNG, 2 imágenes para redes y favicon.ico`);
+console.log(`Archivos de marca generados: ${Object.keys(svgs).length} SVG, 4 PNG, 2 imágenes para redes y favicon.ico`);
