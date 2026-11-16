@@ -11,7 +11,7 @@ Home pública de lanzamiento de **Confia.ing**, consultoría de transformación 
 flowchart LR
     F1["Fase 1<br/>Requerimientos"]:::done --> F2["Fase 2<br/>Stack, C4, ADRs,<br/>estructura"]:::done
     F2 --> F3["Fase 3<br/>3 propuestas visuales<br/>+ backlog"]:::done
-    F3 --> F4["Fase 4<br/>Desarrollo SDD + TDD,<br/>code review, v1"]:::now
+    F3 --> F4["Fase 4<br/>Desarrollo SDD + TDD,<br/>code review, v1"]:::done
     classDef now fill:#1f6feb,color:#fff,stroke:#1f6feb
     classDef done fill:#2da44e,color:#fff,stroke:#2da44e
 ```
@@ -21,7 +21,7 @@ flowchart LR
 | 1. Requerimientos | Análisis del PRD, entrevista, este README | Aprobada 2026-11-13 |
 | 2. Arquitectura | Propuesta de stack, diagrama C4, componentes, ADRs, estructura de ficheros | Aprobada 2026-11-13 |
 | 3. Diseño | Propuestas visuales, diseño finalista, logo, `BACKLOG.md` | Cerrada 2026-11-14 |
-| 4. Implementación | `CLAUDE.md`, `config.yaml` de OpenSpec, código por lotes, pruebas, code review, subida de v1 | En curso |
+| 4. Implementación | `CLAUDE.md`, `config.yaml` de OpenSpec, código por lotes, pruebas, code review, subida de v1 | v1 en producción 2026-11-16 |
 
 ## Qué construimos
 
@@ -249,6 +249,48 @@ Los pasos están en [docs/setup.md](docs/setup.md): abrir Docker, `supabase logi
 Desarrollo usa Supabase local en Docker; producción usa `confiahomeDB`.
 
 Las claves van en `.env.development.local` (desarrollo) y `.env.prod` (producción), ambos ignorados por git, con `.env.example` como plantilla documentada. `.env` no contiene secretos. La publishable key de Supabase es pública por diseño; las secretas nunca se suben.
+
+## Cómo se construyó: desarrollo agéntico
+
+La v1 la construyó un agente de programación (Claude Code) trabajando con el fundador: el fundador decidió producto, diseño y cada paso a producción; el agente propuso, implementó, probó y documentó. Esta sección resume las herramientas y las prácticas de ciclo de vida (AI-SDLC) que lo hicieron posible, para repetirlas en otros proyectos.
+
+### Stack agéntico
+
+| Pieza | Para qué se usó |
+|---|---|
+| **Claude Code** (app de escritorio) | Agente principal: lee y edita el repositorio, ejecuta comandos y pruebas, abre el navegador integrado para revisar la página |
+| **Modelos Claude** | Claude Fable 5.2 en casi todo el desarrollo; Claude Opus 5.5 desde el cierre de la v1, al agotarse el cupo semanal de Fable |
+| **Subagentes** | Revisores independientes de código y de seguridad al cierre de cada lote: reciben el código, no las conclusiones del agente principal |
+| **[OpenSpec](openspec/config.yaml)** | Desarrollo guiado por especificaciones: comandos `/opsx:propose`, `/opsx:apply`, `/opsx:verify`, `/opsx:archive` (en [.claude/](.claude/)) |
+| **[CLAUDE.md](CLAUDE.md)** | Guion de incorporación del agente: rol, método, estructura, dependencias permitidas, reglas rojas y trampas conocidas |
+| **CLI con sesión del fundador** | `gh` (GitHub y CI), `wrangler` (Cloudflare), `supabase` (migraciones); las credenciales nunca pasan por el chat |
+| **Navegador integrado y Playwright** | Comprobación visual en Chromium y WebKit, pruebas E2E y verificación de producción |
+
+### Skills
+
+Un skill es un paquete de instrucciones que el agente carga para un tipo de tarea. Los que guiaron este proyecto:
+
+| Área | Skills | Aporte |
+|---|---|---|
+| Proceso | `superpowers:test-driven-development`, `superpowers:verification-before-completion`, `superpowers:systematic-debugging` | Prueba antes que código; nada se da por hecho sin ver la salida; los fallos se diagnostican antes de arreglarse |
+| Especificación | `openspec-propose`, `openspec-apply-change`, `openspec-verify-change` | Propuesta, specs, diseño y tareas antes de cada lote |
+| Código | `mattpocock-skills:tdd`, `mattpocock-skills:codebase-design`, `architecture` | Arquitectura hexagonal, módulos con fronteras claras, ADRs con alternativas reales |
+| Interfaz | `emil-design-eng`, `animate`, `mobile-native`, `3d-web-experience` | Detalle de interacción, movimiento con propósito, ajustes para móvil y la escena 3D |
+| Revisión | `fullstack-dev-skills:code-reviewer`, `security-audit` (de Cloudflare) | Revisión de cada lote y auditoría de seguridad antes del lanzamiento ([informe](docs/security/audit-v1.md)) |
+
+### Buenas prácticas de AI-SDLC
+
+1. **Fases con aprobación humana.** Requerimientos → arquitectura → diseño → implementación. Ninguna fase empezó sin que el fundador aprobara la anterior.
+2. **Lotes pequeños (L0 a L10).** Cada lote es un cambio de OpenSpec en [openspec/changes/](openspec/changes/), se cierra entero antes de abrir el siguiente y termina en un commit local.
+3. **Especificación antes que código (SDD).** Escenarios GIVEN/WHEN/THEN en [docs/escenarios.md](docs/escenarios.md); el fundador aprueba la propuesta antes de implementar.
+4. **Prueba antes que implementación (TDD).** Cada escenario automático se escribe y se ve fallar primero. Pirámide: unitario, integración (nivel principal), contrato contra Supabase local y E2E, también contra el runtime real de Workers.
+5. **Una puerta de cierre única.** `lint`, `typecheck`, `test`, `e2e`, `e2e:preview`, `build:worker` y `measure:js` en verde y con la salida a la vista. La CI de GitHub repite la misma puerta ([ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md)).
+6. **Verificar antes de afirmar.** «Hecho» significa comando ejecutado y salida vista; lo no comprobado se declara. La evidencia de cada lote queda en su `tasks.md`.
+7. **Revisión independiente.** Un subagente revisa sin el razonamiento del autor, lo que evita confirmar sesgos. Sus hallazgos se corrigen o se aceptan por escrito.
+8. **Reglas rojas para el agente.** Lo que invalida el trabajo aunque las pruebas pasen: secretos fuera del código y del chat, nada de Supabase desde el navegador, nada de datos inventados, ni `push` ni despliegue sin orden expresa del fundador.
+9. **Decisiones trazables.** Cada decisión con alternativas reales es un [ADR](docs/architecture/adr/); README y BACKLOG se actualizan al cerrar cada lote.
+10. **Producción medida, no supuesta.** Tras cada despliegue, un verificador de solo lectura (`npm run verify:site`) y pruebas en navegadores reales. Así se detectaron y corrigieron dos fallos que no aparecían en local.
+11. **Gestión del contexto y del cupo.** Pausas seguras con una nota «Para reanudar» en el `tasks.md` del lote, para compactar el contexto o cambiar de modelo sin perder el estado.
 
 ## Documentos
 
