@@ -123,3 +123,19 @@ describe("redirección a HTTPS", () => {
     expect(httpsRedirect("http://confia.ing/es", visitor)).toBeNull();
   });
 });
+
+// security-headers · Una respuesta «no modificado» no puede cambiar la política de la página guardada
+describe("respuesta 304", () => {
+  it("no lleva política de contenido: el navegador conserva la de la página que ya tiene", () => {
+    const headers = securityHeaders({ html: false, notModified: true });
+    expect(headers).not.toHaveProperty("Content-Security-Policy");
+    expect(headers).not.toHaveProperty("X-Frame-Options");
+    expect(headers["Strict-Transport-Security"]).toBe("max-age=31536000; includeSubDomains");
+    expect(headers["X-Content-Type-Options"]).toBe("nosniff");
+  });
+
+  it("la política de permisos solo nombra funciones que los navegadores reconocen", () => {
+    expect(securityHeaders({ html: false })["Permissions-Policy"]).toBe("camera=(), microphone=(), geolocation=(), payment=(), usb=()");
+  });
+});
+

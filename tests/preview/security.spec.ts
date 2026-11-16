@@ -232,3 +232,30 @@ test("el disparo programado se ejecuta sin error", async ({ request }) => {
   const response = await request.get("/cdn-cgi/handler/scheduled");
   expect(response.status()).toBe(200);
 });
+
+// Fallo real en producción (2026-11-16): al recargar, el 304 llevaba la política de lo que no
+// es HTML y el navegador la aplicaba a la página guardada, que quedaba sin estilos ni scripts.
+test("recargar la página no la rompe: sigue activa, con estilos y sin infracciones", async ({ page }) => {
+  const violations = await watchViolations(page);
+  await page.goto("/es");
+  await page.waitForFunction(() => document.querySelector("[data-agenda-panel]")?.hasAttribute("data-hydrated"));
+  for (let round = 0; round < 2; round += 1) {
+    await page.reload();
+    await page.waitForFunction(() => document.querySelector("[data-agenda-panel]")?.hasAttribute("data-hydrated"));
+    const styled = await page.evaluate(() => getComputedStyle(document.querySelector("h1")!).fontFamily.toLowerCase().includes("fraunces"));
+    expect(styled).toBe(true);
+  }
+  expect(violations).toEqual([]);
+});
+
+test("una respuesta «no modificado» no trae la política de los archivos que no son páginas", async ({ request }) => {
+  const first = await request.get("/es");
+  const etag = first.headers()["etag"];
+  test.skip(!etag, "el servidor no envía ETag en esta página");
+  const second = await request.get("/es", { headers: { "if-none-match": etag! } });
+  expect([200, 304]).toContain(second.status());
+  const policy = second.headers()["content-security-policy"];
+  if (second.status() === 304) expect(policy).toBeUndefined();
+  else expect(policy).toContain("script-src");
+});
+

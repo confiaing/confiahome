@@ -36,8 +36,8 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 - [x] 5.1 Revisión de lo que se publica: archivos versionados, historial completo, claves y datos personales (repository-and-ci: Lo que se sube). Verificación: resultado anotado aquí.
 - [x] 5.2 Pruebas en rojo y `.github/workflows/ci.yml` con la puerta de cierre; prueba que compara sus comandos con los de `CLAUDE.md` (Comprobaciones automáticas en cada cambio). Verificación: `npm test` en verde.
 - [x] 5.3 Escribir el ADR-0017. Verificación: enlazado desde README y arquitectura.
-- [ ] 5.4 **[orden]** `git push -u origin main`. Verificación: `main` en GitHub coincide con el local.
-- [ ] 5.5 Primera ejecución de la CI en verde; corregir lo que solo falle allí. Verificación: enlace a la ejecución anotado aquí.
+- [x] 5.4 **[orden]** `git push -u origin main`. Verificación: `main` en GitHub coincide con el local.
+- [x] 5.5 Primera ejecución de la CI en verde; corregir lo que solo falle allí. Verificación: enlace a la ejecución anotado aquí.
 - [ ] 5.6 **[orden]** Protección de `main` exigiendo la CI. Verificación: consulta de la protección anotada aquí.
 
 ## 6. Cierre de la v1 (L10-5)
@@ -147,7 +147,23 @@ Desviación de TDD: las pruebas de estas dos mejoras se escribieron antes que el
 
 **Pasa a la v1.1** (lista en BACKLOG): tareas 4.1, 5.6 y 6.4, y la reescritura completa del README de 6.1 (hoy solo se actualizó su estado). La 3.7 se comprueba al día siguiente: registro `maintenance.done` tras las 08:17 UTC.
 
-Estado: sitio en vivo en `https://confia.ing`. Falta redesplegar con la redirección, la consulta real de prueba y la subida a GitHub.
+**GitHub y CI (5.4, 5.5).** Primer `git push` con la orden del fundador: 18 commits, sin claves ni direcciones personales. Primera CI: contrato y E2E contra Workers en verde; calidad y E2E en rojo por dos diferencias reales con Linux:
+
+- La fuente de respaldo de los títulos solo nombraba Times New Roman, que no existe en Linux: CLS de 0,111 al cargar las fuentes. Añadidas Liberation Serif, Tinos y Nimbus Roman.
+- La prueba de la imagen para redes comparaba bytes; ahora compara píxeles.
+
+Segunda CI (commit `98fcb70`): **los cuatro trabajos en verde.**
+
+**Dos fallos en producción, encontrados el 2026-11-16 tras el lanzamiento.**
+
+1. *Página rota al recargar* (lo vio el fundador: sin estilos ni scripts). Una respuesta 304 «no modificado» llevaba la política de contenido de lo que no es HTML (`default-src 'none'`), y el navegador la aplica a la página guardada. Fallo mío en `worker/index.ts` desde L9; las pruebas no recargaban. Corregido: un 304 no lleva política. Pruebas nuevas: unitaria, y dos contra Workers (recargar dos veces y petición condicional).
+2. *Errores 500 intermitentes* en `/es` y `/en` (entre 2 y 4 de cada 16 peticiones). Registro del Worker: «This promise was created by a request that has since ended…». Las páginas se volvían a renderizar en cada visita (`x-nextjs-cache: MISS`, hasta 467 ms de CPU) y el render simultáneo comparte trabajo entre peticiones, que el runtime ya no permite. **No se reproduce en local** ni con 80 peticiones a 16 simultáneas. Corregido en `open-next.config.ts` con la caché de páginas prerenderizadas de OpenNext (`staticAssetsIncrementalCache`): en local las cuatro páginas pasan a `HIT`.
+
+De paso: `Permissions-Policy` nombraba `browsing-topics`, que Chrome no reconoce.
+
+Local con ambos arreglos: `test` 1031 · `e2e:preview` 35. **Sin desplegar:** el despliegue necesita la orden del fundador. Que el arreglo del punto 2 elimina los 500 solo se podrá confirmar en producción.
+
+Estado: sitio en vivo en `https://confia.ing`, con los dos fallos anteriores todavía presentes. Falta redesplegar con la redirección, la consulta real de prueba y la subida a GitHub.
 
 ## Workflow follow-up
 

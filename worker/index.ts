@@ -34,7 +34,7 @@ const worker = {
     if (secure) return new Response(null, { status: 301, headers: { Location: secure, ...securityHeaders({ html: false }) } });
 
     const response: Response = await (openNext as { fetch(request: Request, env: Env, ctx: Context): Promise<Response> }).fetch(request, env, ctx);
-    if (!isHtml(response)) return withHeaders(response, securityHeaders({ html: false }));
+    if (!isHtml(response)) return withHeaders(response, securityHeaders({ html: false, notModified: response.status === 304 }));
 
     // Cada respuesta HTML lleva un código nuevo: la política de contenido solo deja
     // ejecutar los scripts que lo llevan, y aquí se le pone a los que vienen en la página.

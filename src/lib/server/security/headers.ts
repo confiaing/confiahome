@@ -34,7 +34,7 @@ export function contentSecurityPolicy(nonce: string): string {
   ].join("; ");
 }
 
-type Options = { html: true; nonce?: string } | { html: false };
+type Options = { html: true; nonce?: string } | { html: false; /** Respuesta 304: sin cuerpo, sus cabeceras se aplican a la copia guardada. */ notModified?: boolean };
 
 /** Cabeceras de una respuesta. El HTML lleva la política completa, con su código. */
 export function securityHeaders(options: Options): Record<string, string> {
@@ -45,8 +45,12 @@ export function securityHeaders(options: Options): Record<string, string> {
     "X-Content-Type-Options": "nosniff",
     // Dentro del sitio viaja la ruta (el cambio de idioma la necesita, ADR-0012); hacia fuera, solo el origen.
     "Referrer-Policy": "strict-origin-when-cross-origin",
-    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
   };
+  // Un 304 no trae página: el navegador aplica sus cabeceras a la que tiene guardada. Si
+  // llevara la política de «lo que no es HTML», la página guardada se quedaría sin estilos
+  // ni scripts. Sin política aquí, conserva la suya, con el código que ya llevan sus scripts.
+  if (!options.html && options.notModified) return common;
   if (!options.html) {
     // JSON, texto o XML: nada que cargar ni dónde incrustarse.
     return { ...common, "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'" };
