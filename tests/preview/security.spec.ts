@@ -26,7 +26,7 @@ for (const path of HTML_PAGES) {
     const response = await request.get(path);
     const headers = response.headers();
     expect(headers["content-type"]).toContain("text/html");
-    expect(headers["strict-transport-security"]).toBe("max-age=31536000");
+    expect(headers["strict-transport-security"]).toBe("max-age=31536000; includeSubDomains");
     expect(headers["x-content-type-options"]).toBe("nosniff");
     expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
     expect(headers["permissions-policy"]).toContain("camera=()");
@@ -65,7 +65,7 @@ test("lo que no es HTML también va protegido", async ({ request }) => {
   expect(responses.api.status()).toBe(400);
   for (const [name, response] of Object.entries(responses)) {
     const headers = response.headers();
-    expect(headers["strict-transport-security"], name).toBe("max-age=31536000");
+    expect(headers["strict-transport-security"], name).toBe("max-age=31536000; includeSubDomains");
     expect(headers["x-content-type-options"], name).toBe("nosniff");
     expect(headers["x-powered-by"], name).toBeUndefined();
   }

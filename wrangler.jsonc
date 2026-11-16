@@ -11,7 +11,11 @@
     "binding": "ASSETS"
   },
   // Producción usa servicios reales de forma explícita. En local, .dev.vars lo cambia a memory.
-  "vars": { "SERVICES": "real" },
+  // Solo lo que no es secreto ni propio de producción. Con `wrangler secret put` se cargan las
+  // claves (SUPABASE_SECRET_KEY, TURNSTILE_SECRET_KEY), la dirección de aviso (NOTIFY_TO, un
+  // buzón personal) y la dirección de la base (SUPABASE_URL): el preview local lee este
+  // archivo y nunca debe poder apuntar a la base de producción.
+  "vars": { "SERVICES": "real", "NOTIFY_FROM": "web@confia.ing" },
   // Aviso al equipo de cada consulta (ADR-0003). Solo envía a direcciones verificadas en Email Routing.
   "send_email": [{ "name": "SEND_EMAIL" }],
   // Antispam: 5 consultas por minuto y origen (ADR-0006).

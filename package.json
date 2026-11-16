@@ -17,6 +17,9 @@
     "e2e:preview": "playwright test --config playwright.preview.config.ts",
     "measure:js": "node scripts/measure-initial-js.ts",
     "build:worker": "opennextjs-cloudflare build && node scripts/check-worker-env.ts && node scripts/check-worker-size.ts",
+    "release:check": "node scripts/release.ts --check",
+    "release": "node scripts/release.ts",
+    "verify:site": "node scripts/verify-production.ts",
     "brand:build": "node scripts/build-brand-assets.ts",
     "content:doc": "node scripts/build-content-doc.ts"
   },

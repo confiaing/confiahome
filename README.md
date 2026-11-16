@@ -140,6 +140,7 @@ flowchart LR
 | [ADR-0014](docs/architecture/adr/0014-supabase-por-postgrest-sin-sdk.md) | Supabase se usa por PostgREST con `fetch`, sin SDK: el Worker no crece |
 | [ADR-0015](docs/architecture/adr/0015-agenda-en-su-bloque-con-el-widget-de-calendly.md) | La agenda se carga en su bloque, con el widget de Calendly y solo a petición |
 | [ADR-0016](docs/architecture/adr/0016-entrada-propia-del-worker-cabeceras-y-tarea-diaria.md) | Entrada propia del Worker: cabeceras de seguridad con CSP por código de un solo uso, y tarea diaria |
+| [ADR-0017](docs/architecture/adr/0017-integracion-continua-y-despliegue.md) | CI en GitHub Actions con la puerta de cierre y sin secretos; el despliegue sigue siendo manual |
 
 Detalle: [C4, componentes, datos y seguridad](docs/architecture/README.md) · [estructura de ficheros](docs/architecture/estructura.md).
 
@@ -259,6 +260,7 @@ Las claves van en `.env.development.local` (desarrollo) y `.env.prod` (producci�
 | [BACKLOG.md](BACKLOG.md) | Backlog por lotes |
 | [docs/escenarios.md](docs/escenarios.md) | Escenarios GIVEN/WHEN/THEN de cada ítem del backlog: la guía de las pruebas |
 | [docs/setup.md](docs/setup.md) | Guía de accesos: Supabase, Cloudflare, correo |
+| [docs/operations.md](docs/operations.md) | Operación: desplegar, volver atrás, secretos, consultas, tarea diaria |
 | [docs/content/home.md](docs/content/home.md) | Texto de la home en español e inglés, para revisión editorial |
 | [docs/brand/README.md](docs/brand/README.md) | Ficha de marca: paleta, temas, tipografía, logo e imagen |
 | [docs/design/](docs/design/contenido-base.md) | Contenido base, propuestas visuales, diseño finalista y logo |

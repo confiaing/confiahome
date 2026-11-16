@@ -39,8 +39,9 @@ type Options = { html: true; nonce?: string } | { html: false };
 /** Cabeceras de una respuesta. El HTML lleva la política completa, con su código. */
 export function securityHeaders(options: Options): Record<string, string> {
   const common = {
-    // Un año. Sin subdominios ni precarga hasta que el fundador confirme que todo el dominio va por HTTPS.
-    "Strict-Transport-Security": "max-age=31536000",
+    // Un año, con subdominios: todo confia.ing va por HTTPS (confirmado por el fundador).
+    // Sin precarga: es un compromiso aparte, difícil de deshacer.
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
     "X-Content-Type-Options": "nosniff",
     // Dentro del sitio viaja la ruta (el cambio de idioma la necesita, ADR-0012); hacia fuera, solo el origen.
     "Referrer-Policy": "strict-origin-when-cross-origin",

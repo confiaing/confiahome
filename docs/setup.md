@@ -103,7 +103,8 @@ El formulario de consulta (L5) está hecho y probado contra la base local y las 
 | Regla de frecuencia para `/api/events` | En Cloudflare, como segunda barrera frente a un abuso desde muchas IP |
 | Confirmar HTTPS en todo el dominio | Para decidir si HSTS incluye subdominios |
 | Token de Web Analytics en el build | `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` en el entorno al construir |
-| Cargar los secretos en el Worker | `wrangler secret put` para `SUPABASE_SECRET_KEY` y `TURNSTILE_SECRET_KEY`; `SUPABASE_URL`, `NOTIFY_FROM`, `NOTIFY_TO` y `SERVICES=real` como variables |
+| Cargar los secretos en el Worker | `wrangler secret put` para `SUPABASE_SECRET_KEY`, `TURNSTILE_SECRET_KEY`, `SUPABASE_URL` y `NOTIFY_TO`. `SERVICES` y `NOTIFY_FROM` ya están en `wrangler.jsonc` |
+| Comprobar el entorno antes de construir | `npm run release:check`; construir con `npm run release` |
 | Site key de Turnstile en el build | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` en el entorno al construir |
 | Remitente y destino del aviso | `NOTIFY_FROM` debe ser una dirección de `confia.ing`; `NOTIFY_TO`, la verificada en el paso 7 |
 

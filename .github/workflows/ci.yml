@@ -1,0 +1,91 @@
+# Integración continua (ADR-0017). Misma puerta de cierre que en local (CLAUDE.md).
+# Sin secretos y sin despliegue: el despliegue es manual desde la máquina del fundador.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Una ejecución nueva de la misma rama cancela la anterior.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Lint, tipos, pruebas unitarias y de integración, build del Worker y JS inicial.
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build:worker
+      - run: npm run measure:js
+
+  # Adaptadores contra Supabase local (el runner trae Docker).
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - run: npx supabase start
+      - run: npm run test:contract
+      - name: Detener Supabase
+        if: always()
+        run: npx supabase stop
+
+  # Pruebas de extremo a extremo contra el build de producción, con servicios en memoria.
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run e2e
+      - name: Subir resultados si falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results
+          path: test-results/
+          if-no-files-found: ignore
+
+  # Pruebas en el runtime real de Workers (cabeceras y CSP). Necesita .dev.vars, que no se versiona.
+  e2e-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - name: Crear .dev.vars con servicios en memoria
+        run: echo "SERVICES=memory" > .dev.vars
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run e2e:preview
+      - name: Subir resultados si falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-preview-test-results
+          path: test-results/
+          if-no-files-found: ignore

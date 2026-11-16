@@ -68,9 +68,11 @@ describe("cabeceras", () => {
   const html = securityHeaders({ html: true, nonce: NONCE });
   const other = securityHeaders({ html: false });
 
-  it("toda respuesta lleva HSTS de un año sin subdominios ni precarga, nosniff, política de referente y de permisos", () => {
+  it("toda respuesta lleva HSTS de un año con subdominios y sin precarga, nosniff, política de referente y de permisos", () => {
     for (const headers of [html, other]) {
-      expect(headers["Strict-Transport-Security"]).toBe("max-age=31536000");
+      // El fundador confirmó el 2026-11-14 que todo el dominio va por HTTPS. La precarga es
+      // un compromiso aparte, difícil de deshacer: no se pide.
+      expect(headers["Strict-Transport-Security"]).toBe("max-age=31536000; includeSubDomains");
       expect(headers["X-Content-Type-Options"]).toBe("nosniff");
       expect(headers["Referrer-Policy"]).toBe("strict-origin-when-cross-origin");
       expect(headers["Permissions-Policy"]).toMatch(/camera=\(\)/);

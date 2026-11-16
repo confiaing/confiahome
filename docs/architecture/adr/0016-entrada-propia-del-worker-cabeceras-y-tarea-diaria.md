@@ -42,7 +42,7 @@ Se hizo una prueba de concepto antes de decidir.
 
   **Si una página llega a renderizar contenido de usuarios, o esa prueba falla tras actualizar Next.js, esta decisión se revisa.** La política sí frena lo que se inserte en el navegador, los manejadores en línea y cualquier origen no declarado; hay una prueba de cada caso.
 - Sin `upgrade-insecure-requests`: la página no pide nada por HTTP y HSTS ya obliga a HTTPS; con la directiva, WebKit dejaba de cargar los scripts del sitio servido en local.
-- HSTS de un año, **sin subdominios ni precarga** hasta que el fundador confirme que todo el dominio va por HTTPS.
+- HSTS de un año **con subdominios**: el fundador confirmó el 2026-11-14 que todo `confia.ing` va por HTTPS. Sin precarga, que es un compromiso aparte y difícil de deshacer.
 - Añadir un tercero (otro proveedor de vídeo, de mapas, de analítica) exige declararlo en `src/lib/server/security/headers.ts`; si no, el navegador lo bloquea.
 - Las cabeceras y la tarea diaria solo existen en el runtime de Workers. `npm run e2e` (contra `next start`) no las ve: se prueban con `npm run e2e:preview`, que pasa a formar parte de la puerta de cierre.
 - La tarea diaria lee del entorno solo la dirección y la clave de Supabase, sin la validación completa del servidor: no depende de que estén el antispam o el correo, y la entrada del Worker no crece.

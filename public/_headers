@@ -1,7 +1,7 @@
 # Cabeceras de los archivos estáticos. Los sirve Cloudflare sin pasar por el Worker,
 # así que las de src/lib/server/security/headers.ts no les llegan: van aquí.
 /*
-  Strict-Transport-Security: max-age=31536000
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
