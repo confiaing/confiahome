@@ -48,6 +48,8 @@ ADR-0017 (CI sin secretos; comprobación continua de producción). No lo contrad
 
 ## Decisión del fundador
 
+**Decidido el 2026-11-16: sí, también a los administradores** (`enforce_admins: true`).
+
 **¿La protección se aplica también a los administradores?**
 
 - **Sí (recomendado):** nadie, ni tú, empuja directo a `main`; todo pasa por pull request con la CI en verde.

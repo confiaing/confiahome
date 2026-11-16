@@ -11,7 +11,7 @@ Empieza cuando L11 esté archivado (mañana, tras la tarea 3.3 de L11).
 
 - [ ] 2.1 `.github/workflows/verify-production.yml` (diseño, decisión 3). Verificación: pruebas en verde.
 - [ ] 2.2 `.github/dependabot.yml` y `.github/workflows/audit.yml` (decisión 4). Verificación: pruebas en verde.
-- [ ] 2.3 `.github/branch-protection.json` con `enforce_admins` según la decisión del fundador. Verificación: pruebas en verde.
+- [ ] 2.3 `.github/branch-protection.json` con `enforce_admins: true` (decisión del fundador). Verificación: pruebas en verde.
 
 ## 3. Documentación
 
@@ -30,6 +30,6 @@ Empieza cuando L11 esté archivado (mañana, tras la tarea 3.3 de L11).
 - [ ] 4.2 Puerta de cierre completa. Verificación: salida a la vista.
 - [ ] 4.3 BACKLOG (L12 ✅) y commit en la rama. **[orden]** Push de la rama y pull request. Verificación: CI del pull request en verde, con enlace.
 - [ ] 4.4 **[orden]** Aplicar la protección con `gh api`. Verificación: la consulta de la protección muestra los cuatro trabajos, el pull request obligatorio y la rama al día.
-- [ ] 4.5 Probar la protección: un push directo a `main` se rechaza (si aplica a administradores). Verificación: mensaje de rechazo anotado.
+- [ ] 4.5 Probar la protección: un push directo a `main` se rechaza, también para el fundador. Verificación: mensaje de rechazo anotado.
 - [ ] 4.6 **[orden]** Fundir el pull request de L12 y archivar el cambio en `main`. Verificación: `main` contiene L12 y `openspec list` sin L12.
 - [ ] 4.7 **[orden]** Lanzar a demanda `verify-production.yml` y `audit.yml`. Verificación: enlaces a las ejecuciones; hallazgos de la auditoría corregidos o aceptados.

@@ -7,7 +7,7 @@ Define qué se publica en el repositorio de GitHub y qué comprobaciones automá
 ## MODIFIED Requirements
 
 ### Requirement: Rama principal protegida
-La rama principal MUST exigir que las comprobaciones pasen antes de aceptar un cambio. Un cambio MUST llegar por pull request con los cuatro trabajos de la CI en verde y la rama al día con `main`; no MUST poder forzarse su historial ni borrarse. La regla MUST aplicarse según la decisión del fundador sobre los administradores.
+La rama principal MUST exigir que las comprobaciones pasen antes de aceptar un cambio. Un cambio MUST llegar por pull request con los cuatro trabajos de la CI en verde y la rama al día con `main`; no MUST poder forzarse su historial ni borrarse. La regla MUST aplicarse también a los administradores, por decisión del fundador.
 
 #### Scenario: Protección activa (M)
 - **GIVEN** el repositorio en GitHub
@@ -19,7 +19,7 @@ La rama principal MUST exigir que las comprobaciones pasen antes de aceptar un c
 #### Scenario: Un push directo se rechaza (M)
 - **GIVEN** la protección activa
 - **WHEN** se intenta empujar un commit directamente a `main`
-- **THEN** GitHub lo rechaza, salvo que el fundador haya decidido eximir a los administradores
+- **THEN** GitHub lo rechaza, también si quien empuja es administrador
 
 #### Scenario: Un pull request en rojo no se funde (M)
 - **GIVEN** un pull request con alguno de los cuatro trabajos en rojo

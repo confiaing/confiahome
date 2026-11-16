@@ -16,7 +16,7 @@ Contenido del JSON:
 
 - `required_status_checks`: `strict: true` y los contextos `quality`, `contract`, `e2e` y `e2e-preview`;
 - `required_pull_request_reviews` con 0 aprobaciones (el fundador es el único revisor);
-- `enforce_admins` según la decisión del fundador;
+- `enforce_admins: true`: decisión del fundador del 2026-11-16;
 - sin forzar historial ni borrar la rama.
 
 El JSON vive en `.github/branch-protection.json`, para que se pueda revisar y volver a aplicar. La CLI de `gh` no tiene un comando propio para esto.
