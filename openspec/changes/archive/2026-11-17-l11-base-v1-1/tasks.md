@@ -94,7 +94,7 @@
     - en verde: `lint`, `typecheck`, `e2e` (371), `e2e:preview` (35), `build:worker` (1190 KiB) y `measure:js` (164,6 kB);
     - `test`: 1069 pasan y 3 fallan, las de L10 sin archivar.
   - **Revisión:** `aitmpl-code-reviewer`, nivel `medium`, en un subagente independiente sobre el commit `6e5717b`. Sin hallazgos. Un detalle menor, el comentario de cabecera de `scene-svg.tsx` que solo nombraba `globals.css`, se corrigió.
-  - **Pendiente:** el despliegue, con la orden del fundador.
+  - **Despliegue:** 2026-11-17, con la orden del fundador, desde `9205124` (CI 44147173678 en verde). `release:check` y `release` en verde (Worker de 1190,1 KiB comprimido). `wrangler deploy`: versión `59ceb42c-086b-4eef-b493-dfdae9dad711`. `verify:site` contra https://confia.ing: 21 de 21 en verde. En Chromium, con la CSP real: las caras llevan `fill="var(--face-left)"`, la versión ligera se pinta con su paleta (sin bloques negros) y la consola no muestra errores.
 
 ## 5. Cierre
 
