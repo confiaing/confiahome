@@ -43,6 +43,14 @@ describe("CLAUDE.md", () => {
     expect(howWeWork).toMatch(/README\.md#revisión-de-código-antes-de-subir-cambios/);
   });
 
+  it("describe el flujo por rama: lote/<nombre>, pull request con la CI en verde y fusión (L12)", () => {
+    expect(howWeWork).toMatch(/`lote\/<nombre>`/);
+    expect(howWeWork).toMatch(/rechaza el push directo, también del fundador/);
+    expect(howWeWork).toMatch(/se funde en `main`/);
+    // Con main protegida, cerrar un lote ya no es un commit en main.
+    expect(howWeWork).not.toMatch(/uno local al cerrar cada lote/);
+  });
+
   it("describe la v1.1: v1 en producción y lotes L11 a L16", () => {
     expect(claude).toMatch(/v1 en producción/);
     expect(claude).toMatch(/L11 a L16/);

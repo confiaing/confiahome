@@ -300,7 +300,9 @@ Decidido el 2026-11-16 (decisión D1 de la v1.1): no hay revisión automática d
 2. Ejecutar `/code-review` en Claude Code sobre el cambio.
 3. Corregir los hallazgos, o anotar en el `tasks.md` del lote por qué se aceptan.
 4. Repetir la puerta de cierre si hubo correcciones.
-5. Solo entonces hacer `push` o abrir el pull request, con la orden del fundador. La CI de GitHub repite la puerta de cierre, pero no sustituye a la revisión.
+5. Solo entonces hacer `push` de la rama y abrir el pull request, con la orden del fundador. La CI de GitHub repite la puerta de cierre, pero no sustituye a la revisión.
+
+**Flujo por rama** (desde L12): cada lote se trabaja en una rama `lote/<nombre>` creada desde `main` y entra por pull request. `main` está protegida: exige `quality`, `contract`, `e2e` y `e2e-preview` en verde y la rama al día, no admite push directo (tampoco del fundador) y no se puede forzar ni borrar. Con la CI en verde, el fundador funde el pull request. Detalle y urgencias en [docs/operations.md](docs/operations.md#protección-de-main).
 
 **Profundidad según el riesgo** (decidido el 2026-11-16):
 

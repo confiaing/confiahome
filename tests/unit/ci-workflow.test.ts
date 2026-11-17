@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { FORBIDDEN_IN_WORKFLOWS } from "./helpers/workflow-rules";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const workflow = readFileSync(`${ROOT}.github/workflows/ci.yml`, "utf8");
@@ -29,7 +30,7 @@ describe("integración continua", () => {
     expect(workflow).toMatch(/npm run test:contract\b/);
   });
 
-  it.each(["secrets.", "wrangler deploy", "supabase db push", "git push"])("no contiene %s", (forbidden) => {
+  it.each(FORBIDDEN_IN_WORKFLOWS)("no contiene %s", (forbidden) => {
     expect(workflow).not.toContain(forbidden);
   });
 
