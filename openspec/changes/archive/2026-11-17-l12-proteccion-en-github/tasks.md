@@ -46,11 +46,24 @@ Propuesta aprobada por el fundador el 2026-11-16. Empieza cuando L11 esté archi
   *Hecho, 2026-11-17, tras las correcciones de la revisión.* `lint` 0 · `typecheck` 0 · `test` 1104 de 1104 (60 archivos) · `e2e` 371 en verde (23 omitidas, las de siempre) · `e2e:preview` 35 en verde · `build:worker` 1190,0 KiB de 3072 · `measure:js` 164,6 kB de 200. La primera pasada falló en `lint` (8 `any` en la prueba nueva), y se corrigió antes de esta.
 
   **Orden de cierre, ajustado en la revisión:** commit en la rama → **[orden]** push y pull request → 4.4 y 4.5 → archivo del cambio y BACKLOG en la misma rama → **[orden]** fusión. La evidencia de la 4.7, posterior a la fusión, se anota en el lote siguiente.
-- [ ] 4.3 BACKLOG (L12 ✅), archivo del cambio en OpenSpec y commit, todo en la rama: con `main` protegida, el archivo no puede ir después en un push a `main`. **[orden]** Push de la rama y pull request. Verificación: CI del pull request en verde, con enlace.
-- [ ] 4.4 **[orden]** Aplicar la protección con `gh api`. Verificación: la consulta de la protección muestra los cuatro trabajos, el pull request obligatorio y la rama al día.
-- [ ] 4.5 Probar la protección: un push directo a `main` se rechaza, también para el fundador. Verificación: mensaje de rechazo anotado.
-- [ ] 4.6 **[orden]** Fundir el pull request de L12, que ya lleva el cambio archivado. Verificación: `main` contiene L12 y `openspec list` sin L12.
-- [ ] 4.7 **[orden]** Lanzar a demanda `verify-production.yml` y `audit.yml`. Verificación: enlaces a las ejecuciones; hallazgos de la auditoría corregidos o aceptados.
+- [x] 4.3 BACKLOG (L12 ✅), archivo del cambio en OpenSpec y commit, todo en la rama: con `main` protegida, el archivo no puede ir después en un push a `main`. **[orden]** Push de la rama y pull request. Verificación: CI del pull request en verde, con enlace.
+
+  *Hecho en dos pull requests, 2026-11-17.* [confiaing/confiahome#1](https://github.com/confiaing/confiahome/pull/1), con el lote: CI en verde (`quality`, `contract`, `e2e`, `e2e-preview`). El fundador lo fundió (`4c2d5c7`) antes de las tareas 4.4 y 4.5, así que el archivo y el BACKLOG van en un segundo pull request desde `lote/l12-cierre`, el primero que pasa por la protección.
+- [x] 4.4 **[orden]** Aplicar la protección con `gh api`. Verificación: la consulta de la protección muestra los cuatro trabajos, el pull request obligatorio y la rama al día.
+
+  *Hecho, 2026-11-17, con la orden del fundador.* `gh api -X PUT …/branches/main/protection --input .github/branch-protection.json`. Consulta: `strict: true`, contextos `quality`, `contract`, `e2e`, `e2e-preview`, 0 aprobaciones (pull request obligatorio), `enforce_admins: true`, `allow_force_pushes: false`, `allow_deletions: false`.
+- [x] 4.5 Probar la protección: un push directo a `main` se rechaza, también para el fundador. Verificación: mensaje de rechazo anotado.
+
+  *Hecho, 2026-11-17.* Commit vacío empujado a `main` con la cuenta del fundador (administradora): `remote: error: GH006: Protected branch update failed for refs/heads/main. Changes must be made through a pull request. 4 of 4 required status checks are expected. ! [remote rejected] main -> main (protected branch hook declined)`. El commit se descartó en local; `main` sigue en `4c2d5c7` en local y en GitHub.
+- [x] 4.6 **[orden]** Fundir el pull request de L12, que ya lleva el cambio archivado. Verificación: `main` contiene L12 y `openspec list` sin L12.
+
+  *Hecho en dos pasos.* El fundador fundió el PR #1 el 2026-11-17 a las 22:15 UTC (`4c2d5c7`). Este cambio se archiva en el pull request de cierre: `openspec list` sin L12 en la rama `lote/l12-cierre`.
+- [x] 4.7 **[orden]** Lanzar a demanda `verify-production.yml` y `audit.yml`. Verificación: enlaces a las ejecuciones; hallazgos de la auditoría corregidos o aceptados.
+
+  *Hecho, 2026-11-17, con la orden del fundador.*
+  - **Vigilancia:** [ejecución 44188538700](https://github.com/confiaing/confiahome/actions/runs/44188538700), en verde, 21 de 21 comprobaciones.
+  - **Auditoría:** [ejecución 44188545207](https://github.com/confiaing/confiahome/actions/runs/44188545207), en rojo: 22 vulnerabilidades (7 moderadas, 15 altas), **todas en dependencias de desarrollo**. El origen de las altas es `picomatch` ≤ 4.0.7 (ReDoS), que no tiene versión corregida publicada (4.0.7 es la última), vía Vitest, Vite, ESLint y el build de OpenNext. `npm audit fix --force` proponía bajar Vitest, OpenNext y el plugin de Next. Las dependencias de producción dan 0 (`npm audit --omit=dev --audit-level=high` en local).
+  - **Decisión del fundador:** auditar solo producción. `audit.yml` pasa a `npm audit --omit=dev --audit-level=high`, con su prueba (en rojo antes del cambio), `design.md`, la spec del cambio y `docs/operations.md`. Las de desarrollo, aceptadas: las cubre Dependabot. La primera ejecución con la nueva orden se lanzará tras fundir el pull request de cierre.
 
 ## 5. Añadido por el fundador
 

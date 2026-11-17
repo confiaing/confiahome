@@ -51,7 +51,8 @@ Con la protección activa, cerrar un lote significa fundir su pull request, no h
   - Las versiones mayores llegan sueltas: suelen romper algo y conviene revisarlas una a una.
 - **`.github/workflows/audit.yml`:**
   - `schedule` semanal, `workflow_dispatch` y `pull_request` con filtro de rutas (`package.json`, `package-lock.json`);
-  - `npm audit --audit-level=high` tras `npm ci`;
+  - `npm audit --omit=dev --audit-level=high` tras `npm ci`: solo las dependencias de producción.
+    - *Cambiado el 2026-11-17, por decisión del fundador tras la primera ejecución.* La auditoría completa daba 22 avisos (15 altos), todos en herramientas de desarrollo, con origen en `picomatch` ≤ 4.0.7, que no tiene arreglo publicado. `npm audit fix --force` proponía bajar Vitest y OpenNext. Las dependencias de desarrollo las cubre Dependabot;
   - solo lectura.
   - No se añade a la puerta de cierre: depende de la red y de avisos ajenos al cambio.
 
