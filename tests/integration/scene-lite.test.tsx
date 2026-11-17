@@ -23,7 +23,18 @@ describe.each(KINDS)("ranura %s", (kind) => {
   it("no lleva ningún color literal: los pone el CSS desde los roles de la escena", () => {
     const { container } = render(<SceneSlot kind={kind} className="relative h-40" />);
     const html = container.innerHTML;
-    expect(html).not.toMatch(/#[0-9a-f]{3,8}\b(?!-)|rgb|hsl|fill=|stroke=|style=/i);
+    // Sin colores ni estilo en línea (la CSP bloquea `style=`).
+    expect(html).not.toMatch(/#[0-9a-f]{3,8}\b(?!-)|rgb|hsl|style=/i);
+    // Los atributos de pintura de las caras solo remiten a las variables de la escena:
+    // Chromium no aplica el CSS a las copias de <use> y los necesita.
+    const paint = ["fill", "stroke", "stroke-width", "stroke-dasharray", "opacity"];
+    for (const element of container.querySelectorAll("*")) {
+      for (const name of paint) {
+        const value = element.getAttribute(name);
+        if (value !== null) expect(value, `${element.tagName} ${name}`).toMatch(/^var\(--face-[a-z-]+\)$/);
+      }
+    }
+    for (const face of container.querySelectorAll("polygon")) expect(face.getAttribute("fill")).toBe(`var(--face-${face.getAttribute("data-face")})`);
     const tones = new Set([...container.querySelectorAll("[data-tone]")].map((box) => box.getAttribute("data-tone")));
     for (const tone of tones) expect(["stone", "alt", "dark", "accent"]).toContain(tone);
   });

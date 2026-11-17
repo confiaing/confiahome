@@ -178,6 +178,8 @@
   --face-opacity: 1;
 }
 
+/* Chromium no aplica estas reglas a las copias de <use>; allí pintan los atributos de
+   presentación de scene-svg.tsx, que apuntan a las mismas variables. */
 [data-scene-svg] polygon {
   stroke: var(--face-line);
   stroke-width: var(--face-line-width);

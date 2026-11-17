@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import sharp from "sharp";
 import { getDictionary } from "../../src/i18n/dictionaries/index.ts";
 
 const KINDS = ["hero", "journey", "closing"] as const;
@@ -31,6 +32,25 @@ test.describe("sin JavaScript", () => {
       const box = (await svg.boundingBox())!;
       expect(box.width, kind).toBeGreaterThan(200);
       expect(box.height, kind).toBeGreaterThan(150);
+    }
+  });
+
+  // Las caras de los bloques viven en <symbol> y se pintan a través de <use>. Chromium no
+  // aplica a esas copias las reglas con ancestro de globals.css: sin estilo propio quedaban
+  // con el relleno por defecto, negro. Ningún rol de la escena es negro (el más oscuro es
+  // índigo), así que los píxeles casi negros delatan caras sin pintar.
+  test("las ilustraciones se pintan con su paleta, sin bloques negros", async ({ page }) => {
+    await page.goto("/es");
+    for (const kind of KINDS) {
+      const svg = page.locator(`[data-scene="${kind}"] svg`);
+      await svg.scrollIntoViewIfNeeded();
+      const { data, info } = await sharp(await svg.screenshot()).raw().toBuffer({ resolveWithObject: true });
+      let black = 0;
+      for (let index = 0; index < data.length; index += info.channels) {
+        if (Math.max(data[index]!, data[index + 1]!, data[index + 2]!) < 24) black += 1;
+      }
+      const ratio = black / (info.width * info.height);
+      expect(ratio, `${kind}: proporción de píxeles negros`).toBeLessThan(0.002);
     }
   });
 });

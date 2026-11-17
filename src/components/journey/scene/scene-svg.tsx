@@ -9,6 +9,20 @@ import { BOX_SHAPES, projectScene, type ProjectedBox, type ProjectedCircle, type
 // por propiedades CSS heredadas (--face-*), que sí atraviesan <use>.
 
 const KINDS = Object.keys(BOX_SHAPES) as (keyof typeof BOX_SHAPES)[];
+const FACES = ["left", "right", "top"] as const;
+
+// Chromium no aplica las reglas de globals.css a las copias que crea <use>: sin más, las
+// caras salían con el relleno por defecto, negro. Por eso cada cara lleva también sus
+// atributos de presentación, que viajan con la copia. Solo apuntan a --face-*, que se
+// heredan a través de <use>: ningún color literal. No sirve `style=`: la CSP lo bloquea.
+const faceAttributes = (face: (typeof FACES)[number]) => ({
+  fill: `var(--face-${face})`,
+  stroke: "var(--face-line)",
+  strokeWidth: "var(--face-line-width)",
+  strokeDasharray: "var(--face-dash)",
+  strokeLinejoin: "round" as const,
+  opacity: "var(--face-opacity)",
+});
 
 function Block({ box, scope }: { box: ProjectedBox; scope: string }) {
   const transform = `translate(${box.x} ${box.y})${box.rotate ? ` rotate(${box.rotate})` : ""}`;
@@ -35,9 +49,9 @@ export function SceneSvg({ kind }: { kind: SceneKind }) {
       <defs>
         {KINDS.map((shape) => (
           <symbol key={shape} id={`${scope}-${shape}`} overflow="visible">
-            <polygon data-face="left" points={BOX_SHAPES[shape].left} />
-            <polygon data-face="right" points={BOX_SHAPES[shape].right} />
-            <polygon data-face="top" points={BOX_SHAPES[shape].top} />
+            {FACES.map((face) => (
+              <polygon key={face} data-face={face} points={BOX_SHAPES[shape][face]} {...faceAttributes(face)} />
+            ))}
           </symbol>
         ))}
       </defs>

@@ -78,6 +78,21 @@
 
   *Hecho:* Tabla de skills: qué se usó en la v1, qué se usa desde la v1.1 y por qué el nombre con prefijo. Sección de revisión con el skill al cerrar cada lote.
 
+- [x] 4.5 Corrección en producción, añadida el 2026-11-17 por decisión del fundador. Es la única excepción a «L11 no toca `src/»: la versión ligera de la escena salía negra en Chromium. Sin delta de spec: `scene-rendering` ya exige la ilustración con la paleta del tema. Verificación: prueba en rojo antes y puerta de cierre después.
+
+  *Hecho:*
+  - **Síntoma, visto por el fundador en Brave:** al recargar `/es`, la ilustración sale negra un instante antes del 3D. En modo ligero sale negra siempre: movimiento reducido, equipo modesto o elección en el pie. Afecta a las tres ranuras (hero, recorrido y cierre). En WebKit no pasa.
+  - **Causa:** los bloques son `<use>` de cuatro `<symbol>`. Chromium no aplica las reglas de `globals.css` a las copias del árbol de `<use>`, así que las caras quedaban con `fill` por defecto, negro. Las variables `--face-*` sí llegan.
+  - **Corrección:** cada `<polygon>` de `scene-svg.tsx` lleva atributos de presentación que solo remiten a `var(--face-*)`. Las reglas CSS se mantienen para los demás navegadores. Se descartó `style=` porque la CSP (`style-src 'self'`) lo bloquea: lo detectó `e2e:preview` en el primer intento.
+  - **Pruebas:**
+    - e2e nueva, «las ilustraciones se pintan con su paleta, sin bloques negros». Antes de corregir, en rojo en Chromium (3,1 % de píxeles negros en el hero) y en verde en WebKit.
+    - `scene-lite.test.tsx`: los atributos de pintura solo pueden ser `var(--face-*)` y sigue prohibido `style=`.
+  - **Comprobación en vivo:** las tres ranuras con su paleta en el build local, y en confia.ing con la CSP real, sin errores de consola.
+  - **Puerta de cierre:**
+    - en verde: `lint`, `typecheck`, `e2e` (371), `e2e:preview` (35), `build:worker` (1190 KiB) y `measure:js` (164,6 kB);
+    - `test`: 1069 pasan y 3 fallan, las de L10 sin archivar.
+  - **Pendiente:** revisión de código `medium` antes del `push`, y despliegue con la orden del fundador.
+
 ## 5. Cierre
 
 - [x] 5.1 Revisión de código en local según D1 y corrección de los hallazgos. Verificación: hallazgos y resolución anotados aquí.
