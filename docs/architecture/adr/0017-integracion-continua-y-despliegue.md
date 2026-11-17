@@ -45,19 +45,20 @@ Sin implementar. Un `deploy.yml` con estas piezas:
 
 ## Comprobación continua de producción para la v1.1
 
-Añadido el 2026-11-16, tras revisar cómo se verifica que el sitio sigue funcionando después de cada cambio. Sin implementar.
+Añadido el 2026-11-16, tras revisar cómo se verifica que el sitio sigue funcionando después de cada cambio. La protección de `main` y `verify-production.yml` se implementan en L12; la prueba del formulario en producción sigue por decidir.
 
-La CI prueba el código con servicios en memoria, y `verify:site` solo corre cuando alguien despliega. Un fallo que aparezca más tarde en producción (un secreto caducado, Supabase pausado, un servicio externo caído) no lo detecta nadie. Se cubre así:
+La CI prueba el código con servicios en memoria, y `verify:site` solo corre cuando alguien despliega. Un fallo que aparezca más tarde en producción (un secreto caducado, Supabase pausado, un servicio externo caído) no lo detecta nadie. Se cubre así, en parte:
 
 - **Protección de `main` primero.** Ningún pull request se funde con alguno de los cuatro trabajos en rojo.
-- **`verify-production.yml`:** una vez al día (`schedule`) y a demanda (`workflow_dispatch`), ejecuta `npm run verify:site -- https://confia.ing`. Solo lee: sin secretos y con permisos de solo lectura. Si falla, la ejecución queda en rojo y GitHub avisa por correo a quien tenga activadas las notificaciones de Actions.
+- **`verify-production.yml`:** una vez al día (`schedule`) y a demanda (`workflow_dispatch`), ejecuta el verificador de `verify:site` contra `https://confia.ing` (con `node` directamente: no necesita instalar dependencias). Solo lee: sin secretos y con permisos de solo lectura. Si falla, la ejecución queda en rojo y GitHub avisa por correo. **No llega a la base:** la consulta sin token se rechaza en el antispam, antes de guardar, así que Supabase pausado o su secreto caducado no la ponen en rojo.
 - **Opcional, por decidir:** una prueba de punta a punta del formulario en producción que envíe una consulta marcada como prueba y la borre después. Exige guardar secretos en un entorno protegido de GitHub y escribe en la base real; solo se hará con una decisión expresa del fundador y su propio ADR.
 
 ## Pendiente para la v1.1
 
 - El workflow `deploy.yml` descrito arriba.
-- El workflow `verify-production.yml` descrito arriba.
-- Protección de la rama `main` que exija los cuatro trabajos de la CI.
+- Detectar Supabase pausado o su secreto caducado sin crear datos (por ejemplo, una ruta de salud de solo lectura). Por decidir: amplía la superficie pública.
+- ~~El workflow `verify-production.yml` descrito arriba.~~ Hecho en L12: cada día a las 09:37 UTC y a demanda.
+- ~~Protección de la rama `main` que exija los cuatro trabajos de la CI.~~ Hecho en L12: `.github/branch-protection.json`, aplicado con `gh api` antes de fundir el pull request del lote, también para administradores.
 - ~~Revisión automática de código en cada pull request.~~ Descartada el 2026-11-16 (decisión D1): `/code-review` en local antes de cada `push`.
-- `npm audit` programado cada semana.
-- Dependabot para dependencias y acciones.
+- ~~`npm audit` programado cada semana.~~ Hecho en L12 (`audit.yml`).
+- ~~Dependabot para dependencias y acciones.~~ Hecho en L12 (`dependabot.yml`).

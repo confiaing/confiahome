@@ -35,7 +35,8 @@ Con la protección activa, cerrar un lote significa fundir su pull request, no h
 
 ### 3. `verify-production.yml`
 
-- Disparo `schedule` a las 09:37 UTC, una hora después de la tarea diaria del Worker (08:17). Si Supabase o la tarea fallan, se ve el mismo día.
+- Disparo `schedule` a las 09:37 UTC, después de la tarea diaria del Worker (08:17).
+- *Corregido en la revisión del lote:* no detecta Supabase pausado ni un fallo de la tarea diaria. El verificador no llega a la base: la consulta sin token se rechaza en el antispam, antes de guardar.
 - Disparo `workflow_dispatch` para lanzarlo a mano.
 - Un solo trabajo: `checkout` y `setup-node` 26, sin `npm ci`, seguido de `node scripts/verify-production.ts https://confia.ing`.
 - `permissions: contents: read` y `concurrency` para no solaparse.

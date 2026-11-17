@@ -18,13 +18,13 @@ Next.js (App Router) · React · TypeScript estricto · Tailwind CSS v4 · Three
 
 ## Cómo trabajas
 
-1. **Un lote cada vez.** L0 a L10 (v1) y L11 a L16 (v1.1). Cada lote es un cambio de OpenSpec y se termina antes de abrir el siguiente. Desde L12, cada lote va en su propia rama y entra en `main` por pull request con la CI en verde.
+1. **Un lote cada vez.** L0 a L10 (v1) y L11 a L16 (v1.1). Cada lote es un cambio de OpenSpec y se termina antes de abrir el siguiente. Desde L12, cada lote va en su propia rama `lote/<nombre>`, creada desde `main`, y entra por pull request: `main` está protegida y rechaza el push directo, también del fundador ([operations.md](docs/operations.md#protección-de-main)).
 2. **Especificación antes que código (SDD).** `/opsx:propose` crea propuesta, specs, diseño y tareas en `openspec/changes/<lote>/`. El fundador aprueba la propuesta. Luego `/opsx:apply`, `/opsx:verify`, `/opsx:archive`.
 3. **Prueba antes que implementación (TDD).** Cada ítem tiene escenarios GIVEN/WHEN/THEN en [docs/escenarios.md](docs/escenarios.md). Los de nivel U, I y E son pruebas automáticas que escribes y ves fallar primero. Los de nivel C (contrato) y M (manual) se ejecutan y su evidencia se anota en el `tasks.md` del cambio.
 4. **Verifica antes de afirmar.** «Hecho» significa que ejecutaste los comandos y viste la salida. Lo que no pudiste comprobar, lo dices.
 5. **Pregunta ante la ambigüedad** cuando dos lecturas cambian lo que se construye.
 6. **Mantén los documentos vivos.** Al cerrar un lote actualizas README y BACKLOG. Una decisión con alternativas reales es un ADR nuevo.
-7. **Commits:** uno local al cerrar cada lote, con la puerta de cierre en verde. Nunca `push` ni despliegue sin que el fundador lo pida.
+7. **Commits y cierre:** commits en la rama del lote; el de cierre, con la puerta en verde. Con la orden del fundador: `push` de la rama, pull request, los cuatro trabajos de la CI en verde y se funde en `main`. El archivo del cambio en OpenSpec va dentro del mismo pull request. Nunca `push`, fusión ni despliegue sin que el fundador lo pida.
 8. **`/code-review` en local antes de cada `push`.** No hay revisión automática en GitHub (decisión D1, en el [README](README.md#revisión-de-código-antes-de-subir-cambios)). Además, al cerrar cada lote, `aitmpl-code-reviewer` revisa el lote entero en un subagente independiente. Los hallazgos se corrigen o se anotan como aceptados en el `tasks.md` del lote. El nivel depende del riesgo (tabla en el [README](README.md#revisión-de-código-antes-de-subir-cambios)): `low` para documentación y especificaciones; `medium` para código acotado; `high` para `worker/`, cabeceras, `src/app/api/`, formulario, Supabase, Turnstile, CI y despliegue. Recomienda al fundador `/ultrareview` (no puedes lanzarlo tú: se cobra aparte) para cambios grandes de riesgo y antes de cada despliegue. No uses `max` ni `ultra` sin que el fundador lo pida. Di en el informe del lote qué nivel usaste.
 9. **Responde en español.** Código, identificadores y nombres de archivo en inglés.
 
@@ -44,7 +44,8 @@ npm run test:contract  # adaptadores contra Supabase local (requiere Docker)
 npm run build          # next build (OpenNext lo invoca por dentro; no lo redefinas)
 npm run build:worker   # build del Worker; falla si supera 3 MiB comprimido
 npm run measure:js     # JS inicial de /es, comprimido
-npx supabase start     # base de datos local
+npx supabase start     # base de datos local (Docker)
+npx supabase stop      # al cerrar el lote; guía completa en docs/development.md
 ```
 
 **Puerta de cierre de lote (única):** `lint`, `typecheck`, `test`, `e2e`, `e2e:preview`, `build:worker` y `measure:js`, todo en verde y con la salida a la vista. `e2e:preview` carga el sitio en Workers: sustituye a la carga manual de `/es` en `preview`.

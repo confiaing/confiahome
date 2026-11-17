@@ -1,0 +1,29 @@
+# Vigilancia diaria de producción (L12, ADR-0017). Mismas comprobaciones que tras un despliegue.
+# Solo lectura y sin secretos: el verificador hace peticiones GET y una consulta sin token que el sitio rechaza.
+# Si falla, GitHub avisa por correo; qué revisar primero está en docs/operations.md.
+name: Vigilancia de producción
+
+on:
+  # 09:37 UTC, después de la tarea diaria del Worker (08:17). No llega a la base: ver docs/operations.md.
+  schedule:
+    - cron: "37 9 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: verify-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      # Sin npm ci: el verificador no importa paquetes, solo usa fetch.
+      - run: node scripts/verify-production.ts https://confia.ing
