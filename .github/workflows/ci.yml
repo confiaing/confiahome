@@ -62,7 +62,7 @@ jobs:
       - run: npm run e2e
       - name: Subir resultados si falla
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e2e-test-results
           path: test-results/
@@ -84,7 +84,7 @@ jobs:
       - run: npm run e2e:preview
       - name: Subir resultados si falla
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e2e-preview-test-results
           path: test-results/
