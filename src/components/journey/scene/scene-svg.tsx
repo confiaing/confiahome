@@ -1,8 +1,8 @@
 import { BOX_SHAPES, projectScene, type ProjectedBox, type ProjectedCircle, type SceneKind } from "@/domain/scene/projection";
 
 // Versión ligera de la escena: el modelo en proyección isométrica. Solo geometría y
-// nombres de rol; los colores los pone globals.css desde --scene-*, así cada tema da su
-// propia paleta.
+// nombres de rol; los colores salen de --scene-* (globals.css y, en las caras, los
+// atributos de abajo), así cada tema da su propia paleta.
 //
 // Hay cuatro tipos de bloque y cientos de bloques: cada forma se define una vez
 // (<symbol>) y cada bloque la reutiliza (<use>). El tono y el estado llegan a las caras

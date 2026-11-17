@@ -25,7 +25,9 @@ Las tareas marcadas **[orden]** ejecutan algo fuera de esta máquina: cada una m
 - [x] 3.4 **[orden]** Adjuntar `confia.ing` y volver a desplegar. Verificación: `verify-production` en verde contra `https://confia.ing`.
 - [x] 3.5 **[orden]** Consulta real de prueba y apertura de la agenda en producción, en ES y EN (Flujo B real; Flujo A real). Verificación: confirmación vista, fila en la base, aviso recibido por el fundador, calendario cargado sin infracciones.
 - [x] 3.6 **[orden]** Borrar de producción las filas de prueba (el fundador decidió conservar la fila). Verificación: cuentas antes y después anotadas aquí.
-- [ ] 3.7 Comprobar que el disparo diario está programado; al día siguiente, el registro del latido. Verificación: anotado aquí, o dicho que queda pendiente.
+- [x] 3.7 Comprobar que el disparo diario está programado; al día siguiente, el registro del latido. Verificación: anotado aquí, o dicho que queda pendiente.
+
+  *Hecho (en L11, tarea 3.3):* Evento `maintenance.done` en los registros del Worker `confiahome` (panel de Cloudflare → Observability), 2026-11-17 08:17:55 UTC, disparo `17 8 * * *`, versión `0b5a97dd`: `heartbeat: true`, `contactsPurged: 0`, `eventsPurged: 0`, nivel `info`, sin errores en 24 h.
 
 ## 4. Ajustes en Cloudflare
 

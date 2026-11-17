@@ -71,7 +71,7 @@ La sección MUST presentar cuatro fricciones de trabajo reconocibles y cuatro pr
 #### Scenario: Cinco etapas completas (I)
 - **GIVEN** la sección
 - **WHEN** se renderiza
-- **THEN** hay cinco etapas en una lista ordenada: conversación inicial, diagnóstico, roadmap, piloto, y escala y transferencia
+- **THEN** hay cinco etapas en orden, cada una en su panel con su nombre como título: conversación inicial, diagnóstico, roadmap, piloto, y escala y transferencia
 - **AND** cada una tiene los tres apartados con sus etiquetas
 
 #### Scenario: La primera etapa no es un diagnóstico (I)
@@ -114,7 +114,7 @@ La sección MUST presentar cuatro fricciones de trabajo reconocibles y cuatro pr
 - **THEN** lista los tres principios en orden
 
 ### Requirement: Cierre con las dos vías de contacto
-El cierre MUST repetir las dos acciones del hero con los mismos destinos y ofrecer dos bloques: uno de consulta, que muestra `hola@confia.ing`, y uno de agenda, con el enlace directo al calendario.
+El cierre MUST repetir las dos acciones del hero con los mismos destinos y ofrecer dos bloques: uno de consulta, que muestra `hola@confia.ing`, y uno de agenda, con el enlace directo al calendario. Su título MUST partirse por frases: cada frase empieza en una línea nueva en cualquier ancho.
 
 #### Scenario: Mismas acciones que el hero (I · L3-6)
 - **GIVEN** el cierre
@@ -131,6 +131,12 @@ El cierre MUST repetir las dos acciones del hero con los mismos destinos y ofrec
 - **GIVEN** la home
 - **WHEN** se pulsa la acción de consulta del hero
 - **THEN** el bloque de consulta queda visible bajo la cabecera
+
+#### Scenario: Título partido por frases (I, E)
+- **GIVEN** el título del cierre, en español y en inglés
+- **WHEN** se muestra en móvil, tableta y ordenador
+- **THEN** cada frase es un bloque propio y ninguna se desborda
+- **AND** en ordenador cada frase cabe en una línea
 
 ### Requirement: Ritmo de secciones
 Las secciones MUST alternar fondo crema y banda de color: salvia en «Dónde empezamos», coral claro en «Lo que ofrecemos» e índigo claro en el cierre. Una banda no MUST tocar los bordes de la ventana y MUST tener esquinas redondeadas. Las preguntas van en una tarjeta mantequilla y el servicio principal en una tarjeta índigo.

@@ -44,12 +44,23 @@ El formulario MUST ofrecer un modo terminal, que es el inicial, y un modo clási
 - **THEN** la opción activa lo expone y la nota explicativa cambia
 
 ### Requirement: Detalles de cada modo
-El modo terminal MUST teclear su comando al entrar en pantalla, o mostrarlo completo con movimiento reducido. El modo clásico MUST mostrar un panel decorativo con la consulta en formato JSON que se actualiza al escribir y nunca interpreta lo escrito como marcado.
+El modo terminal MUST teclear su comando al entrar en pantalla, poner cada pregunta encima de su respuesta y sugerir en el mensaje cuatro ejemplos escritos en bucle; con movimiento reducido, todo aparece completo. El modo clásico MUST mostrar un panel JSON decorativo que se actualiza al escribir y nunca interpreta lo escrito como marcado.
 
 #### Scenario: Sin tecleo con movimiento reducido (E · L5-10)
 - **GIVEN** `prefers-reduced-motion: reduce`
 - **WHEN** el modo terminal entra en pantalla
 - **THEN** el comando aparece completo, sin tecleo animado
+
+#### Scenario: La pregunta va encima de su respuesta (I, E)
+- **GIVEN** el modo terminal, en español y en inglés
+- **WHEN** se renderiza el campo del mensaje
+- **THEN** la pregunta aparece encima del área de texto, no a su lado
+
+#### Scenario: Ejemplos que se escriben en bucle (I)
+- **GIVEN** el modo terminal con el mensaje vacío
+- **WHEN** el formulario entra en pantalla
+- **THEN** la sugerencia del mensaje va escribiendo y borrando los cuatro ejemplos de su idioma, uno tras otro
+- **AND** con movimiento reducido muestra el primer ejemplo completo, sin animación
 
 #### Scenario: El panel JSON no interpreta marcado (I · L5-10)
 - **GIVEN** el modo clásico

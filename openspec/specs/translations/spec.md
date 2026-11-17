@@ -23,19 +23,6 @@ Los diccionarios de español e inglés MUST tener exactamente las mismas claves.
 - **WHEN** se comparan sus claves en ejecución
 - **THEN** coinciden y ningún texto está vacío
 
-### Requirement: Todo texto visible sale de los diccionarios
-Los componentes no MUST contener texto visible propio, con la sola excepción del nombre de marca y la dirección de correo. La página provisional MUST tomar sus textos del diccionario.
-
-#### Scenario: Página provisional en ambos idiomas (I)
-- **GIVEN** la página provisional
-- **WHEN** se renderiza en español y en inglés
-- **THEN** cada texto visible coincide con el del diccionario de ese idioma
-
-#### Scenario: Ningún texto en español en la versión inglesa (E)
-- **GIVEN** `/en` y `/en/privacy`
-- **WHEN** se lee el texto visible de la página
-- **THEN** no aparece ninguna de las frases del diccionario español que difieren de las inglesas
-
 ### Requirement: Textos legibles por tecnologías de apoyo en su idioma
 Un texto mostrado en un idioma distinto al de la página MUST marcarse con su atributo de idioma.
 
@@ -43,3 +30,16 @@ Un texto mostrado en un idioma distinto al de la página MUST marcarse con su at
 - **GIVEN** el selector en una página en español
 - **WHEN** se renderiza la opción EN
 - **THEN** lleva `lang="en"`
+
+### Requirement: Los textos visibles salen de los diccionarios
+Los componentes no MUST contener texto visible propio, salvo el nombre de marca, la dirección de correo y el código «404» de la página no encontrada. La home, las páginas legales y la 404 MUST tomar sus textos del diccionario de su idioma.
+
+#### Scenario: La home en ambos idiomas (I)
+- **GIVEN** las secciones de la home
+- **WHEN** se renderizan en español y en inglés
+- **THEN** cada texto visible coincide con el del diccionario de ese idioma
+
+#### Scenario: Ningún texto en español en la versión inglesa (E)
+- **GIVEN** `/en` y `/en/privacy`
+- **WHEN** se lee el texto visible de la página
+- **THEN** no aparece ninguna de las frases del diccionario español que difieren de las inglesas

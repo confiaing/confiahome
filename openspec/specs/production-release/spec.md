@@ -1,0 +1,117 @@
+# production-release Specification
+
+## Purpose
+Define qué debe cumplirse antes de desplegar el sitio, cómo se protege la base de datos de producción durante el lanzamiento y qué se verifica una vez publicado, de modo que «está en producción» signifique que las dos vías de contacto funcionan de verdad.
+
+## Requirements
+
+### Requirement: Nada sale de la máquina sin la orden del fundador
+Cada acción que escriba en producción o publique algo —migrar la base, cargar secretos, desplegar, enviar una consulta de prueba, subir a GitHub— MUST ejecutarse solo tras la orden expresa del fundador para esa acción.
+
+#### Scenario: Acción externa (M)
+- **GIVEN** una acción que modifica la base de producción, el Worker, el dominio o el repositorio remoto
+- **WHEN** va a ejecutarse
+- **THEN** se ha mostrado antes qué hace y contra qué
+- **AND** el fundador la ha ordenado en la conversación
+
+### Requirement: Comprobación previa del build
+El proyecto MUST ofrecer una comprobación que falle cuando el build no sirve para producción: sin dirección pública, sin clave pública de Turnstile, con claves de prueba, o con un estado legal incoherente.
+
+#### Scenario: Falta lo que producción exige (U · L10-1)
+- **GIVEN** un entorno de build sin la clave pública de Turnstile o sin la dirección pública del sitio
+- **WHEN** se ejecuta la comprobación previa
+- **THEN** falla y nombra lo que falta, sin mostrar ningún valor
+
+#### Scenario: Claves de prueba (U)
+- **GIVEN** la clave pública oficial de pruebas de Turnstile en el entorno de build
+- **WHEN** se ejecuta la comprobación previa
+- **THEN** falla: esa clave acepta a cualquiera
+
+#### Scenario: Dirección local (U)
+- **GIVEN** una dirección pública que apunta a `localhost` o que no es HTTPS
+- **WHEN** se ejecuta la comprobación previa
+- **THEN** falla
+
+#### Scenario: Estado legal coherente (U)
+- **GIVEN** el estado legal «vigente» con datos del responsable ausentes
+- **WHEN** se ejecuta la comprobación previa
+- **THEN** falla
+- **AND** con el estado «borrador» pasa, avisando de que se lanza con textos en borrador
+
+#### Scenario: Todo en orden (U)
+- **GIVEN** un entorno de build completo
+- **WHEN** se ejecuta la comprobación previa
+- **THEN** pasa y lista qué comprobó, sin valores
+
+### Requirement: La base de producción queda como la local
+Las migraciones del repositorio MUST aplicarse a la base de producción en orden y sin errores, y la base MUST quedar cerrada a la clave pública.
+
+#### Scenario: Migraciones aplicadas (M · L10-2)
+- **GIVEN** las migraciones del repositorio
+- **WHEN** se aplican a `confiahomeDB`
+- **THEN** terminan sin errores
+- **AND** existen `contact_requests` y `analytics_events` con sus restricciones
+
+#### Scenario: Cerrada a la clave pública (M · L10-2)
+- **GIVEN** la base de producción migrada
+- **WHEN** se intenta leer o insertar en ambas tablas con la publishable key
+- **THEN** no devuelve filas y rechaza la inserción
+
+### Requirement: Secretos solo en el Worker
+Los secretos de producción MUST cargarse como secretos del Worker, escritos por el fundador, y no MUST aparecer en el repositorio, en el build, en los registros ni en la conversación.
+
+#### Scenario: Carga de secretos (M · L10-1)
+- **GIVEN** los comandos de carga preparados
+- **WHEN** el fundador escribe cada valor en su terminal
+- **THEN** el Worker lista los nombres de los secretos esperados
+- **AND** ningún valor se ha mostrado ni guardado fuera
+
+#### Scenario: El build no los lleva (U)
+- **GIVEN** el Worker construido para desplegar
+- **WHEN** se comprueba su contenido
+- **THEN** no incrusta ningún secreto
+
+### Requirement: Verificación tras el despliegue
+Tras desplegar MUST comprobarse en el dominio real que las páginas responden, que llevan las cabeceras de seguridad, que una consulta de prueba se guarda y se avisa, y que la tarea diaria está programada.
+
+#### Scenario: Páginas y cabeceras (M · L10-3)
+- **GIVEN** el sitio desplegado
+- **WHEN** se piden `/es`, `/en`, una página legal, `robots.txt`, `sitemap.xml` y `llms.txt` por HTTPS
+- **THEN** responden 200
+- **AND** las páginas HTML llevan política de contenido, HSTS y `nosniff`
+
+#### Scenario: Flujo B real (M · L10-3)
+- **GIVEN** el sitio en producción
+- **WHEN** se envía una consulta de prueba desde el formulario
+- **THEN** se ve la confirmación
+- **AND** la fila existe en `contact_requests` y el aviso llega al buzón
+
+#### Scenario: Flujo A real (M · L10-3)
+- **GIVEN** el sitio en producción
+- **WHEN** se abre la agenda
+- **THEN** el calendario de Calendly carga dentro de la página sin infracciones de la política de contenido
+
+#### Scenario: Antispam real (M)
+- **GIVEN** el sitio en producción
+- **WHEN** se envía una consulta sin token de verificación
+- **THEN** el servidor la rechaza y no se guarda
+
+#### Scenario: Datos de prueba retirados (M)
+- **GIVEN** las consultas y eventos creados al verificar
+- **WHEN** termina la verificación
+- **THEN** el fundador decide si se borran de la base de producción o se conservan
+- **AND** la decisión queda anotada
+
+#### Scenario: Tarea diaria programada (M)
+- **GIVEN** el Worker desplegado
+- **WHEN** se consulta su configuración
+- **THEN** tiene el disparo diario
+- **AND** tras su primera ejecución queda constancia del latido en los registros
+
+### Requirement: Vuelta atrás documentada
+El proyecto MUST documentar cómo volver a la versión anterior del Worker y qué hacer si una migración falla.
+
+#### Scenario: Guía de operación (M · L10-5)
+- **GIVEN** la guía de operación
+- **WHEN** la lee quien deba atender el sitio
+- **THEN** explica cómo desplegar, cómo volver atrás, cómo leer y responder consultas, cómo rotar una clave y cómo atender una petición de borrado de datos

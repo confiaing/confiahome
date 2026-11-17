@@ -41,7 +41,9 @@
 
   *Hecho:* L0 a L9 archivados en `openspec/changes/archive/2026-11-16-*`. `openspec/specs/`: 26 capacidades, `openspec validate --specs --strict` 26 de 26.
 
-- [ ] 3.3 Después de las 08:17 UTC del 17 de noviembre, comprobar en los registros del Worker el evento `maintenance.done` (tarea 3.7 de L10) y archivar L10. Si no aparece, diagnosticar antes de archivar. Verificación: registro anotado aquí.
+- [x] 3.3 Después de las 08:17 UTC del 17 de noviembre, comprobar en los registros del Worker el evento `maintenance.done` (tarea 3.7 de L10) y archivar L10. Si no aparece, diagnosticar antes de archivar. Verificación: registro anotado aquí.
+
+  *Hecho:* Evento `maintenance.done` en los registros del Worker `confiahome` (panel de Cloudflare → Observability), 2026-11-17 08:17:55 UTC, disparo `17 8 * * *`, versión `0b5a97dd`: `heartbeat: true`, `contactsPurged: 0`, `eventsPurged: 0`, nivel `info`, sin errores en 24 h. Anotado también en la 3.7 de L10, que queda en 25 de 25. L10 archivado con `openspec archive l10-lanzamiento -y`.
 
 ## 4. Guía, configuración y skill
 
@@ -91,16 +93,23 @@
   - **Puerta de cierre:**
     - en verde: `lint`, `typecheck`, `e2e` (371), `e2e:preview` (35), `build:worker` (1190 KiB) y `measure:js` (164,6 kB);
     - `test`: 1069 pasan y 3 fallan, las de L10 sin archivar.
-  - **Pendiente:** revisión de código `medium` antes del `push`, y despliegue con la orden del fundador.
+  - **Revisión:** `aitmpl-code-reviewer`, nivel `medium`, en un subagente independiente sobre el commit `6e5717b`. Sin hallazgos. Un detalle menor, el comentario de cabecera de `scene-svg.tsx` que solo nombraba `globals.css`, se corrigió.
+  - **Pendiente:** el despliegue, con la orden del fundador.
 
 ## 5. Cierre
 
 - [x] 5.1 Revisión de código en local según D1 y corrección de los hallazgos. Verificación: hallazgos y resolución anotados aquí.
 
   *Hecho:* `aitmpl-code-reviewer` en un subagente independiente; el skill se cargó por su nombre (prueba real del skill instalado). Veredicto: aprobar con comentarios. Hallazgos confirmados y corregidos: (media) el escenario «Skill presente» pedía la ruta y el nombre antiguos; (baja) `tasks.md` y `design.md` con la ruta antigua; (baja) `CLAUDE.md` y `config.yaml` decían «L0 a L10 archivados» con L10 aún abierto. Menor corregido: la configuración se leía dos veces en la prueba. `/code-review` se ejecutará antes del `push`.
-- [ ] 5.2 Puerta de cierre (parcial el 2026-11-16: `lint`, `typecheck`, `e2e` 369 pasan, `e2e:preview` 35 pasan, `build:worker` 1190 KiB de 3072, `measure:js` 164,6 kB de 200; `test` 1069 pasan y 3 fallan a la espera de archivar L10): `lint`, `typecheck`, `test`, `e2e`, `e2e:preview`, `build:worker`, `measure:js`. Verificación: salida a la vista.
-- [ ] 5.3 BACKLOG: L11 marcado como hecho. Archivar L11. Verificación: `openspec list` sin cambios abiertos.
-- [ ] 5.4 Commit local. El `push`, solo con la orden del fundador.
+- [x] 5.2 Puerta de cierre (parcial el 2026-11-16: `lint`, `typecheck`, `e2e` 369 pasan, `e2e:preview` 35 pasan, `build:worker` 1190 KiB de 3072, `measure:js` 164,6 kB de 200; `test` 1069 pasan y 3 fallan a la espera de archivar L10): `lint`, `typecheck`, `test`, `e2e`, `e2e:preview`, `build:worker`, `measure:js`. Verificación: salida a la vista.
+
+  *Hecho el 2026-11-17, después de archivar L10:*
+  - todo en verde: `lint`, `typecheck`, `test` (1072 de 1072), `e2e` (371), `e2e:preview` (35), `build:worker` (1190 KiB de 3072) y `measure:js` (164,6 kB de 200);
+  - `openspec validate --specs --strict`: 28 de 28.
+- [x] 5.3 BACKLOG: L11 marcado como hecho. Archivar L11. Verificación: `openspec list` sin cambios abiertos.
+
+  *Hecho:* L11 marcado ✅ en el BACKLOG y el estado del README al día. Tras archivar, `openspec list` solo muestra L12, que es la siguiente y ya está aprobada.
+- [x] 5.4 Commit local. El `push`, solo con la orden del fundador.
 
 ## Para reanudar (pausa del 2026-11-16, 18:56 UTC)
 

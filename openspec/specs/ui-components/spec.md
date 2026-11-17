@@ -114,7 +114,7 @@ Los componentes base no MUST presentar infracciones de axe en ninguno de sus est
 - **THEN** no hay desplazamiento ni escalado; solo cambia el color
 
 #### Scenario: Sin JavaScript añadido (E)
-- **GIVEN** la home provisional con logo y botón
+- **GIVEN** la home, que usa los componentes base
 - **WHEN** se mide el JS inicial de `/es`
 - **THEN** sigue dentro del presupuesto de 200 kB comprimido
 

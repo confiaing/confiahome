@@ -6,7 +6,7 @@ Define el marco común de todas las páginas —enlace de salto, cabecera, menú
 ## Requirements
 
 ### Requirement: Enlace para saltar al contenido
-El primer elemento enfocable de cada página MUST ser un enlace que lleva al contenido principal, visible al recibir el foco.
+El primer elemento enfocable de la home y de cada página legal MUST ser un enlace que lleva al contenido principal, visible al recibir el foco. La página no encontrada tiene su propio marco, definido en `not-found-page`.
 
 #### Scenario: Primer tabulador (E · L2-4)
 - **GIVEN** la página cargada
@@ -19,7 +19,7 @@ El primer elemento enfocable de cada página MUST ser un enlace que lleva al con
 - **THEN** el foco pasa al contenido principal
 
 ### Requirement: Cabecera con marca, navegación, idioma y agenda
-La cabecera MUST mostrar el logo como enlace a la home del idioma activo, las anclas a «Dónde empezamos» y «Cómo lo hacemos realidad», el selector de idioma y la acción «Agenda 30 minutos», y MUST permanecer visible al desplazarse.
+En la home y en las páginas legales, la cabecera MUST mostrar el logo como enlace a la home del idioma activo, las anclas a «Dónde empezamos» y «Cómo lo hacemos realidad», el selector de idioma y la acción «Agenda 30 minutos», y MUST permanecer visible al desplazarse.
 
 #### Scenario: Contenido de la cabecera (I)
 - **GIVEN** la cabecera en español y en inglés
@@ -38,7 +38,7 @@ La cabecera MUST mostrar el logo como enlace a la home del idioma activo, las an
 - **THEN** las anclas apuntan a la home (`/es#donde-empezamos`), no a la página actual
 
 ### Requirement: La acción de agenda funciona sin JavaScript
-La acción «Agenda 30 minutos» MUST ser un enlace directo al calendario que abre en otra pestaña y lo anuncia, y no MUST presentar la llamada como un diagnóstico.
+La acción «Agenda 30 minutos» MUST ser, en el HTML inicial, un enlace directo al calendario que abre en otra pestaña y lo anuncia, y no MUST presentar la llamada como un diagnóstico. Con JavaScript, lo que hace al pulsarla lo rige la capacidad `scheduling`.
 
 #### Scenario: Enlace directo (I)
 - **GIVEN** la acción de agenda
@@ -105,7 +105,7 @@ El pie MUST mostrar el logo, la dirección `hola@confia.ing` como texto y como e
 - **THEN** los enlaces legales apuntan a `/es/privacidad` y `/es/terminos`
 
 ### Requirement: Marco accesible en todas las páginas
-Cada página MUST tener una sola cabecera, un solo contenido principal y un solo pie como regiones, sin infracciones de axe, en ambos idiomas y en los dos anchos de referencia.
+La home y cada página legal MUST tener una sola cabecera, un solo contenido principal y un solo pie como regiones, sin infracciones de axe, en ambos idiomas y en los dos anchos de referencia.
 
 #### Scenario: Regiones únicas (E)
 - **GIVEN** `/es`, `/en/privacy` y `/es/terminos`

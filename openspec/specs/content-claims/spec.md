@@ -48,7 +48,7 @@ Los textos no MUST contener nombres de clientes, cifras de impacto, porcentajes,
 #### Scenario: Cifras admitidas (U)
 - **GIVEN** todos los textos de ambos diccionarios
 - **WHEN** se listan los números que contienen
-- **THEN** son solo los 30 minutos de la conversación y el número de cada etapa en su etiqueta
+- **THEN** son solo los 30 minutos de la conversación, el número de cada etapa en su etiqueta y «3D» como nombre de la escena
 
 ### Requirement: Experiencia atribuida al equipo
 Toda evidencia de experiencia MUST presentarse junto a una nota visible que la atribuye a quienes integran el equipo y a trabajo previo.

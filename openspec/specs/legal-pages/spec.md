@@ -26,19 +26,6 @@ Una dirección que combine un idioma con el slug del otro MUST responder 404.
 - **WHEN** se solicitan
 - **THEN** responden 404
 
-### Requirement: Aviso de borrador
-Mientras el texto legal no esté revisado, cada página legal MUST mostrar un aviso visible de que es un borrador pendiente de revisión, MUST ofrecer `hola@confia.ing` para consultas y no MUST poder indexarse.
-
-#### Scenario: Aviso visible (I)
-- **GIVEN** una página legal en español y en inglés
-- **WHEN** se renderiza
-- **THEN** muestra el aviso de borrador y la dirección de contacto en su idioma
-
-#### Scenario: No indexable (E)
-- **GIVEN** `/es/privacidad`
-- **WHEN** se lee su cabecera HTML
-- **THEN** declara `noindex`
-
 ### Requirement: Política de privacidad en ambos idiomas
 `/es/privacidad` y `/en/privacy` MUST mostrar una política que cubra: responsable del tratamiento, datos que se tratan, finalidades, base del tratamiento, conservación, encargados y proveedores, transferencias, derechos del titular y cómo ejercerlos, canal de atención, y cookies y tecnologías similares.
 
@@ -62,17 +49,23 @@ Mientras el texto legal no esté revisado, cada página legal MUST mostrar un av
 - **THEN** contienen un encabezado por cada uno de esos temas
 
 ### Requirement: Borrador señalado y no indexado
-Mientras los textos no tengan revisión legal, cada página legal MUST mostrar al principio un aviso visible de borrador, MUST pedir a los buscadores que no la indexen y no MUST aparecer en el mapa del sitio. El cambio a «vigente» MUST hacerse en un único punto.
+Mientras los textos no tengan revisión legal, cada página legal MUST mostrar al principio un aviso visible de borrador que ofrezca `hola@confia.ing` para consultas, MUST pedir a los buscadores que no la indexen y no MUST aparecer en el mapa del sitio. El cambio a «vigente» MUST hacerse en un único punto.
 
 #### Scenario: Aviso de borrador (I · L8-1, L8-2)
 - **GIVEN** cualquiera de las cuatro páginas legales
 - **WHEN** se renderiza
 - **THEN** muestra, antes del texto, el aviso de borrador pendiente de revisión legal
+- **AND** el aviso ofrece `hola@confia.ing` en su idioma
 
 #### Scenario: No se indexan (I)
 - **GIVEN** el estado «borrador»
 - **WHEN** se leen los metadatos de una página legal
 - **THEN** piden no indexar y sí seguir enlaces
+
+#### Scenario: No indexable en la página servida (E)
+- **GIVEN** `/es/privacidad`
+- **WHEN** se lee su cabecera HTML
+- **THEN** declara `noindex`
 
 #### Scenario: Un solo interruptor (U)
 - **GIVEN** el estado legal cambiado a «vigente»
