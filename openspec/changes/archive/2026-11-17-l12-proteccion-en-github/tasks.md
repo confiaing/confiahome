@@ -68,3 +68,12 @@ Propuesta aprobada por el fundador el 2026-11-16. Empieza cuando L11 esté archi
 ## 5. Añadido por el fundador
 
 - [x] 5.1 Documentar el entorno de desarrollo local y cómo apagar Docker al cerrar un lote o una versión (pedido el 2026-11-17, con el pull request abierto). Verificación: `docs/development.md` enlazado desde README, CLAUDE.md y `setup.md`; comandos comprobados contra la CLI instalada (`supabase stop --help`: `--no-backup` borra los volúmenes; `docker ps --filter name=confia.ing-home` lista los 12 contenedores del proyecto).
+
+## Revisión del cierre
+
+`/code-review high` sobre el pull request de cierre (`lote/l12-cierre`). Tres hallazgos:
+
+- **(Baja, pendiente)** El escenario M «Un pull request en rojo no se funde» no tiene evidencia propia. La protección exige los cuatro trabajos (tarea 4.4), pero ningún pull request en rojo se ha intentado fundir aún. Se anota con el primero que llegue en rojo, sea un pull request de Dependabot o de L13.
+- **(Baja, pendiente)** El escenario «Un fallo se ve» de la spec vigente dice que GitHub avisa «a quien tenga activadas las notificaciones de Actions». En un workflow programado, el aviso va a quien modificó el `cron` por última vez, como ya dice `docs/operations.md`. Las specs no se editan a mano: se corrige en el próximo cambio que toque `production-release`, como pronto L13.
+- **(Menor, corregido)** La columna «Quién» de L12 en el BACKLOG seguía con el texto del plan.
+
