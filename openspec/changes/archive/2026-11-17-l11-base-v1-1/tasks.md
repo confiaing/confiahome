@@ -80,7 +80,7 @@
 
   *Hecho:* Tabla de skills: qué se usó en la v1, qué se usa desde la v1.1 y por qué el nombre con prefijo. Sección de revisión con el skill al cerrar cada lote.
 
-- [x] 4.5 Corrección en producción, añadida el 2026-11-17 por decisión del fundador. Es la única excepción a «L11 no toca `src/»: la versión ligera de la escena salía negra en Chromium. Sin delta de spec: `scene-rendering` ya exige la ilustración con la paleta del tema. Verificación: prueba en rojo antes y puerta de cierre después.
+- [x] 4.5 Corrección en producción, añadida el 2026-11-17 por decisión del fundador. Es la única excepción a «L11 no toca `src/`»: la versión ligera de la escena salía negra en Chromium. Sin delta de spec: `scene-rendering` ya exige la ilustración con la paleta del tema. Verificación: prueba en rojo antes y puerta de cierre después.
 
   *Hecho:*
   - **Síntoma, visto por el fundador en Brave:** al recargar `/es`, la ilustración sale negra un instante antes del 3D. En modo ligero sale negra siempre: movimiento reducido, equipo modesto o elección en el pie. Afecta a las tres ranuras (hero, recorrido y cierre). En WebKit no pasa.
