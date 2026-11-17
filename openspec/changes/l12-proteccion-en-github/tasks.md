@@ -51,3 +51,7 @@ Propuesta aprobada por el fundador el 2026-11-16. Empieza cuando L11 esté archi
 - [ ] 4.5 Probar la protección: un push directo a `main` se rechaza, también para el fundador. Verificación: mensaje de rechazo anotado.
 - [ ] 4.6 **[orden]** Fundir el pull request de L12, que ya lleva el cambio archivado. Verificación: `main` contiene L12 y `openspec list` sin L12.
 - [ ] 4.7 **[orden]** Lanzar a demanda `verify-production.yml` y `audit.yml`. Verificación: enlaces a las ejecuciones; hallazgos de la auditoría corregidos o aceptados.
+
+## 5. Añadido por el fundador
+
+- [x] 5.1 Documentar el entorno de desarrollo local y cómo apagar Docker al cerrar un lote o una versión (pedido el 2026-11-17, con el pull request abierto). Verificación: `docs/development.md` enlazado desde README, CLAUDE.md y `setup.md`; comandos comprobados contra la CLI instalada (`supabase stop --help`: `--no-backup` borra los volúmenes; `docker ps --filter name=confia.ing-home` lista los 12 contenedores del proyecto).

@@ -44,7 +44,8 @@ npm run test:contract  # adaptadores contra Supabase local (requiere Docker)
 npm run build          # next build (OpenNext lo invoca por dentro; no lo redefinas)
 npm run build:worker   # build del Worker; falla si supera 3 MiB comprimido
 npm run measure:js     # JS inicial de /es, comprimido
-npx supabase start     # base de datos local
+npx supabase start     # base de datos local (Docker)
+npx supabase stop      # al cerrar el lote; guía completa en docs/development.md
 ```
 
 **Puerta de cierre de lote (única):** `lint`, `typecheck`, `test`, `e2e`, `e2e:preview`, `build:worker` y `measure:js`, todo en verde y con la salida a la vista. `e2e:preview` carga el sitio en Workers: sustituye a la carga manual de `/es` en `preview`.

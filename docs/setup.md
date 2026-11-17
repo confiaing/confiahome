@@ -1,6 +1,6 @@
 # Guía de accesos y configuración
 
-Pasos que solo tú puedes hacer (inician sesión en tus cuentas). Hazlos antes de empezar la Fase 4. Los valores de producción van en `.env.prod`, nunca en el chat ni en git. El desarrollo usa `.env.development.local`, que no apunta a producción.
+Pasos que solo tú puedes hacer (inician sesión en tus cuentas). Hazlos antes de empezar la Fase 4. Los valores de producción van en `.env.prod`, nunca en el chat ni en git. El desarrollo usa `.env.development.local`, que no apunta a producción; cómo montar y apagar el entorno local está en [development.md](development.md).
 
 | # | Paso | Dónde queda el resultado | Necesario para |
 |---|---|---|---|

@@ -207,7 +207,7 @@ Los del PRD §12. En resumen: dos CTA distinguibles en hero y cierre; llamada de
 
 ## Cómo ejecutarlo en local
 
-Requisitos: Node 24 o superior. Docker solo si vas a usar la base de datos local.
+Requisitos: Node 26 (el de la CI). Docker solo si vas a usar la base de datos local. Montaje desde cero, Supabase local y cómo apagarlo al cerrar un lote: [docs/development.md](docs/development.md).
 
 ```bash
 npm install
@@ -224,7 +224,7 @@ npm run dev            # http://localhost:3000/es · servicios en memoria, sin b
 | `npm run brand:build` | Regenera los archivos del logo y los iconos de `public/brand/` |
 | `npm run content:doc` | Regenera `docs/content/home.md`, el texto ES y EN lado a lado |
 | `npm run preview` | La app en el runtime real de Cloudflare Workers |
-| `supabase start` | Base de datos local en Docker |
+| `npx supabase start` · `npx supabase stop` | Arranca o detiene la base de datos local en Docker |
 
 Estado medido el 2026-11-14: Worker de 847 KiB (72 % de margen) y 135 kB de JS inicial.
 
@@ -326,7 +326,8 @@ Decidido el 2026-11-16 (decisión D1 de la v1.1): no hay revisión automática d
 | [BACKLOG.md](BACKLOG.md) | Backlog por lotes |
 | [docs/escenarios.md](docs/escenarios.md) | Escenarios GIVEN/WHEN/THEN de cada ítem del backlog: la guía de las pruebas |
 | [docs/setup.md](docs/setup.md) | Guía de accesos: Supabase, Cloudflare, correo |
-| [docs/operations.md](docs/operations.md) | Operación: desplegar, volver atrás, secretos, consultas, tarea diaria |
+| [docs/development.md](docs/development.md) | Entorno local: montarlo, Supabase en Docker y apagarlo al cerrar un lote o una versión |
+| [docs/operations.md](docs/operations.md) | Operación: desplegar, volver atrás, secretos, consultas, tarea diaria, vigilancia, dependencias y protección de `main` |
 | [docs/content/home.md](docs/content/home.md) | Texto de la home en español e inglés, para revisión editorial |
 | [docs/brand/README.md](docs/brand/README.md) | Ficha de marca: paleta, temas, tipografía, logo e imagen |
 | [docs/design/](docs/design/contenido-base.md) | Contenido base, propuestas visuales, diseño finalista y logo |
