@@ -97,7 +97,12 @@ gh workflow enable audit.yml
 ## Dependencias
 
 - **Dependabot** ([`dependabot.yml`](../.github/dependabot.yml)) abre cada semana pull requests para npm y las acciones de GitHub. Las menores y de parche de npm llegan juntas; cada versión mayor, suelta.
-- **Auditoría** ([`audit.yml`](../.github/workflows/audit.yml)): `npm audit --audit-level=high` cada lunes, a demanda y en cada pull request que cambia `package.json` o `package-lock.json`. En rojo si hay una vulnerabilidad alta o crítica conocida.
+- **Auditoría** ([`audit.yml`](../.github/workflows/audit.yml)): `npm audit --omit=dev --audit-level=high` cada lunes, a demanda y en cada pull request que cambia `package.json` o `package-lock.json`. En rojo si hay una vulnerabilidad alta o crítica conocida en las dependencias de producción (`next`, `react`, `react-dom`, `three`, `zod`), las que llegan al sitio.
+- **Las de desarrollo no se auditan en el workflow** (decisión del fundador, 2026-11-17). Arrastraban 22 avisos sin arreglo publicado (`picomatch` ≤ 4.0.7, vía Vitest, Vite, ESLint y el build de OpenNext) que dejaban la auditoría en rojo permanente. Las cubre Dependabot. Para verlas en local:
+
+  ```bash
+  npm audit
+  ```
 
 **Cómo revisar un pull request de Dependabot:**
 
@@ -105,7 +110,7 @@ gh workflow enable audit.yml
 2. Lee las notas de la versión, sobre todo en las mayores, y fíjate en Next.js, OpenNext, Wrangler y Three.js: son las que cambian el tamaño del Worker o del JS inicial.
 3. En verde y sin sorpresas, se funde. Lo que llega a producción es lo que se despliega después, no la fusión.
 
-**Si la auditoría falla:** actualiza el paquete si hay versión corregida (`npm audit fix`, sin `--force`, en una rama). Si no la hay o el fallo no afecta al sitio (por ejemplo, una dependencia solo de desarrollo), anótalo como aceptado, con el motivo, en el lote en curso.
+**Si la auditoría falla:** actualiza el paquete si hay versión corregida (`npm audit fix`, sin `--force`, en una rama). Si no la hay, anótalo como aceptado, con el motivo, en el lote en curso, y decide si el riesgo exige retirar o sustituir el paquete. Nunca `npm audit fix --force`: propone bajar paquetes a versiones antiguas.
 
 ## Protección de `main`
 

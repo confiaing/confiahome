@@ -3,7 +3,7 @@
 Home pública de lanzamiento de **Confia.ing**, consultoría de transformación de IA para pymes. Bilingüe (ES/EN), con un recorrido interactivo del proceso de trabajo y dos vías de contacto: agendar 30 minutos o enviar una consulta.
 
 > Documento vivo. Se actualiza al cierre de cada fase y con cada decisión relevante.
-> **Última actualización:** 2026-11-17 · **Estado:** v1 en producción en <https://confia.ing> (lotes L0 a L10 hechos); v1.1 en curso, con L11 hecho y L12 siguiente. Cómo operarlo: [docs/operations.md](docs/operations.md). Lo que sigue: «Después de la v1» en [BACKLOG.md](BACKLOG.md).
+> **Última actualización:** 2026-11-17 · **Estado:** v1 en producción en <https://confia.ing> (lotes L0 a L10 hechos); v1.1 en curso, con L11 y L12 hechos y L13 siguiente. `main` está protegida: los cambios entran por pull request. Cómo operarlo: [docs/operations.md](docs/operations.md). Lo que sigue: «Después de la v1» en [BACKLOG.md](BACKLOG.md).
 
 ## Estado del proyecto
 

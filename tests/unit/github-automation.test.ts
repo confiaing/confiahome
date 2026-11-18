@@ -116,10 +116,12 @@ describe("dependencias vigiladas: auditoría", () => {
     expect([...(on.pull_request?.paths ?? [])].sort()).toEqual(["package-lock.json", "package.json"]);
   });
 
-  it("ejecuta npm audit con nivel high tras npm ci", () => {
+  // Solo lo que llega al sitio: las herramientas de desarrollo arrastran avisos sin arreglo
+  // publicado que dejarían la auditoría en rojo permanente (decisión del fundador, 2026-11-17).
+  it("ejecuta npm audit de las dependencias de producción, con nivel high, tras npm ci", () => {
     const commands = runs(path);
     expect(commands).toMatch(/npm ci/);
-    expect(commands).toMatch(/npm audit --audit-level=high(\s|$)/);
+    expect(commands).toMatch(/npm audit --omit=dev --audit-level=high(\s|$)/);
     expect(commands.indexOf("npm ci")).toBeLessThan(commands.indexOf("npm audit"));
   });
 });
