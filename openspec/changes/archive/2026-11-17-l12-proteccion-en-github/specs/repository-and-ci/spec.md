@@ -29,7 +29,7 @@ La rama principal MUST exigir que las comprobaciones pasen antes de aceptar un c
 ## ADDED Requirements
 
 ### Requirement: Dependencias vigiladas
-Las dependencias de npm y las acciones de GitHub MUST revisarse cada semana: las actualizaciones llegan como pull requests que pasan la CI, y una vulnerabilidad alta o crítica conocida MUST dejar una ejecución en rojo.
+Las dependencias de npm y las acciones de GitHub MUST revisarse cada semana: las actualizaciones llegan como pull requests que pasan la CI, y una vulnerabilidad alta o crítica conocida en una dependencia de producción MUST dejar una ejecución en rojo. Las dependencias de desarrollo se mantienen al día con esas actualizaciones.
 
 #### Scenario: Actualizaciones semanales (U)
 - **GIVEN** la configuración de Dependabot
@@ -41,9 +41,9 @@ Las dependencias de npm y las acciones de GitHub MUST revisarse cada semana: las
 - **GIVEN** el workflow de auditoría
 - **WHEN** se lee
 - **THEN** se dispara cada semana y en cada pull request que cambia `package.json` o `package-lock.json`
-- **AND** ejecuta `npm audit` con nivel `high`, con permisos de solo lectura y sin secretos
+- **AND** ejecuta `npm audit` de las dependencias de producción (`--omit=dev`) con nivel `high`, con permisos de solo lectura y sin secretos
 
 #### Scenario: Primera auditoría (M)
 - **GIVEN** el workflow de auditoría en `main`
 - **WHEN** se ejecuta a demanda
-- **THEN** el resultado queda anotado; si hay vulnerabilidades altas o críticas, se corrigen o se anotan como aceptadas con su motivo
+- **THEN** el resultado queda anotado; si hay vulnerabilidades altas o críticas en las dependencias de producción, se corrigen o se anotan como aceptadas con su motivo
