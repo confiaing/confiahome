@@ -112,6 +112,29 @@ gh workflow enable audit.yml
 
 **Si la auditoría falla:** actualiza el paquete si hay versión corregida (`npm audit fix`, sin `--force`, en una rama). Si no la hay, anótalo como aceptado, con el motivo, en el lote en curso, y decide si el riesgo exige retirar o sustituir el paquete. Nunca `npm audit fix --force`: propone bajar paquetes a versiones antiguas.
 
+## Configuración de la zona
+
+Ajustes de Cloudflare de los que depende el sitio y que no están en el repositorio (L13). Se cambian en el panel de Cloudflare, cuenta del fundador, zona `confia.ing`. Si alguno se pierde, esta tabla basta para rehacerlo.
+
+| Ajuste | Dónde, en el panel | Valor | Qué lo comprueba |
+|---|---|---|---|
+| Always Use HTTPS | SSL/TLS → Edge Certificates | Activado | `verify:site`: «http → https conserva ruta y parámetros» |
+| Registro de `www` | DNS → Records | `AAAA` · nombre `www` · `100::` · con proxy (nube naranja) | `verify:site`: las dos comprobaciones de `www` |
+| Redirección de `www` | Rules → Redirect Rules → «www a confia.ing (L13)» | Patrón `https://www.confia.ing/*` → `https://confia.ing/${1}`, 301, *Preserve query string* marcado. `http://www` pasa antes por Always Use HTTPS | `verify:site`: las dos comprobaciones de `www` |
+| Frecuencia de `/api/events` | Security → Security rules → Rate limiting rules → «Eventos de analitica (L13)» | `(http.request.uri.path eq "/api/events" and http.request.method eq "POST")`; por IP; 20 peticiones en 10 s; bloquear 10 s | A mano: ráfaga de eventos fuera de la lista (abajo) |
+| Dominios de Turnstile | Turnstile → widget «confia.ing home» → Edit Widget → Hostname Management | Solo `confia.ing` | A mano: el formulario de `https://confia.ing` envía; el servidor rechaza tokens de otros dominios |
+| Dominio del Worker | Workers & Pages → `confiahome` → Settings → Domains & Routes | `confia.ing` | `verify:site`: todo lo demás |
+
+`www` no sirve nada: `100::` es la dirección que Cloudflare reserva para nombres que solo redirigen. El certificado universal de la zona ya cubre `www`.
+
+**Comprobar la regla de frecuencia** sin guardar nada: eventos con un nombre fuera de la lista, que el Worker rechaza con 400. Tras unos 20, Cloudflare responde 429 durante 10 segundos.
+
+```bash
+for i in $(seq 1 25); do curl -s -o /dev/null -w "%{http_code} " -X POST https://confia.ing/api/events -H "content-type: application/json" -H "origin: https://confia.ing" -d '{"name":"no-existe","locale":"es","device":"desktop"}'; done; echo
+```
+
+**El servidor exige el dominio del token** cuando la dirección pública es HTTPS y no local (`turnstileHostname` en `src/lib/server/container.ts`). Si cambia el dominio del sitio, cambian a la vez `NEXT_PUBLIC_SITE_URL` y los dominios del widget. Si no, el formulario rechazará a todo el mundo.
+
 ## Protección de `main`
 
 `main` solo acepta cambios por pull request, con `quality`, `contract`, `e2e` y `e2e-preview` en verde y la rama al día. No se puede forzar su historial ni borrarla. La regla vale también para los administradores. La configuración está en [`branch-protection.json`](../.github/branch-protection.json).

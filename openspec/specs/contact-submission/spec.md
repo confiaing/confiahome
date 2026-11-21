@@ -110,13 +110,36 @@ Las consultas MUST guardarse en una tabla con seguridad por filas activada y sin
 - **THEN** la fila existe con sus campos, estado «new», fecha y versión del consentimiento
 
 ### Requirement: Antispam en capas
-Antes de guardar, el servidor MUST verificar el token de Turnstile, descartar en silencio los envíos con el campo trampa relleno y limitar la frecuencia por origen. La dirección IP no MUST guardarse ni registrarse.
+Antes de guardar, el servidor MUST verificar el token de Turnstile, descartar en silencio los envíos con el campo trampa relleno y limitar la frecuencia por origen. En producción, un token válido MUST rechazarse si Turnstile lo emitió para un dominio distinto del sitio. El widget de Turnstile MUST admitir solo el dominio del sitio. La dirección IP no MUST guardarse ni registrarse.
 
 #### Scenario: Token inválido (I · L5-7)
 - **GIVEN** un token de Turnstile inválido
 - **WHEN** se envía
 - **THEN** responde 403
 - **AND** no se guarda ni se notifica
+
+#### Scenario: Token de otro dominio (U · L13-4)
+- **GIVEN** el verificador configurado con el dominio del sitio
+- **WHEN** Turnstile da por válido un token emitido para otro dominio
+- **THEN** el verificador lo rechaza como spam
+- **AND** acepta el mismo token si el dominio coincide
+
+#### Scenario: Sin dominio configurado (U)
+- **GIVEN** el verificador sin dominio, como en desarrollo y en las pruebas de contrato
+- **WHEN** Turnstile da por válido un token
+- **THEN** el verificador lo acepta sin mirar el dominio
+
+#### Scenario: Producción exige el dominio (U)
+- **GIVEN** la composición de dependencias con servicios reales
+- **WHEN** la dirección pública del sitio es HTTPS y no local
+- **THEN** el verificador recibe su dominio
+- **AND** con una dirección local no lo recibe
+
+#### Scenario: Widget restringido (M · L13-4)
+- **GIVEN** el widget de Turnstile en el panel de Cloudflare
+- **WHEN** se consultan sus dominios
+- **THEN** solo admite `confia.ing`
+- **AND** el formulario de `https://confia.ing` sigue enviando consultas
 
 #### Scenario: Campo trampa (I · L5-7)
 - **GIVEN** el campo trampa relleno

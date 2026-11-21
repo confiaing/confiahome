@@ -61,6 +61,8 @@ La CLI de Supabase y Wrangler vienen con `npm install`: se llaman con `npx`.
 | Probar los adaptadores contra la base | `npx supabase start` y `npm run test:contract` | Sí |
 | Ver la app con la base local | `npx supabase start` y `SERVICES=real` en `.env.development.local` | Sí |
 
+**Formulario con servicios reales: solo con `npm run dev`.** `npm run preview` construye para producción: sin `NEXT_PUBLIC_SITE_URL` usa `https://confia.ing` y el servidor exige que el token de Turnstile sea de ese dominio. Las claves de prueba emiten tokens de `example.com`, así que con `SERVICES=real` en `.dev.vars` cada envío respondería 403. En `npm run dev` la dirección es local y no se exige el dominio.
+
 ### Supabase local
 
 1. Abre Docker Desktop y espera a que indique que está activo.

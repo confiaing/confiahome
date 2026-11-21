@@ -465,3 +465,24 @@ El calendario se carga en el bloque «Agenda», no en un diálogo, y es uno solo
 
 **L10-5 · README final** — M
 - GIVEN el README WHEN lo lee alguien nuevo THEN describe lo desplegado, cómo ejecutarlo en local y cómo operarlo.
+
+## L13 — Cloudflare y dominio
+
+**L13-1 · HTTP lleva a HTTPS** — U, M
+- GIVEN el verificador y un sitio que responde por `http://` con 301 a la misma ruta y parámetros en `https://` WHEN comprueba la zona THEN la comprobación pasa AND falla si HTTP responde 200 o la redirección pierde ruta o parámetros.
+- GIVEN la zona con «Always Use HTTPS» WHEN se pide `http://confia.ing/es` o `http://www.confia.ing/es` THEN responde 301 a HTTPS, sin la página.
+
+**L13-2 · `www` lleva al dominio** — U, M
+- GIVEN el verificador WHEN pide `https://www.<dominio>/es?verificacion=1` THEN exige un 301 a `https://<dominio>/es?verificacion=1` AND `http://www.<dominio>/es` debe llegar a `https://<dominio>/es` en dos 301 como máximo AND un `www` que no resuelve cuenta como fallo, con la cadena de saltos en el detalle.
+- GIVEN una dirección local, `www` o un subdominio WHEN se ejecuta el verificador THEN no comprueba `www` ni HTTP.
+
+**L13-3 · Ráfagas cortadas en el borde** — M
+- GIVEN la regla de frecuencia de Cloudflare para `POST /api/events` WHEN una IP supera 20 peticiones en 10 segundos THEN las siguientes reciben 429 de Cloudflare AND el resto del sitio sigue respondiendo AND pasado el bloqueo vuelve a llegar al Worker.
+
+**L13-4 · Turnstile solo para el dominio** — U, M
+- GIVEN el verificador con el dominio del sitio WHEN Turnstile da por válido un token de otro dominio THEN lo rechaza como spam AND acepta el del dominio.
+- GIVEN servicios reales WHEN la dirección pública es HTTPS y no local THEN el verificador recibe su dominio AND con una dirección local no lo recibe.
+- GIVEN el widget en el panel WHEN se consultan sus dominios THEN solo admite `confia.ing`.
+
+**L13-5 · Inventario de la zona** — M
+- GIVEN la guía de operación WHEN la lee quien atiende el sitio THEN encuentra cada ajuste de Cloudflare, dónde se cambia y cómo se comprueba.

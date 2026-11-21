@@ -13,6 +13,7 @@ import { createTurnstileVerifier } from "@/adapters/turnstile/verifier";
 import type { RecordEventDeps } from "@/domain/analytics/record-event";
 import type { SubmitContactDeps } from "@/domain/contact/submit-contact";
 import { matchRoute, pathFor } from "@/i18n/routes";
+import { publicEnv } from "@/lib/public-env";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { type ServerEnv, loadServerEnv } from "./env";
 import { consoleLogger } from "./logger";
@@ -31,7 +32,24 @@ function resolvePath(raw: string): string | null {
   return match ? pathFor(match.locale, match.routeId) : null;
 }
 
-export function createContainer(env: ServerEnv): Container {
+/**
+ * Dominio que se exige a los tokens de Turnstile: el de la dirección pública, solo si es
+ * HTTPS y no local. En desarrollo y en el contrato se usan las claves de prueba, cuyos tokens
+ * dicen `hostname: "example.com"`, así que allí no se mira el dominio.
+ */
+export function turnstileHostname(siteUrl: string): string | undefined {
+  let url: URL;
+  try {
+    url = new URL(siteUrl);
+  } catch {
+    return undefined;
+  }
+  if (url.protocol !== "https:" || /^(localhost|127\.0\.0\.1|\[::1\])$|\.(localhost|test)$/.test(url.hostname)) return undefined;
+  return url.hostname;
+}
+
+/** `siteUrl` solo cambia en las pruebas: en el Worker es la dirección pública incrustada al construir. */
+export function createContainer(env: ServerEnv, siteUrl: string = publicEnv.siteUrl): Container {
   if (env.services === "memory") {
     return {
       contact: {
@@ -55,7 +73,7 @@ export function createContainer(env: ServerEnv): Container {
   return {
     contact: {
       repository: createSupabaseContactRepository({ url: env.supabaseUrl, secretKey: env.supabaseSecretKey }),
-      verifier: createTurnstileVerifier({ secretKey: env.turnstileSecretKey }),
+      verifier: createTurnstileVerifier({ secretKey: env.turnstileSecretKey, hostname: turnstileHostname(siteUrl) }),
       notifier: createEmailNotifier({
         from: env.notifyFrom,
         to: env.notifyTo,

@@ -45,5 +45,51 @@ export async function verifySite(base: string, send: typeof fetch = fetch): Prom
   const event = await post("/api/events", { name: "no-existe", locale: "es", device: "desktop" });
   add("un evento fuera de la lista se rechaza", event.status === 400, `respondió ${event.status}`);
 
+  await checkZone(origin, send, add);
   return checks;
+}
+
+const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$|\.(localhost|test)$/;
+
+/**
+ * Configuración de la zona de Cloudflare (L13): HTTP lleva a HTTPS y `www` lleva al dominio,
+ * con la ruta y los parámetros. Solo contra el dominio público: ni local, ni subdominios.
+ */
+async function checkZone(origin: string, send: typeof fetch, add: (name: string, ok: boolean, detail?: string) => void) {
+  const base = new URL(origin);
+  if (base.protocol !== "https:" || LOCAL.test(base.hostname) || base.hostname.split(".").length !== 2) return;
+  const host = base.host;
+  const probe = "/es?verificacion=1";
+
+  // Una sola petición sin seguir la redirección; un error de red se devuelve como texto.
+  const hop = async (url: string) => {
+    try {
+      const response = await send(url, { redirect: "manual", headers: { "user-agent": AGENT } });
+      return { status: response.status, location: response.headers.get("location") ?? "" };
+    } catch (error) {
+      return { status: 0, location: "", error: error instanceof Error ? error.message : String(error) };
+    }
+  };
+  const describe = (result: { status: number; location: string; error?: string }) =>
+    result.error ? `sin respuesta: ${result.error}` : `respondió ${result.status}${result.location ? ` hacia ${result.location}` : ""}`;
+
+  const http = await hop(`http://${host}${probe}`);
+  add("http → https conserva ruta y parámetros", http.status === 301 && http.location === `https://${host}${probe}`, describe(http));
+
+  const www = await hop(`https://www.${host}${probe}`);
+  add("https://www lleva al dominio con ruta y parámetros", www.status === 301 && www.location === `https://${host}${probe}`, describe(www));
+
+  // Por HTTP, Cloudflare puede pasar antes por https://www: se admiten dos saltos, todos 301.
+  // El detalle lleva la cadena entera, para ver qué salto se desvió.
+  let url = `http://www.${host}/es`;
+  let arrived = false;
+  const chain: string[] = [];
+  for (let jumps = 0; jumps < 2 && !arrived; jumps++) {
+    const result = await hop(url);
+    chain.push(`${url} ${describe(result)}`);
+    if (result.status !== 301 || !result.location) break;
+    url = new URL(result.location, url).href;
+    arrived = url === `https://${host}/es`;
+  }
+  add("http://www lleva a https del dominio", arrived, chain.join(" → "));
 }

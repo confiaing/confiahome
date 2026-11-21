@@ -60,7 +60,7 @@ Cada dato MUST pertenecer a un conjunto cerrado o cumplir un formato estricto: i
 - **THEN** responde 400 y no se guarda
 
 ### Requirement: Punto de recepción protegido
-`POST /api/events` MUST aceptar solo peticiones del propio sitio, con cuerpo JSON de tamaño limitado, MUST aplicar un límite de frecuencia por origen y no MUST poder guardarse en caché. Las peticiones de robots conocidos MUST aceptarse sin guardarse.
+`POST /api/events` MUST aceptar solo peticiones del propio sitio, con cuerpo JSON de tamaño limitado, MUST aplicar un límite de frecuencia por origen y no MUST poder guardarse en caché. Las peticiones de robots conocidos MUST aceptarse sin guardarse. Además del límite del Worker, una regla de Cloudflare MUST cortar en el borde las ráfagas de una misma IP antes de que lleguen al Worker.
 
 #### Scenario: Origen ajeno, tipo o tamaño incorrectos (I)
 - **GIVEN** una petición desde otro origen, o que no es JSON, o que supera el tamaño máximo
@@ -72,6 +72,13 @@ Cada dato MUST pertenecer a un conjunto cerrado o cumplir un formato estricto: i
 - **GIVEN** más eventos que el límite desde un mismo origen en un minuto
 - **WHEN** llega el siguiente
 - **THEN** responde 429 y no se guarda
+
+#### Scenario: Ráfaga cortada en el borde (M · L13-3)
+- **GIVEN** la regla de frecuencia de Cloudflare para `POST /api/events`
+- **WHEN** una misma IP envía en 10 segundos más peticiones que el umbral, con un evento fuera de la lista para no guardar nada
+- **THEN** las siguientes reciben 429 de Cloudflare, no del Worker
+- **AND** pasado el bloqueo, una petición vuelve a llegar al Worker
+- **AND** el sitio y el resto de rutas siguen respondiendo durante el bloqueo
 
 #### Scenario: Robot conocido (I)
 - **GIVEN** una petición cuyo agente de usuario es el de un robot conocido
