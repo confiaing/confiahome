@@ -14,7 +14,9 @@ Rama `lote/l13-cloudflare-y-dominio`. Las tareas marcadas **[fundador]** se hace
 
 - [x] 2.1 Comprobaciones de la zona en `scripts/lib/verify-site.ts` (diseño, decisión 2). Verificación: pruebas de 1.2 en verde, y las existentes sin cambios.
 - [x] 2.2 Opción `hostname` en el verificador de Turnstile, y la composición que la pasa solo con una dirección HTTPS no local (decisión 3). Verificación: pruebas de 1.3 en verde; `npm run test:contract` en verde con Supabase local.
-- [ ] 2.3 `docs/operations.md`: sección «Configuración de la zona», con el inventario de la decisión 1, dónde se cambia cada ajuste y qué lo comprueba. En «Vigilancia diaria», quién recibe el aviso. `docs/security/audit-v1.md`: S-03 y S-07 pasan a corregidos, con referencia a L13. Verificación: escenario «Inventario de la zona» (M) revisado por el fundador.
+- [x] 2.3 `docs/operations.md`: sección «Configuración de la zona», con el inventario de la decisión 1, dónde se cambia cada ajuste y qué lo comprueba. En «Vigilancia diaria», quién recibe el aviso. `docs/security/audit-v1.md`: S-03 y S-07 pasan a corregidos, con referencia a L13. Verificación: escenario «Inventario de la zona» (M) revisado por el fundador.
+
+  *Hecho, 2026-11-21.* Sección «Configuración de la zona» en `docs/operations.md`, ajustada a lo aplicado en el panel. En «Vigilancia diaria», quién recibe el aviso. S-03 y S-07, corregidos en `audit-v1.md`. **El fundador aprobó la sección el 2026-11-21.**
 
 ## 3. Zona de Cloudflare
 
@@ -66,7 +68,13 @@ Rama `lote/l13-cloudflare-y-dominio`. Las tareas marcadas **[fundador]** se hace
   *Hecho, 2026-11-21, tras las correcciones de la revisión.* `lint` 0 · `typecheck` 0 · `test` 1127 de 1127 · `e2e` 371 en verde · `e2e:preview` 35 en verde · `build:worker` 1190,5 KiB de 3072 · `measure:js` 164,6 kB de 200 · `test:contract` 52 de 52.
 
   **Orden de cierre:** push y pull request → revisión de `operations.md` por el fundador (2.3) → archivo, BACKLOG y README en la misma rama → fusión → despliegue (5.5) y vigilancia (5.6), cuya evidencia se anota en el lote siguiente.
-- [ ] 5.3 Archivo del cambio, README y BACKLOG (L13 ✅) en la rama. Commit. **[orden]** Push y pull request. Verificación: CI del pull request en verde, con enlace.
+- [x] 5.3 Archivo del cambio, README y BACKLOG (L13 ✅) en la rama. Commit. **[orden]** Push y pull request. Verificación: CI del pull request en verde, con enlace.
+
+  *Hecho, 2026-11-21.* [confiaing/confiahome#7](https://github.com/confiaing/confiahome/pull/7), con el archivo del cambio, BACKLOG y README en la misma rama. El enlace a la CI en verde se anota en el lote siguiente.
 - [ ] 5.4 **[orden]** Fundir el pull request. Verificación: `main` contiene L13; `openspec list` sin L13.
 - [ ] 5.5 **[orden]** Desplegar con `release:check`, `release` y `wrangler deploy`; se recomienda antes `/ultrareview`. Verificación: `verify:site` en verde contra `https://confia.ing` y una consulta real de prueba enviada desde el formulario. Su fila se borra después, con la decisión del fundador anotada.
 - [ ] 5.6 Vigilancia diaria lanzada a demanda tras fundir. Verificación: ejecución en verde, con las comprobaciones de la zona, y su enlace anotado.
+
+## Al archivar
+
+Archivado el 2026-11-21, con 15 de 18 tareas. Las tareas 5.4 (fusión), 5.5 (despliegue) y 5.6 (vigilancia) se hacen después de fundir: `main` está protegida y el archivo tiene que entrar en el mismo pull request. Su evidencia se anota en el lote siguiente.

@@ -72,13 +72,36 @@ Los secretos de producción MUST cargarse como secretos del Worker, escritos por
 - **THEN** no incrusta ningún secreto
 
 ### Requirement: Verificación tras el despliegue
-Tras desplegar MUST comprobarse en el dominio real que las páginas responden, que llevan las cabeceras de seguridad, que una consulta de prueba se guarda y se avisa, y que la tarea diaria está programada.
+Tras desplegar MUST comprobarse en el dominio real que las páginas responden, que llevan las cabeceras de seguridad, que el dominio solo se sirve por HTTPS y sin `www`, que una consulta de prueba se guarda y se avisa, y que la tarea diaria está programada.
 
 #### Scenario: Páginas y cabeceras (M · L10-3)
 - **GIVEN** el sitio desplegado
 - **WHEN** se piden `/es`, `/en`, una página legal, `robots.txt`, `sitemap.xml` y `llms.txt` por HTTPS
 - **THEN** responden 200
 - **AND** las páginas HTML llevan política de contenido, HSTS y `nosniff`
+
+#### Scenario: HTTP lleva a HTTPS (U · L13-1)
+- **GIVEN** el verificador y un sitio que responde a `http://` con 301 hacia la misma ruta y los mismos parámetros en `https://`
+- **WHEN** comprueba la zona
+- **THEN** la comprobación pasa
+- **AND** falla si la respuesta por HTTP es 200, o si la redirección pierde la ruta o los parámetros
+
+#### Scenario: `www` lleva al dominio (U · L13-2)
+- **GIVEN** el verificador
+- **WHEN** pide `https://www.<dominio>/es?verificacion=1` y `http://www.<dominio>/es`
+- **THEN** exige por HTTPS un 301 hacia `https://<dominio>/es?verificacion=1`, con la misma ruta y los mismos parámetros
+- **AND** por HTTP, que llegue a `https://<dominio>/es` en dos redirecciones 301 como máximo
+- **AND** cuenta como fallo que `www` no resuelva o no responda, con la cadena de saltos en el detalle
+
+#### Scenario: Solo para el dominio público (U)
+- **GIVEN** una dirección local, `www` o un subdominio como `staging.<dominio>`
+- **WHEN** el verificador se ejecuta contra ella
+- **THEN** no comprueba `www` ni HTTP
+
+#### Scenario: La zona real (M · L13-1, L13-2)
+- **GIVEN** la configuración de Cloudflare aplicada
+- **WHEN** se ejecuta `verify:site` contra `https://confia.ing`
+- **THEN** todas las comprobaciones, también las de la zona, terminan en verde
 
 #### Scenario: Flujo B real (M · L10-3)
 - **GIVEN** el sitio en producción
@@ -137,7 +160,16 @@ El sitio en producción MUST verificarse cada día de forma automática, sin int
 - **AND** el enlace a la ejecución queda anotado
 
 #### Scenario: Un fallo se ve (M)
-- **GIVEN** una ejecución en rojo
+- **GIVEN** una ejecución programada en rojo
 - **WHEN** termina
-- **THEN** GitHub envía el aviso de fallo a quien tenga activadas las notificaciones de Actions
-- **AND** `docs/operations.md` dice qué comprobar primero
+- **THEN** GitHub envía el aviso de fallo a la cuenta que modificó por última vez el `cron` del workflow, si tiene activadas las notificaciones de Actions
+- **AND** `docs/operations.md` dice quién lo recibe y qué comprobar primero
+
+### Requirement: Configuración de la zona documentada
+La guía de operación MUST describir cada ajuste de Cloudflare del que depende el sitio fuera del repositorio, dónde se cambia y qué comprobación lo vigila, para poder rehacerlo o revisarlo sin depender de la memoria de nadie.
+
+#### Scenario: Inventario de la zona (M · L13-5)
+- **GIVEN** la guía de operación
+- **WHEN** la lee quien atiende el sitio
+- **THEN** encuentra «Always Use HTTPS», el registro y la regla de `www`, la regla de frecuencia de `/api/events` y los dominios del widget de Turnstile
+- **AND** para cada uno, dónde está en el panel y cómo se comprueba
