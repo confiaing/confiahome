@@ -18,11 +18,21 @@ Rama `lote/l13-cloudflare-y-dominio`. Las tareas marcadas **[fundador]** se hace
 
 ## 3. Zona de Cloudflare
 
-- [ ] 3.1 **[fundador]** «Always Use HTTPS». Verificación: `curl -sI http://confia.ing/es?x=1` → 301 a `https://confia.ing/es?x=1` (escenario «HTTP no sirve contenido»). Se anota el estado previo del ajuste.
-- [ ] 3.2 **[fundador]** Registro `AAAA www 100::` con proxy y regla de redirección de `www`. Verificación: `curl -sI` de `https://www.confia.ing/es?x=1` y `http://www.confia.ing/es`, con su salida anotada.
-- [ ] 3.3 **[fundador]** Regla de frecuencia de `POST /api/events`: 20 en 10 s por IP, bloqueo de 10 s. Verificación: escenario «Ráfaga cortada en el borde» (M). 25 eventos fuera de la lista seguidos: los primeros responden 400 del Worker y los siguientes, 429 de Cloudflare. Se comprueba que `/es` sigue en 200 y, pasado el bloqueo, que vuelve el 400. No se guarda nada.
-- [ ] 3.4 **[fundador]** Turnstile: el widget solo admite `confia.ing`. Verificación: escenario «Widget restringido» (M), con captura de la lista de dominios.
-- [ ] 3.5 `npm run verify:site -- https://confia.ing` desde la rama, con las comprobaciones nuevas. Verificación: escenario «La zona real» (M), todas en verde y la salida anotada.
+- [x] 3.1 **[fundador]** «Always Use HTTPS». Verificación: `curl -sI http://confia.ing/es?x=1` → 301 a `https://confia.ing/es?x=1` (escenario «HTTP no sirve contenido»). Se anota el estado previo del ajuste.
+
+  *Hecho, 2026-11-21.* Ya estaba activado: el panel dice que se cambió por última vez «hace 5 días» (el 2026-11-16, en L10). No se tocó. `curl -sI 'http://confia.ing/es?x=1'` → `301`, `Location: https://confia.ing/es?x=1`.
+- [x] 3.2 **[fundador]** Registro `AAAA www 100::` con proxy y regla de redirección de `www`. Verificación: `curl -sI` de `https://www.confia.ing/es?x=1` y `http://www.confia.ing/es`, con su salida anotada.
+
+  *Hecho por el agente en el panel, 2026-11-21, a petición del fundador.* Registro `AAAA www 100::` con proxy. Regla «www a confia.ing (L13)»: patrón `https://www.confia.ing/*` → `https://confia.ing/${1}`, 301, conservando la consulta (la plantilla de Cloudflare no la conservaba; se marcó). `curl -sI`: `https://www.confia.ing/es?verificacion=1` → `301` a `https://confia.ing/es?verificacion=1`; `http://www.confia.ing/es` → `301` a `https://www.confia.ing/es` → `301` a `https://confia.ing/es`.
+- [x] 3.3 **[fundador]** Regla de frecuencia de `POST /api/events`: 20 en 10 s por IP, bloqueo de 10 s. Verificación: escenario «Ráfaga cortada en el borde» (M). 25 eventos fuera de la lista seguidos: los primeros responden 400 del Worker y los siguientes, 429 de Cloudflare. Se comprueba que `/es` sigue en 200 y, pasado el bloqueo, que vuelve el 400. No se guarda nada.
+
+  *Hecho por el agente en el panel, 2026-11-21.* Regla «Eventos de analitica (L13)», expresión `(http.request.uri.path eq "/api/events" and http.request.method eq "POST")`, por IP, 20 en 10 s, bloquear 10 s, activa. Ráfaga de 25 eventos `no-existe`: 23 × `400` del Worker y 2 × `429` de Cloudflare (`server: cloudflare`, `text/plain`; el Worker responde JSON). `/es` en `200` durante el bloqueo; a los 25 s, `400` de nuevo. No se guardó nada.
+- [x] 3.4 **[fundador]** Turnstile: el widget solo admite `confia.ing`. Verificación: escenario «Widget restringido» (M), con captura de la lista de dominios.
+
+  *Hecho, 2026-11-21.* Ya estaba así: el widget «confia.ing home» tiene un solo dominio, `confia.ing` (1 de 10). No se cambió ni se guardó nada.
+- [x] 3.5 `npm run verify:site -- https://confia.ing` desde la rama, con las comprobaciones nuevas. Verificación: escenario «La zona real» (M), todas en verde y la salida anotada.
+
+  *Hecho, 2026-11-21.* `node scripts/verify-production.ts https://confia.ing` desde la rama: **24 comprobaciones en verde**, también `http → https conserva ruta y parámetros`, `https://www lleva al dominio con ruta y parámetros` y `http://www lleva a https del dominio`. Antes de configurar `www`: 22 de 24.
 
 ## 4. Pendientes de L12
 

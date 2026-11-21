@@ -20,7 +20,7 @@ El plan gratuito no se gestiona desde este repositorio: no hay token de Cloudfla
 |---|---|---|
 | Always Use HTTPS | SSL/TLS → Edge Certificates | Activado |
 | Registro de `www` | DNS → Records | `AAAA www 100::`, con proxy |
-| Redirección de `www` | Rules → Redirect Rules | Si el host es `www.confia.ing`: 301 a `concat("https://confia.ing", http.request.uri.path)`, conservando la consulta |
+| Redirección de `www` | Rules → Redirect Rules | Patrón `https://www.confia.ing/*` → `https://confia.ing/${1}`, 301, conservando la consulta. *Ajustado al aplicarlo:* la plantilla de Cloudflare usa un comodín, que hace lo mismo que la expresión dinámica prevista y se lee mejor |
 | Frecuencia de `/api/events` | Security → WAF → Rate limiting rules | Ruta `/api/events` y método `POST`; por IP; 20 peticiones en 10 s; bloqueo de 10 s |
 | Dominios del widget | Turnstile → widget → Hostname management | Solo `confia.ing` |
 

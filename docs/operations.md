@@ -120,9 +120,9 @@ Ajustes de Cloudflare de los que depende el sitio y que no están en el reposito
 |---|---|---|---|
 | Always Use HTTPS | SSL/TLS → Edge Certificates | Activado | `verify:site`: «http → https conserva ruta y parámetros» |
 | Registro de `www` | DNS → Records | `AAAA` · nombre `www` · `100::` · con proxy (nube naranja) | `verify:site`: las dos comprobaciones de `www` |
-| Redirección de `www` | Rules → Redirect Rules | Si el host es `www.confia.ing`: URL dinámica `concat("https://confia.ing", http.request.uri.path)`, 301, conservando la consulta | `verify:site`: las dos comprobaciones de `www` |
-| Frecuencia de `/api/events` | Security → WAF → Rate limiting rules | Ruta igual a `/api/events` y método `POST`; por IP; 20 peticiones en 10 s; bloquear 10 s | A mano: ráfaga de eventos fuera de la lista (abajo) |
-| Dominios de Turnstile | Turnstile → el widget del sitio → Hostname management | Solo `confia.ing` | A mano: el formulario de `https://confia.ing` envía; el servidor rechaza tokens de otros dominios |
+| Redirección de `www` | Rules → Redirect Rules → «www a confia.ing (L13)» | Patrón `https://www.confia.ing/*` → `https://confia.ing/${1}`, 301, *Preserve query string* marcado. `http://www` pasa antes por Always Use HTTPS | `verify:site`: las dos comprobaciones de `www` |
+| Frecuencia de `/api/events` | Security → Security rules → Rate limiting rules → «Eventos de analitica (L13)» | `(http.request.uri.path eq "/api/events" and http.request.method eq "POST")`; por IP; 20 peticiones en 10 s; bloquear 10 s | A mano: ráfaga de eventos fuera de la lista (abajo) |
+| Dominios de Turnstile | Turnstile → widget «confia.ing home» → Edit Widget → Hostname Management | Solo `confia.ing` | A mano: el formulario de `https://confia.ing` envía; el servidor rechaza tokens de otros dominios |
 | Dominio del Worker | Workers & Pages → `confiahome` → Settings → Domains & Routes | `confia.ing` | `verify:site`: todo lo demás |
 
 `www` no sirve nada: `100::` es la dirección que Cloudflare reserva para nombres que solo redirigen. El certificado universal de la zona ya cubre `www`.
