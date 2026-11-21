@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createContainer } from "@/lib/server/container";
+import { createContainer, turnstileHostname } from "@/lib/server/container";
 
 // environment-config · Selección de servicios
 describe("composición de dependencias", () => {
@@ -54,5 +54,17 @@ describe("composición de dependencias", () => {
         referrerHost: null,
       }),
     ).rejects.toThrow();
+  });
+});
+
+// contact-submission · Antispam en capas: producción exige el dominio (L13-4)
+describe("dominio que se exige al token de Turnstile", () => {
+  it("con la dirección pública HTTPS, es su host", () => {
+    expect(turnstileHostname("https://confia.ing")).toBe("confia.ing");
+    expect(turnstileHostname("https://confia.ing/")).toBe("confia.ing");
+  });
+
+  it.each(["http://localhost:3000", "http://127.0.0.1:8787", "https://localhost", "http://confia.ing", "no es una dirección"])("con %s no se exige", (siteUrl) => {
+    expect(turnstileHostname(siteUrl)).toBeUndefined();
   });
 });

@@ -48,7 +48,7 @@ Se siguen las redirecciones a mano (`redirect: "manual"`), como ya hace el verif
 Supeditado a la decisión 1 del fundador.
 
 - **Adaptador** (`src/adapters/turnstile/verifier.ts`): la opción nueva `hostname?: string`. Si está presente, `success: true` con otro `hostname` devuelve `false`, igual que un token inválido. El visitante ve la misma respuesta 403.
-- **Composición** (`src/lib/server/container.ts`): pasa el host de `siteUrl` (`src/lib/public-env.ts`) solo si la dirección es HTTPS y no local. En desarrollo y en las pruebas de contrato no se comprueba el dominio, porque las claves de prueba de Turnstile no emiten tokens para `localhost`.
+- **Composición** (`src/lib/server/container.ts`): pasa el host de `siteUrl` (`src/lib/public-env.ts`) solo si la dirección es HTTPS y no local. En desarrollo y en las pruebas de contrato no se comprueba el dominio, porque con las claves de prueba de Turnstile siteverify responde `hostname: "example.com"` (comprobado el 2026-11-21).
 - **Pruebas:** **unitarias** para el adaptador y para la composición (`tests/unit/container.test.ts`). Sin red.
 
 Las dependencias se respetan: `lib/server` ya importa `adapters` y `lib`.

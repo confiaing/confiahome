@@ -13,6 +13,7 @@ import { createTurnstileVerifier } from "@/adapters/turnstile/verifier";
 import type { RecordEventDeps } from "@/domain/analytics/record-event";
 import type { SubmitContactDeps } from "@/domain/contact/submit-contact";
 import { matchRoute, pathFor } from "@/i18n/routes";
+import { publicEnv } from "@/lib/public-env";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { type ServerEnv, loadServerEnv } from "./env";
 import { consoleLogger } from "./logger";
@@ -29,6 +30,22 @@ export type Container = {
 function resolvePath(raw: string): string | null {
   const match = matchRoute(raw);
   return match ? pathFor(match.locale, match.routeId) : null;
+}
+
+/**
+ * Dominio que se exige a los tokens de Turnstile: el de la dirección pública, solo si es
+ * HTTPS y no local. En desarrollo y en el contrato se usan las claves de prueba, cuyos tokens
+ * dicen `hostname: "example.com"`, así que allí no se mira el dominio.
+ */
+export function turnstileHostname(siteUrl: string): string | undefined {
+  let url: URL;
+  try {
+    url = new URL(siteUrl);
+  } catch {
+    return undefined;
+  }
+  if (url.protocol !== "https:" || /^(localhost|127\.0\.0\.1|\[::1\])$|\.(localhost|test)$/.test(url.hostname)) return undefined;
+  return url.hostname;
 }
 
 export function createContainer(env: ServerEnv): Container {
@@ -55,7 +72,7 @@ export function createContainer(env: ServerEnv): Container {
   return {
     contact: {
       repository: createSupabaseContactRepository({ url: env.supabaseUrl, secretKey: env.supabaseSecretKey }),
-      verifier: createTurnstileVerifier({ secretKey: env.turnstileSecretKey }),
+      verifier: createTurnstileVerifier({ secretKey: env.turnstileSecretKey, hostname: turnstileHostname(publicEnv.siteUrl) }),
       notifier: createEmailNotifier({
         from: env.notifyFrom,
         to: env.notifyTo,

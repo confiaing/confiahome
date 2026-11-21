@@ -98,6 +98,26 @@ describe("verificador de Turnstile", () => {
     await expect(createTurnstileVerifier({ secretKey: "s", fetch }).verify("t", null)).rejects.toMatchObject({ name: "TurnstileError" });
   });
 
+  // contact-submission · Antispam en capas: token de otro dominio (L13-4)
+  it("con dominio configurado, un token válido de otro dominio es un rechazo, y el del dominio se acepta", async () => {
+    let hostname = "otro-sitio.example";
+    const { fetch } = fakeFetch(() => Response.json({ success: true, hostname }));
+    const verifier = createTurnstileVerifier({ secretKey: "s", hostname: "confia.ing", fetch });
+    expect(await verifier.verify("t", null)).toBe(false);
+    hostname = "confia.ing";
+    expect(await verifier.verify("t", null)).toBe(true);
+  });
+
+  it("con dominio configurado, una respuesta sin dominio es un rechazo", async () => {
+    const { fetch } = fakeFetch(() => Response.json({ success: true }));
+    expect(await createTurnstileVerifier({ secretKey: "s", hostname: "confia.ing", fetch }).verify("t", null)).toBe(false);
+  });
+
+  it("sin dominio configurado no se mira el dominio del token", async () => {
+    const { fetch } = fakeFetch(() => Response.json({ success: true, hostname: "example.com" }));
+    expect(await createTurnstileVerifier({ secretKey: "s", fetch }).verify("t", null)).toBe(true);
+  });
+
   it("una respuesta sin `success: true` es un rechazo", async () => {
     const { fetch } = fakeFetch(() => Response.json({ success: "true" }));
     expect(await createTurnstileVerifier({ secretKey: "s", fetch }).verify("t", null)).toBe(false);

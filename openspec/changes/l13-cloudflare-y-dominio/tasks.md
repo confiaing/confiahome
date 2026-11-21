@@ -6,14 +6,14 @@ Rama `lote/l13-cloudflare-y-dominio`. Las tareas marcadas **[fundador]** se hace
 
 ## 1. Escenarios y pruebas primero
 
-- [ ] 1.1 Sección «L13 — Cloudflare y dominio» en `docs/escenarios.md`, con los escenarios L13-1 a L13-5 de las specs. Verificación: cada `L13-n` de las specs aparece allí.
-- [ ] 1.2 Pruebas en rojo en `tests/unit/verify-site.test.ts` para «HTTP lleva a HTTPS», «`www` lleva al dominio» y «Solo para el dominio público». El `fetch` simulado distingue el host y el esquema, y cubre la redirección perdida, el 200 por HTTP, `www` que no resuelve y los dos saltos. Verificación: fallan por la ausencia de las comprobaciones.
-- [ ] 1.3 Pruebas en rojo para «Token de otro dominio» y «Sin dominio configurado» (verificador de Turnstile) y para «Producción exige el dominio» (`tests/unit/container.test.ts`). Verificación: fallan por la ausencia de la opción.
+- [x] 1.1 Sección «L13 — Cloudflare y dominio» en `docs/escenarios.md`, con los escenarios L13-1 a L13-5 de las specs. Verificación: cada `L13-n` de las specs aparece allí.
+- [x] 1.2 Pruebas en rojo en `tests/unit/verify-site.test.ts` para «HTTP lleva a HTTPS», «`www` lleva al dominio» y «Solo para el dominio público». El `fetch` simulado distingue el host y el esquema, y cubre la redirección perdida, el 200 por HTTP, `www` que no resuelve y los dos saltos. Verificación: fallan por la ausencia de las comprobaciones.
+- [x] 1.3 Pruebas en rojo para «Token de otro dominio» y «Sin dominio configurado» (verificador de Turnstile) y para «Producción exige el dominio» (`tests/unit/container.test.ts`). Verificación: fallan por la ausencia de la opción.
 
 ## 2. Implementación
 
-- [ ] 2.1 Comprobaciones de la zona en `scripts/lib/verify-site.ts` (diseño, decisión 2). Verificación: pruebas de 1.2 en verde, y las existentes sin cambios.
-- [ ] 2.2 Opción `hostname` en el verificador de Turnstile, y la composición que la pasa solo con una dirección HTTPS no local (decisión 3). Verificación: pruebas de 1.3 en verde; `npm run test:contract` en verde con Supabase local.
+- [x] 2.1 Comprobaciones de la zona en `scripts/lib/verify-site.ts` (diseño, decisión 2). Verificación: pruebas de 1.2 en verde, y las existentes sin cambios.
+- [x] 2.2 Opción `hostname` en el verificador de Turnstile, y la composición que la pasa solo con una dirección HTTPS no local (decisión 3). Verificación: pruebas de 1.3 en verde; `npm run test:contract` en verde con Supabase local.
 - [ ] 2.3 `docs/operations.md`: sección «Configuración de la zona», con el inventario de la decisión 1, dónde se cambia cada ajuste y qué lo comprueba. En «Vigilancia diaria», quién recibe el aviso. `docs/security/audit-v1.md`: S-03 y S-07 pasan a corregidos, con referencia a L13. Verificación: escenario «Inventario de la zona» (M) revisado por el fundador.
 
 ## 3. Zona de Cloudflare
@@ -26,7 +26,9 @@ Rama `lote/l13-cloudflare-y-dominio`. Las tareas marcadas **[fundador]** se hace
 
 ## 4. Pendientes de L12
 
-- [ ] 4.1 Evidencia de «Un pull request en rojo no se funde»: el PR #5 (TypeScript 7), con los cinco trabajos en rojo y estado `BLOCKED` mientras estuvo abierto. Verificación: salida de `gh pr view 5` anotada aquí.
+- [x] 4.1 Evidencia de «Un pull request en rojo no se funde»: el PR #5 (TypeScript 7), con los cinco trabajos en rojo y estado `BLOCKED` mientras estuvo abierto. Verificación: salida de `gh pr view 5` anotada aquí.
+
+  *Hecho, 2026-11-21.* `gh pr view 5 --json state,mergeStateStatus,statusCheckRollup` devuelve `state: CLOSED` (cerrado el 2026-11-21 a las 20:42 UTC, sin fundir), `mergeStateStatus: BLOCKED`, y `audit`, `quality`, `contract`, `e2e` y `e2e-preview` en `FAILURE`. Antes de cerrarlo, el 2026-11-18, la consulta ya daba `BLOCKED` con la protección activa: GitHub no lo habría dejado fundir. El fallo era de `npm ci` (`ERESOLVE`: `typescript-eslint` no admite TypeScript 7).
 
 ## 5. Cierre por pull request
 
