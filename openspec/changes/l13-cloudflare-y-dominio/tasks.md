@@ -42,8 +42,30 @@ Rama `lote/l13-cloudflare-y-dominio`. Las tareas marcadas **[fundador]** se hace
 
 ## 5. Cierre por pull request
 
-- [ ] 5.1 `/code-review high` (toca Turnstile y el verificador de producción). `aitmpl-code-reviewer` revisa el lote en un subagente. Verificación: hallazgos y resolución anotados aquí.
-- [ ] 5.2 Puerta de cierre completa, más `test:contract`. Verificación: salida a la vista.
+- [x] 5.1 `/code-review high` (toca Turnstile y el verificador de producción). `aitmpl-code-reviewer` revisa el lote en un subagente. Verificación: hallazgos y resolución anotados aquí.
+
+  *Hecho, 2026-11-21.*
+  - **`/code-review high`:** seis hallazgos.
+    - Cuatro corregidos:
+      1. Ninguna prueba veía que la composición pasara el dominio. Ahora `createContainer(env, siteUrl)` tiene dos pruebas con siteverify simulado.
+      2. `npm run preview` con servicios reales rechazaría todo token. Documentado en `docs/development.md` y en los riesgos del diseño.
+      3. S-07 figuraba como corregido antes del despliegue. Ahora dice «desde el despliegue de L13».
+      4. El diseño no recogía la regla de dos etiquetas para comprobar la zona.
+    - Dos aceptados:
+      - La zona solo se comprueba en dominios de dos etiquetas: está documentado y basta para `confia.ing`.
+      - La detección de direcciones locales está repetida en tres sitios. Unificarla obligaría a `scripts/` a importar de `src/`, y el verificador corre en la CI sin `npm ci`.
+  - **`aitmpl-code-reviewer` (high, subagente):** aprobar con comentarios. No encontró hallazgos altos ni medios. Cuatro bajos:
+    - La prueba de la composición: ya corregida.
+    - El escenario L13-2 y la spec no coincidían con el código (`?origen=prueba` y los saltos de `http://www`). Alineados.
+    - El detalle de un fallo de `http://www` describía un salto de más. Ahora lleva la cadena de saltos, con su prueba.
+    - S-07: ya corregido.
+  - **Lo que señaló el subagente sin confirmar:** un fallo intermitente que no pudo reproducir en 34 ejecuciones. Sospecha de una prueba anterior a L13 que usa temporizadores falsos. Queda en observación en la CI.
+  - `verify:site` contra producción con el bucle nuevo: 24 en verde.
+- [x] 5.2 Puerta de cierre completa, más `test:contract`. Verificación: salida a la vista.
+
+  *Hecho, 2026-11-21, tras las correcciones de la revisión.* `lint` 0 · `typecheck` 0 · `test` 1127 de 1127 · `e2e` 371 en verde · `e2e:preview` 35 en verde · `build:worker` 1190,5 KiB de 3072 · `measure:js` 164,6 kB de 200 · `test:contract` 52 de 52.
+
+  **Orden de cierre:** push y pull request → revisión de `operations.md` por el fundador (2.3) → archivo, BACKLOG y README en la misma rama → fusión → despliegue (5.5) y vigilancia (5.6), cuya evidencia se anota en el lote siguiente.
 - [ ] 5.3 Archivo del cambio, README y BACKLOG (L13 ✅) en la rama. Commit. **[orden]** Push y pull request. Verificación: CI del pull request en verde, con enlace.
 - [ ] 5.4 **[orden]** Fundir el pull request. Verificación: `main` contiene L13; `openspec list` sin L13.
 - [ ] 5.5 **[orden]** Desplegar con `release:check`, `release` y `wrangler deploy`; se recomienda antes `/ultrareview`. Verificación: `verify:site` en verde contra `https://confia.ing` y una consulta real de prueba enviada desde el formulario. Su fila se borra después, con la decisión del fundador anotada.

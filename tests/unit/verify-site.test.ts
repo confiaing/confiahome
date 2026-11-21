@@ -135,6 +135,13 @@ describe("verificación de la zona", () => {
     expect(await failed({ "GET https://www.confia.ing/es": () => moved("http://www.confia.ing/es") })).toEqual([WWW_HTTP]);
   });
 
+  it("el detalle de un fallo de http://www señala el salto que se desvió", async () => {
+    const results = await verifySite(BASE, site({ "GET https://www.confia.ing/es": () => moved("https://otro.example/es") }));
+    const detail = results.find((item) => item.name === WWW_HTTP)!.detail!;
+    expect(detail).toContain("https://www.confia.ing/es respondió 301 hacia https://otro.example/es");
+    expect(detail).not.toContain("otro.example/es respondió");
+  });
+
   it.each(["http://localhost:8787", "https://staging.confia.ing", "https://www.confia.ing"])("contra %s no comprueba la zona", async (base) => {
     const asked: string[] = [];
     const send = (async (input: string | URL | Request) => {

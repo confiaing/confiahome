@@ -23,12 +23,13 @@ Tras desplegar MUST comprobarse en el dominio real que las páginas responden, q
 
 #### Scenario: `www` lleva al dominio (U · L13-2)
 - **GIVEN** el verificador
-- **WHEN** pide `https://www.<dominio>/es?origen=prueba` y `http://www.<dominio>/es`
-- **THEN** exige un 301 hacia `https://<dominio>` con la misma ruta y los mismos parámetros
-- **AND** cuenta como fallo que `www` no resuelva o no responda
+- **WHEN** pide `https://www.<dominio>/es?verificacion=1` y `http://www.<dominio>/es`
+- **THEN** exige por HTTPS un 301 hacia `https://<dominio>/es?verificacion=1`, con la misma ruta y los mismos parámetros
+- **AND** por HTTP, que llegue a `https://<dominio>/es` en dos redirecciones 301 como máximo
+- **AND** cuenta como fallo que `www` no resuelva o no responda, con la cadena de saltos en el detalle
 
 #### Scenario: Solo para el dominio público (U)
-- **GIVEN** una dirección local o un subdominio distinto del dominio público
+- **GIVEN** una dirección local, `www` o un subdominio como `staging.<dominio>`
 - **WHEN** el verificador se ejecuta contra ella
 - **THEN** no comprueba `www` ni HTTP
 

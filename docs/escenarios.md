@@ -473,8 +473,8 @@ El calendario se carga en el bloque «Agenda», no en un diálogo, y es uno solo
 - GIVEN la zona con «Always Use HTTPS» WHEN se pide `http://confia.ing/es` o `http://www.confia.ing/es` THEN responde 301 a HTTPS, sin la página.
 
 **L13-2 · `www` lleva al dominio** — U, M
-- GIVEN el verificador WHEN pide `https://www.<dominio>/es?origen=prueba` y `http://www.<dominio>/es` THEN exige un 301 a `https://<dominio>` con la misma ruta y parámetros AND un `www` que no resuelve cuenta como fallo.
-- GIVEN una dirección local o un subdominio WHEN se ejecuta el verificador THEN no comprueba `www` ni HTTP.
+- GIVEN el verificador WHEN pide `https://www.<dominio>/es?verificacion=1` THEN exige un 301 a `https://<dominio>/es?verificacion=1` AND `http://www.<dominio>/es` debe llegar a `https://<dominio>/es` en dos 301 como máximo AND un `www` que no resuelve cuenta como fallo, con la cadena de saltos en el detalle.
+- GIVEN una dirección local, `www` o un subdominio WHEN se ejecuta el verificador THEN no comprueba `www` ni HTTP.
 
 **L13-3 · Ráfagas cortadas en el borde** — M
 - GIVEN la regla de frecuencia de Cloudflare para `POST /api/events` WHEN una IP supera 20 peticiones en 10 segundos THEN las siguientes reciben 429 de Cloudflare AND el resto del sitio sigue respondiendo AND pasado el bloqueo vuelve a llegar al Worker.

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createContainer, turnstileHostname } from "@/lib/server/container";
 
 // environment-config · Selección de servicios
@@ -66,5 +66,29 @@ describe("dominio que se exige al token de Turnstile", () => {
 
   it.each(["http://localhost:3000", "http://127.0.0.1:8787", "https://localhost", "http://confia.ing", "no es una dirección"])("con %s no se exige", (siteUrl) => {
     expect(turnstileHostname(siteUrl)).toBeUndefined();
+  });
+});
+
+describe("la composición pasa el dominio al verificador real", () => {
+  afterEach(() => vi.unstubAllGlobals());
+  // siteverify simulado: token válido, emitido para example.com, como con las claves de prueba.
+  const stubTurnstile = () => vi.stubGlobal("fetch", async () => Response.json({ success: true, hostname: "example.com" }));
+  const REAL = {
+    services: "real",
+    supabaseUrl: "http://127.0.0.1:54321",
+    supabaseSecretKey: "x",
+    turnstileSecretKey: "y",
+    notifyFrom: "web@confia.ing",
+    notifyTo: "equipo@example.com",
+  } as const;
+
+  it("con la dirección pública, un token de otro dominio se rechaza", async () => {
+    stubTurnstile();
+    expect(await createContainer(REAL, "https://confia.ing").contact.verifier.verify("t", null)).toBe(false);
+  });
+
+  it("con una dirección local, el mismo token se acepta", async () => {
+    stubTurnstile();
+    expect(await createContainer(REAL, "http://localhost:3000").contact.verifier.verify("t", null)).toBe(true);
   });
 });

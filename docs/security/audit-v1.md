@@ -18,7 +18,7 @@ Las revisiones de código sí dieron hallazgos de severidad media, todos de corr
 | S-04 | Baja | Sin `SERVICES` el servidor usa adaptadores en memoria: un entorno futuro sin esa variable aceptaría consultas sin guardarlas | **Aceptado.** `wrangler.jsonc` fija `real` y una prueba lo comprueba |
 | S-05 | Inf. | El Worker autoriza todos los scripts del HTML | **Vigilado.** Next.js copia la ruta y los parámetros pedidos en uno de sus scripts de datos, siempre codificados; hay una prueba con direcciones hostiles (`tests/preview/security.spec.ts`). Ver [ADR-0016](../architecture/adr/0016-entrada-propia-del-worker-cabeceras-y-tarea-diaria.md) |
 | S-06 | Inf. | Los archivos estáticos no llevaban política de contenido | **Corregido** para `/brand/*` (`public/_headers`) |
-| S-07 | Inf. | La verificación de Turnstile no comprueba el dominio del token | **Corregido en L13.** El widget solo admite `confia.ing`, y el servidor rechaza en producción los tokens emitidos para otro dominio (`src/adapters/turnstile/verifier.ts`) |
+| S-07 | Inf. | La verificación de Turnstile no comprueba el dominio del token | **Corregido en L13.** El widget solo admite `confia.ing`, y, desde el despliegue de L13, el servidor rechaza en producción los tokens emitidos para otro dominio (`src/adapters/turnstile/verifier.ts`) |
 | S-08 | Inf. | El identificador del proyecto de Supabase aparece en la documentación | **Aceptado.** No es un secreto; el acceso lo impide RLS |
 
 ## Hallazgos de la revisión de código (severidad media)

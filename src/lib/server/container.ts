@@ -48,7 +48,8 @@ export function turnstileHostname(siteUrl: string): string | undefined {
   return url.hostname;
 }
 
-export function createContainer(env: ServerEnv): Container {
+/** `siteUrl` solo cambia en las pruebas: en el Worker es la dirección pública incrustada al construir. */
+export function createContainer(env: ServerEnv, siteUrl: string = publicEnv.siteUrl): Container {
   if (env.services === "memory") {
     return {
       contact: {
@@ -72,7 +73,7 @@ export function createContainer(env: ServerEnv): Container {
   return {
     contact: {
       repository: createSupabaseContactRepository({ url: env.supabaseUrl, secretKey: env.supabaseSecretKey }),
-      verifier: createTurnstileVerifier({ secretKey: env.turnstileSecretKey, hostname: turnstileHostname(publicEnv.siteUrl) }),
+      verifier: createTurnstileVerifier({ secretKey: env.turnstileSecretKey, hostname: turnstileHostname(siteUrl) }),
       notifier: createEmailNotifier({
         from: env.notifyFrom,
         to: env.notifyTo,

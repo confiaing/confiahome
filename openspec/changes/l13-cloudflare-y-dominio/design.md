@@ -32,7 +32,7 @@ El plan gratuito no se gestiona desde este repositorio: no hay token de Cloudfla
 
 ### 2. `verify:site` comprueba la zona
 
-Comprobaciones nuevas en `scripts/lib/verify-site.ts`. Solo se hacen cuando la dirección base es HTTPS, no es local y no empieza por `www.`:
+Comprobaciones nuevas en `scripts/lib/verify-site.ts`. Solo se hacen cuando la dirección base es HTTPS, no es local y es el dominio raíz, de dos etiquetas como `confia.ing`. Contra `www.` o un subdominio como `staging.confia.ing` no se comprueba la zona: no tienen su propio `www`. Si el sitio cambiara a un dominio de tres etiquetas (`ejemplo.com.co`), habría que ajustar esta regla:
 
 - `http://<host>/es?verificacion=1` responde 301 a `https://<host>/es?verificacion=1`.
 - `https://www.<host>/es?verificacion=1` responde 301 a `https://<host>/es?verificacion=1`.
@@ -75,5 +75,6 @@ No hace falta un ADR nuevo: D2 decidió la redirección, y lo demás aplica el A
 
 - **Una regla de redirección mal escrita deja `www` sin servicio, o crea un bucle.** La comprobación de `verify:site` lo detecta, y la regla se desactiva en un clic.
 - **La regla de frecuencia puede bloquear a una red compartida,** por ejemplo una oficina tras una sola IP. El umbral es holgado y el bloqueo dura 10 segundos. Solo afecta a la analítica, nunca a la página ni al formulario.
+- **`npm run preview` con `SERVICES=real`:** un build de producción sin `NEXT_PUBLIC_SITE_URL` usa `https://confia.ing` y exige ese dominio, pero las claves de prueba responden `example.com`, así que el formulario respondería 403. Para probar el formulario con servicios reales en local se usa `npm run dev`; se documenta en `docs/development.md`.
 - **Si `hostname` faltara en la respuesta de Turnstile,** el servidor rechazaría tokens válidos en producción. Se mitiga probando un envío real tras desplegar y con la vuelta atrás de siempre (`wrangler rollback`).
 - **La configuración del panel no está versionada.** El inventario de `docs/operations.md` y `verify:site` son la red de seguridad hasta L14.

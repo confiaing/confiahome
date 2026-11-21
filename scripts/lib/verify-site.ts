@@ -80,16 +80,16 @@ async function checkZone(origin: string, send: typeof fetch, add: (name: string,
   add("https://www lleva al dominio con ruta y parámetros", www.status === 301 && www.location === `https://${host}${probe}`, describe(www));
 
   // Por HTTP, Cloudflare puede pasar antes por https://www: se admiten dos saltos, todos 301.
+  // El detalle lleva la cadena entera, para ver qué salto se desvió.
   let url = `http://www.${host}/es`;
-  let last = await hop(url);
   let arrived = false;
-  for (let jumps = 0; jumps < 2 && last.status === 301 && last.location; jumps++) {
-    url = new URL(last.location, url).href;
-    if (url === `https://${host}/es`) {
-      arrived = true;
-      break;
-    }
-    last = await hop(url);
+  const chain: string[] = [];
+  for (let jumps = 0; jumps < 2 && !arrived; jumps++) {
+    const result = await hop(url);
+    chain.push(`${url} ${describe(result)}`);
+    if (result.status !== 301 || !result.location) break;
+    url = new URL(result.location, url).href;
+    arrived = url === `https://${host}/es`;
   }
-  add("http://www lleva a https del dominio", arrived, describe(last));
+  add("http://www lleva a https del dominio", arrived, chain.join(" → "));
 }
