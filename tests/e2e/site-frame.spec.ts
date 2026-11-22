@@ -59,10 +59,16 @@ test.describe("menú en 375 px", () => {
 
   test("al ensanchar la ventana con el menú abierto, deja de estar «abierto»", async ({ page }) => {
     await page.goto("/es");
-    const toggle = page.getByRole("button", { name: "Menú" });
+    // includeHidden: en 1280 px el botón lleva display: none y getByRole lo ignoraría.
+    const toggle = page.getByRole("button", { name: "Menú", includeHidden: true });
     await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
     await page.setViewportSize(WIDE);
     await expect(toggle).toBeHidden();
+    // El cierre llega con el evento «change» de matchMedia, que el navegador emite al
+    // revisar las media queries en un fotograma, después de recalcular el estilo. Si se
+    // estrecha antes, la consulta nunca deja de coincidir y el evento no se emite.
+    await expect(toggle).toHaveAttribute("aria-expanded", "false");
     await page.setViewportSize(NARROW);
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
   });
