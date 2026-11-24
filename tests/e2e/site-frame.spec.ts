@@ -67,7 +67,7 @@ test.describe("menú en 375 px", () => {
     await expect(toggle).toBeHidden();
     // El cierre llega con el evento «change» de matchMedia, que el navegador emite al
     // revisar las media queries en un fotograma, después de recalcular el estilo. Si se
-    // estrecha antes, la consulta nunca deja de coincidir y el evento no se emite.
+    // estrecha antes, la consulta de ventana ancha nunca llega a coincidir y el evento no se emite.
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
     await page.setViewportSize(NARROW);
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
